@@ -18,6 +18,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Word\Bases\PlatformOpenXmlElement.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\Bookmarks\PlatformBookmarkEnd.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\Paragraphs\PlatformParagraph.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Word\Tables\PlatformTable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Word\Tables\PlatformTableCell.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Word\Tables\PlatformTableRow.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\WordManager.cs" />
   </ItemGroup>
 </Project>

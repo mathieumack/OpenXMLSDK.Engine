@@ -8,10 +8,12 @@ using MvvX.Open_XML_SDK.Core.Word;
 using MvvX.Open_XML_SDK.Core.Word.Bases;
 using MvvX.Open_XML_SDK.Core.Word.Bookmarks;
 using MvvX.Open_XML_SDK.Core.Word.Paragraphs;
+using MvvX.Open_XML_SDK.Core.Word.Tables;
+using MvvX.Open_XML_SDK.Core.Word.Tables.Models;
 
 namespace MvvX.Open_XML_SDK.Word
 {
-    public class WordManager : IWordManager
+    public partial class WordManager : IWordManager
     {
         #region Fields
 
@@ -326,6 +328,77 @@ namespace MvvX.Open_XML_SDK.Word
 
             var run = new Run(new Text(text));
             SetOnBookmark(bookmark, new PlatformRun(run));
+        }
+
+        #endregion
+
+        #region Tables
+        
+        public ITable CreateTable(IList<ITableRow> rows, TablePropertiesModel properties = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ITableCell CreateTableCell(IRun cellContent, TableCellPropertiesModel cellModel)
+        {
+            if (cellContent == null)
+                throw new ArgumentNullException("cellContent must not be null");
+            if (cellModel == null)
+                throw new ArgumentNullException("cellModel must not be null");
+
+            return CreateTableCell(new List<IRun>() { cellContent }, cellModel);
+        }
+
+        public ITableCell CreateTableCell(IList<IRun> cellContents, TableCellPropertiesModel cellModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ITableCell CreateTableCell(IList<IParagraph> cellContents, TableCellPropertiesModel cellModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ITableCell CreateTableMergeCell(IRun run, TableCellPropertiesModel cellModel)
+        {
+            if (run == null)
+                throw new ArgumentNullException("run must not be null");
+            if (cellModel == null)
+                throw new ArgumentNullException("cellModel must not be null");
+
+            return CreateTableMergeCell(new List<IRun>() { run }, cellModel);
+        }
+
+        public ITableCell CreateTableMergeCell(IList<IRun> cellContents, TableCellPropertiesModel cellModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ITableRow CreateTableRow(IList<ITableCell> cells, TableRowPropertiesModel properties = null)
+        {
+            if (cells == null)
+                throw new ArgumentNullException("cells must not be null");
+            if (cells.Any(e => e == null))
+                throw new ArgumentNullException("All elements of cells must be not null");
+
+            TableRow tr = new TableRow();
+
+            if (properties != null)
+            {
+                // Create a TableRowProperties
+                if (properties.Height.HasValue)
+                {
+                    TableRowProperties trPpr = new TableRowProperties(new TableRowHeight() { Val = properties.Height });
+                    tr.Append(trPpr);
+                }
+            }
+
+            if (cells != null)
+            {
+                tr.Append(cells);
+            }
+
+            return new PlatformTableRow(tr);
         }
 
         #endregion

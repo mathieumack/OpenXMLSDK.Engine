@@ -46,6 +46,13 @@
     <Compile Include="Word\Bookmarks\IBookmarkEnd.cs" />
     <Compile Include="Word\IWordManager.cs" />
     <Compile Include="Word\Paragraphs\IParagraph.cs" />
+    <Compile Include="Word\Tables\ITableCell.cs" />
+    <Compile Include="Word\Tables\ITableRow.cs" />
+    <Compile Include="Word\Tables\ITable.cs" />
+    <Compile Include="Word\Tables\Models\TableBorderModel.cs" />
+    <Compile Include="Word\Tables\Models\TableCellPropertiesModel.cs" />
+    <Compile Include="Word\Tables\Models\TablePropertiesModel.cs" />
+    <Compile Include="Word\Tables\Models\TableRowPropertiesModel.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
