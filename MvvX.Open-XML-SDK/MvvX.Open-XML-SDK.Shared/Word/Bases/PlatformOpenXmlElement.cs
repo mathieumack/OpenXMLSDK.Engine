@@ -64,5 +64,6 @@ namespace MvvX.Open_XML_SDK.Core.Word.Bases
         {
             return openXmlElement.GetEnumerator();
         }
+
     }
 }

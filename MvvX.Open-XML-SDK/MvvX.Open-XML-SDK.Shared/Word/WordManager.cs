@@ -2,12 +2,17 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using MvvX.Open_XML_SDK.Core.Word;
 using MvvX.Open_XML_SDK.Core.Word.Bases;
 using MvvX.Open_XML_SDK.Core.Word.Bookmarks;
+using MvvX.Open_XML_SDK.Core.Word.Images;
 using MvvX.Open_XML_SDK.Core.Word.Paragraphs;
+using A = DocumentFormat.OpenXml.Drawing;
+using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
+using PIC = DocumentFormat.OpenXml.Drawing.Pictures;
 
 namespace MvvX.Open_XML_SDK.Word
 {
@@ -328,6 +333,126 @@ namespace MvvX.Open_XML_SDK.Word
             SetOnBookmark(bookmark, new PlatformRun(run));
         }
 
+        #endregion
+
+        #region Images
+
+        public void InsertPictureToBookmark(string bookmark, string fileName, ImageType type, long? maxWidth = null, long? maxHeight = null)
+        {
+            if (string.IsNullOrWhiteSpace(bookmark))
+                throw new ArgumentNullException("bookmark must be not null or white spaces");
+            if (string.IsNullOrWhiteSpace(fileName))
+                throw new ArgumentNullException("FileName must not be null or white space");
+            if(!File.Exists(fileName))
+                throw new FileNotFoundException("File not found");
+
+            var enumType = (int)type;
+            ImagePartType imageType = (ImagePartType)enumType;
+            var image = CreateImage(fileName, imageType, maxWidth, maxHeight);
+
+            var bookmarkElement = FindBookmark(bookmark);
+            if (bookmarkElement != default(BookmarkEnd))
+            {
+                bookmarkElement.InsertAfterSelf(image);
+            }
+        }
+        public IRun CreateImage(string fileName, ImagePartType type, long? maxWidth = null, long? maxHeight = null)
+        {
+            byte[] file = File.ReadAllBytes(fileName);
+            MemoryStream ms = new MemoryStream(file);
+
+            return CreateImage(ms, type, maxWidth, maxHeight);
+        }
+
+        public IRun CreateImage(Stream stream, ImagePartType type, long? maxWidth = null, long? maxHeight = null)
+        {
+            ImagePart imagePart = wdMainDocumentPart.AddImagePart(type);
+            MemoryStream msClone = new MemoryStream();
+            stream.CopyTo(msClone);
+            stream.Position = 0;
+            imagePart.FeedData(stream);
+
+            string relationshipId = wdMainDocumentPart.GetIdOfPart(imagePart);
+
+            return CreateImage(msClone, relationshipId, maxWidth, maxHeight);
+        }
+        
+        
+        private IRun CreateImage(Stream ms, string relationshipId, long? maxWidth = null, long? maxHeight = null)
+        {
+            long imageWidth = 990000L;
+            long imageHeight = 792000L;
+          
+            var result = new Run();
+
+            var runProperties = new RunProperties();
+            runProperties.Append(new NoProof());
+            result.Append(runProperties);
+
+            var graphicFrameLocks = new A.GraphicFrameLocks() { NoChangeAspect = true };
+            graphicFrameLocks.AddNamespaceDeclaration("a", "http://schemas.openxmlformats.org/drawingml/2006/main");
+
+            var picture = new PIC.Picture(
+                                     new PIC.NonVisualPictureProperties(
+                                         new PIC.NonVisualDrawingProperties()
+                                         {
+                                             Id = (UInt32Value)0U,
+                                             Name = "New Bitmap Image.jpg"
+                                         },
+                                         new PIC.NonVisualPictureDrawingProperties()),
+                                     new PIC.BlipFill(
+                                         new A.Blip()
+                                         {
+                                             Embed = relationshipId,
+                                             CompressionState =
+                                             A.BlipCompressionValues.Print
+                                         },
+                                         new A.Stretch(
+                                             new A.FillRectangle())),
+                                     new PIC.ShapeProperties(
+                                         new A.Transform2D(
+                                             new A.Offset() { X = 0L, Y = 0L },
+                                             new A.Extents() { Cx = imageWidth, Cy = imageHeight }),
+                                         new A.PresetGeometry(
+                                             new A.AdjustValueList()
+                                         )
+                                         { Preset = A.ShapeTypeValues.Rectangle }));
+            picture.AddNamespaceDeclaration("pic", "http://schemas.openxmlformats.org/drawingml/2006/picture");
+
+            var graphic = new A.Graphic(
+                             new A.GraphicData(
+                                 picture
+                             )
+                             { Uri = "http://schemas.openxmlformats.org/drawingml/2006/picture" });
+            graphic.AddNamespaceDeclaration("a", "http://schemas.openxmlformats.org/drawingml/2006/main");
+
+            result.Append(new Drawing(
+                     new DW.Inline(
+                         new DW.Extent() { Cx = imageWidth, Cy = imageHeight },
+                         new DW.EffectExtent()
+                         {
+                             LeftEdge = 0L,
+                             TopEdge = 0L,
+                             RightEdge = 0L,
+                             BottomEdge = 0L
+                         },
+                         new DW.DocProperties()
+                         {
+                             Id = (UInt32Value)1U,
+                             Name = "Picture 1"
+                         },
+                         new DW.NonVisualGraphicFrameDrawingProperties(graphicFrameLocks),
+                         graphic
+                     )
+                     {
+                         DistanceFromTop = (UInt32Value)0U,
+                         DistanceFromBottom = (UInt32Value)0U,
+                         DistanceFromLeft = (UInt32Value)0U,
+                         DistanceFromRight = (UInt32Value)0U,
+                         EditId = "50D07946"
+                     }));
+            return new PlatformRun(result);
+        }
         #endregion
     }
 }

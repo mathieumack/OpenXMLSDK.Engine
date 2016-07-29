@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using MvvX.Open_XML_SDK.Core.Word.Paragraphs;
 
 namespace MvvX.Open_XML_SDK.Core.Word.Bases
 {
