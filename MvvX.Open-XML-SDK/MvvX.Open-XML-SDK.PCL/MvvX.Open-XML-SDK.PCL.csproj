@@ -5,11 +5,11 @@
     <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D516410F-1AF5-49B1-98CF-00E08487EBBA}</ProjectGuid>
+    <ProjectGuid>{FC1B1DB7-8E2B-49EF-AE0F-F82B41F7AE0E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MvvX.Open_XML_SDK.Core</RootNamespace>
-    <AssemblyName>MvvX.Open-XML-SDK.Core</AssemblyName>
+    <RootNamespace>MvvX.Open_XML_SDK.PCL</RootNamespace>
+    <AssemblyName>MvvX.Open-XML-SDK.PCL</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -35,41 +35,14 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
-    <Folder Include="Excel\" />
-    <Folder Include="PowerPoint\" />
+    <ProjectReference Include="..\MvvX.Open-XML-SDK.Core\MvvX.Open-XML-SDK.Core.csproj">
+      <Project>{d516410f-1af5-49b1-98cf-00e08487ebba}</Project>
+      <Name>MvvX.Open-XML-SDK.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Word\Bases\IOpenXmlElement.cs" />
-    <Compile Include="Word\Bases\IRun.cs" />
-    <Compile Include="Word\Bases\IText.cs" />
-    <Compile Include="Word\Bookmarks\IBookmarkEnd.cs" />
-    <Compile Include="Word\Images\ImageType.cs" />
-    <Compile Include="Word\IWordManager.cs" />
-    <Compile Include="Word\Paragraphs\IParagraph.cs" />
-    <Compile Include="Word\Tables\ITable.cs" />
-    <Compile Include="Word\Tables\ITableCell.cs" />
-    <Compile Include="Word\Tables\ITableRow.cs" />
-    <Compile Include="Word\Tables\ITableRowProperties.cs" />
-    <Compile Include="Word\Tables\ITableStyle.cs" />
-    <Compile Include="Word\Tables\ITableWidth.cs" />
-    <Compile Include="Word\Tables\Models\BorderValues.cs" />
-    <Compile Include="Word\Tables\ITableProperties.cs" />
-    <Compile Include="Word\Tables\Models\JustificationValues.cs" />
-    <Compile Include="Word\Tables\Models\RunPropertiesModel.cs" />
-    <Compile Include="Word\Tables\Models\TableBorderModel.cs" />
-    <Compile Include="Word\Tables\Models\TableCellPropertiesModel.cs" />
-    <Compile Include="Word\Tables\Models\TablePropertiesModel.cs" />
-    <Compile Include="Word\Tables\Models\TableRowAlignmentValues.cs" />
-    <Compile Include="Word\Tables\Models\TableRowPropertiesModel.cs" />
-    <Compile Include="Word\Tables\Models\TableVerticalAlignmentValues.cs" />
-    <Compile Include="Word\Tables\Models\TableWidthUnitValues.cs" />
-    <Compile Include="Word\Tables\Models\TextDirectionValues.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="OpenXmlSdk.Android">
-      <HintPath>..\dll\android\OpenXmlSdk.Android.dll</HintPath>
-    </Reference>
+    <Compile Include="WordReport.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

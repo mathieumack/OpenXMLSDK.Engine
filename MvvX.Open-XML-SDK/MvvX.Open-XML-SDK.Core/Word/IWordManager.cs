@@ -5,11 +5,22 @@ using MvvX.Open_XML_SDK.Core.Word.Bases;
 using MvvX.Open_XML_SDK.Core.Word.Bookmarks;
 using MvvX.Open_XML_SDK.Core.Word.Images;
 using MvvX.Open_XML_SDK.Core.Word.Paragraphs;
+using MvvX.Open_XML_SDK.Core.Word.Tables;
+using MvvX.Open_XML_SDK.Core.Word.Tables.Models;
 
 namespace MvvX.Open_XML_SDK.Core.Word
 {
     public interface IWordManager : IDisposable
     {
+
+        #region Basics
+
+        IRun CreateRun(object contentItem);
+
+        IParagraph CreateParagraph(object contentItem);
+
+        #endregion
+
         #region Bookmarks
 
         /// <summary>
@@ -60,6 +71,11 @@ namespace MvvX.Open_XML_SDK.Core.Word
         void CloseDocNoSave();
 
         /// <summary>
+        /// Close document
+        /// </summary>
+        void CloseDoc();
+
+        /// <summary>
         /// Open doc
         /// </summary>
         /// <param name="filePath">Path and name of file to open</param>
@@ -102,7 +118,66 @@ namespace MvvX.Open_XML_SDK.Core.Word
         /// <param name="type">Image extension (.png, .jpg...)</param>
         /// </summary>
         void InsertPictureToBookmark(string bookmark, string fileName, ImageType type, long? maxWidth = null, long? maxHeight = null);
-        
+
+        /// <summary>
+        /// Create image
+        /// </summary>
+        /// <returns></returns>
+        IRun CreateImage(string fileName, ImageType type, long? maxWidth = null, long? maxHeight = null);
+
         #endregion
+
+        #region Texts
+        /// <summary>
+        /// Create text
+        /// </summary>
+        IRun CreateTexte(string content, RunPropertiesModel rpm = null);
+
+        #endregion
+
+        #region Tables
+
+        /// <summary>
+        /// Create a table
+        /// <returns></returns>
+        ITable CreateTable(IList<ITableRow> rows, TablePropertiesModel properties = null);
+
+        /// <summary>
+        /// Create object cell of the table
+        /// </summary>
+        /// <returns></returns>
+        ITableCell CreateTableCell(IRun cellContent, TableCellPropertiesModel cellModel);
+
+        /// <summary>
+        /// Create object cell of the table
+        /// </summary>
+        /// <returns></returns>
+        ITableCell CreateTableCell(IList<IRun> cellContents, TableCellPropertiesModel cellModel);
+
+        /// <summary>
+        /// Create object cell of the table
+        /// </summary>
+        /// <returns></returns>
+        ITableCell CreateTableCell(IList<IParagraph> cellContents, TableCellPropertiesModel cellModel);
+
+        /// <summary>
+        /// Create merged object cell of the table
+        /// </summary>
+        /// <returns></returns>
+        ITableCell CreateTableMergeCell(IRun cellContent, TableCellPropertiesModel cellModel);
+
+        /// <summary>
+        /// Create merged object cell of the table
+        /// </summary>
+        /// <returns></returns>
+        ITableCell CreateTableMergeCell(IList<IRun> cellContents, TableCellPropertiesModel cellModel);
+
+        /// <summary>
+        /// Create row
+        /// </summary>
+        /// <returns></returns>
+        ITableRow CreateTableRow(IList<ITableCell> cells, TableRowPropertiesModel properties = null);
+        #endregion
+
     }
 }

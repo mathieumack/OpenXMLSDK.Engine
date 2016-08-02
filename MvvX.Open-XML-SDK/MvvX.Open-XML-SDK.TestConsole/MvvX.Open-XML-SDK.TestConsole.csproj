@@ -60,6 +60,10 @@
       <Project>{d516410f-1af5-49b1-98cf-00e08487ebba}</Project>
       <Name>MvvX.Open-XML-SDK.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MvvX.Open-XML-SDK.PCL\MvvX.Open-XML-SDK.PCL.csproj">
+      <Project>{fc1b1db7-8e2b-49ef-ae0f-f82b41f7ae0e}</Project>
+      <Name>MvvX.Open-XML-SDK.PCL</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\Results\" />

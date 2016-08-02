@@ -13,11 +13,19 @@
     <Folder Include="$(MSBuildThisFileDirectory)PowerPoint\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Word\Bases\PlatformDecimalNumberType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\Bases\PlatformRun.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\Bases\PlatformText.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\Bases\PlatformOpenXmlElement.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\Bookmarks\PlatformBookmarkEnd.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\Paragraphs\PlatformParagraph.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Word\Tables\PlatformTable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Word\Tables\PlatformTableCell.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Word\Tables\PlatformTableProperties.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Word\Tables\PlatformTableRow.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Word\Tables\PlatformTableRowProperties.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Word\Tables\PlatformTableStyle.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Word\Tables\PlatformTableWidth.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\WordManager.cs" />
   </ItemGroup>
 </Project>
