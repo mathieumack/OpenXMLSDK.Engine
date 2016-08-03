@@ -10,5 +10,13 @@ namespace MvvX.Open_XML_SDK.Core.Word.Bases
         T InsertAfterSelf<T>(T newElement) where T : IOpenXmlElement;
 
         IEnumerable<T> Ancestors<T>() where T : IOpenXmlElement;
+
+        IEnumerable<T> Descendants<T>() where T : IOpenXmlElement;
+
+        void Append<T>(T itemToAppend) where T : IOpenXmlElement;
+
+        void Append(params IOpenXmlElement[] childs);
+
+        void Append(IEnumerable<IOpenXmlElement> childs);
     }
 }

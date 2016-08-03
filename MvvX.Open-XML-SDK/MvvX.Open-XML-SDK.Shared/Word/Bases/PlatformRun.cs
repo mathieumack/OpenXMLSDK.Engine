@@ -6,6 +6,11 @@ namespace MvvX.Open_XML_SDK.Core.Word.Bases
     {
         private readonly Run run;
 
+        public static PlatformRun New()
+        {
+            return new PlatformRun(new Run());
+        }
+
         public PlatformRun(Run run)
             : base(run)
         {

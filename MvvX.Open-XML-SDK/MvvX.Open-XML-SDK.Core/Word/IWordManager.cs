@@ -5,6 +5,8 @@ using MvvX.Open_XML_SDK.Core.Word.Bases;
 using MvvX.Open_XML_SDK.Core.Word.Bookmarks;
 using MvvX.Open_XML_SDK.Core.Word.Images;
 using MvvX.Open_XML_SDK.Core.Word.Paragraphs;
+using MvvX.Open_XML_SDK.Core.Word.Tables;
+using MvvX.Open_XML_SDK.Core.Word.Tables.Models;
 
 namespace MvvX.Open_XML_SDK.Core.Word
 {
@@ -93,16 +95,101 @@ namespace MvvX.Open_XML_SDK.Core.Word
 
         #endregion
 
-        #region Images
+        #region Shadings
+
+        IShading GetShading(string textColor = null, string fillColor = null);
+
+        #endregion
+
+        #region Texts
+
+        IRun CreateEmptyRun();
+
+        IParagraph CreateParagraphForRun(IRun run);
+
+        IRun CreateRunForTable(ITable run);
+
+        IRun CreateRunForTexte(string content, RunPropertiesModel rpm = null);
+
+        #endregion
+
+        #region Tables
 
         /// <summary>
-        /// Insert image to bookmark
-        /// <param name="bookmark">Bookmark name</param>
-        /// <param name="fileName">Image path and name</param>
-        /// <param name="type">Image extension (.png, .jpg...)</param>
+        /// Permet de créer une table
         /// </summary>
-        void InsertPictureToBookmark(string bookmark, string fileName, ImageType type, long? maxWidth = null, long? maxHeight = null);
-        
+        /// <param name="properties"></param>
+        /// <param name="headerCells"></param>
+        /// <param name="cells"></param>
+        /// <returns></returns>
+        ITable CreateTable(IList<ITableRow> rows, TablePropertiesModel properties = null);
+
+        /// <summary>
+        /// Permet de créer un objet Cellule de tableau
+        /// </summary>
+        /// <param name="cellContent">Contenu de la cellule</param>
+        /// <param name="width">Largeur de la cellule s'il y a lieu</param>
+        /// <param name="shading">Informations de rendu de la cellule (couleur texte, fond ...)</param>
+        /// <param name="justification">Justification à appliquer à la cellule</param>
+        /// <param name="fusion">Indique si il faut fusionner la cellule</param>
+        /// <param name="fusionChild">Indique si la cellule a fusionner et un enfant ou non de la première cellule fusionner</param>
+        /// <returns></returns>
+        ITableCell CreateTableCell(IRun cellContent, TableCellPropertiesModel cellModel);
+
+        /// <summary>
+        /// Permet de créer un objet Cellule de tableau
+        /// </summary>
+        /// <param name="cellContent">Contenus de la cellule</param>
+        /// <param name="width">Largeur de la cellule s'il y a lieu</param>
+        /// <param name="shading">Informations de rendu de la cellule (couleur texte, fond ...)</param>
+        /// <param name="justification">Justification à appliquer à la cellule</param>
+        /// <param name="gridSpan">Nombre de cellules horizontales fusionnées que représente la cellule</param>
+        /// <returns></returns>
+        ITableCell CreateTableCell(IList<IRun> cellContents, TableCellPropertiesModel cellModel);
+
+        /// <summary>
+        /// Permet de créer un objet Cellule de tableau
+        /// </summary>
+        /// <param name="cellContent">Contenus de la cellule</param>
+        /// <param name="width">Largeur de la cellule s'il y a lieu</param>
+        /// <param name="shading">Informations de rendu de la cellule (couleur texte, fond ...)</param>
+        /// <param name="justification">Justification à appliquer à la cellule</param>
+        /// <param name="gridSpan">Nombre de cellules horizontales fusionnées que représente la cellule</param>
+        /// <returns></returns>
+        ITableCell CreateTableCell(IList<IParagraph> cellContents, TableCellPropertiesModel cellModel);
+
+        /// <summary>
+        /// Permet de créer une cellule de tableau qui sera merger
+        /// </summary>
+        /// <param name="cellContents">Contenus de la cellule</param>
+        /// <param name="width">Largeur de la cellule s'il y a lieu</param>
+        /// <param name="shading">Informations de rendu de la cellule (couleur texte, fond ...)</param>
+        /// <param name="Justification">Justification à appliquer à la cellule</param>
+        /// <param name="fusion"></param>
+        /// <param name="fusionChild"></param>
+        /// <returns></returns>
+        ITableCell CreateTableMergeCell(IRun cellContent, TableCellPropertiesModel cellModel);
+
+        /// <summary>
+        /// Permet de créer une cellule de tableau qui sera merger
+        /// </summary>
+        /// <param name="cellContents">Contenus de la cellule</param>
+        /// <param name="width">Largeur de la cellule s'il y a lieu</param>
+        /// <param name="shading">Informations de rendu de la cellule (couleur texte, fond ...)</param>
+        /// <param name="Justification">Justification à appliquer à la cellule</param>
+        /// <param name="fusion"></param>
+        /// <param name="fusionChild"></param>
+        /// <returns></returns>
+        ITableCell CreateTableMergeCell(IList<IRun> cellContents, TableCellPropertiesModel cellModel);
+
+        /// <summary>
+        /// Permet de créer une ligne de tableau
+        /// </summary>
+        /// <param name="cells">Liste des cellules qui forment la ligne</param>
+        /// <param name="tableRowProperties">Propriétées de la ligne</param>
+        /// <returns></returns>
+        ITableRow CreateTableRow(IList<ITableCell> cells, TableRowPropertiesModel properties = null);
+
         #endregion
     }
 }

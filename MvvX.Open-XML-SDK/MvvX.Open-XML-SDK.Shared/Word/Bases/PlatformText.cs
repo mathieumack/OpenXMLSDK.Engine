@@ -6,6 +6,11 @@ namespace MvvX.Open_XML_SDK.Core.Word.Bases
     {
         private readonly Text text;
 
+        public static PlatformText New()
+        {
+            return new PlatformText(new Text());
+        }
+
         public PlatformText(Text text)
             : base(text)
         {
