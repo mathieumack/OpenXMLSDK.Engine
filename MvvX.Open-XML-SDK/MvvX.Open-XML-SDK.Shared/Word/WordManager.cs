@@ -10,9 +10,6 @@ using MvvX.Open_XML_SDK.Core.Word.Bases;
 using MvvX.Open_XML_SDK.Core.Word.Bookmarks;
 using MvvX.Open_XML_SDK.Core.Word.Images;
 using MvvX.Open_XML_SDK.Core.Word.Paragraphs;
-using MvvX.Open_XML_SDK.Core.Word.Tables;
-using MvvX.Open_XML_SDK.Core.Word.Tables.Models;
-using MvvX.Open_XML_SDK.Shared.Word.Tables;
 using A = DocumentFormat.OpenXml.Drawing;
 using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
 using PIC = DocumentFormat.OpenXml.Drawing.Pictures;
@@ -349,7 +346,9 @@ namespace MvvX.Open_XML_SDK.Word
             if(!File.Exists(fileName))
                 throw new FileNotFoundException("File not found");
 
-            var image = CreateImage(fileName, type, maxWidth, maxHeight);
+            var enumType = (int)type;
+            ImagePartType imageType = (ImagePartType)enumType;
+            var image = CreateImage(fileName, imageType, maxWidth, maxHeight);
 
             var bookmarkElement = FindBookmark(bookmark);
             if (bookmarkElement != default(BookmarkEnd))
@@ -357,7 +356,7 @@ namespace MvvX.Open_XML_SDK.Word
                 bookmarkElement.InsertAfterSelf(image);
             }
         }
-        public IRun CreateImage(string fileName, ImageType type, long? maxWidth = null, long? maxHeight = null)
+        public IRun CreateImage(string fileName, ImagePartType type, long? maxWidth = null, long? maxHeight = null)
         {
             byte[] file = File.ReadAllBytes(fileName);
             MemoryStream ms = new MemoryStream(file);
@@ -365,12 +364,9 @@ namespace MvvX.Open_XML_SDK.Word
             return CreateImage(ms, type, maxWidth, maxHeight);
         }
 
-        public IRun CreateImage(Stream stream, ImageType type, long? maxWidth = null, long? maxHeight = null)
+        public IRun CreateImage(Stream stream, ImagePartType type, long? maxWidth = null, long? maxHeight = null)
         {
-
-            var enumType = (int)type;
-            ImagePartType imageType = (ImagePartType)enumType;
-            ImagePart imagePart = wdMainDocumentPart.AddImagePart(imageType);
+            ImagePart imagePart = wdMainDocumentPart.AddImagePart(type);
             MemoryStream msClone = new MemoryStream();
             stream.CopyTo(msClone);
             stream.Position = 0;
@@ -380,12 +376,13 @@ namespace MvvX.Open_XML_SDK.Word
 
             return CreateImage(msClone, relationshipId, maxWidth, maxHeight);
         }
-
+        
+        
         private IRun CreateImage(Stream ms, string relationshipId, long? maxWidth = null, long? maxHeight = null)
         {
             long imageWidth = 990000L;
             long imageHeight = 792000L;
-
+          
             var result = new Run();
 
             var runProperties = new RunProperties();
@@ -456,394 +453,6 @@ namespace MvvX.Open_XML_SDK.Word
                      }));
             return new PlatformRun(result);
         }
-
-
-        #endregion
-
-        #region Texts
-
-        public IRun CreateTexte(string content, RunPropertiesModel rpm = null)
-        {
-            RunProperties runHeader = new RunProperties();
-
-            Run run = new Run();
-
-            if (rpm != null)
-            {
-                if (rpm.Bold.HasValue)
-                    runHeader.Append(new Bold() { Val = rpm.Bold.Value });
-                if (rpm.Italic.HasValue)
-                    runHeader.Append(new Italic() { Val = rpm.Italic.Value });
-                if (!string.IsNullOrWhiteSpace(rpm.FontFamily))
-                    runHeader.Append(new RunFonts()
-                    {
-                        Ascii = rpm.FontFamily,
-                        HighAnsi = rpm.FontFamily,
-                        EastAsia = rpm.FontFamily,
-                        ComplexScript = rpm.FontFamily
-                    });
-                if (!string.IsNullOrWhiteSpace(rpm.FontSize))
-                    runHeader.Append(new FontSize() { Val = rpm.FontSize });
-                if (!string.IsNullOrWhiteSpace(rpm.Color))
-                    runHeader.Append(new Color() { Val = rpm.Color });
-
-                if (rpm.Bold.HasValue || rpm.Italic.HasValue || rpm.FontFamily != null || rpm.FontSize != null || rpm.Color != null)
-                    run.Append(runHeader);
-            }
-
-            run.Append(new Text(content)
-            {
-                Space = SpaceProcessingModeValues.Preserve
-            });
-
-            return new PlatformRun(run);
-        }
-
-        #endregion
-
-        #region Tables
-
-        public ITable CreateTable(IList<ITableRow> rows, TablePropertiesModel properties = null)
-        {
-            if (rows == null)
-                throw new ArgumentNullException("row must be not null");
-            
-            Table table = new Table();
-            PlatformTable tbl = new PlatformTable(table);
-
-            TableProperties tblProps = new TableProperties();
-            PlatformTableProperties tableProp = new PlatformTableProperties(tblProps);
-
-            TableStyle tblStyle = new TableStyle() { Val = "TableGrid" };
-            PlatformTableStyle tableStyle = new PlatformTableStyle(tblStyle);
-
-            TableWidth tblWidth = new TableWidth();
-
-            if (properties != null && !string.IsNullOrWhiteSpace(properties.Width))
-            {
-                tblWidth.Width = properties.Width;
-                if (properties.WidthUnit.Equals(TableWidthUnitValues.Nil))
-                    tblWidth.Type = TableWidthUnitValues.Pct;
-                else
-                {
-                    var enumWidth = (int)properties.WidthUnit;
-                    TableWidthUnitValues width = (TableWidthUnitValues)enumWidth;
-                    tblWidth.Type = width;
-                }
-
-            }
-            else
-            {
-                tblWidth.Width = "5000";
-                tblWidth.Type = TableWidthUnitValues.Pct;
-            }
-
-            PlatformTableWidth tableWidth = new PlatformTableWidth(tblWidth);
-
-            tableProp.Append(tableStyle, tableWidth);
-            tbl.AppendChild(tableProp);
-
-            if (properties != null)
-            {
-                //Convert IOpenXml enum to the right enum type
-                var enumTop = (int)properties.TopBorder.BorderValue;
-                BorderValues topBorder = (BorderValues)enumTop;
-                var enumBot = (int)properties.BottomBorder.BorderValue;
-                BorderValues botBorder = (BorderValues)enumBot;
-                var enumLeft = (int)properties.LeftBorder.BorderValue;
-                BorderValues leftBorder = (BorderValues)enumLeft;
-                var enumRight = (int)properties.RightBorder.BorderValue;
-                BorderValues rightBorder = (BorderValues)enumRight;
-                var enumHor = (int)properties.InsideHorizontalBorder.BorderValue;
-                BorderValues horBorder = (BorderValues)enumHor;
-                var enumVer = (int)properties.InsideVerticalBorder.BorderValue;
-                BorderValues verBorder = (BorderValues)enumVer;
-                var enumJustif = (int)properties.TableJustification;
-                TableRowAlignmentValues justif = (TableRowAlignmentValues)enumJustif;
-                // Create a PlatformTableProperties object and specify its border information.
-                PlatformTableProperties tblProp = new PlatformTableProperties(
-                    new TableBorders(
-                        new TopBorder() { Val = new EnumValue<BorderValues>(topBorder), Size = properties.TopBorder.Size, Color = properties.TopBorder.Color },
-                        new BottomBorder() { Val = new EnumValue<BorderValues>(botBorder), Size = properties.BottomBorder.Size, Color = properties.BottomBorder.Color },
-                        new LeftBorder() { Val = new EnumValue<BorderValues>(leftBorder), Size = properties.LeftBorder.Size, Color = properties.LeftBorder.Color },
-                        new RightBorder() { Val = new EnumValue<BorderValues>(rightBorder), Size = properties.RightBorder.Size, Color = properties.RightBorder.Color },
-                        new InsideHorizontalBorder() { Val = new EnumValue<BorderValues>(horBorder), Size = properties.InsideHorizontalBorder.Size, Color = properties.InsideHorizontalBorder.Color },
-                        new InsideVerticalBorder() { Val = new EnumValue<BorderValues>(verBorder), Size = properties.InsideVerticalBorder.Size, Color = properties.InsideVerticalBorder.Color }
-                    ),
-                    new TableProperties(
-                        new TableJustification() { Val = justif }
-                    )
-                );
-                // Append the TableProperties object to the empty table.
-                tbl.AppendChild(tblProp);
-            }
-
-
-            if (rows != null)
-            {
-                for (int i = 0; i < rows.Count; i++)
-                {
-                    tbl.Append(rows[i]);
-                }
-            }
-
-            return tbl;
-        }
-
-        public ITableCell CreateTableCell(IRun cellContent, TableCellPropertiesModel cellModel)
-        {
-            if (cellContent == null)
-                throw new ArgumentNullException("cellContent must be not null");
-            else if (cellModel == null)
-                throw new ArgumentNullException("cellModel must be not null");
-
-            return CreateTableCell(new List<IRun>() { cellContent }, cellModel);
-        }
-
-        public ITableCell CreateTableCell(IList<IRun> cellContents, TableCellPropertiesModel cellModel)
-        {
-            if (cellContents == null)
-                throw new ArgumentNullException("cellContent must be not null");
-            else if (cellModel == null)
-                throw new ArgumentNullException("cellModel must be not null");
-
-            TableCell tc = new TableCell();
-
-            var tableCellProperties = new TableCellProperties();
-            if (!string.IsNullOrWhiteSpace(cellModel.Width))
-                if (cellModel.WidthUnit.Equals(TableWidthUnitValues.Nil))
-                    tableCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = cellModel.Width });
-                else
-                {
-                    var enumWidth = (int)cellModel.WidthUnit;
-                    TableWidthUnitValues width = (TableWidthUnitValues)enumWidth;
-                    tableCellProperties.Append(new TableCellWidth { Type = width, Width = cellModel.Width });
-                }
-            else
-                tableCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Auto });
-
-            if (cellModel.Gridspan.HasValue)
-                tableCellProperties.Append(new GridSpan { Val = cellModel.Gridspan.Value });
-
-            //TODO Shading
-            //if (cellModel.Shading != null)
-            //    tableCellProperties.Append(cellModel.Shading);
-
-
-            var enumType = (int)cellModel.TableVerticalAlignementValues;
-            TableVerticalAlignmentValues verticalDirection = (TableVerticalAlignmentValues)enumType;
-            tableCellProperties.Append(new TableCellVerticalAlignment { Val = verticalDirection });
-
-            // Text rotation
-            if (cellModel.TextDirectionValues.HasValue)
-            {
-                enumType = (int)cellModel.TextDirectionValues;
-                TextDirectionValues directionValue = (TextDirectionValues)enumType;
-
-                tableCellProperties.Append(new TextDirection { Val = directionValue });
-            }
-
-            tc.Append(tableCellProperties);
-
-            Paragraph par = new Paragraph();
-            ParagraphProperties pr = new ParagraphProperties(new TableCellVerticalAlignment { Val = verticalDirection });
-
-            if (cellModel.Justification.HasValue)
-            {
-                var enumJustif = (int)cellModel.Justification;
-                JustificationValues justificationValue = (JustificationValues)enumJustif;
-
-                pr.Append(new Justification() { Val = justificationValue });
-            }
-            par.Append(pr);
-
-            PlatformParagraph para = new PlatformParagraph(par);
-            for (int i = 0; i < cellContents.Count; i++)
-                para.Append(cellContents[i]);
-            
-            tc.Append(par);
-            return new PlatformTableCell(tc);
-        }
-
-        public ITableCell CreateTableCell(IList<IParagraph> cellContents, TableCellPropertiesModel cellModel)
-        {
-            if (cellContents == null)
-                throw new ArgumentNullException("cellContents must be not null");
-            else if (cellModel == null)
-                throw new ArgumentNullException("cellModel must be not null");
-
-            TableCell tc = new TableCell();
-
-            var tableCellProperties = new TableCellProperties();
-            if (!string.IsNullOrWhiteSpace(cellModel.Width))
-                if (cellModel.WidthUnit.Equals(TableWidthUnitValues.Nil))
-                    tableCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = cellModel.Width });
-                else
-                {
-                    var enumWidth = (int)cellModel.WidthUnit;
-                    TableWidthUnitValues width = (TableWidthUnitValues)enumWidth;
-                    tableCellProperties.Append(new TableCellWidth { Type = width, Width = cellModel.Width });
-
-                }
-            else
-                tableCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Auto });
-
-            if (cellModel.Gridspan.HasValue)
-                tableCellProperties.Append(new GridSpan { Val = cellModel.Gridspan.Value });
-
-            //TODO Shading
-            //if (cellModel.Shading != null)
-            //    tableCellProperties.Append(cellModel.Shading);
-
-
-
-            var enumDirection = (int)cellModel.TableVerticalAlignementValues;
-            TableVerticalAlignmentValues directionValue = (TableVerticalAlignmentValues)enumDirection;
-            tableCellProperties.Append(new TableCellVerticalAlignment { Val = directionValue });
-
-            // Text rotation
-            if (cellModel.TextDirectionValues.HasValue)
-            {
-                var enumText = (int)cellModel.TextDirectionValues;
-                TextDirectionValues textDirection = (TextDirectionValues)enumText;
-
-                tableCellProperties.Append(new TextDirection { Val = textDirection });
-            }
-
-            tc.Append(tableCellProperties);
-            PlatformTableCell tcell = new PlatformTableCell(tc);
-            for (int i = 0; i < cellContents.Count; i++)
-            {
-                tcell.Append(cellContents[i]);
-            }
-
-            return tcell;
-        }
-
-        public ITableCell CreateTableMergeCell(IRun cellContent, TableCellPropertiesModel cellModel)
-        {
-            if (cellContent == null)
-                throw new ArgumentNullException("cellContent must be not null");
-            else if (cellModel == null)
-                throw new ArgumentNullException("cellModel must be not null");
-
-            return CreateTableMergeCell(new List<IRun>() { cellContent }, cellModel);
-        }
-
-        public ITableCell CreateTableMergeCell(IList<IRun> cellContents, TableCellPropertiesModel cellModel)
-        {
-            if (cellContents == null)
-                throw new ArgumentNullException("cellContent must be not null");
-            else if (cellModel == null)
-                throw new ArgumentNullException("cellModel must be not null");
-
-            TableCell tc = new TableCell();
-
-            var tableCellProperties = new TableCellProperties();
-            if (!string.IsNullOrWhiteSpace(cellModel.Width))
-                if (cellModel.WidthUnit.Equals(TableWidthUnitValues.Nil))
-                    tableCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = cellModel.Width });
-                else
-                {
-                    var enumType = (int)cellModel.WidthUnit;
-                    TableWidthUnitValues width = (TableWidthUnitValues)enumType;
-                    tableCellProperties.Append(new TableCellWidth { Type = width, Width = cellModel.Width });
-
-                }
-            else
-                tableCellProperties.Append(new TableCellWidth { Type = TableWidthUnitValues.Auto });
-
-            //TODO Shading
-            //if (cellModel.Shading != null)
-            //    tableCellProperties.Append(cellModel.Shading);
-
-
-            var enumDirection = (int)cellModel.TableVerticalAlignementValues;
-            TableVerticalAlignmentValues directionValue = (TableVerticalAlignmentValues)enumDirection;
-            tableCellProperties.Append(new TableCellVerticalAlignment { Val = directionValue });
-
-            // Cell fusion
-            if (cellModel.Fusion)
-            {
-                tableCellProperties.Append(new VerticalMerge() { Val = MergedCellValues.Restart });
-            }
-
-            // Text rotation
-            if (cellModel.TextDirectionValues.HasValue)
-            {
-                var enumText = (int)cellModel.TextDirectionValues;
-                TextDirectionValues textDirection = (TextDirectionValues)enumText;
-
-                tableCellProperties.Append(new TextDirection { Val = textDirection });
-            }
-
-            tc.Append(tableCellProperties);
-
-            Paragraph par = new Paragraph();
-            ParagraphProperties pr = new ParagraphProperties(new TableCellVerticalAlignment { Val = directionValue });
-
-            if (cellModel.Justification.HasValue)
-            {
-                var enumText = (int)cellModel.Justification.Value;
-                JustificationValues justificationValue = (JustificationValues)enumText;
-                pr.Append(new Justification() { Val = justificationValue });
-            }
-            par.Append(pr);
-
-            if (cellContents.Count == 0)
-                tc.Append(par);
-            else
-            {
-                PlatformParagraph para = new PlatformParagraph(par);
-                for (int i = 0; i < cellContents.Count; i++)
-                {
-                    para.AppendChild(cellContents[i]);
-                }
-                tc.Append(par);
-            }
-
-            return new PlatformTableCell(tc);
-        }
-
-        public ITableRow CreateTableRow(IList<ITableCell> cells, TableRowPropertiesModel properties = null)
-        {
-            if (cells == null)
-                throw new ArgumentNullException("cells must be not null");
-
-            TableRow tra = new TableRow();
-            var tr = new PlatformTableRow(tra);
-            if (properties != null)
-            {
-                // Create a TableRowProperties
-                if (properties.Height != 0)
-                {
-                    var height = Convert.ToUInt32(properties.Height);
-                    TableRowProperties trPpr = new TableRowProperties(new TableRowHeight() { Val = height });
-                    PlatformTableRowProperties ptrp = new PlatformTableRowProperties(trPpr);
-                    tr.Append(ptrp);
-                }
-            }
-            if (cells != null)
-            {
-                tr.Append(cells);
-            }
-
-            return tr;
-        }
-
-        #endregion
-
-        #region Basics
-
-        public IRun CreateRun(object contentItem)
-        {
-            return new PlatformRun() { ContentItem = contentItem };
-        }
-        public IParagraph CreateParagraph(object contentItem)
-        {
-            return new PlatformParagraph() { ContentItem = contentItem };
-        }
-
         #endregion
     }
 }

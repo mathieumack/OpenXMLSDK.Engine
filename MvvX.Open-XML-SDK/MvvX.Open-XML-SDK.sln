@@ -27,8 +27,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dll", "dll", "{11BE0FD9-050
 		dll\ios\OpenXmlSdk.iOS.dll = dll\ios\OpenXmlSdk.iOS.dll
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvvX.Open-XML-SDK.PCL", "MvvX.Open-XML-SDK.PCL\MvvX.Open-XML-SDK.PCL.csproj", "{FC1B1DB7-8E2B-49EF-AE0F-F82B41F7AE0E}"
-EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		MvvX.Open-XML-SDK.Shared\MvvX.Open-XML-SDK.Shared.projitems*{00452555-a931-4bb7-9ac4-1a900e18cb6f}*SharedItemsImports = 13
@@ -61,10 +59,6 @@ Global
 		{7B189D1B-0AD2-4EB4-96E4-5CB0781F3592}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7B189D1B-0AD2-4EB4-96E4-5CB0781F3592}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7B189D1B-0AD2-4EB4-96E4-5CB0781F3592}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FC1B1DB7-8E2B-49EF-AE0F-F82B41F7AE0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FC1B1DB7-8E2B-49EF-AE0F-F82B41F7AE0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FC1B1DB7-8E2B-49EF-AE0F-F82B41F7AE0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FC1B1DB7-8E2B-49EF-AE0F-F82B41F7AE0E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -77,6 +71,5 @@ Global
 		{00452555-A931-4BB7-9AC4-1A900E18CB6F} = {52133E21-0AED-42C9-B4D1-C6A144DFDB10}
 		{7B189D1B-0AD2-4EB4-96E4-5CB0781F3592} = {17464895-F42D-47EE-AC67-7C3947E1A69C}
 		{11BE0FD9-0504-4C8B-877C-D98464D6E497} = {52133E21-0AED-42C9-B4D1-C6A144DFDB10}
-		{FC1B1DB7-8E2B-49EF-AE0F-F82B41F7AE0E} = {17464895-F42D-47EE-AC67-7C3947E1A69C}
 	EndGlobalSection
 EndGlobal

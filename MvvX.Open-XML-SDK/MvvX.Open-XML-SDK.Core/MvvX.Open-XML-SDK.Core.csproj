@@ -47,24 +47,6 @@
     <Compile Include="Word\Images\ImageType.cs" />
     <Compile Include="Word\IWordManager.cs" />
     <Compile Include="Word\Paragraphs\IParagraph.cs" />
-    <Compile Include="Word\Tables\ITable.cs" />
-    <Compile Include="Word\Tables\ITableCell.cs" />
-    <Compile Include="Word\Tables\ITableRow.cs" />
-    <Compile Include="Word\Tables\ITableRowProperties.cs" />
-    <Compile Include="Word\Tables\ITableStyle.cs" />
-    <Compile Include="Word\Tables\ITableWidth.cs" />
-    <Compile Include="Word\Tables\Models\BorderValues.cs" />
-    <Compile Include="Word\Tables\ITableProperties.cs" />
-    <Compile Include="Word\Tables\Models\JustificationValues.cs" />
-    <Compile Include="Word\Tables\Models\RunPropertiesModel.cs" />
-    <Compile Include="Word\Tables\Models\TableBorderModel.cs" />
-    <Compile Include="Word\Tables\Models\TableCellPropertiesModel.cs" />
-    <Compile Include="Word\Tables\Models\TablePropertiesModel.cs" />
-    <Compile Include="Word\Tables\Models\TableRowAlignmentValues.cs" />
-    <Compile Include="Word\Tables\Models\TableRowPropertiesModel.cs" />
-    <Compile Include="Word\Tables\Models\TableVerticalAlignmentValues.cs" />
-    <Compile Include="Word\Tables\Models\TableWidthUnitValues.cs" />
-    <Compile Include="Word\Tables\Models\TextDirectionValues.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="OpenXmlSdk.Android">
