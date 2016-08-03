@@ -141,18 +141,4 @@ namespace MvvX.Open_XML_SDK.TestConsole
             }
         }
     }
-
-    internal class Run
-    {
-        public Run()
-        {
-                wordManager.OpenDocFromTemplate(resourceName, Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "App_Data", "Results", "FinalDoc_Test_OrientationParagraph-" + DateTime.Now.ToFileTime() + ".docx"), true);
-
-                //wordManager.SetTextOnBookmark("Insert_Documents", "Hi !");
-                wordManager.InsertPictureToBookmark("Insert_Documents", imagePath, ImageType.Png);
-                wordManager.SaveDoc();
-                wordManager.CloseDoc();
-            }
-        }
-    }
 }
