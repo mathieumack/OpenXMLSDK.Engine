@@ -5,7 +5,7 @@
     /// </summary>
     public class TableRowPropertiesModel
     {
-        public UInt32Value Height { get; set; }
+        public int? Height { get; set; }
 
         public TableRowPropertiesModel()
         {

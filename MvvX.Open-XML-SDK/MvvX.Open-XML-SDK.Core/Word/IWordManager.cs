@@ -96,6 +96,24 @@ namespace MvvX.Open_XML_SDK.Core.Word
 
         #endregion
 
+        #region Shadings
+
+        IShading GetShading(string textColor = null, string fillColor = null);
+
+        #endregion
+
+        #region Texts
+
+        IRun CreateEmptyRun();
+
+        IParagraph CreateParagraphForRun(IRun run);
+
+        IRun CreateRunForTable(ITable run);
+
+        IRun CreateRunForTexte(string content, RunPropertiesModel rpm = null);
+
+        #endregion
+
         #region Tables
 
         /// <summary>

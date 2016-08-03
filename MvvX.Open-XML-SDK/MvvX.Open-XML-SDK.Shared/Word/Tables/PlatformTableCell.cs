@@ -8,7 +8,7 @@ namespace MvvX.Open_XML_SDK.Core.Word.Tables
         private readonly TableCell tableCell;
 
         public PlatformTableCell(TableCell tableCell)
-            : base(table)
+            : base(tableCell)
         {
             this.tableCell = tableCell;
         }

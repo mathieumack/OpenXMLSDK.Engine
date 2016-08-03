@@ -8,7 +8,7 @@ namespace MvvX.Open_XML_SDK.Core.Word.Tables
         private readonly TableRow tableRow;
 
         public PlatformTableRow(TableRow tableRow)
-            : base(table)
+            : base(tableRow)
         {
             this.tableRow = tableRow;
         }

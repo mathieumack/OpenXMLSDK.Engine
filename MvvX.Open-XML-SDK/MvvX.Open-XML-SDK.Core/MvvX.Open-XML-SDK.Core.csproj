@@ -39,13 +39,21 @@
     <Folder Include="PowerPoint\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Word\Bases\IDecimalNumberType.cs" />
+    <Compile Include="Word\BorderValues.cs" />
+    <Compile Include="Colors.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Word\Bases\IOpenXmlElement.cs" />
     <Compile Include="Word\Bases\IRun.cs" />
     <Compile Include="Word\Bases\IText.cs" />
     <Compile Include="Word\Bookmarks\IBookmarkEnd.cs" />
+    <Compile Include="Word\IGridSpan.cs" />
+    <Compile Include="Word\IShading.cs" />
     <Compile Include="Word\IWordManager.cs" />
+    <Compile Include="Word\JustificationValues.cs" />
     <Compile Include="Word\Paragraphs\IParagraph.cs" />
+    <Compile Include="Word\RunPropertiesModel.cs" />
+    <Compile Include="Word\TableRowAlignmentValues.cs" />
     <Compile Include="Word\Tables\ITableCell.cs" />
     <Compile Include="Word\Tables\ITableRow.cs" />
     <Compile Include="Word\Tables\ITable.cs" />
@@ -53,6 +61,9 @@
     <Compile Include="Word\Tables\Models\TableCellPropertiesModel.cs" />
     <Compile Include="Word\Tables\Models\TablePropertiesModel.cs" />
     <Compile Include="Word\Tables\Models\TableRowPropertiesModel.cs" />
+    <Compile Include="Word\Tables\TableWidthUnitValues.cs" />
+    <Compile Include="Word\TableVerticalAlignmentValues.cs" />
+    <Compile Include="Word\TextDirectionValues.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

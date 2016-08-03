@@ -2,12 +2,19 @@
 {
     public class TableCellPropertiesModel
     {
+        /// <summary>
+        /// Width of the cell
+        /// </summary>
         public string Width { get; set;}
 
         public TableWidthUnitValues WidthUnit { get; set; }
 
-        public Shading Shading { get; set; }
+        public IShading Shading { get; set; }
 
+        /// <summary>
+        /// Vertical alignement in cell.
+        /// Default : Top
+        /// </summary>
         public TableVerticalAlignmentValues TableVerticalAlignementValues { get; set; }
 
         public JustificationValues? Justification { get; set; }
@@ -23,27 +30,33 @@
         public string Height { get; set; }
 
         /// <summary>
-        /// Permet de rendre la cellule suivante solidaire avec celle-ci (En cas de saut de page par exemple). Par défaut à false
+        /// Allow to link this cell with the next cell
+        /// (For example when you have a new page
+        /// Default : False
         /// </summary>
         public bool ParagraphSolidarity { get; set; }
 
         /// <summary>
-        /// Gestion de la bordure du haut de la cellule. De base à null
+        /// Type of the top border.
+        /// Default : null, not set.
         /// </summary>
         public TableBorderModel TopBorder { get; set; }
 
         /// <summary>
-        /// Gestion de la bordure du bas de la cellule. De base à null
+        /// Type of the bottom border.
+        /// Default : null, not set.
         /// </summary>
         public TableBorderModel BottomBorder { get; set; }
 
         /// <summary>
-        /// Gestion de la bordure de gauche de la cellule. De base à null
+        /// Type of the left border.
+        /// Default : null, not set.
         /// </summary>
         public TableBorderModel LeftBorder { get; set; }
 
         /// <summary>
-        /// Gestion de la bordure de droite de la cellule. De base à null
+        /// Type of the right border.
+        /// Default : null, not set.
         /// </summary>
         public TableBorderModel RightBorder { get; set; }
 
