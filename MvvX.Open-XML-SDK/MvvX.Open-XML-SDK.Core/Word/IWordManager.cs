@@ -52,6 +52,11 @@ namespace MvvX.Open_XML_SDK.Core.Word
         #region Open / Save / Close
 
         /// <summary>
+        /// Close the opened document
+        /// </summary>
+        void CloseDoc();
+
+        /// <summary>
         /// Save document
         /// </summary>
         void SaveDoc();

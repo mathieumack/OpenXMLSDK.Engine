@@ -43,8 +43,8 @@ namespace MvvX.Open_XML_SDK.Core.Word.Bases
                 return openXmlElement.Ancestors<TableRow>().Select(e => new PlatformTableRow(e)).Cast<T>();
             else if (typeof(T) == typeof(ITableCell))
                 return openXmlElement.Ancestors<TableCell>().Select(e => new PlatformTableCell(e)).Cast<T>();
-            else
-                return openXmlElement.Ancestors<OpenXmlElement>().Select(e => new PlatformOpenXmlElement(e)).Cast<T>();
+
+            throw new NotSupportedException("type " + typeof(T).Name + " is not supported yet.");
         }
 
         public IEnumerable<T> Descendants<T>() where T : IOpenXmlElement
@@ -63,8 +63,8 @@ namespace MvvX.Open_XML_SDK.Core.Word.Bases
                 return openXmlElement.Descendants<TableRow>().Select(e => new PlatformTableRow(e)).Cast<T>();
             else if (typeof(T) == typeof(ITableCell))
                 return openXmlElement.Descendants<TableCell>().Select(e => new PlatformTableCell(e)).Cast<T>();
-            else
-                return openXmlElement.Descendants<OpenXmlElement>().Select(e => new PlatformOpenXmlElement(e)).Cast<T>();
+
+            throw new NotSupportedException("type " + typeof(T).Name + " is not supported yet.");
         }
 
         public void Append<T>(T objectToAppend) where T : IOpenXmlElement
@@ -115,5 +115,47 @@ namespace MvvX.Open_XML_SDK.Core.Word.Bases
             return openXmlElement.GetEnumerator();
         }
 
+        public T AppendChild<T>(T newChild) where T : IOpenXmlElement
+        {
+            openXmlElement.AppendChild(newChild.ContentItem as OpenXmlElement);
+            // TODO : Check if the result if the newChild item.
+            return newChild;
+        }
+
+        public T InsertAfter<T>(T newChild, IOpenXmlElement refChild) where T : IOpenXmlElement
+        {
+            throw new NotImplementedException();
+        }
+
+        public T InsertAt<T>(T newChild, int index) where T : IOpenXmlElement
+        {
+            openXmlElement.InsertAt(newChild.ContentItem as OpenXmlElement, index);
+            // TODO : Check if the result is the newChild item.
+            return newChild;
+        }
+
+        public T InsertBefore<T>(T newChild, IOpenXmlElement refChild)
+        {
+            throw new NotImplementedException();
+        }
+
+        public T PrependChild<T>(T newChild) where T : IOpenXmlElement
+        {
+            openXmlElement.PrependChild(newChild.ContentItem as OpenXmlElement);
+            // TODO : Check if the result is the newChild item.
+            return newChild;
+        }
+
+        public void RemoveAllChildren()
+        {
+            openXmlElement.RemoveAllChildren();
+        }
+
+        public T RemoveChild<T>(T oldChild) where T : IOpenXmlElement
+        {
+            openXmlElement.RemoveChild(oldChild.ContentItem as OpenXmlElement);
+            // TODO : Check if the result is the oldChild item.
+            return oldChild;
+        }
     }
 }

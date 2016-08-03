@@ -40,6 +40,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Word\Bases\IDecimalNumberType.cs" />
+    <Compile Include="Word\Bases\IOpenXmlCompositeElement.cs" />
+    <Compile Include="Word\Bases\IRunProperties.cs" />
     <Compile Include="Word\BorderValues.cs" />
     <Compile Include="Colors.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -47,13 +49,23 @@
     <Compile Include="Word\Bases\IRun.cs" />
     <Compile Include="Word\Bases\IText.cs" />
     <Compile Include="Word\Bookmarks\IBookmarkEnd.cs" />
+    <Compile Include="Word\ICaps.cs" />
+    <Compile Include="Word\IDoubleStrike.cs" />
+    <Compile Include="Word\IEmboss.cs" />
+    <Compile Include="Word\INoProof.cs" />
+    <Compile Include="Word\IOutline.cs" />
+    <Compile Include="Word\IShadow.cs" />
+    <Compile Include="Word\IItalic.cs" />
+    <Compile Include="Word\IBold.cs" />
     <Compile Include="Word\IGridSpan.cs" />
     <Compile Include="Word\IShading.cs" />
     <Compile Include="Word\Images\ImageType.cs" />
     <Compile Include="Word\IWordManager.cs" />
     <Compile Include="Word\JustificationValues.cs" />
+    <Compile Include="Word\IOnOffType.cs" />
     <Compile Include="Word\Paragraphs\IParagraph.cs" />
     <Compile Include="Word\RunPropertiesModel.cs" />
+    <Compile Include="Word\SpaceProcessingModeValues.cs" />
     <Compile Include="Word\TableRowAlignmentValues.cs" />
     <Compile Include="Word\Tables\ITableCell.cs" />
     <Compile Include="Word\Tables\ITableRow.cs" />

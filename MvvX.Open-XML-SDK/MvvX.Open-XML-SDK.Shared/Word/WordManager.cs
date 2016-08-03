@@ -13,7 +13,6 @@ using MvvX.Open_XML_SDK.Core.Word.Paragraphs;
 using MvvX.Open_XML_SDK.Core.Word.Tables;
 using MvvX.Open_XML_SDK.Core.Word.Tables.Models;
 using MvvX.Open_XML_SDK.Shared.Word.Extensions;
-using DocumentFormat.OpenXml;
 using MvvX.Open_XML_SDK.Shared.Word;
 using A = DocumentFormat.OpenXml.Drawing;
 using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
@@ -481,7 +480,8 @@ namespace MvvX.Open_XML_SDK.Word
 
         public IRun CreateEmptyRun()
         {
-            return new PlatformRun(new Run());
+            var run = new Run();
+            return new PlatformRun(run);
         }
 
         public IRun CreateRunForTable(ITable table)
@@ -506,39 +506,35 @@ namespace MvvX.Open_XML_SDK.Word
 
         public IRun CreateRunForTexte(string content, RunPropertiesModel rpm = null)
         {
-            RunProperties runHeader = new RunProperties();
+            //RunProperties runHeader = new RunProperties();
 
-            Run run = new Run();
+            var platformRun = PlatformRun.New();
+
+            //var run = platformRun.ContentItem as Run;
 
             if (rpm != null)
             {
                 if (rpm.Bold.HasValue)
-                    runHeader.Append(new Bold() { Val = rpm.Bold.Value });
+                    platformRun.Properties.Bold.Value = rpm.Bold.Value;
                 if (rpm.Italic.HasValue)
-                    runHeader.Append(new Italic() { Val = rpm.Italic.Value });
-                if (!string.IsNullOrWhiteSpace(rpm.FontFamily))
-                    runHeader.Append(new RunFonts()
-                    {
-                        Ascii = rpm.FontFamily,
-                        HighAnsi = rpm.FontFamily,
-                        EastAsia = rpm.FontFamily,
-                        ComplexScript = rpm.FontFamily
-                    });
-                if (!string.IsNullOrWhiteSpace(rpm.FontSize))
-                    runHeader.Append(new FontSize() { Val = rpm.FontSize });
-                if (!string.IsNullOrWhiteSpace(rpm.Color))
-                    runHeader.Append(new Color() { Val = rpm.Color });
-
-                if (rpm.Bold.HasValue || rpm.Italic.HasValue || rpm.FontFamily != null || rpm.FontSize != null || rpm.Color != null)
-                    run.Append(runHeader);
+                    platformRun.Properties.Italic.Value = rpm.Italic.Value;
+                //if (!string.IsNullOrWhiteSpace(rpm.FontFamily))
+                //    runHeader.Append(new RunFonts()
+                //    {
+                //        Ascii = rpm.FontFamily,
+                //        HighAnsi = rpm.FontFamily,
+                //        EastAsia = rpm.FontFamily,
+                //        ComplexScript = rpm.FontFamily
+                //    });
+                //if (!string.IsNullOrWhiteSpace(rpm.FontSize))
+                //    runHeader.Append(new FontSize() { Val = rpm.FontSize });
+                //if (!string.IsNullOrWhiteSpace(rpm.Color))
+                //    runHeader.Append(new Color() { Val = rpm.Color });
             }
 
-            run.Append(new Text(content)
-            {
-                Space = SpaceProcessingModeValues.Preserve
-            });
+            platformRun.Append(PlatformText.New(content, Core.Word.SpaceProcessingModeValues.Preserve));
 
-            return new PlatformRun(run);
+            return platformRun;
         }
 
         #endregion

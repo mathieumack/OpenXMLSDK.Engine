@@ -1,12 +1,12 @@
 ﻿using System;
 using System.IO;
-using MvvX.Open_XML_SDK.Core.Word.Images;
 using MvvX.Open_XML_SDK.Word;
 using System.Collections.Generic;
 using MvvX.Open_XML_SDK.Core.Word.Tables.Models;
 using MvvX.Open_XML_SDK.Core.Word.Tables;
 using MvvX.Open_XML_SDK.Core.Word;
 using MvvX.Open_XML_SDK.Core.Word.Paragraphs;
+using System.Diagnostics;
 
 namespace MvvX.Open_XML_SDK.TestConsole
 {
@@ -15,15 +15,15 @@ namespace MvvX.Open_XML_SDK.TestConsole
         static void Main(string[] args)
         {
             var resourceName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "App_Data", "Global.docx");
-            var imagePath = @"C:\temp\circle.png";
 
             if (!Directory.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "App_Data", "Results")))
                 Directory.CreateDirectory(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "App_Data", "Results"));
 
-            using (var word = new WordManager())
+            string finalFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "App_Data", "Results", "FinalDoc_Test_OrientationParagraph-" + DateTime.Now.ToFileTime() + ".docx");
+            using (IWordManager word = new WordManager())
             {
                 // TODO for debug : use your test file :
-                word.OpenDocFromTemplate(resourceName, Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "App_Data", "Results", "FinalDoc_Test_OrientationParagraph-" + DateTime.Now.ToFileTime() + ".docx"), true);
+                word.OpenDocFromTemplate(resourceName, finalFilePath, true);
 
                 // Insertion de texte dans un bookmark
                 // wordManager.SetTextOnBookmark("Insert_Documents", "Hi !");
@@ -47,6 +47,10 @@ namespace MvvX.Open_XML_SDK.TestConsole
                     
                     // Première ligne
                     var texte = word.CreateRunForTexte("Header Numero : " + i, new RunPropertiesModel() { Bold = true, FontSize = "24", Color = "FFFFFF" });
+
+                    texte.Properties.Bold.Value = true;
+                    texte.Properties.Italic.Value = true;
+
                     var cellules = new List<ITableCell>()
                     {
                         word.CreateTableCell(texte, new TableCellPropertiesModel() { Gridspan = 2, Shading = word.GetShading(fillColor: "F7941F"), /*BorderBottom = false, BorderTop = borderTopIsOK,*/ Width = "8862",
@@ -139,6 +143,8 @@ namespace MvvX.Open_XML_SDK.TestConsole
                 word.SaveDoc();
                 word.CloseDoc();
             }
+
+            Process.Start(finalFilePath);
         }
     }
 }

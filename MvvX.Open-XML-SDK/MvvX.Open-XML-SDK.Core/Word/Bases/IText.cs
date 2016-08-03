@@ -2,5 +2,6 @@
 {
     public interface IText : IOpenXmlElement
     {
+        SpaceProcessingModeValues? Space { get; set; }
     }
 }

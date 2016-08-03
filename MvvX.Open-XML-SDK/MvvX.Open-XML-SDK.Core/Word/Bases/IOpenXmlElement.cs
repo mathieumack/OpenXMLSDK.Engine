@@ -9,6 +9,20 @@ namespace MvvX.Open_XML_SDK.Core.Word.Bases
 
         T InsertAfterSelf<T>(T newElement) where T : IOpenXmlElement;
 
+        T AppendChild<T>(T newChild) where T : IOpenXmlElement;
+
+        T InsertAfter<T>(T newChild, IOpenXmlElement refChild) where T : IOpenXmlElement;
+
+        T InsertAt<T>(T newChild, int index) where T : IOpenXmlElement;
+
+        T InsertBefore<T>(T newChild, IOpenXmlElement refChild);
+
+        T PrependChild<T>(T newChild) where T : IOpenXmlElement;
+
+        void RemoveAllChildren();
+
+        T RemoveChild<T>(T oldChild) where T : IOpenXmlElement;
+
         IEnumerable<T> Ancestors<T>() where T : IOpenXmlElement;
 
         IEnumerable<T> Descendants<T>() where T : IOpenXmlElement;

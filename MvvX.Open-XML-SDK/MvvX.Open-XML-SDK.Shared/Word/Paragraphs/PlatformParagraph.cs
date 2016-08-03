@@ -12,5 +12,14 @@ namespace MvvX.Open_XML_SDK.Core.Word.Paragraphs
         {
             this.paragraph = paragraph;
         }
+
+        #region Static helpers methods
+
+        public static PlatformParagraph New()
+        {
+            return new PlatformParagraph(new Paragraph());
+        }
+
+        #endregion
     }
 }

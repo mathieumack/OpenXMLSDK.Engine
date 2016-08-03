@@ -12,5 +12,15 @@ namespace MvvX.Open_XML_SDK.Core.Word.Tables
         {
             this.tableCell = tableCell;
         }
+
+        #region Static helpers methods
+
+        public static PlatformTableCell New()
+        {
+            return new PlatformTableCell(new TableCell());
+        }
+
+        #endregion
+
     }
 }

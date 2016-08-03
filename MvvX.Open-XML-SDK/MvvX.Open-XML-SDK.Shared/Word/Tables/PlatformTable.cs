@@ -12,5 +12,14 @@ namespace MvvX.Open_XML_SDK.Core.Word.Tables
         {
             this.table = table;
         }
+
+        #region Static helpers methods
+
+        public static PlatformTable New()
+        {
+            return new PlatformTable(new Table());
+        }
+
+        #endregion
     }
 }
