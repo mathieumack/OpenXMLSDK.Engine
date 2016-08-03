@@ -37,6 +37,9 @@
   <ItemGroup>
     <Reference Include="Mono.Android" />
     <Reference Include="mscorlib" />
+    <Reference Include="OpenXmlSdk.Android">
+      <HintPath>..\dll\android\OpenXmlSdk.Android.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />

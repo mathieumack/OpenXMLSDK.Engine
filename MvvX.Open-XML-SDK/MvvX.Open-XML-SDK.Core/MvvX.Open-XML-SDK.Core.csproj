@@ -49,6 +49,7 @@
     <Compile Include="Word\Bookmarks\IBookmarkEnd.cs" />
     <Compile Include="Word\IGridSpan.cs" />
     <Compile Include="Word\IShading.cs" />
+    <Compile Include="Word\Images\ImageType.cs" />
     <Compile Include="Word\IWordManager.cs" />
     <Compile Include="Word\JustificationValues.cs" />
     <Compile Include="Word\Paragraphs\IParagraph.cs" />
@@ -64,6 +65,11 @@
     <Compile Include="Word\Tables\TableWidthUnitValues.cs" />
     <Compile Include="Word\TableVerticalAlignmentValues.cs" />
     <Compile Include="Word\TextDirectionValues.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="OpenXmlSdk.Android">
+      <HintPath>..\dll\android\OpenXmlSdk.Android.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
