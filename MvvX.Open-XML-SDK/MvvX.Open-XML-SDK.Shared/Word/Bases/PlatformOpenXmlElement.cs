@@ -18,7 +18,7 @@ namespace MvvX.Open_XML_SDK.Core.Word.Bases
         {
             this.openXmlElement = openXmlElement;
         }
-
+        
         public object ContentItem
         {
             get

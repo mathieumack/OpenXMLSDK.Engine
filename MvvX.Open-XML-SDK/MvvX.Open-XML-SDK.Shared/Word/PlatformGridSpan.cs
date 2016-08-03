@@ -9,6 +9,11 @@ namespace MvvX.Open_XML_SDK.Shared.Word
     {
         private readonly GridSpan gridSpan;
 
+        public static PlatformGridSpan New()
+        {
+            return new PlatformGridSpan(new GridSpan());
+        }
+
         public PlatformGridSpan(GridSpan gridSpan)
             : base(gridSpan)
         {

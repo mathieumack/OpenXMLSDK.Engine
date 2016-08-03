@@ -8,6 +8,11 @@ namespace MvvX.Open_XML_SDK.Shared.Word
     {
         private readonly Shading shading;
 
+        public static PlatformShading New()
+        {
+            return new PlatformShading(new Shading());
+        }
+
         public PlatformShading(Shading shading)
             : base(shading)
         {
