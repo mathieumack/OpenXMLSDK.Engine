@@ -39,35 +39,39 @@
     <Folder Include="PowerPoint\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Word\Bases\IDecimalNumberType.cs" />
-    <Compile Include="Word\Bases\IOpenXmlCompositeElement.cs" />
-    <Compile Include="Word\Bases\IRunProperties.cs" />
+    <Compile Include="IEnumValue.cs" />
+    <Compile Include="OpenXmlSimpleType.cs" />
+    <Compile Include="Word\IDecimalNumberType.cs" />
+    <Compile Include="Word\IOpenXmlCompositeElement.cs" />
+    <Compile Include="Word\IRunFonts.cs" />
+    <Compile Include="Word\IRunProperties.cs" />
     <Compile Include="Word\BorderValues.cs" />
     <Compile Include="Colors.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Word\Bases\IOpenXmlElement.cs" />
-    <Compile Include="Word\Bases\IRun.cs" />
-    <Compile Include="Word\Bases\IText.cs" />
+    <Compile Include="Word\IOpenXmlElement.cs" />
+    <Compile Include="Word\IRun.cs" />
+    <Compile Include="Word\IText.cs" />
     <Compile Include="Word\Bookmarks\IBookmarkEnd.cs" />
-    <Compile Include="Word\ICaps.cs" />
-    <Compile Include="Word\IDoubleStrike.cs" />
-    <Compile Include="Word\IEmboss.cs" />
-    <Compile Include="Word\INoProof.cs" />
-    <Compile Include="Word\IOutline.cs" />
-    <Compile Include="Word\IShadow.cs" />
-    <Compile Include="Word\IItalic.cs" />
-    <Compile Include="Word\IBold.cs" />
+    <Compile Include="Word\IBorder.cs" />
     <Compile Include="Word\IGridSpan.cs" />
     <Compile Include="Word\IShading.cs" />
     <Compile Include="Word\Images\ImageType.cs" />
     <Compile Include="Word\IWordManager.cs" />
     <Compile Include="Word\JustificationValues.cs" />
-    <Compile Include="Word\IOnOffType.cs" />
+    <Compile Include="Word\OnOffOnlyValues.cs" />
     <Compile Include="Word\Paragraphs\IParagraph.cs" />
+    <Compile Include="Word\RunFontsModel.cs" />
     <Compile Include="Word\RunPropertiesModel.cs" />
+    <Compile Include="Word\ShadingPatternValues.cs" />
     <Compile Include="Word\SpaceProcessingModeValues.cs" />
-    <Compile Include="Word\TableRowAlignmentValues.cs" />
+    <Compile Include="Word\Tables\ITableBorders.cs" />
+    <Compile Include="Word\Tables\ITableCellBorders.cs" />
+    <Compile Include="Word\Tables\ITableProperties.cs" />
+    <Compile Include="Word\Tables\ITableJustification.cs" />
+    <Compile Include="Word\Tables\Models\TableBordersModel.cs" />
+    <Compile Include="Word\Tables\TableRowAlignmentValues.cs" />
     <Compile Include="Word\Tables\ITableCell.cs" />
+    <Compile Include="Word\Tables\ITableCellProperties.cs" />
     <Compile Include="Word\Tables\ITableRow.cs" />
     <Compile Include="Word\Tables\ITable.cs" />
     <Compile Include="Word\Tables\Models\TableBorderModel.cs" />
@@ -75,7 +79,7 @@
     <Compile Include="Word\Tables\Models\TablePropertiesModel.cs" />
     <Compile Include="Word\Tables\Models\TableRowPropertiesModel.cs" />
     <Compile Include="Word\Tables\TableWidthUnitValues.cs" />
-    <Compile Include="Word\TableVerticalAlignmentValues.cs" />
+    <Compile Include="Word\Tables\TableVerticalAlignmentValues.cs" />
     <Compile Include="Word\TextDirectionValues.cs" />
   </ItemGroup>
   <ItemGroup>

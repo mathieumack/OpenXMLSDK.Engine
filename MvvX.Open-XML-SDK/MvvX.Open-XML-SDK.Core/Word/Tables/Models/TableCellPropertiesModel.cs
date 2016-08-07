@@ -9,7 +9,7 @@
 
         public TableWidthUnitValues WidthUnit { get; set; }
 
-        public IShading Shading { get; set; }
+        public ShadingPatternValues? Shading { get; set; }
 
         /// <summary>
         /// Vertical alignement in cell.

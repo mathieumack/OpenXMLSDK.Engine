@@ -1,19 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using DocumentFormat.OpenXml;
+﻿using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using MvvX.Open_XML_SDK.Core.Word;
-using MvvX.Open_XML_SDK.Core.Word.Bases;
 using MvvX.Open_XML_SDK.Core.Word.Bookmarks;
 using MvvX.Open_XML_SDK.Core.Word.Images;
 using MvvX.Open_XML_SDK.Core.Word.Paragraphs;
 using MvvX.Open_XML_SDK.Core.Word.Tables;
 using MvvX.Open_XML_SDK.Core.Word.Tables.Models;
-using MvvX.Open_XML_SDK.Shared.Word.Extensions;
 using MvvX.Open_XML_SDK.Shared.Word;
+using MvvX.Open_XML_SDK.Shared.Word.Bookmarks;
+using MvvX.Open_XML_SDK.Shared.Word.Extensions;
+using MvvX.Open_XML_SDK.Shared.Word.Paragraphs;
+using MvvX.Open_XML_SDK.Shared.Word.Tables;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using A = DocumentFormat.OpenXml.Drawing;
 using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
 using PIC = DocumentFormat.OpenXml.Drawing.Pictures;
@@ -53,7 +55,13 @@ namespace MvvX.Open_XML_SDK.Word
         public WordManager()
         {
             filePath = string.Empty;
+
+            AutoMapperInitializer.Init();
         }
+
+        #endregion
+
+        #region Automapper
 
         #endregion
 
@@ -360,6 +368,7 @@ namespace MvvX.Open_XML_SDK.Word
                 bookmarkElement.InsertAfterSelf(image);
             }
         }
+
         public IRun CreateImage(string fileName, ImagePartType type, long? maxWidth = null, long? maxHeight = null)
         {
             byte[] file = File.ReadAllBytes(fileName);
@@ -380,8 +389,7 @@ namespace MvvX.Open_XML_SDK.Word
 
             return CreateImage(msClone, relationshipId, maxWidth, maxHeight);
         }
-        
-        
+                
         private IRun CreateImage(Stream ms, string relationshipId, long? maxWidth = null, long? maxHeight = null)
         {
             long imageWidth = 990000L;
@@ -457,6 +465,7 @@ namespace MvvX.Open_XML_SDK.Word
                      }));
             return new PlatformRun(result);
         }
+        
         #endregion
 
         #region Shadings
@@ -506,30 +515,11 @@ namespace MvvX.Open_XML_SDK.Word
 
         public IRun CreateRunForTexte(string content, RunPropertiesModel rpm = null)
         {
-            //RunProperties runHeader = new RunProperties();
-
             var platformRun = PlatformRun.New();
-
-            //var run = platformRun.ContentItem as Run;
 
             if (rpm != null)
             {
-                if (rpm.Bold.HasValue)
-                    platformRun.Properties.Bold.Value = rpm.Bold.Value;
-                if (rpm.Italic.HasValue)
-                    platformRun.Properties.Italic.Value = rpm.Italic.Value;
-                //if (!string.IsNullOrWhiteSpace(rpm.FontFamily))
-                //    runHeader.Append(new RunFonts()
-                //    {
-                //        Ascii = rpm.FontFamily,
-                //        HighAnsi = rpm.FontFamily,
-                //        EastAsia = rpm.FontFamily,
-                //        ComplexScript = rpm.FontFamily
-                //    });
-                //if (!string.IsNullOrWhiteSpace(rpm.FontSize))
-                //    runHeader.Append(new FontSize() { Val = rpm.FontSize });
-                //if (!string.IsNullOrWhiteSpace(rpm.Color))
-                //    runHeader.Append(new Color() { Val = rpm.Color });
+                AutoMapper.Mapper.Map(rpm, platformRun.Properties);
             }
 
             platformRun.Append(PlatformText.New(content, Core.Word.SpaceProcessingModeValues.Preserve));
@@ -547,20 +537,8 @@ namespace MvvX.Open_XML_SDK.Word
                 throw new ArgumentNullException("rows must not be null");
             if (rows.Any(e => e == null))
                 throw new ArgumentNullException("All elements of rows must not be null");
-            if (properties == null || properties.BottomBorder == null)
-                throw new ArgumentNullException("properties and properties.BottomBorder must not be null");
-            if (properties == null || properties.InsideHorizontalBorder == null)
-                throw new ArgumentNullException("properties and properties.InsideHorizontalBorder must not be null");
-            if (properties == null || properties.InsideVerticalBorder == null)
-                throw new ArgumentNullException("properties and properties.InsideVerticalBorder must not be null");
-            if (properties == null || properties.LeftBorder == null)
-                throw new ArgumentNullException("properties and properties.LeftBorder must not be null");
-            if (properties == null || properties.RightBorder == null)
-                throw new ArgumentNullException("properties and properties.RightBorder must not be null");
-            if (properties == null || properties.TopBorder == null)
-                throw new ArgumentNullException("properties and properties.TopBorder must not be null");
 
-            // Vérification que chaque ligne a bien le même nombre de colonne
+            // Check on line cells numbers
             if (rows.Count > 1)
             {
                 var nbCellRow1 = 0;
@@ -590,10 +568,11 @@ namespace MvvX.Open_XML_SDK.Word
                         throw new ArgumentException("Lines 1 and " + (i + 1) + " have not same columns count");
                 }
             }
+            var pt = PlatformTable.New();
+            var tbl = pt.ContentItem as Table;
+            
+            var tableProp = pt.Properties.ContentItem as TableProperties;
 
-            Table tbl = new Table();
-
-            TableProperties tableProp = new TableProperties();
             TableStyle tableStyle = new TableStyle() { Val = "TableGrid" };
             // 100% de la largeur de la page ou largeur indiquée en paramètre:
             TableWidth tableWidth = new TableWidth();
@@ -610,28 +589,11 @@ namespace MvvX.Open_XML_SDK.Word
                 tableWidth.Width = "5000";
                 tableWidth.Type = DocumentFormat.OpenXml.Wordprocessing.TableWidthUnitValues.Pct;
             }
+
             tableProp.Append(tableStyle, tableWidth);
-            tbl.AppendChild(tableProp);
 
             if (properties != null)
-            {
-                // Create a TableProperties object and specify its border information.
-                TableProperties tblProp = new TableProperties(
-                    new TableBorders(
-                        new TopBorder() { Val = new EnumValue<DocumentFormat.OpenXml.Wordprocessing.BorderValues>(properties.TopBorder.BorderValue.ToOOxml()), Size = Convert.ToUInt32(properties.TopBorder.Size), Color = properties.TopBorder.Color },
-                        new BottomBorder() { Val = new EnumValue<DocumentFormat.OpenXml.Wordprocessing.BorderValues>(properties.BottomBorder.BorderValue.ToOOxml()), Size = Convert.ToUInt32(properties.BottomBorder.Size), Color = properties.BottomBorder.Color },
-                        new LeftBorder() { Val = new EnumValue<DocumentFormat.OpenXml.Wordprocessing.BorderValues>(properties.LeftBorder.BorderValue.ToOOxml()), Size = Convert.ToUInt32(properties.LeftBorder.Size), Color = properties.LeftBorder.Color },
-                        new RightBorder() { Val = new EnumValue<DocumentFormat.OpenXml.Wordprocessing.BorderValues>(properties.RightBorder.BorderValue.ToOOxml()), Size = Convert.ToUInt32(properties.RightBorder.Size), Color = properties.RightBorder.Color },
-                        new InsideHorizontalBorder() { Val = new EnumValue<DocumentFormat.OpenXml.Wordprocessing.BorderValues>(properties.InsideHorizontalBorder.BorderValue.ToOOxml()), Size = Convert.ToUInt32(properties.InsideHorizontalBorder.Size), Color = properties.InsideHorizontalBorder.Color },
-                        new InsideVerticalBorder() { Val = new EnumValue<DocumentFormat.OpenXml.Wordprocessing.BorderValues>(properties.InsideVerticalBorder.BorderValue.ToOOxml()), Size = Convert.ToUInt32(properties.InsideVerticalBorder.Size), Color = properties.InsideVerticalBorder.Color }
-                    ),
-                    new TableProperties(
-                        new TableJustification() { Val = properties.TableJustification.ToOOxml() }
-                    )
-                );
-                // Append the TableProperties object to the empty table.
-                tbl.AppendChild(tblProp);
-            }
+                AutoMapper.Mapper.Map(properties, pt.Properties);
 
             if (rows != null)
             {
@@ -641,7 +603,7 @@ namespace MvvX.Open_XML_SDK.Word
                 }
             }
 
-            return new PlatformTable(tbl);
+            return pt;
         }
 
         public ITableCell CreateTableCell(IRun cellContent, TableCellPropertiesModel cellModel)
@@ -679,10 +641,10 @@ namespace MvvX.Open_XML_SDK.Word
             if (cellModel.Gridspan.HasValue)
                 tableCellProperties.Append(new GridSpan { Val = cellModel.Gridspan.Value });
 
-            if (cellModel.Shading != null)
-                tableCellProperties.Append(cellModel.Shading.ContentItem as Shading);
+            //if (cellModel.Shading != null)
+            //    tableCellProperties.Append(cellModel.Shading.ContentItem as Shading);
 
-            tableCellProperties.Append(new TableCellVerticalAlignment { Val = cellModel.TableVerticalAlignementValues.ToOOxml() });
+            //tableCellProperties.Append(new TableCellVerticalAlignment { Val = cellModel.TableVerticalAlignementValues.ToOOxml() });
 
             // Modification de la rotation du texte dans la cellule
             if (cellModel.TextDirectionValues.HasValue)
@@ -704,7 +666,7 @@ namespace MvvX.Open_XML_SDK.Word
             tc.Append(tableCellProperties);
 
             Paragraph par = new Paragraph();
-            ParagraphProperties pr = new ParagraphProperties(new TableCellVerticalAlignment { Val = cellModel.TableVerticalAlignementValues.ToOOxml() });
+            ParagraphProperties pr = new ParagraphProperties(); // new TableCellVerticalAlignment { Val = cellModel.TableVerticalAlignementValues.ToOOxml() });
             //new SpacingBetweenLines() { After = cellModel.SpacingAfter, Before = cellModel.SpacingBefore, Line = "240" });
 
             if (cellModel.Justification.HasValue)
@@ -733,9 +695,9 @@ namespace MvvX.Open_XML_SDK.Word
             if (cellModel == null)
                 throw new ArgumentNullException("cellModel must not be null");
 
-            TableCell tc = new TableCell();
+            var platformTableCell = PlatformTableCell.New();
 
-            var tableCellProperties = new TableCellProperties();
+            var tableCellProperties = platformTableCell.Properties.ContentItem as TableCellProperties;
             if (!string.IsNullOrWhiteSpace(cellModel.Width))
                 if (cellModel.WidthUnit.OOxmlEquals(DocumentFormat.OpenXml.Wordprocessing.TableWidthUnitValues.Nil))
                     tableCellProperties.Append(new TableCellWidth { Type = DocumentFormat.OpenXml.Wordprocessing.TableWidthUnitValues.Dxa, Width = cellModel.Width });
@@ -745,12 +707,12 @@ namespace MvvX.Open_XML_SDK.Word
                 tableCellProperties.Append(new TableCellWidth { Type = DocumentFormat.OpenXml.Wordprocessing.TableWidthUnitValues.Auto });
 
             if (cellModel.Gridspan.HasValue)
-                tableCellProperties.Append(new GridSpan { Val = cellModel.Gridspan.Value });
+                platformTableCell.Properties.GridSpan.Val  = cellModel.Gridspan.Value;
 
             if (cellModel.Shading != null)
-                tableCellProperties.Append(cellModel.Shading.ContentItem as Shading);
+                tableCellProperties.Shading.Val = cellModel.Shading.ToOOxml();
 
-            tableCellProperties.Append(new TableCellVerticalAlignment { Val = cellModel.TableVerticalAlignementValues.ToOOxml() });
+            //tableCellProperties.Append(new TableCellVerticalAlignment { Val = cellModel.TableVerticalAlignementValues.ToOOxml() });
 
             // Modification de la rotation du texte dans la cellule
             if (cellModel.TextDirectionValues.HasValue)
@@ -768,15 +730,13 @@ namespace MvvX.Open_XML_SDK.Word
 
             if (cellModel.RightBorder != null)
                 tableCellProperties.Append(new TableCellBorders(new RightBorder { Val = cellModel.RightBorder.BorderValue.ToOOxml(), Color = cellModel.RightBorder.Color, Size = Convert.ToUInt32(cellModel.RightBorder.Size) }));
-
-            tc.Append(tableCellProperties);
-
+            
             for (int i = 0; i < cellContents.Count; i++)
             {
-                tc.Append(cellContents[i].ContentItem as Paragraph);
+                platformTableCell.Append(cellContents[i]);
             }
 
-            return new PlatformTableCell(tc);
+            return platformTableCell;
         }
 
         public ITableCell CreateTableMergeCell(IRun run, TableCellPropertiesModel cellModel)
@@ -810,12 +770,15 @@ namespace MvvX.Open_XML_SDK.Word
                 tableCellProperties.Append(new TableCellWidth { Type = DocumentFormat.OpenXml.Wordprocessing.TableWidthUnitValues.Auto });
 
             if (cellModel.Gridspan.HasValue)
-                tableCellProperties.Append(new GridSpan { Val = cellModel.Gridspan.Value });
+            {
+                tableCellProperties.GridSpan = new GridSpan();
+                tableCellProperties.GridSpan.Val = cellModel.Gridspan.Value;
+            }
 
-            if (cellModel.Shading != null)
-                tableCellProperties.Append(cellModel.Shading.ContentItem as Shading);
+            //if (cellModel.Shading != null)
+            //    tableCellProperties.Shading.Val = cellModel.Shading.ToOOxml();
 
-            tableCellProperties.Append(new TableCellVerticalAlignment { Val = cellModel.TableVerticalAlignementValues.ToOOxml() });
+            //tableCellProperties.Append(new TableCellVerticalAlignment { Val = cellModel.TableVerticalAlignementValues.ToOOxml() });
 
             // Gestion de la fusion des cellules
             if (cellModel.Fusion)
@@ -849,7 +812,7 @@ namespace MvvX.Open_XML_SDK.Word
             tc.Append(tableCellProperties);
 
             Paragraph par = new Paragraph();
-            ParagraphProperties pr = new ParagraphProperties(new TableCellVerticalAlignment { Val = cellModel.TableVerticalAlignementValues.ToOOxml() });
+            ParagraphProperties pr = new ParagraphProperties();// new TableCellVerticalAlignment { Val = cellModel.TableVerticalAlignementValues.ToOOxml() });
             //new SpacingBetweenLines() { After = cellModel.SpacingAfter, Before = cellModel.SpacingBefore, Line = "240" });
 
             if (cellModel.Justification.HasValue)

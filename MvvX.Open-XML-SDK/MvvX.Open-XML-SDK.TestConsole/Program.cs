@@ -31,11 +31,13 @@ namespace MvvX.Open_XML_SDK.TestConsole
                 // Insertion d'une table dans un bookmark
                 // Propriété du Tableau
                 var tableProperty = new TablePropertiesModel();
-                tableProperty.TopBorder = new TableBorderModel() { Color = "F7941F", Size = 20 };
-                tableProperty.LeftBorder = new TableBorderModel() { Color = "F7941F", Size = 20 };
-                tableProperty.RightBorder = new TableBorderModel() { Color = "F7941F", Size = 20 };
-                tableProperty.BottomBorder = new TableBorderModel() { Color = "F7941F", Size = 20 };
-
+                tableProperty.TableBorders = new TableBordersModel()
+                {
+                    TopBorder = new TableBorderModel() { Color = "F7941F", Size = 20 },
+                    LeftBorder = new TableBorderModel() { Color = "F7941F", Size = 20 },
+                    RightBorder = new TableBorderModel() { Color = "F7941F", Size = 20 },
+                    BottomBorder = new TableBorderModel() { Color = "F7941F", Size = 20 }
+                };
                 // Lignes du premier tableau pour les constats checked
                 var lines = new List<ITableRow>();
 
@@ -46,16 +48,25 @@ namespace MvvX.Open_XML_SDK.TestConsole
                         borderTopIsOK.BorderValue = BorderValues.Nil;
                     
                     // Première ligne
-                    var texte = word.CreateRunForTexte("Header Numero : " + i, new RunPropertiesModel() { Bold = true, FontSize = "24", Color = "FFFFFF" });
-
-                    texte.Properties.Bold.Value = true;
-                    texte.Properties.Italic.Value = true;
-
+                    var texte = word.CreateRunForTexte("Header Numero : " + i, 
+                            new RunPropertiesModel()
+                            {
+                                Bold = true,
+                                FontSize = "24",
+                                RunFonts = new RunFontsModel()
+                                {
+                                    Ascii = "Gigi",
+                                    HighAnsi = "Gigi",
+                                    EastAsia = "Gigi",
+                                    ComplexScript = "Gigi"
+                                }
+                            });
+                    
                     var cellules = new List<ITableCell>()
                     {
-                        word.CreateTableCell(texte, new TableCellPropertiesModel() { Gridspan = 2, Shading = word.GetShading(fillColor: "F7941F"), /*BorderBottom = false, BorderTop = borderTopIsOK,*/ Width = "8862",
+                        word.CreateTableCell(texte, new TableCellPropertiesModel() { Gridspan = 2, //Shading = word.GetShading(fillColor: "F7941F"), /*BorderBottom = false, BorderTop = borderTopIsOK,*/ Width = "8862",
                                                 BottomBorder = new TableBorderModel() { BorderValue = BorderValues.Nil }, TopBorder = borderTopIsOK,  }),
-                        word.CreateTableCell(word.CreateEmptyRun(), new TableCellPropertiesModel() { Shading = word.GetShading(fillColor: "F7941F"), /*BorderBottom = false, BorderTop = borderTopIsOK,*/ Width = "246",
+                        word.CreateTableCell(word.CreateEmptyRun(), new TableCellPropertiesModel() { // Shading = word.GetShading(fillColor: "F7941F"), /*BorderBottom = false, BorderTop = borderTopIsOK,*/ Width = "246",
                                                 BottomBorder = new TableBorderModel() { BorderValue = BorderValues.Nil }, TopBorder = borderTopIsOK })
                     };
                     lines.Add(word.CreateTableRow(cellules, new TableRowPropertiesModel() { Height = 380 }));

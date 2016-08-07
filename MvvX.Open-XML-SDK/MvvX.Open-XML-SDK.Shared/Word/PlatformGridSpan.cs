@@ -1,7 +1,6 @@
 ﻿using System;
 using DocumentFormat.OpenXml.Wordprocessing;
 using MvvX.Open_XML_SDK.Core.Word;
-using MvvX.Open_XML_SDK.Core.Word.Bases;
 
 namespace MvvX.Open_XML_SDK.Shared.Word
 {
@@ -9,15 +8,27 @@ namespace MvvX.Open_XML_SDK.Shared.Word
     {
         private readonly GridSpan gridSpan;
 
-        public static PlatformGridSpan New()
-        {
-            return new PlatformGridSpan(new GridSpan());
-        }
-
         public PlatformGridSpan(GridSpan gridSpan)
             : base(gridSpan)
         {
             this.gridSpan = gridSpan;
         }
+
+        #region Static helpers methods
+
+        public static PlatformGridSpan New()
+        {
+            return new PlatformGridSpan(new GridSpan());
+        }
+
+        public static PlatformGridSpan New(GridSpan gridSpan)
+        {
+            if (gridSpan == null)
+                gridSpan = new GridSpan();
+
+            return new PlatformGridSpan(gridSpan);
+        }
+
+        #endregion
     }
 }
