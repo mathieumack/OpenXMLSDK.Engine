@@ -510,7 +510,7 @@ namespace MvvX.Plugins.Open_XML_SDK.Word
             return new PlatformParagraph(paragraph);
         }
 
-        public IRun CreateRunForTexte(string content, RunPropertiesModel rpm = null)
+        public IRun CreateRunForText(string content, RunPropertiesModel rpm = null)
         {
             var platformRun = new PlatformRun();
 

@@ -8,6 +8,7 @@ using MvvX.Plugins.Open_XML_SDK.Core.Word;
 using MvvX.Plugins.Open_XML_SDK.Core.Word.Paragraphs;
 using System.Diagnostics;
 using MvvX.Plugins.Open_XML_SDK.Core.Word.Models;
+using MvvmCross.Platform;
 
 namespace MvvX.Plugins.Open_XML_SDK.TestConsole
 {
@@ -21,17 +22,20 @@ namespace MvvX.Plugins.Open_XML_SDK.TestConsole
                 Directory.CreateDirectory(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "App_Data", "Results"));
 
             string finalFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "App_Data", "Results", "FinalDoc_Test_OrientationParagraph-" + DateTime.Now.ToFileTime() + ".docx");
-            using (IWordManager word = new WordManager())
+            using (IWordManager word = Mvx.Resolve<IWordManager>())
             {
                 // TODO for debug : use your test file :
                 word.OpenDocFromTemplate(resourceName, finalFilePath, true);
 
-                // Insertion de texte dans un bookmark
-                // wordManager.SetTextOnBookmark("Insert_Documents", "Hi !");
+            //    word.SaveDoc();
+            //    word.CloseDoc();
+            //}
+            // Insertion de texte dans un bookmark
+            // wordManager.SetTextOnBookmark("Insert_Documents", "Hi !");
 
-                // Insertion d'une table dans un bookmark
-                // Propriété du Tableau
-                var tableProperty = new TablePropertiesModel()
+            // Insertion d'une table dans un bookmark
+            // Propriété du Tableau
+            var tableProperty = new TablePropertiesModel()
                 {
                     TableBorders = new TableBordersModel()
                     {
@@ -56,7 +60,7 @@ namespace MvvX.Plugins.Open_XML_SDK.TestConsole
                         borderTopIsOK.BorderValue = BorderValues.Nil;
 
                     // Première ligne
-                    var texte = word.CreateRunForTexte("Header Numero : " + i,
+                    var text = word.CreateRunForText("Header Number : " + i,
                             new RunPropertiesModel()
                             {
                                 Bold = true,
@@ -72,7 +76,7 @@ namespace MvvX.Plugins.Open_XML_SDK.TestConsole
 
                     var cellules = new List<ITableCell>()
                     {
-                        word.CreateTableCell(texte, new TableCellPropertiesModel() {
+                        word.CreateTableCell(text, new TableCellPropertiesModel() {
                             Gridspan = new GridSpanModel() { Val = 2 },
                             Shading = new ShadingModel()
                             {
@@ -110,10 +114,10 @@ namespace MvvX.Plugins.Open_XML_SDK.TestConsole
                     }));
 
                     // Deuxième ligne
-                    texte = word.CreateRunForTexte("Constat et commentaire", new RunPropertiesModel() { Bold = true });
+                    text = word.CreateRunForText("Comments", new RunPropertiesModel() { Bold = true });
                     cellules = new List<ITableCell>()
                     {
-                        word.CreateTableCell(texte, new TableCellPropertiesModel() {
+                        word.CreateTableCell(text, new TableCellPropertiesModel() {
                                     TableCellWidth = new TableCellWidthModel()
                                     {
                                         Width = "4890"
@@ -131,10 +135,10 @@ namespace MvvX.Plugins.Open_XML_SDK.TestConsole
                     lines.Add(word.CreateTableRow(cellules));
 
                     // Troisième ligne
-                    texte = word.CreateRunForTexte("Texte du Constat Numero : " + i, new RunPropertiesModel());
+                    text = word.CreateRunForText("Texte du Constat Number : " + i, new RunPropertiesModel());
                     cellules = new List<ITableCell>()
                     {
-                        word.CreateTableCell(texte, new TableCellPropertiesModel() {
+                        word.CreateTableCell(text, new TableCellPropertiesModel() {
                                                 TableCellWidth = new TableCellWidthModel()
                                                 {
                                                     Width = "4890"
@@ -162,10 +166,10 @@ namespace MvvX.Plugins.Open_XML_SDK.TestConsole
                     lines.Add(word.CreateTableRow(cellules));
 
                     // Quatrième ligne
-                    texte = word.CreateRunForTexte("Risques", new RunPropertiesModel() { Bold = true });
+                    text = word.CreateRunForText("Risques", new RunPropertiesModel() { Bold = true });
                     cellules = new List<ITableCell>()
                     {
-                        word.CreateTableCell(texte, new TableCellPropertiesModel() {
+                        word.CreateTableCell(text, new TableCellPropertiesModel() {
                                                 TableCellWidth = new TableCellWidthModel()
                                                 {
                                                     Width = "4890"
@@ -196,10 +200,10 @@ namespace MvvX.Plugins.Open_XML_SDK.TestConsole
                     lines.Add(word.CreateTableRow(cellules));
 
                     // Cinquième ligne
-                    texte = word.CreateRunForTexte("Texte du Risque Numero : " + i, new RunPropertiesModel());
+                    text = word.CreateRunForText("Texte du Risque Number : " + i, new RunPropertiesModel());
                     cellules = new List<ITableCell>()
                     {
-                        word.CreateTableCell(texte, new TableCellPropertiesModel() {
+                        word.CreateTableCell(text, new TableCellPropertiesModel() {
                                                 TableCellWidth = new TableCellWidthModel()
                                                 {
                                                     Width = "4890"
@@ -226,10 +230,10 @@ namespace MvvX.Plugins.Open_XML_SDK.TestConsole
                     lines.Add(word.CreateTableRow(cellules));
 
                     // Sixième ligne
-                    texte = word.CreateRunForTexte("Recommandations", new RunPropertiesModel() { Bold = true });
+                    text = word.CreateRunForText("Recommandations", new RunPropertiesModel() { Bold = true });
                     cellules = new List<ITableCell>()
                     {
-                        word.CreateTableCell(texte, new TableCellPropertiesModel() {
+                        word.CreateTableCell(text, new TableCellPropertiesModel() {
                                                 TableCellWidth = new TableCellWidthModel()
                                                 {
                                                     Width = "4890"
@@ -264,10 +268,10 @@ namespace MvvX.Plugins.Open_XML_SDK.TestConsole
                         borderBottomIsOK.BorderValue = BorderValues.Single;
 
                     // Septième ligne
-                    texte = word.CreateRunForTexte("Texte de la Recommandation Numero : " + i, new RunPropertiesModel());
+                    text = word.CreateRunForText("Texte de la Recommandation Number : " + i, new RunPropertiesModel());
                     cellules = new List<ITableCell>()
                     {
-                        word.CreateTableCell(texte, new TableCellPropertiesModel() {
+                        word.CreateTableCell(text, new TableCellPropertiesModel() {
                                                 TableCellWidth = new TableCellWidthModel()
                                                 {
                                                     Width = "4890"

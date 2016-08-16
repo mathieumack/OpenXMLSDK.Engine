@@ -113,7 +113,7 @@ namespace MvvX.Plugins.Open_XML_SDK.Core.Word
 
         IRun CreateRunForTable(ITable run);
 
-        IRun CreateRunForTexte(string content, RunPropertiesModel rpm = null);
+        IRun CreateRunForText(string content, RunPropertiesModel rpm = null);
 
         #endregion
 
