@@ -1,0 +1,68 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{2F0EB960-8B80-4518-A8BD-A1DC635655E3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvvX.Plugins.Open-XML-SDK.Core", "MvvX.Plugins.Open-XML-SDK.Core\MvvX.Plugins.Open-XML-SDK.Core.csproj", "{D516410F-1AF5-49B1-98CF-00E08487EBBA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvvX.Plugins.Open-XML-SDK.Wpf", "MvvX.Plugins.Open-XML-SDK.Wpf\MvvX.Plugins.Open-XML-SDK.Wpf.csproj", "{10897E7B-B4A3-4D09-A97D-4A1AB3DD68A7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvvX.Plugins.Open-XML-SDK.Droid", "MvvX.Plugins.Open-XML-SDK.Droid\MvvX.Plugins.Open-XML-SDK.Droid.csproj", "{A6A10DA9-398A-4F56-934C-D9FEE30A7540}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvvX.Plugins.Open-XML-SDK.Touch", "MvvX.Plugins.Open-XML-SDK.Touch\MvvX.Plugins.Open-XML-SDK.Touch.csproj", "{342A2579-7D8F-4BFD-8A95-68E4765A3EDC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Platform", "Platform", "{52133E21-0AED-42C9-B4D1-C6A144DFDB10}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "MvvX.Plugins.Open-XML-SDK.Shared", "MvvX.Plugins.Open-XML-SDK.Shared\MvvX.Plugins.Open-XML-SDK.Shared.shproj", "{00452555-A931-4BB7-9AC4-1A900E18CB6F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client Tests", "Client Tests", "{17464895-F42D-47EE-AC67-7C3947E1A69C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvvX.Plugins.Open-XML-SDK.TestConsole", "MvvX.Plugins.Open-XML-SDK.TestConsole\MvvX.Plugins.Open-XML-SDK.TestConsole.csproj", "{7B189D1B-0AD2-4EB4-96E4-5CB0781F3592}"
+EndProject
+Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		MvvX.Plugins.Open-XML-SDK.Shared\MvvX.Plugins.Open-XML-SDK.Shared.projitems*{00452555-a931-4bb7-9ac4-1a900e18cb6f}*SharedItemsImports = 13
+		MvvX.Plugins.Open-XML-SDK.Shared\MvvX.Plugins.Open-XML-SDK.Shared.projitems*{10897e7b-b4a3-4d09-a97d-4a1ab3dd68a7}*SharedItemsImports = 4
+		MvvX.Plugins.Open-XML-SDK.Shared\MvvX.Plugins.Open-XML-SDK.Shared.projitems*{342a2579-7d8f-4bfd-8a95-68e4765a3edc}*SharedItemsImports = 4
+		MvvX.Plugins.Open-XML-SDK.Shared\MvvX.Plugins.Open-XML-SDK.Shared.projitems*{a6a10da9-398a-4f56-934c-d9fee30a7540}*SharedItemsImports = 4
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D516410F-1AF5-49B1-98CF-00E08487EBBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D516410F-1AF5-49B1-98CF-00E08487EBBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D516410F-1AF5-49B1-98CF-00E08487EBBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D516410F-1AF5-49B1-98CF-00E08487EBBA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10897E7B-B4A3-4D09-A97D-4A1AB3DD68A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10897E7B-B4A3-4D09-A97D-4A1AB3DD68A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10897E7B-B4A3-4D09-A97D-4A1AB3DD68A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10897E7B-B4A3-4D09-A97D-4A1AB3DD68A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6A10DA9-398A-4F56-934C-D9FEE30A7540}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6A10DA9-398A-4F56-934C-D9FEE30A7540}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6A10DA9-398A-4F56-934C-D9FEE30A7540}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6A10DA9-398A-4F56-934C-D9FEE30A7540}.Release|Any CPU.Build.0 = Release|Any CPU
+		{342A2579-7D8F-4BFD-8A95-68E4765A3EDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{342A2579-7D8F-4BFD-8A95-68E4765A3EDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{342A2579-7D8F-4BFD-8A95-68E4765A3EDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{342A2579-7D8F-4BFD-8A95-68E4765A3EDC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B189D1B-0AD2-4EB4-96E4-5CB0781F3592}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B189D1B-0AD2-4EB4-96E4-5CB0781F3592}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B189D1B-0AD2-4EB4-96E4-5CB0781F3592}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B189D1B-0AD2-4EB4-96E4-5CB0781F3592}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D516410F-1AF5-49B1-98CF-00E08487EBBA} = {2F0EB960-8B80-4518-A8BD-A1DC635655E3}
+		{10897E7B-B4A3-4D09-A97D-4A1AB3DD68A7} = {52133E21-0AED-42C9-B4D1-C6A144DFDB10}
+		{A6A10DA9-398A-4F56-934C-D9FEE30A7540} = {52133E21-0AED-42C9-B4D1-C6A144DFDB10}
+		{342A2579-7D8F-4BFD-8A95-68E4765A3EDC} = {52133E21-0AED-42C9-B4D1-C6A144DFDB10}
+		{00452555-A931-4BB7-9AC4-1A900E18CB6F} = {52133E21-0AED-42C9-B4D1-C6A144DFDB10}
+		{7B189D1B-0AD2-4EB4-96E4-5CB0781F3592} = {17464895-F42D-47EE-AC67-7C3947E1A69C}
+	EndGlobalSection
+EndGlobal

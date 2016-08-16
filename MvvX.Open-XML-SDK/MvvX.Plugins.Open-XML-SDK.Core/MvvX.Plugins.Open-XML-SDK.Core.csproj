@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D516410F-1AF5-49B1-98CF-00E08487EBBA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MvvX.Plugins.Open_XML_SDK.Core</RootNamespace>
+    <AssemblyName>MvvX.Plugins.Open-XML-SDK.Core</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkProfile>Profile111</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\MvvX.Plugins.Open-XML-SDK.Core.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\MvvX.Plugins.Open-XML-SDK.Core.XML</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- A reference to the entire .NET Framework is automatically included -->
+    <Folder Include="Excel\" />
+    <Folder Include="PowerPoint\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="IEnumValue.cs" />
+    <Compile Include="OpenXmlSimpleType.cs" />
+    <Compile Include="PluginLoader.cs" />
+    <Compile Include="Word\IDecimalNumberType.cs" />
+    <Compile Include="Word\IOpenXmlCompositeElement.cs" />
+    <Compile Include="Word\IRunFonts.cs" />
+    <Compile Include="Word\IRunProperties.cs" />
+    <Compile Include="Word\BorderValues.cs" />
+    <Compile Include="Colors.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Word\IOpenXmlElement.cs" />
+    <Compile Include="Word\IRun.cs" />
+    <Compile Include="Word\IText.cs" />
+    <Compile Include="Word\Bookmarks\IBookmarkEnd.cs" />
+    <Compile Include="Word\IBorder.cs" />
+    <Compile Include="Word\IGridSpan.cs" />
+    <Compile Include="Word\IShading.cs" />
+    <Compile Include="Word\Images\ImageType.cs" />
+    <Compile Include="Word\IWordManager.cs" />
+    <Compile Include="Word\JustificationValues.cs" />
+    <Compile Include="Word\Models\GridSpanModel.cs" />
+    <Compile Include="Word\Models\ShadingModel.cs" />
+    <Compile Include="Word\OnOffOnlyValues.cs" />
+    <Compile Include="Word\Paragraphs\IParagraph.cs" />
+    <Compile Include="Word\Models\RunFontsModel.cs" />
+    <Compile Include="Word\Models\RunPropertiesModel.cs" />
+    <Compile Include="Word\ShadingPatternValues.cs" />
+    <Compile Include="Word\SpaceProcessingModeValues.cs" />
+    <Compile Include="Word\Tables\ITableBorders.cs" />
+    <Compile Include="Word\Tables\ITableCellBorders.cs" />
+    <Compile Include="Word\Tables\ITableRowHeight.cs" />
+    <Compile Include="Word\Tables\ITableProperties.cs" />
+    <Compile Include="Word\Tables\ITableJustification.cs" />
+    <Compile Include="Word\Tables\ITableCellWidth.cs" />
+    <Compile Include="Word\Tables\ITableRowProperties.cs" />
+    <Compile Include="Word\Tables\ITableStyle.cs" />
+    <Compile Include="Word\Tables\ITableWidth.cs" />
+    <Compile Include="Word\Tables\Models\TableCellBordersModel.cs" />
+    <Compile Include="Word\Tables\Models\TableBordersModel.cs" />
+    <Compile Include="Word\Tables\Models\TableRowHeightModel.cs" />
+    <Compile Include="Word\Tables\Models\TableCellWidthModel.cs" />
+    <Compile Include="Word\Tables\Models\TableStyleModel.cs" />
+    <Compile Include="Word\Tables\Models\TableWidthModel.cs" />
+    <Compile Include="Word\Tables\TableRowAlignmentValues.cs" />
+    <Compile Include="Word\Tables\ITableCell.cs" />
+    <Compile Include="Word\Tables\ITableCellProperties.cs" />
+    <Compile Include="Word\Tables\ITableRow.cs" />
+    <Compile Include="Word\Tables\ITable.cs" />
+    <Compile Include="Word\Tables\Models\TableBorderModel.cs" />
+    <Compile Include="Word\Tables\Models\TableCellPropertiesModel.cs" />
+    <Compile Include="Word\Tables\Models\TablePropertiesModel.cs" />
+    <Compile Include="Word\Tables\Models\TableRowPropertiesModel.cs" />
+    <Compile Include="Word\Tables\TableWidthUnitValues.cs" />
+    <Compile Include="Word\Tables\TableVerticalAlignmentValues.cs" />
+    <Compile Include="Word\TextDirectionValues.cs" />
+    <Compile Include="Word\ThemeColorValues.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="MvvmCross.Platform, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmCross.Platform.4.2.2\lib\portable-net45+win+wpa81+wp80\MvvmCross.Platform.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="OpenXmlSdk.Android">
+      <HintPath>..\dll\android\OpenXmlSdk.Android.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
