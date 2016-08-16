@@ -5,6 +5,7 @@ using MvvX.Open_XML_SDK.Core.Word.Bookmarks;
 using MvvX.Open_XML_SDK.Core.Word.Paragraphs;
 using MvvX.Open_XML_SDK.Core.Word.Tables;
 using MvvX.Open_XML_SDK.Core.Word.Tables.Models;
+using MvvX.Open_XML_SDK.Core.Word.Models;
 
 namespace MvvX.Open_XML_SDK.Core.Word
 {
@@ -95,12 +96,6 @@ namespace MvvX.Open_XML_SDK.Core.Word
         /// <param name="isEditable">Is file open in edit mode (Read/Write)</param>
         /// <returns>True si le document a bien été ouvert</returns>
         bool OpenDocFromTemplate(string templateFilePath, string newFilePath, bool isEditable);
-
-        #endregion
-
-        #region Shadings
-
-        IShading GetShading(string textColor = null, string fillColor = null);
 
         #endregion
 

@@ -16,17 +16,10 @@ namespace MvvX.Open_XML_SDK.Shared.Word
 
         #region Static helpers methods
 
-        public static PlatformGridSpan New()
+        public static PlatformGridSpan New(TableCellProperties parent)
         {
-            return new PlatformGridSpan(new GridSpan());
-        }
-
-        public static PlatformGridSpan New(GridSpan gridSpan)
-        {
-            if (gridSpan == null)
-                gridSpan = new GridSpan();
-
-            return new PlatformGridSpan(gridSpan);
+            var xmlElement = CheckDescendantsOrAppendNewOne<GridSpan>(parent);
+            return new PlatformGridSpan(xmlElement);
         }
 
         #endregion

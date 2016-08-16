@@ -6,12 +6,14 @@ namespace MvvX.Open_XML_SDK.Shared.Word
     public class PlatformRun : PlatformOpenXmlElement, IRun
     {
         private readonly Run run;
-        private IRunProperties properties;
 
+        private IRunProperties properties;
         public IRunProperties Properties
         {
             get
             {
+                if (properties == null)
+                    properties = PlatformRunProperties.New(run);
                 return properties;
             }
         }
@@ -20,8 +22,6 @@ namespace MvvX.Open_XML_SDK.Shared.Word
             : base(run)
         {
             this.run = run;
-            this.properties = PlatformRunProperties.New();
-            run.Append(Properties.ContentItem as RunProperties);
         }
 
         #region Static helpers methods

@@ -1,21 +1,33 @@
-﻿using System;
-using DocumentFormat.OpenXml.Wordprocessing;
+﻿using DocumentFormat.OpenXml.Wordprocessing;
+using MvvX.Open_XML_SDK.Core.Word;
 using MvvX.Open_XML_SDK.Core.Word.Tables;
-using DocumentFormat.OpenXml;
+using System.Linq;
 
 namespace MvvX.Open_XML_SDK.Shared.Word.Tables
 {
     public class PlatformTableProperties : PlatformOpenXmlElement, ITableProperties
     {
-        private readonly TableProperties tableProperties;
+        private readonly TableProperties xmlElement;
 
         public PlatformTableProperties(TableProperties tableProperties)
             : base(tableProperties)
         {
-            this.tableProperties = tableProperties;
+            this.xmlElement = tableProperties;
         }
 
         #region Interface
+        
+        private ITableStyle tableStyle;
+        public ITableStyle TableStyle
+        {
+            get
+            {
+                if (tableStyle == null)
+                    tableStyle = PlatformTableStyle.New(xmlElement);
+
+                return tableStyle;
+            }
+        }
 
         private ITableBorders tableborder;
         public ITableBorders TableBorders
@@ -23,30 +35,54 @@ namespace MvvX.Open_XML_SDK.Shared.Word.Tables
             get
             {
                 if (tableborder == null)
-                    tableborder = PlatformTableBorders.New(tableProperties.TableBorders);
+                    tableborder = PlatformTableBorders.New(xmlElement);
 
                 return tableborder;
             }
         }
 
+        private IShading shading;
+        public IShading Shading
+        {
+            get
+            {
+                if (shading == null)
+                    shading = PlatformShading.New(xmlElement);
+
+                return shading;
+            }
+        }
+
+        private ITableWidth tableWidth;
+        public ITableWidth TableWidth
+        {
+            get
+            {
+                if (tableWidth == null)
+                    tableWidth = PlatformTableWidth.New(xmlElement);
+
+                return tableWidth;
+            }
+        }
+        
         public Core.Word.Tables.TableRowAlignmentValues? TableJustification
         {
             get
             {
-                if (tableProperties.TableJustification == null || !tableProperties.TableJustification.Val.HasValue)
+                if (xmlElement.TableJustification == null || !xmlElement.TableJustification.Val.HasValue)
                     return null;
                 else
-                    return (Core.Word.Tables.TableRowAlignmentValues)(int)tableProperties.TableJustification.Val.Value;
+                    return (Core.Word.Tables.TableRowAlignmentValues)(int)xmlElement.TableJustification.Val.Value;
             }
             set
             {
                 if (value == null)
-                    tableProperties.TableJustification = null;
+                    xmlElement.TableJustification = null;
                 else
                 {
-                    if (tableProperties.TableJustification == null)
-                        tableProperties.TableJustification = new TableJustification();
-                    tableProperties.TableJustification.Val = (DocumentFormat.OpenXml.Wordprocessing.TableRowAlignmentValues)(int)value;
+                    if (xmlElement.TableJustification == null)
+                        xmlElement.TableJustification = new TableJustification();
+                    xmlElement.TableJustification.Val = (DocumentFormat.OpenXml.Wordprocessing.TableRowAlignmentValues)(int)value;
                 }
             }
         }
@@ -55,11 +91,19 @@ namespace MvvX.Open_XML_SDK.Shared.Word.Tables
 
         #region Static helpers methods
 
-        public static PlatformTableProperties New()
+        public static PlatformTableProperties New(Table table)
         {
-            return new PlatformTableProperties(new TableProperties());
+            TableProperties xmlElement = null;
+            if (table.Descendants<TableProperties>().Any())
+                xmlElement = table.Descendants<TableProperties>().First();
+            else
+            {
+                xmlElement = new TableProperties();
+                table.Append(xmlElement);
+            }
+            return new PlatformTableProperties(xmlElement);
         }
-
-        #endregion
     }
+
+    #endregion
 }

@@ -9,5 +9,9 @@
         IBorderType BottomBorder { get; }
 
         IBorderType LeftBorder { get; }
+
+        IBorderType TopLeftToBottomRightCellBorder { get; }
+
+        IBorderType TopRightToBottomLeftCellBorder { get; }
     }
 }

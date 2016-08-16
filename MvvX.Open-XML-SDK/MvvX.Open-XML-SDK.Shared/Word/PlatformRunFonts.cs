@@ -107,17 +107,11 @@ namespace MvvX.Open_XML_SDK.Shared.Word
         #endregion
 
         #region Static helpers methods
-
-        public static PlatformRunFonts New()
+        
+        public static PlatformRunFonts New(RunProperties runProperties)
         {
-            return new PlatformRunFonts(new RunFonts());
-        }
-
-        public static PlatformRunFonts New(RunFonts runFonts)
-        {
-            if (runFonts == null)
-                runFonts = new RunFonts();
-            return new PlatformRunFonts(runFonts);
+            var xmlElement = CheckDescendantsOrAppendNewOne<RunFonts>(runProperties);
+            return new PlatformRunFonts(xmlElement);
         }
 
         #endregion

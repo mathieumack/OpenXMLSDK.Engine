@@ -159,5 +159,22 @@ namespace MvvX.Open_XML_SDK.Shared.Word
             // TODO : Check if the result is the oldChild item.
             return oldChild;
         }
+
+        #region protected methods
+
+        protected static T CheckDescendantsOrAppendNewOne<T>(OpenXmlElement parent) where T : OpenXmlElement, new()
+        {
+            T xmlElement = null;
+            if (parent.Descendants<T>().Any())
+                xmlElement = parent.Descendants<T>().First();
+            else
+            {
+                xmlElement = new T();
+                parent.Append(xmlElement);
+            }
+            return xmlElement;
+        }
+
+        #endregion
     }
 }

@@ -23,7 +23,7 @@ namespace MvvX.Open_XML_SDK.Shared.Word.Tables
             get
             {
                 if (topBorder == null)
-                    topBorder = PlatformBorder<TopBorder>.New(openXmlElement.TopBorder);
+                    topBorder = PlatformBorder<TopBorder>.New(openXmlElement);
 
                 return topBorder;
             }
@@ -35,7 +35,7 @@ namespace MvvX.Open_XML_SDK.Shared.Word.Tables
             get
             {
                 if (rightBorder == null)
-                    rightBorder = PlatformBorder<RightBorder>.New(openXmlElement.RightBorder);
+                    rightBorder = PlatformBorder<RightBorder>.New(openXmlElement);
 
                 return rightBorder;
             }
@@ -47,7 +47,7 @@ namespace MvvX.Open_XML_SDK.Shared.Word.Tables
             get
             {
                 if (leftBorder == null)
-                    leftBorder = PlatformBorder<LeftBorder>.New(openXmlElement.LeftBorder);
+                    leftBorder = PlatformBorder<LeftBorder>.New(openXmlElement);
 
                 return leftBorder;
             }
@@ -59,9 +59,33 @@ namespace MvvX.Open_XML_SDK.Shared.Word.Tables
             get
             {
                 if (bottomBorder == null)
-                    bottomBorder = PlatformBorder<BottomBorder>.New(openXmlElement.BottomBorder);
+                    bottomBorder = PlatformBorder<BottomBorder>.New(openXmlElement);
 
                 return bottomBorder;
+            }
+        }
+
+        private IBorderType topLeftToBottomRightCellBorder;
+        public IBorderType TopLeftToBottomRightCellBorder
+        {
+            get
+            {
+                if (topLeftToBottomRightCellBorder == null)
+                    topLeftToBottomRightCellBorder = PlatformBorder<TopLeftToBottomRightCellBorder>.New(openXmlElement);
+
+                return topLeftToBottomRightCellBorder;
+            }
+        }
+
+        private IBorderType topRightToBottomLeftCellBorder;
+        public IBorderType TopRightToBottomLeftCellBorder
+        {
+            get
+            {
+                if (topRightToBottomLeftCellBorder == null)
+                    topRightToBottomLeftCellBorder = PlatformBorder<TopRightToBottomLeftCellBorder>.New(openXmlElement);
+
+                return topRightToBottomLeftCellBorder;
             }
         }
 
@@ -69,17 +93,10 @@ namespace MvvX.Open_XML_SDK.Shared.Word.Tables
 
         #region Static helpers methods
 
-        public static PlatformTableCellBorders New()
+        public static PlatformTableCellBorders New(TableCellProperties parent)
         {
-            return new PlatformTableCellBorders(new TableCellBorders());
-        }
-
-        public static PlatformTableCellBorders New(TableCellBorders tableCellBorders)
-        {
-            if (tableCellBorders == null)
-                tableCellBorders = new TableCellBorders();
-
-            return new PlatformTableCellBorders(tableCellBorders);
+            var xmlElement = CheckDescendantsOrAppendNewOne<TableCellBorders>(parent);
+            return new PlatformTableCellBorders(xmlElement);
         }
 
         #endregion

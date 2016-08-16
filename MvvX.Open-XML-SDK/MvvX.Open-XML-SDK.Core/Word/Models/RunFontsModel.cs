@@ -1,4 +1,4 @@
-﻿namespace MvvX.Open_XML_SDK.Core.Word
+﻿namespace MvvX.Open_XML_SDK.Core.Word.Models
 {
     public class RunFontsModel
     {

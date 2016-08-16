@@ -17,7 +17,7 @@ namespace MvvX.Open_XML_SDK.Shared.Word
         {
             get
             {
-                if (openXmlElement.Val.HasValue)
+                if (openXmlElement.Val !=null && openXmlElement.Val.HasValue)
                     return openXmlElement.Val.Value;
                 else
                     return 0;

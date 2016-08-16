@@ -5,13 +5,15 @@ namespace MvvX.Open_XML_SDK.Shared.Word.Tables
 {
     public class PlatformTableCell : PlatformOpenXmlElement, ITableCell
     {
-        private readonly TableCell tableCell;
+        private readonly TableCell xmlElement;
 
         private ITableCellProperties properties;
         public ITableCellProperties Properties
         {
             get
             {
+                if (properties == null)
+                    properties = PlatformTableCellProperties.New(xmlElement);
                 return properties;
             }
         }
@@ -19,9 +21,7 @@ namespace MvvX.Open_XML_SDK.Shared.Word.Tables
         public PlatformTableCell(TableCell tableCell)
             : base(tableCell)
         {
-            this.tableCell = tableCell;
-            this.properties = PlatformTableCellProperties.New();
-            tableCell.Append(Properties.ContentItem as TableCellProperties);
+            this.xmlElement = tableCell;
         }
 
         #region Static helpers methods

@@ -4,6 +4,7 @@ using DocumentFormat.OpenXml.Wordprocessing;
 using MvvX.Open_XML_SDK.Core.Word;
 using MvvX.Open_XML_SDK.Core.Word.Bookmarks;
 using MvvX.Open_XML_SDK.Core.Word.Images;
+using MvvX.Open_XML_SDK.Core.Word.Models;
 using MvvX.Open_XML_SDK.Core.Word.Paragraphs;
 using MvvX.Open_XML_SDK.Core.Word.Tables;
 using MvvX.Open_XML_SDK.Core.Word.Tables.Models;
@@ -468,23 +469,6 @@ namespace MvvX.Open_XML_SDK.Word
         
         #endregion
 
-        #region Shadings
-
-        public IShading GetShading(string textColor = null, string fillColor = null)
-        {
-            var shading = new Shading();
-
-            if (!string.IsNullOrWhiteSpace(textColor))
-                shading.Color = textColor;
-
-            if (!string.IsNullOrWhiteSpace(fillColor))
-                shading.Fill = fillColor;
-
-            return new PlatformShading(shading);
-        }
-
-        #endregion
-
         #region Texts
 
         public IRun CreateEmptyRun()
@@ -568,29 +552,8 @@ namespace MvvX.Open_XML_SDK.Word
                         throw new ArgumentException("Lines 1 and " + (i + 1) + " have not same columns count");
                 }
             }
+
             var pt = PlatformTable.New();
-            var tbl = pt.ContentItem as Table;
-            
-            var tableProp = pt.Properties.ContentItem as TableProperties;
-
-            TableStyle tableStyle = new TableStyle() { Val = "TableGrid" };
-            // 100% de la largeur de la page ou largeur indiquée en paramètre:
-            TableWidth tableWidth = new TableWidth();
-            if (properties != null && !string.IsNullOrWhiteSpace(properties.Width))
-            {
-                tableWidth.Width = properties.Width;
-                if (properties.WidthUnit.OOxmlEquals(DocumentFormat.OpenXml.Wordprocessing.TableWidthUnitValues.Nil))
-                    tableWidth.Type = DocumentFormat.OpenXml.Wordprocessing.TableWidthUnitValues.Pct;
-                else
-                    tableWidth.Type = properties.WidthUnit.ToOOxml();
-            }
-            else
-            {
-                tableWidth.Width = "5000";
-                tableWidth.Type = DocumentFormat.OpenXml.Wordprocessing.TableWidthUnitValues.Pct;
-            }
-
-            tableProp.Append(tableStyle, tableWidth);
 
             if (properties != null)
                 AutoMapper.Mapper.Map(properties, pt.Properties);
@@ -599,7 +562,7 @@ namespace MvvX.Open_XML_SDK.Word
             {
                 for (int i = 0; i < rows.Count; i++)
                 {
-                    tbl.Append(rows[i].ContentItem as TableRow);
+                    pt.Append(rows[i]);
                 }
             }
 
@@ -627,44 +590,21 @@ namespace MvvX.Open_XML_SDK.Word
             if (cellModel == null)
                 throw new ArgumentNullException("cellModel must not be null");
 
-            TableCell tc = new TableCell();
+            var platformCellTable = PlatformTableCell.New();
+            
+            if (cellModel != null)
+                AutoMapper.Mapper.Map(cellModel, platformCellTable.Properties);
 
-            var tableCellProperties = new TableCellProperties();
-            if (!string.IsNullOrWhiteSpace(cellModel.Width))
-                if (cellModel.WidthUnit.Equals(DocumentFormat.OpenXml.Wordprocessing.TableWidthUnitValues.Nil))
-                    tableCellProperties.Append(new TableCellWidth { Type = DocumentFormat.OpenXml.Wordprocessing.TableWidthUnitValues.Dxa, Width = cellModel.Width });
-                else
-                    tableCellProperties.Append(new TableCellWidth { Type = cellModel.WidthUnit.ToOOxml(), Width = cellModel.Width });
-            else
-                tableCellProperties.Append(new TableCellWidth { Type = DocumentFormat.OpenXml.Wordprocessing.TableWidthUnitValues.Auto });
+            TableCell tc = platformCellTable.ContentItem as TableCell;
 
-            if (cellModel.Gridspan.HasValue)
-                tableCellProperties.Append(new GridSpan { Val = cellModel.Gridspan.Value });
-
-            //if (cellModel.Shading != null)
-            //    tableCellProperties.Append(cellModel.Shading.ContentItem as Shading);
-
+            var tableCellProperties = platformCellTable.Properties.ContentItem as TableCellProperties;
+            
             //tableCellProperties.Append(new TableCellVerticalAlignment { Val = cellModel.TableVerticalAlignementValues.ToOOxml() });
 
             // Modification de la rotation du texte dans la cellule
             if (cellModel.TextDirectionValues.HasValue)
                 tableCellProperties.Append(new TextDirection { Val = cellModel.TextDirectionValues.ToOOxml() });
-
-            // Gestion des bordures de la cellule
-            if (cellModel.TopBorder != null)
-                tableCellProperties.Append(new TableCellBorders(new TopBorder { Val = cellModel.TopBorder.BorderValue.ToOOxml(), Color = cellModel.TopBorder.Color, Size =Convert.ToUInt32(cellModel.TopBorder.Size) }));
-
-            if (cellModel.BottomBorder != null)
-                tableCellProperties.Append(new TableCellBorders(new BottomBorder { Val = cellModel.BottomBorder.BorderValue.ToOOxml(), Color = cellModel.BottomBorder.Color, Size = Convert.ToUInt32(cellModel.BottomBorder.Size) }));
-
-            if (cellModel.LeftBorder != null)
-                tableCellProperties.Append(new TableCellBorders(new LeftBorder { Val = cellModel.LeftBorder.BorderValue.ToOOxml(), Color = cellModel.LeftBorder.Color, Size = Convert.ToUInt32(cellModel.LeftBorder.Size) }));
-
-            if (cellModel.RightBorder != null)
-                tableCellProperties.Append(new TableCellBorders(new RightBorder { Val = cellModel.RightBorder.BorderValue.ToOOxml(), Color = cellModel.RightBorder.Color, Size = Convert.ToUInt32(cellModel.RightBorder.Size) }));
-
-            tc.Append(tableCellProperties);
-
+            
             Paragraph par = new Paragraph();
             ParagraphProperties pr = new ParagraphProperties(); // new TableCellVerticalAlignment { Val = cellModel.TableVerticalAlignementValues.ToOOxml() });
             //new SpacingBetweenLines() { After = cellModel.SpacingAfter, Before = cellModel.SpacingBefore, Line = "240" });
@@ -694,49 +634,28 @@ namespace MvvX.Open_XML_SDK.Word
                 throw new ArgumentNullException("All elements of cellContents must be not null");
             if (cellModel == null)
                 throw new ArgumentNullException("cellModel must not be null");
+            
+            var platformCellTable = PlatformTableCell.New();
 
-            var platformTableCell = PlatformTableCell.New();
+            if (cellModel != null)
+                AutoMapper.Mapper.Map(cellModel, platformCellTable.Properties);
 
-            var tableCellProperties = platformTableCell.Properties.ContentItem as TableCellProperties;
-            if (!string.IsNullOrWhiteSpace(cellModel.Width))
-                if (cellModel.WidthUnit.OOxmlEquals(DocumentFormat.OpenXml.Wordprocessing.TableWidthUnitValues.Nil))
-                    tableCellProperties.Append(new TableCellWidth { Type = DocumentFormat.OpenXml.Wordprocessing.TableWidthUnitValues.Dxa, Width = cellModel.Width });
-                else
-                    tableCellProperties.Append(new TableCellWidth { Type = cellModel.WidthUnit.ToOOxml(), Width = cellModel.Width });
-            else
-                tableCellProperties.Append(new TableCellWidth { Type = DocumentFormat.OpenXml.Wordprocessing.TableWidthUnitValues.Auto });
+            TableCell tc = platformCellTable.ContentItem as TableCell;
 
-            if (cellModel.Gridspan.HasValue)
-                platformTableCell.Properties.GridSpan.Val  = cellModel.Gridspan.Value;
-
-            if (cellModel.Shading != null)
-                tableCellProperties.Shading.Val = cellModel.Shading.ToOOxml();
-
+            var tableCellProperties = platformCellTable.Properties.ContentItem as TableCellProperties;
+            
             //tableCellProperties.Append(new TableCellVerticalAlignment { Val = cellModel.TableVerticalAlignementValues.ToOOxml() });
 
             // Modification de la rotation du texte dans la cellule
             if (cellModel.TextDirectionValues.HasValue)
                 tableCellProperties.Append(new TextDirection { Val = cellModel.TextDirectionValues.ToOOxml() });
-
-            // Gestion des bordures de la cellule
-            if (cellModel.TopBorder != null)
-                tableCellProperties.Append(new TableCellBorders(new TopBorder { Val = cellModel.TopBorder.BorderValue.ToOOxml(), Color = cellModel.TopBorder.Color, Size = Convert.ToUInt32(cellModel.TopBorder.Size) }));
-
-            if (cellModel.BottomBorder != null)
-                tableCellProperties.Append(new TableCellBorders(new BottomBorder { Val = cellModel.BottomBorder.BorderValue.ToOOxml(), Color = cellModel.BottomBorder.Color, Size = Convert.ToUInt32(cellModel.BottomBorder.Size) }));
-
-            if (cellModel.LeftBorder != null)
-                tableCellProperties.Append(new TableCellBorders(new LeftBorder { Val = cellModel.LeftBorder.BorderValue.ToOOxml(), Color = cellModel.LeftBorder.Color, Size = Convert.ToUInt32(cellModel.LeftBorder.Size) }));
-
-            if (cellModel.RightBorder != null)
-                tableCellProperties.Append(new TableCellBorders(new RightBorder { Val = cellModel.RightBorder.BorderValue.ToOOxml(), Color = cellModel.RightBorder.Color, Size = Convert.ToUInt32(cellModel.RightBorder.Size) }));
             
             for (int i = 0; i < cellContents.Count; i++)
             {
-                platformTableCell.Append(cellContents[i]);
+                platformCellTable.Append(cellContents[i]);
             }
 
-            return platformTableCell;
+            return platformCellTable;
         }
 
         public ITableCell CreateTableMergeCell(IRun run, TableCellPropertiesModel cellModel)
@@ -758,26 +677,15 @@ namespace MvvX.Open_XML_SDK.Word
             if (cellModel == null)
                 throw new ArgumentNullException("cellModel must not be null");
 
-            TableCell tc = new TableCell();
+            var platformCellTable = PlatformTableCell.New();
 
-            var tableCellProperties = new TableCellProperties();
-            if (!string.IsNullOrWhiteSpace(cellModel.Width))
-                if (cellModel.WidthUnit.OOxmlEquals(DocumentFormat.OpenXml.Wordprocessing.TableWidthUnitValues.Nil))
-                    tableCellProperties.Append(new TableCellWidth { Type = DocumentFormat.OpenXml.Wordprocessing.TableWidthUnitValues.Dxa, Width = cellModel.Width });
-                else
-                    tableCellProperties.Append(new TableCellWidth { Type = cellModel.WidthUnit.ToOOxml(), Width = cellModel.Width });
-            else
-                tableCellProperties.Append(new TableCellWidth { Type = DocumentFormat.OpenXml.Wordprocessing.TableWidthUnitValues.Auto });
+            if (cellModel != null)
+                AutoMapper.Mapper.Map(cellModel, platformCellTable.Properties);
 
-            if (cellModel.Gridspan.HasValue)
-            {
-                tableCellProperties.GridSpan = new GridSpan();
-                tableCellProperties.GridSpan.Val = cellModel.Gridspan.Value;
-            }
+            TableCell tc = platformCellTable.ContentItem as TableCell;
 
-            //if (cellModel.Shading != null)
-            //    tableCellProperties.Shading.Val = cellModel.Shading.ToOOxml();
-
+            var tableCellProperties = platformCellTable.Properties.ContentItem as TableCellProperties;
+            
             //tableCellProperties.Append(new TableCellVerticalAlignment { Val = cellModel.TableVerticalAlignementValues.ToOOxml() });
 
             // Gestion de la fusion des cellules
@@ -795,22 +703,7 @@ namespace MvvX.Open_XML_SDK.Word
             // Modification de la rotation du texte dans la cellule
             if (cellModel.TextDirectionValues.HasValue)
                 tableCellProperties.Append(new TextDirection { Val = cellModel.TextDirectionValues.ToOOxml() });
-
-            // Gestion des bordures de la cellule
-            if (cellModel.TopBorder != null)
-                tableCellProperties.Append(new TableCellBorders(new TopBorder { Val = cellModel.TopBorder.BorderValue.ToOOxml(), Color = cellModel.TopBorder.Color, Size = Convert.ToUInt32(cellModel.TopBorder.Size) }));
-
-            if (cellModel.BottomBorder != null)
-                tableCellProperties.Append(new TableCellBorders(new BottomBorder { Val = cellModel.BottomBorder.BorderValue.ToOOxml(), Color = cellModel.BottomBorder.Color, Size = Convert.ToUInt32(cellModel.BottomBorder.Size) }));
-
-            if (cellModel.LeftBorder != null)
-                tableCellProperties.Append(new TableCellBorders(new LeftBorder { Val = cellModel.LeftBorder.BorderValue.ToOOxml(), Color = cellModel.LeftBorder.Color, Size = Convert.ToUInt32(cellModel.LeftBorder.Size) }));
-
-            if (cellModel.RightBorder != null)
-                tableCellProperties.Append(new TableCellBorders(new RightBorder { Val = cellModel.RightBorder.BorderValue.ToOOxml(), Color = cellModel.RightBorder.Color, Size = Convert.ToUInt32(cellModel.RightBorder.Size) }));
-
-            tc.Append(tableCellProperties);
-
+            
             Paragraph par = new Paragraph();
             ParagraphProperties pr = new ParagraphProperties();// new TableCellVerticalAlignment { Val = cellModel.TableVerticalAlignementValues.ToOOxml() });
             //new SpacingBetweenLines() { After = cellModel.SpacingAfter, Before = cellModel.SpacingBefore, Line = "240" });
@@ -839,19 +732,19 @@ namespace MvvX.Open_XML_SDK.Word
                 throw new ArgumentNullException("cells must not be null");
             if (cells.Any(e => e == null))
                 throw new ArgumentNullException("All elements of cells must be not null");
-
-            var tr = new TableRow();
-
-            var ptr = new PlatformTableRow(tr);
+            
+            var ptr = PlatformTableRow.New();
 
             if (properties != null)
             {
+                AutoMapper.Mapper.Map(properties, ptr.Properties);
                 // Create a TableRowProperties
-                if (properties.Height.HasValue)
-                {
-                    TableRowProperties trPpr = new TableRowProperties(new TableRowHeight() { Val = Convert.ToUInt32(properties.Height) });
-                    tr.Append(trPpr);
-                }
+                //if (properties.Height.HasValue)
+                //{
+                //    TableRowProperties trPpr = new TableRowProperties(new TableRowHeight() { Val = Convert.ToUInt32(properties.Height) });
+                //    tr.Append(trPpr);
+                //}
+                //ptr.Properties.Height = 
             }
 
             if (cells != null)
@@ -865,3 +758,4 @@ namespace MvvX.Open_XML_SDK.Word
         #endregion
     }
 }
+

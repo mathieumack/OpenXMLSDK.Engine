@@ -5,11 +5,10 @@
     /// </summary>
     public class TableRowPropertiesModel
     {
-        public int? Height { get; set; }
+        public TableRowHeightModel TableRowHeight { get; set; }
 
         public TableRowPropertiesModel()
         {
-            Height = 0;
         }
     }
 }

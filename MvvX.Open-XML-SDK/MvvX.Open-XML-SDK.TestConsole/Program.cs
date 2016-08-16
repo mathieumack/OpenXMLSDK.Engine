@@ -7,6 +7,7 @@ using MvvX.Open_XML_SDK.Core.Word.Tables;
 using MvvX.Open_XML_SDK.Core.Word;
 using MvvX.Open_XML_SDK.Core.Word.Paragraphs;
 using System.Diagnostics;
+using MvvX.Open_XML_SDK.Core.Word.Models;
 
 namespace MvvX.Open_XML_SDK.TestConsole
 {
@@ -30,13 +31,20 @@ namespace MvvX.Open_XML_SDK.TestConsole
 
                 // Insertion d'une table dans un bookmark
                 // Propriété du Tableau
-                var tableProperty = new TablePropertiesModel();
-                tableProperty.TableBorders = new TableBordersModel()
+                var tableProperty = new TablePropertiesModel()
                 {
-                    TopBorder = new TableBorderModel() { Color = "F7941F", Size = 20 },
-                    LeftBorder = new TableBorderModel() { Color = "F7941F", Size = 20 },
-                    RightBorder = new TableBorderModel() { Color = "F7941F", Size = 20 },
-                    BottomBorder = new TableBorderModel() { Color = "F7941F", Size = 20 }
+                    TableBorders = new TableBordersModel()
+                    {
+                        TopBorder = new TableBorderModel() { Color = "F7941F", Size = 40, BorderValue = BorderValues.Birds },
+                        LeftBorder = new TableBorderModel() { Color = "CCCCCC", Size = 20, BorderValue = BorderValues.Birds },
+                        RightBorder = new TableBorderModel() { Color = "CCCCCC", Size = 20, BorderValue = BorderValues.Birds },
+                        BottomBorder = new TableBorderModel() { Color = "F7941F", Size = 40, BorderValue = BorderValues.Birds }
+                    },
+                    TableWidth = new TableWidthModel()
+                    {
+                        Width = "5000",
+                        Type = TableWidthUnitValues.Pct
+                    }
                 };
                 // Lignes du premier tableau pour les constats checked
                 var lines = new List<ITableRow>();
@@ -46,39 +54,79 @@ namespace MvvX.Open_XML_SDK.TestConsole
                     var borderTopIsOK = new TableBorderModel();
                     if (i != 0)
                         borderTopIsOK.BorderValue = BorderValues.Nil;
-                    
+
                     // Première ligne
-                    var texte = word.CreateRunForTexte("Header Numero : " + i, 
+                    var texte = word.CreateRunForTexte("Header Numero : " + i,
                             new RunPropertiesModel()
                             {
                                 Bold = true,
                                 FontSize = "24",
                                 RunFonts = new RunFontsModel()
                                 {
-                                    Ascii = "Gigi",
-                                    HighAnsi = "Gigi",
-                                    EastAsia = "Gigi",
-                                    ComplexScript = "Gigi"
+                                    Ascii = "Courier New",
+                                    HighAnsi = "Courier New",
+                                    EastAsia = "Courier New",
+                                    ComplexScript = "Courier New"
                                 }
                             });
-                    
+
                     var cellules = new List<ITableCell>()
                     {
-                        word.CreateTableCell(texte, new TableCellPropertiesModel() { Gridspan = 2, //Shading = word.GetShading(fillColor: "F7941F"), /*BorderBottom = false, BorderTop = borderTopIsOK,*/ Width = "8862",
-                                                BottomBorder = new TableBorderModel() { BorderValue = BorderValues.Nil }, TopBorder = borderTopIsOK,  }),
-                        word.CreateTableCell(word.CreateEmptyRun(), new TableCellPropertiesModel() { // Shading = word.GetShading(fillColor: "F7941F"), /*BorderBottom = false, BorderTop = borderTopIsOK,*/ Width = "246",
-                                                BottomBorder = new TableBorderModel() { BorderValue = BorderValues.Nil }, TopBorder = borderTopIsOK })
+                        word.CreateTableCell(texte, new TableCellPropertiesModel() {
+                            Gridspan = new GridSpanModel() { Val = 2 },
+                            Shading = new ShadingModel()
+                            {
+                                Fill = "F7941F"
+                            },
+                            TableCellWidth = new TableCellWidthModel()
+                            {
+                                Width = "8862"
+                            },
+                            TableCellBorders = new TableCellBordersModel()
+                            {
+                                TopBorder = borderTopIsOK
+                            }
+                        }),
+                        word.CreateTableCell(word.CreateEmptyRun(), new TableCellPropertiesModel() { 
+                                    TableCellWidth = new TableCellWidthModel()
+                                    {
+                                        Width = "246"
+                                    },
+                                    Shading = new ShadingModel()
+                                    {
+                                        Fill = "F7941F"
+                                    },
+                                    TableCellBorders = new TableCellBordersModel() {
+                                                TopBorder = borderTopIsOK
+                                    }
+                        })
                     };
-                    lines.Add(word.CreateTableRow(cellules, new TableRowPropertiesModel() { Height = 380 }));
+                    lines.Add(word.CreateTableRow(cellules, new TableRowPropertiesModel()
+                    {
+                        TableRowHeight = new TableRowHeightModel()
+                        {
+                            Val = 380
+                        }
+                    }));
 
                     // Deuxième ligne
                     texte = word.CreateRunForTexte("Constat et commentaire", new RunPropertiesModel() { Bold = true });
                     cellules = new List<ITableCell>()
                     {
-                        word.CreateTableCell(texte, new TableCellPropertiesModel() { Width = "4890", /*BorderBottom = false, BorderTop = false*/
-                                                BottomBorder = new TableBorderModel() { BorderValue = BorderValues.Nil }, TopBorder = new TableBorderModel() { BorderValue = BorderValues.Nil } }),
-                        word.CreateTableMergeCell(word.CreateEmptyRun(), new TableCellPropertiesModel() { Fusion = true, Width = "4218", /*BorderTop = false, BorderBottom = false,*/ Gridspan = 2,
-                                                BottomBorder = new TableBorderModel() { BorderValue = BorderValues.Nil }, TopBorder = new TableBorderModel() { BorderValue = BorderValues.Nil }})
+                        word.CreateTableCell(texte, new TableCellPropertiesModel() {
+                                    TableCellWidth = new TableCellWidthModel()
+                                    {
+                                        Width = "4890"
+                                    }
+                        }),
+                        word.CreateTableMergeCell(word.CreateEmptyRun(), new TableCellPropertiesModel() {
+                                    Fusion = true,
+                                    TableCellWidth = new TableCellWidthModel()
+                                    {
+                                        Width = "4218"
+                                    },
+                                    Gridspan = new GridSpanModel() { Val = 2 }
+                        })
                     };
                     lines.Add(word.CreateTableRow(cellules));
 
@@ -86,10 +134,30 @@ namespace MvvX.Open_XML_SDK.TestConsole
                     texte = word.CreateRunForTexte("Texte du Constat Numero : " + i, new RunPropertiesModel());
                     cellules = new List<ITableCell>()
                     {
-                        word.CreateTableCell(texte, new TableCellPropertiesModel() { Width = "4890", /*BorderTop = false, BorderBottomColor = "FF0019"*/
-                                                TopBorder = new TableBorderModel() { BorderValue = BorderValues.Nil }, BottomBorder = new TableBorderModel() { Color = "FF0019" } }),
-                        word.CreateTableMergeCell(word.CreateEmptyRun(), new TableCellPropertiesModel() { Fusion = true, FusionChild = true, Width = "4218", /*BorderTop = false,*/ Gridspan = 2, /*BorderBottomColor = "FF0019"*/
-                                                TopBorder = new TableBorderModel() { BorderValue = BorderValues.Nil }, BottomBorder = new TableBorderModel() { Color = "FF0019" } })
+                        word.CreateTableCell(texte, new TableCellPropertiesModel() {
+                                                TableCellWidth = new TableCellWidthModel()
+                                                {
+                                                    Width = "4890"
+                                                },
+                                                TableCellBorders = new TableCellBordersModel() {
+                                                    BottomBorder = new TableBorderModel() {
+                                                        Color = "FF0019"
+                                                        }
+                                                }
+                        }),
+                        word.CreateTableMergeCell(word.CreateEmptyRun(), new TableCellPropertiesModel() {
+                                                Fusion = true,
+                                                FusionChild = true,
+                                                TableCellWidth = new TableCellWidthModel()
+                                                {
+                                                    Width = "4218"
+                                                },
+                                                Gridspan = new GridSpanModel() { Val = 2 },
+                                                TableCellBorders = new TableCellBordersModel() {
+                                                    BottomBorder = new TableBorderModel() {
+                                                        Color = "FF0019" }
+                                                    }
+                        })
                     };
                     lines.Add(word.CreateTableRow(cellules));
 
@@ -97,10 +165,33 @@ namespace MvvX.Open_XML_SDK.TestConsole
                     texte = word.CreateRunForTexte("Risques", new RunPropertiesModel() { Bold = true });
                     cellules = new List<ITableCell>()
                     {
-                        word.CreateTableCell(texte, new TableCellPropertiesModel() { Width = "4890", /*BorderBottom = false, BorderTop = true*//*, BorderTopColor = "00FF19"*/
-                                                BottomBorder = new TableBorderModel() { BorderValue = BorderValues.Nil } }),
-                        word.CreateTableMergeCell(word.CreateEmptyRun(), new TableCellPropertiesModel() { Fusion = true, FusionChild = true, Width = "4218", /*BorderBottom = false,*/ Gridspan = 2, /*BorderTop = true*//*, BorderTopColor = "00FF19"*/
-                                                BottomBorder = new TableBorderModel() { BorderValue = BorderValues.Nil }})
+                        word.CreateTableCell(texte, new TableCellPropertiesModel() {
+                                                TableCellWidth = new TableCellWidthModel()
+                                                {
+                                                    Width = "4890"
+                                                },
+                                                TableCellBorders = new TableCellBordersModel() {
+                                                    TopBorder = new TableBorderModel()
+                                                    {
+                                                        Color = "00FF19"
+                                                    }
+                                                }
+                        }),
+                        word.CreateTableMergeCell(word.CreateEmptyRun(), new TableCellPropertiesModel() {
+                                                Fusion = true,
+                                                FusionChild = true,
+                                                TableCellWidth = new TableCellWidthModel()
+                                                {
+                                                    Width = "4218"
+                                                },
+                                                Gridspan = new GridSpanModel() { Val = 2 },
+                                                TableCellBorders = new TableCellBordersModel() {
+                                                    TopBorder = new TableBorderModel()
+                                                    {
+                                                        Color = "00FF19"
+                                                    }
+                                                }
+                        })
                     };
                     lines.Add(word.CreateTableRow(cellules));
 
@@ -108,10 +199,29 @@ namespace MvvX.Open_XML_SDK.TestConsole
                     texte = word.CreateRunForTexte("Texte du Risque Numero : " + i, new RunPropertiesModel());
                     cellules = new List<ITableCell>()
                     {
-                        word.CreateTableCell(texte, new TableCellPropertiesModel() { Width = "4890", /*BorderTop = false*/
-                                                TopBorder = new TableBorderModel() { BorderValue = BorderValues.Nil } }),
-                        word.CreateTableMergeCell(word.CreateEmptyRun(), new TableCellPropertiesModel() { Fusion = true, FusionChild = true, Width = "4218", /*BorderTop = false,*/ Gridspan = 2,
-                                                TopBorder = new TableBorderModel() { BorderValue = BorderValues.Nil } })
+                        word.CreateTableCell(texte, new TableCellPropertiesModel() {
+                                                TableCellWidth = new TableCellWidthModel()
+                                                {
+                                                    Width = "4890"
+                                                },
+                                                TableCellBorders = new TableCellBordersModel() {
+                                                    TopBorder = new TableBorderModel() {
+                                                        BorderValue = BorderValues.Nil }
+                                                }
+                        }),
+                        word.CreateTableMergeCell(word.CreateEmptyRun(), new TableCellPropertiesModel() {
+                                                Fusion = true,
+                                                FusionChild = true,
+                                                TableCellWidth = new TableCellWidthModel()
+                                                {
+                                                    Width = "4218"
+                                                },
+                                                Gridspan = new GridSpanModel() { Val = 2 },
+                                                TableCellBorders = new TableCellBordersModel() {
+                                                    TopBorder = new TableBorderModel() {
+                                                        BorderValue = BorderValues.Nil }
+                                                    }
+                        })
                     };
                     lines.Add(word.CreateTableRow(cellules));
 
@@ -119,14 +229,37 @@ namespace MvvX.Open_XML_SDK.TestConsole
                     texte = word.CreateRunForTexte("Recommandations", new RunPropertiesModel() { Bold = true });
                     cellules = new List<ITableCell>()
                     {
-                        word.CreateTableCell(texte, new TableCellPropertiesModel() { Width = "4890", /*BorderBottom = false*/
-                                                BottomBorder = new TableBorderModel() { BorderValue = BorderValues.Nil } }),
-                        word.CreateTableMergeCell(word.CreateEmptyRun(), new TableCellPropertiesModel() { Fusion = true, FusionChild = true, Width = "4218", /*BorderBottom = false,*/ Gridspan = 2,
-                                                BottomBorder = new TableBorderModel() { BorderValue = BorderValues.Nil } })
+                        word.CreateTableCell(texte, new TableCellPropertiesModel() {
+                                                TableCellWidth = new TableCellWidthModel()
+                                                {
+                                                    Width = "4890"
+                                                },
+                                                TableCellBorders = new TableCellBordersModel() {
+                                                    BottomBorder = new TableBorderModel() {
+                                                        BorderValue = BorderValues.Nil }
+                                                    }
+                        }),
+                        word.CreateTableMergeCell(word.CreateEmptyRun(), new TableCellPropertiesModel() {
+                                                Fusion = true,
+                                                FusionChild = true,
+                                                TableCellWidth = new TableCellWidthModel()
+                                                {
+                                                    Width = "4218"
+                                                },
+                                                Gridspan = new GridSpanModel() { Val = 2 },
+                                                TableCellBorders = new TableCellBordersModel() {
+                                                    BottomBorder = new TableBorderModel() {
+                                                        BorderValue = BorderValues.Nil }
+                                                    }
+                        })
                     };
                     lines.Add(word.CreateTableRow(cellules));
 
-                    var borderBottomIsOK = new TableBorderModel() { BorderValue = BorderValues.Nil, Color = "FF0019" };
+                    var borderBottomIsOK = new TableBorderModel() {
+                        BorderValue = BorderValues.Nil,
+                        Color = "FF0019"
+                    };
+
                     if (i == 2)
                         borderBottomIsOK.BorderValue = BorderValues.Single;
 
@@ -134,20 +267,38 @@ namespace MvvX.Open_XML_SDK.TestConsole
                     texte = word.CreateRunForTexte("Texte de la Recommandation Numero : " + i, new RunPropertiesModel());
                     cellules = new List<ITableCell>()
                     {
-                        word.CreateTableCell(texte, new TableCellPropertiesModel() { Width = "4890", /*BorderTop = false, BorderBottom = borderBottomIsOK, BorderBottomColor = "FF0019"*/
-                                                TopBorder = new TableBorderModel() { BorderValue = BorderValues.Nil }, BottomBorder = borderBottomIsOK }),
-                        word.CreateTableMergeCell(word.CreateEmptyRun(), new TableCellPropertiesModel() { Fusion = true, FusionChild = true, Width = "4218", /*BorderTop = false, BorderBottom = borderBottomIsOK,*/ Gridspan = 2, /*BorderBottomColor = "FF0019"*/
-                                                TopBorder = new TableBorderModel() { BorderValue = BorderValues.Nil }, BottomBorder = borderBottomIsOK })
+                        word.CreateTableCell(texte, new TableCellPropertiesModel() {
+                                                TableCellWidth = new TableCellWidthModel()
+                                                {
+                                                    Width = "4890"
+                                                },
+                                                TableCellBorders = new TableCellBordersModel() {
+                                                    TopBorder = new TableBorderModel() { BorderValue = BorderValues.Nil },
+                                                    BottomBorder = borderBottomIsOK }
+                        }),
+                        word.CreateTableMergeCell(word.CreateEmptyRun(), new TableCellPropertiesModel() {
+                                                Fusion = true,
+                                                FusionChild = true,
+                                                TableCellWidth = new TableCellWidthModel()
+                                                {
+                                                    Width = "4218"
+                                                },
+                                                Gridspan = new GridSpanModel() { Val = 2 },
+                                                TableCellBorders = new TableCellBordersModel() {
+                                                    TopBorder = new TableBorderModel() {
+                                                        BorderValue = BorderValues.Nil },
+                                                    BottomBorder = borderBottomIsOK }
+                        })
                     };
                     lines.Add(word.CreateTableRow(cellules));
                 }
 
-                IList<IParagraph> tables = new List<IParagraph>();                
+                IList<IParagraph> tables = new List<IParagraph>();
                 tables.Add(word.CreateParagraphForRun(word.CreateRunForTable(word.CreateTable(lines, tableProperty))));
 
                 // Lignes du deuxième tableau pour les constats unchecked
                 //lines = new List<TableRow>();
-                
+
                 if (tables.Count > 0)
                     word.SetParagraphsOnBookmark("Insert_Documents", tables);
 

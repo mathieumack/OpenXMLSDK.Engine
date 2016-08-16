@@ -1,6 +1,7 @@
 ﻿using DocumentFormat.OpenXml.Wordprocessing;
 using MvvX.Open_XML_SDK.Core.Word.Tables;
 using MvvX.Open_XML_SDK.Core.Word;
+using System.Linq;
 
 namespace MvvX.Open_XML_SDK.Shared.Word.Tables
 {
@@ -22,7 +23,7 @@ namespace MvvX.Open_XML_SDK.Shared.Word.Tables
             get
             {
                 if (topBorder == null)
-                    topBorder = PlatformBorder<TopBorder>.New(openXmlElement.TopBorder);
+                    topBorder = PlatformBorder<TopBorder>.New(openXmlElement);
 
                 return topBorder;
             }
@@ -34,7 +35,7 @@ namespace MvvX.Open_XML_SDK.Shared.Word.Tables
             get
             {
                 if (rightBorder == null)
-                    rightBorder = PlatformBorder<RightBorder>.New(openXmlElement.RightBorder);
+                    rightBorder = PlatformBorder<RightBorder>.New(openXmlElement);
 
                 return rightBorder;
             }
@@ -46,7 +47,7 @@ namespace MvvX.Open_XML_SDK.Shared.Word.Tables
             get
             {
                 if (leftBorder == null)
-                    leftBorder = PlatformBorder<LeftBorder>.New(openXmlElement.LeftBorder);
+                    leftBorder = PlatformBorder<LeftBorder>.New(openXmlElement);
 
                 return leftBorder;
             }
@@ -58,7 +59,7 @@ namespace MvvX.Open_XML_SDK.Shared.Word.Tables
             get
             {
                 if (bottomBorder == null)
-                    bottomBorder = PlatformBorder<BottomBorder>.New(openXmlElement.BottomBorder);
+                    bottomBorder = PlatformBorder<BottomBorder>.New(openXmlElement);
 
                 return bottomBorder;
             }
@@ -70,7 +71,7 @@ namespace MvvX.Open_XML_SDK.Shared.Word.Tables
             get
             {
                 if (insideVerticalBorder == null)
-                    insideVerticalBorder = PlatformBorder<InsideVerticalBorder>.New(openXmlElement.InsideVerticalBorder);
+                    insideVerticalBorder = PlatformBorder<InsideVerticalBorder>.New(openXmlElement);
 
                 return insideVerticalBorder;
             }
@@ -82,7 +83,7 @@ namespace MvvX.Open_XML_SDK.Shared.Word.Tables
             get
             {
                 if (insideHorizontalBorder == null)
-                    insideHorizontalBorder = PlatformBorder<InsideHorizontalBorder>.New(openXmlElement.InsideHorizontalBorder);
+                    insideHorizontalBorder = PlatformBorder<InsideHorizontalBorder>.New(openXmlElement);
 
                 return insideHorizontalBorder;
             }
@@ -91,18 +92,11 @@ namespace MvvX.Open_XML_SDK.Shared.Word.Tables
         #endregion
 
         #region Static helpers methods
-
-        public static PlatformTableBorders New()
+        
+        public static PlatformTableBorders New(TableProperties tableProperties)
         {
-            return new PlatformTableBorders(new TableBorders());
-        }
-
-        public static PlatformTableBorders New(TableBorders tableBorders)
-        {
-            if (tableBorders == null)
-                tableBorders = new TableBorders();
-
-            return new PlatformTableBorders(tableBorders);
+            var xmlElement = CheckDescendantsOrAppendNewOne<TableBorders>(tableProperties);
+            return new PlatformTableBorders(xmlElement);
         }
 
         #endregion

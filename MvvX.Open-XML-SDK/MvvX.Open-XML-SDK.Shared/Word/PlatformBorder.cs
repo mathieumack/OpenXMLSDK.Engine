@@ -1,6 +1,7 @@
 ﻿using System;
 using DocumentFormat.OpenXml.Wordprocessing;
 using MvvX.Open_XML_SDK.Core.Word;
+using System.Linq;
 
 namespace MvvX.Open_XML_SDK.Shared.Word
 {
@@ -17,16 +18,30 @@ namespace MvvX.Open_XML_SDK.Shared.Word
 
         #region Static helpers methods
 
-        public static PlatformBorder<T> New()
+        public static PlatformBorder<T> New(TableCellBorders tableCellBorders)
         {
-            return new PlatformBorder<T>(new T());
+            T xmlElement = null;
+            if (tableCellBorders.Descendants<T>().Any())
+                xmlElement = tableCellBorders.Descendants<T>().First();
+            else
+            {
+                xmlElement = new T();
+                tableCellBorders.Append(xmlElement);
+            }
+            return new PlatformBorder<T>(xmlElement);
         }
 
-        public static PlatformBorder<T> New(T borderType)
+        public static PlatformBorder<T> New(TableBorders tableBorders)
         {
-            if (borderType == null)
-                borderType = new T();
-            return new PlatformBorder<T>(borderType);
+            T xmlElement = null;
+            if (tableBorders.Descendants<T>().Any())
+                xmlElement = tableBorders.Descendants<T>().First();
+            else
+            {
+                xmlElement = new T();
+                tableBorders.Append(xmlElement);
+            }
+            return new PlatformBorder<T>(xmlElement);
         }
 
         #endregion

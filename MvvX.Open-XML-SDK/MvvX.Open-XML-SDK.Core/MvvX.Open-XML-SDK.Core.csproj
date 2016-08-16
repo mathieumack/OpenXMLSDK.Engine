@@ -58,17 +58,29 @@
     <Compile Include="Word\Images\ImageType.cs" />
     <Compile Include="Word\IWordManager.cs" />
     <Compile Include="Word\JustificationValues.cs" />
+    <Compile Include="Word\Models\GridSpanModel.cs" />
+    <Compile Include="Word\Models\ShadingModel.cs" />
     <Compile Include="Word\OnOffOnlyValues.cs" />
     <Compile Include="Word\Paragraphs\IParagraph.cs" />
-    <Compile Include="Word\RunFontsModel.cs" />
-    <Compile Include="Word\RunPropertiesModel.cs" />
+    <Compile Include="Word\Models\RunFontsModel.cs" />
+    <Compile Include="Word\Models\RunPropertiesModel.cs" />
     <Compile Include="Word\ShadingPatternValues.cs" />
     <Compile Include="Word\SpaceProcessingModeValues.cs" />
     <Compile Include="Word\Tables\ITableBorders.cs" />
     <Compile Include="Word\Tables\ITableCellBorders.cs" />
+    <Compile Include="Word\Tables\ITableRowHeight.cs" />
     <Compile Include="Word\Tables\ITableProperties.cs" />
     <Compile Include="Word\Tables\ITableJustification.cs" />
+    <Compile Include="Word\Tables\ITableCellWidth.cs" />
+    <Compile Include="Word\Tables\ITableRowProperties.cs" />
+    <Compile Include="Word\Tables\ITableStyle.cs" />
+    <Compile Include="Word\Tables\ITableWidth.cs" />
+    <Compile Include="Word\Tables\Models\TableCellBordersModel.cs" />
     <Compile Include="Word\Tables\Models\TableBordersModel.cs" />
+    <Compile Include="Word\Tables\Models\TableRowHeightModel.cs" />
+    <Compile Include="Word\Tables\Models\TableCellWidthModel.cs" />
+    <Compile Include="Word\Tables\Models\TableStyleModel.cs" />
+    <Compile Include="Word\Tables\Models\TableWidthModel.cs" />
     <Compile Include="Word\Tables\TableRowAlignmentValues.cs" />
     <Compile Include="Word\Tables\ITableCell.cs" />
     <Compile Include="Word\Tables\ITableCellProperties.cs" />
@@ -81,6 +93,7 @@
     <Compile Include="Word\Tables\TableWidthUnitValues.cs" />
     <Compile Include="Word\Tables\TableVerticalAlignmentValues.cs" />
     <Compile Include="Word\TextDirectionValues.cs" />
+    <Compile Include="Word\ThemeColorValues.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="OpenXmlSdk.Android">

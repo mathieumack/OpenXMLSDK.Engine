@@ -1,15 +1,12 @@
-﻿namespace MvvX.Open_XML_SDK.Core.Word.Tables.Models
+﻿using MvvX.Open_XML_SDK.Core.Word.Models;
+
+namespace MvvX.Open_XML_SDK.Core.Word.Tables.Models
 {
     public class TableCellPropertiesModel
     {
-        /// <summary>
-        /// Width of the cell
-        /// </summary>
-        public string Width { get; set;}
-
-        public TableWidthUnitValues WidthUnit { get; set; }
-
-        public ShadingPatternValues? Shading { get; set; }
+        public TableCellWidthModel TableCellWidth { get; set; }
+        
+        public ShadingModel Shading { get; set; }
 
         /// <summary>
         /// Vertical alignement in cell.
@@ -21,7 +18,7 @@
 
         public TextDirectionValues? TextDirectionValues { get; set; }
 
-        public int? Gridspan { get; set; }
+        public GridSpanModel Gridspan { get; set; }
 
         public bool Fusion { get; set; }
 
@@ -36,29 +33,7 @@
         /// </summary>
         public bool ParagraphSolidarity { get; set; }
 
-        /// <summary>
-        /// Type of the top border.
-        /// Default : null, not set.
-        /// </summary>
-        public TableBorderModel TopBorder { get; set; }
-
-        /// <summary>
-        /// Type of the bottom border.
-        /// Default : null, not set.
-        /// </summary>
-        public TableBorderModel BottomBorder { get; set; }
-
-        /// <summary>
-        /// Type of the left border.
-        /// Default : null, not set.
-        /// </summary>
-        public TableBorderModel LeftBorder { get; set; }
-
-        /// <summary>
-        /// Type of the right border.
-        /// Default : null, not set.
-        /// </summary>
-        public TableBorderModel RightBorder { get; set; }
+        public TableCellBordersModel TableCellBorders { get; set; }
 
         public TableCellPropertiesModel()
         {

@@ -16,15 +16,15 @@ namespace MvvX.Open_XML_SDK.Shared.Word.Tables
 
         #region Interface :
 
-        private ITableCellBorders tableCellProperties;
-        public ITableCellBorders TableCellProperties
+        private ITableCellBorders tableCellBorders;
+        public ITableCellBorders TableCellBorders
         {
             get
             {
-                if (tableCellProperties == null)
-                    tableCellProperties = PlatformTableCellBorders.New(xmlElement.TableCellBorders);
+                if (tableCellBorders == null)
+                    tableCellBorders = PlatformTableCellBorders.New(xmlElement);
 
-                return tableCellProperties;
+                return tableCellBorders;
             }
         }
 
@@ -34,8 +34,32 @@ namespace MvvX.Open_XML_SDK.Shared.Word.Tables
             get
             {
                 if (gridSpan == null)
-                    gridSpan = PlatformGridSpan.New(xmlElement.GridSpan);
+                    gridSpan = PlatformGridSpan.New(xmlElement);
                 return gridSpan;
+            }
+        }
+
+        private ITableCellWidth tableCellWidth;
+        public ITableCellWidth TableCellWidth
+        {
+            get
+            {
+                if (tableCellWidth == null)
+                    tableCellWidth = PlatformTableCellWidth.New(xmlElement);
+
+                return tableCellWidth;
+            }
+        }
+
+        private IShading shading;
+        public IShading Shading
+        {
+            get
+            {
+                if (shading == null)
+                    shading = PlatformShading.New(xmlElement);
+
+                return shading;
             }
         }
 
@@ -65,9 +89,10 @@ namespace MvvX.Open_XML_SDK.Shared.Word.Tables
 
         #region Static helpers methods
 
-        public static PlatformTableCellProperties New()
+        public static PlatformTableCellProperties New(TableCell tableCell)
         {
-            return new PlatformTableCellProperties(new TableCellProperties());
+            var xmlElement = CheckDescendantsOrAppendNewOne<TableCellProperties>(tableCell);
+            return new PlatformTableCellProperties(xmlElement);
         }
 
         #endregion

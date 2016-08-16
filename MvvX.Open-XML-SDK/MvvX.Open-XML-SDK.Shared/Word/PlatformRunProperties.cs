@@ -21,7 +21,7 @@ namespace MvvX.Open_XML_SDK.Shared.Word
             get
             {
                 if (runFonts == null)
-                    runFonts = PlatformRunFonts.New(xmlElement.RunFonts);
+                    runFonts = PlatformRunFonts.New(xmlElement);
 
                 return runFonts;
             }
@@ -273,9 +273,10 @@ namespace MvvX.Open_XML_SDK.Shared.Word
 
         #region Static helpers methods
 
-        public static PlatformRunProperties New()
+        public static PlatformRunProperties New(Run run)
         {
-            return new PlatformRunProperties(new RunProperties());
+            var xmlElement = CheckDescendantsOrAppendNewOne<RunProperties>(run);
+            return new PlatformRunProperties(xmlElement);
         }
 
         #endregion
