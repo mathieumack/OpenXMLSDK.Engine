@@ -1,8 +1,8 @@
 ﻿using DocumentFormat.OpenXml.Wordprocessing;
-using MvvX.Plugins.Open_XML_SDK.Core.Word;
-using MvvX.Plugins.Open_XML_SDK.Shared.Word.Extensions;
+using MvvX.Plugins.OpenXMLSDK.Word;
+using MvvX.Plugins.OpenXMLSDK.Platform.Word.Extensions;
 
-namespace MvvX.Plugins.Open_XML_SDK.Shared.Word
+namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
 {
     public class PlatformText : PlatformOpenXmlElement, IText
     {

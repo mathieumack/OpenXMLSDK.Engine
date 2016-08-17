@@ -8,9 +8,9 @@
     <ProjectGuid>{342A2579-7D8F-4BFD-8A95-68E4765A3EDC}</ProjectGuid>
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
-    <RootNamespace>MvvX.Plugins.Open_XML_SDK.Touch</RootNamespace>
+    <RootNamespace>MvvX.Plugins.OpenXMLSDK.Touch</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
-    <AssemblyName>MvvX.Plugins.Open-XML-SDK.Touch</AssemblyName>
+    <AssemblyName>MvvX.Plugins.OpenXMLSDK.Touch</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -62,9 +62,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MvvX.Plugins.Open-XML-SDK.Core\MvvX.Plugins.Open-XML-SDK.Core.csproj">
+    <ProjectReference Include="..\MvvX.Plugins.Open-XML-SDK\MvvX.Plugins.Open-XML-SDK.csproj">
       <Project>{d516410f-1af5-49b1-98cf-00e08487ebba}</Project>
-      <Name>MvvX.Plugins.Open-XML-SDK.Core</Name>
+      <Name>MvvX.Plugins.Open-XML-SDK</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

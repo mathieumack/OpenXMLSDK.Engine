@@ -1,18 +1,16 @@
 ﻿using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
-using MvvX.Plugins.Open_XML_SDK.Core.Word;
-using MvvX.Plugins.Open_XML_SDK.Core.Word.Bookmarks;
-using MvvX.Plugins.Open_XML_SDK.Core.Word.Images;
-using MvvX.Plugins.Open_XML_SDK.Core.Word.Models;
-using MvvX.Plugins.Open_XML_SDK.Core.Word.Paragraphs;
-using MvvX.Plugins.Open_XML_SDK.Core.Word.Tables;
-using MvvX.Plugins.Open_XML_SDK.Core.Word.Tables.Models;
-using MvvX.Plugins.Open_XML_SDK.Shared.Word;
-using MvvX.Plugins.Open_XML_SDK.Shared.Word.Bookmarks;
-using MvvX.Plugins.Open_XML_SDK.Shared.Word.Extensions;
-using MvvX.Plugins.Open_XML_SDK.Shared.Word.Paragraphs;
-using MvvX.Plugins.Open_XML_SDK.Shared.Word.Tables;
+using MvvX.Plugins.OpenXMLSDK.Word.Bookmarks;
+using MvvX.Plugins.OpenXMLSDK.Word.Images;
+using MvvX.Plugins.OpenXMLSDK.Word.Models;
+using MvvX.Plugins.OpenXMLSDK.Word.Paragraphs;
+using MvvX.Plugins.OpenXMLSDK.Word.Tables;
+using MvvX.Plugins.OpenXMLSDK.Word.Tables.Models;
+using MvvX.Plugins.OpenXMLSDK.Platform.Word.Bookmarks;
+using MvvX.Plugins.OpenXMLSDK.Platform.Word.Extensions;
+using MvvX.Plugins.OpenXMLSDK.Platform.Word.Paragraphs;
+using MvvX.Plugins.OpenXMLSDK.Platform.Word.Tables;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,8 +18,9 @@ using System.Linq;
 using A = DocumentFormat.OpenXml.Drawing;
 using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
 using PIC = DocumentFormat.OpenXml.Drawing.Pictures;
+using MvvX.Plugins.OpenXMLSDK.Word;
 
-namespace MvvX.Plugins.Open_XML_SDK.Word
+namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
 {
     public class WordManager : IWordManager
     {
@@ -519,7 +518,7 @@ namespace MvvX.Plugins.Open_XML_SDK.Word
                 AutoMapper.Mapper.Map(rpm, platformRun.Properties);
             }
 
-            platformRun.Append(PlatformText.New(content, Core.Word.SpaceProcessingModeValues.Preserve));
+            platformRun.Append(PlatformText.New(content, OpenXMLSDK.Word.SpaceProcessingModeValues.Preserve));
 
             return platformRun;
         }

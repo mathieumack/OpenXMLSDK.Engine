@@ -1,8 +1,8 @@
-﻿namespace MvvX.Plugins.Open_XML_SDK.Shared.Word.Extensions
+﻿namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.Extensions
 {
     public static class ShadingPatternValuesExtensions
     {
-        public static DocumentFormat.OpenXml.Wordprocessing.ShadingPatternValues? ToOOxml(this MvvX.Plugins.Open_XML_SDK.Core.Word.ShadingPatternValues? value)
+        public static DocumentFormat.OpenXml.Wordprocessing.ShadingPatternValues? ToOOxml(this MvvX.Plugins.OpenXMLSDK.Word.ShadingPatternValues? value)
         {
             if (value.HasValue)
                 return (DocumentFormat.OpenXml.Wordprocessing.ShadingPatternValues)(int)value;

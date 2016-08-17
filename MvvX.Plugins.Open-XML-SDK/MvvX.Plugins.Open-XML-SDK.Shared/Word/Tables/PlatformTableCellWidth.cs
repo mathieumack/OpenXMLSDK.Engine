@@ -1,7 +1,7 @@
 ﻿using DocumentFormat.OpenXml.Wordprocessing;
-using MvvX.Plugins.Open_XML_SDK.Core.Word.Tables;
+using MvvX.Plugins.OpenXMLSDK.Word.Tables;
 
-namespace MvvX.Plugins.Open_XML_SDK.Shared.Word.Tables
+namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.Tables
 {
     public class PlatformTableCellWidth : PlatformOpenXmlElement, ITableCellWidth
     {
@@ -33,12 +33,12 @@ namespace MvvX.Plugins.Open_XML_SDK.Shared.Word.Tables
             }
         }
 
-        public Core.Word.Tables.TableWidthUnitValues? Type
+        public OpenXMLSDK.Word.Tables.TableWidthUnitValues? Type
         {
             get
             {
                 if (xmlElement.Type.HasValue)
-                    return (Core.Word.Tables.TableWidthUnitValues)(int)xmlElement.Type.Value;
+                    return (OpenXMLSDK.Word.Tables.TableWidthUnitValues)(int)xmlElement.Type.Value;
                 else
                     return null;
             }

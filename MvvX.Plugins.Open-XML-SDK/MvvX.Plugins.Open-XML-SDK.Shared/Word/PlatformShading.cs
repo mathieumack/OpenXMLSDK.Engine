@@ -1,8 +1,8 @@
 ﻿using System;
 using DocumentFormat.OpenXml.Wordprocessing;
-using MvvX.Plugins.Open_XML_SDK.Core.Word;
+using MvvX.Plugins.OpenXMLSDK.Word;
 
-namespace MvvX.Plugins.Open_XML_SDK.Shared.Word
+namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
 {
     public class PlatformShading : PlatformOpenXmlElement, IShading
     {
@@ -47,12 +47,12 @@ namespace MvvX.Plugins.Open_XML_SDK.Shared.Word
             }
         }
 
-        public Core.Word.ThemeColorValues? ThemeColor
+        public OpenXMLSDK.Word.ThemeColorValues? ThemeColor
         {
             get
             {
                 if (xmlElement.ThemeColor != null && xmlElement.ThemeColor.HasValue)
-                    return (Core.Word.ThemeColorValues)(int)xmlElement.ThemeColor.Value;
+                    return (OpenXMLSDK.Word.ThemeColorValues)(int)xmlElement.ThemeColor.Value;
                 else
                     return null;
             }
@@ -66,12 +66,12 @@ namespace MvvX.Plugins.Open_XML_SDK.Shared.Word
             }
         }
 
-        public Core.Word.ThemeColorValues? ThemeFill
+        public OpenXMLSDK.Word.ThemeColorValues? ThemeFill
         {
             get
             {
                 if (xmlElement.ThemeFill != null && xmlElement.ThemeFill.HasValue)
-                    return (Core.Word.ThemeColorValues)(int)xmlElement.ThemeFill.Value;
+                    return (OpenXMLSDK.Word.ThemeColorValues)(int)xmlElement.ThemeFill.Value;
                 else
                     return null;
             }
@@ -137,12 +137,12 @@ namespace MvvX.Plugins.Open_XML_SDK.Shared.Word
             }
         }
 
-        public Core.Word.ShadingPatternValues? Val
+        public OpenXMLSDK.Word.ShadingPatternValues? Val
         {
             get
             {
                 if (xmlElement.Val != null && xmlElement.Val.HasValue)
-                    return (Core.Word.ShadingPatternValues)(int)xmlElement.Val.Value;
+                    return (OpenXMLSDK.Word.ShadingPatternValues)(int)xmlElement.Val.Value;
                 else
                     return null;
             }

@@ -1,7 +1,7 @@
 ﻿using DocumentFormat.OpenXml.Wordprocessing;
-using MvvX.Plugins.Open_XML_SDK.Core.Word.Paragraphs;
+using MvvX.Plugins.OpenXMLSDK.Word.Paragraphs;
 
-namespace MvvX.Plugins.Open_XML_SDK.Shared.Word.Paragraphs
+namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.Paragraphs
 {
     public class PlatformParagraph : PlatformOpenXmlElement, IParagraph
     {

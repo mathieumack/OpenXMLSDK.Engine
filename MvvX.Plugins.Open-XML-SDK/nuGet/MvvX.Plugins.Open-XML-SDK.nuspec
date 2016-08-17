@@ -2,7 +2,7 @@
  <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>MvvX.Plugins.Open-XML-SDK</id>
-        <version>1.1.0.30889-pre</version>
+        <version>1.2.2.20415-pre</version>
         <title>Open-XML-SDK (MvvmCross plugin)</title>
         <authors>MACK Mathieu</authors>
         <owners>MACK Mathieu</owners>
@@ -38,25 +38,25 @@
     </metadata>
     <files>     
         <!-- ALL -->
-        <file src="..\MvvX.Plugins.Open-XML-SDK.Core\bin\Release\MvvX.Plugins.Open-XML-SDK.Core.XML" target="lib\portable-net45+sl5+wp8+wpa81+win8+monoandroid+monotouch" />
-        <file src="..\MvvX.Plugins.Open-XML-SDK.Core\bin\Release\MvvX.Plugins.Open-XML-SDK.Core.dll" target="lib\portable-net45+sl5+wp8+wpa81+win8+monoandroid+monotouch" />
+        <file src="..\MvvX.Plugins.Open-XML-SDK\bin\Release\MvvX.Plugins.OpenXMLSDK.XML" target="lib\portable-net45+sl5+wp8+wpa81+win8+monoandroid+monotouch" />
+        <file src="..\MvvX.Plugins.Open-XML-SDK\bin\Release\MvvX.Plugins.OpenXMLSDK.dll" target="lib\portable-net45+sl5+wp8+wpa81+win8+monoandroid+monotouch" />
                 
         <!-- Windows (WPF) -->
-        <file src="..\MvvX.Plugins.Open-XML-SDK.Core\bin\Release\MvvX.Plugins.Open-XML-SDK.Core.XML" target="lib\net45" />
-        <file src="..\MvvX.Plugins.Open-XML-SDK.Core\bin\Release\MvvX.Plugins.Open-XML-SDK.Core.dll" target="lib\net45" />
-        <file src="..\MvvX.Plugins.Open-XML-SDK.Wpf\bin\Release\MvvX.Plugins.Open-XML-SDK.Wpf.dll" target="lib\net45" />
+        <file src="..\MvvX.Plugins.Open-XML-SDK\bin\Release\MvvX.Plugins.OpenXMLSDK.XML" target="lib\net45" />
+        <file src="..\MvvX.Plugins.Open-XML-SDK\bin\Release\MvvX.Plugins.OpenXMLSDK.dll" target="lib\net45" />
+        <file src="..\MvvX.Plugins.Open-XML-SDK.Wpf\bin\Release\MvvX.Plugins.OpenXMLSDK.Wpf.dll" target="lib\net45" />
 		<file src="..\BootstrapContent\OpenXMLSDKPluginBootstrap.cs.pp" target="content\net45\Bootstrap\OpenXMLSDKPluginBootstrap.cs.pp" />
 		
         <!-- Android -->
-        <file src="..\MvvX.Plugins.Open-XML-SDK.Core\bin\Release\MvvX.Plugins.Open-XML-SDK.Core.XML" target="lib\MonoAndroid10" />
-        <file src="..\MvvX.Plugins.Open-XML-SDK.Core\bin\Release\MvvX.Plugins.Open-XML-SDK.Core.dll" target="lib\MonoAndroid10" />
-        <file src="..\MvvX.Plugins.Open-XML-SDK.Droid\bin\Release\MvvX.Plugins.Open-XML-SDK.Droid.dll" target="lib\MonoAndroid10" />
+        <file src="..\MvvX.Plugins.Open-XML-SDK\bin\Release\MvvX.Plugins.OpenXMLSDK.XML" target="lib\MonoAndroid10" />
+        <file src="..\MvvX.Plugins.Open-XML-SDK\bin\Release\MvvX.Plugins.OpenXMLSDK.dll" target="lib\MonoAndroid10" />
+        <file src="..\MvvX.Plugins.Open-XML-SDK.Droid\bin\Release\MvvX.Plugins.OpenXMLSDK.Droid.dll" target="lib\MonoAndroid10" />
 		<file src="..\BootstrapContent\OpenXMLSDKPluginBootstrap.cs.pp" target="content\MonoAndroid10\Bootstrap\OpenXMLSDKPluginBootstrap.cs.pp" />
 		
         <!-- iOS -->
-        <file src="..\MvvX.Plugins.Open-XML-SDK.Core\bin\Release\MvvX.Plugins.Open-XML-SDK.Core.XML" target="lib\MonoTouch10" />
-        <file src="..\MvvX.Plugins.Open-XML-SDK.Core\bin\Release\MvvX.Plugins.Open-XML-SDK.Core.dll" target="lib\MonoTouch10" />
-        <file src="..\MvvX.Plugins.Open-XML-SDK.Touch\bin\Release\MvvX.Plugins.Open-XML-SDK.Touch.dll" target="lib\MonoTouch10" />
-		<file src="..\BootstrapContent\OpenXMLSDKPluginBootstrap.cs.pp" target="content\MonoTouch10\Bootstrap\OpenXMLSDKPluginBootstrap.cs.pp" />
+        <file src="..\MvvX.Plugins.Open-XML-SDK\bin\Release\MvvX.Plugins.OpenXMLSDK.XML" target="lib\MonoTouch10" />
+        <file src="..\MvvX.Plugins.Open-XML-SDK\bin\Release\MvvX.Plugins.OpenXMLSDK.dll" target="lib\MonoTouch10" />
+        <file src="..\MvvX.Plugins.Open-XML-SDK.Touch\bin\Release\MvvX.Plugins.OpenXMLSDK.Touch.dll" target="lib\MonoTouch10" />
+		<file src="..\TouchBootstrapContent\OpenXMLSDKPluginBootstrap.cs.pp" target="content\MonoTouch10\Bootstrap\OpenXMLSDKPluginBootstrap.cs.pp" />
     </files>
 </package>

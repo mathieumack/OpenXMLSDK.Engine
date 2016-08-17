@@ -1,8 +1,8 @@
 ﻿using DocumentFormat.OpenXml.Wordprocessing;
-using MvvX.Plugins.Open_XML_SDK.Core.Word.Tables;
+using MvvX.Plugins.OpenXMLSDK.Word.Tables;
 using System;
 
-namespace MvvX.Plugins.Open_XML_SDK.Shared.Word.Tables
+namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.Tables
 {
     public class PlatformTableRowHeight : PlatformOpenXmlElement, ITableRowHeight
     {

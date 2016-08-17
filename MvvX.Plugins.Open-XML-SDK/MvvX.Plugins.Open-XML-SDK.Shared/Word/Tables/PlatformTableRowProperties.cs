@@ -1,7 +1,7 @@
 ﻿using DocumentFormat.OpenXml.Wordprocessing;
-using MvvX.Plugins.Open_XML_SDK.Core.Word.Tables;
+using MvvX.Plugins.OpenXMLSDK.Word.Tables;
 
-namespace MvvX.Plugins.Open_XML_SDK.Shared.Word.Tables
+namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.Tables
 {
     public class PlatformTableRowProperties : PlatformOpenXmlElement, ITableRowProperties
     {

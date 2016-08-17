@@ -1,7 +1,7 @@
 ﻿using DocumentFormat.OpenXml.Wordprocessing;
-using MvvX.Plugins.Open_XML_SDK.Core.Word.Bookmarks;
+using MvvX.Plugins.OpenXMLSDK.Word.Bookmarks;
 
-namespace MvvX.Plugins.Open_XML_SDK.Shared.Word.Bookmarks
+namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.Bookmarks
 {
     public class PlatformBookmarkEnd : PlatformOpenXmlElement, IBookmarkEnd
     {

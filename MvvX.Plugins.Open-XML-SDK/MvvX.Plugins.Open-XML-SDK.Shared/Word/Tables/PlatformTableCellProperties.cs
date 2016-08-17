@@ -1,8 +1,8 @@
 ﻿using DocumentFormat.OpenXml.Wordprocessing;
-using MvvX.Plugins.Open_XML_SDK.Core.Word;
-using MvvX.Plugins.Open_XML_SDK.Core.Word.Tables;
+using MvvX.Plugins.OpenXMLSDK.Word;
+using MvvX.Plugins.OpenXMLSDK.Word.Tables;
 
-namespace MvvX.Plugins.Open_XML_SDK.Shared.Word.Tables
+namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.Tables
 {
     public class PlatformTableCellProperties : PlatformOpenXmlElement, ITableCellProperties
     {
@@ -68,14 +68,14 @@ namespace MvvX.Plugins.Open_XML_SDK.Shared.Word.Tables
             }
         }
 
-        public Core.Word.OnOffOnlyValues? NoWrap
+        public OpenXMLSDK.Word.OnOffOnlyValues? NoWrap
         {
             get
             {
                 if (xmlElement.NoWrap == null || !xmlElement.NoWrap.Val.HasValue)
                     return null;
                 else
-                    return (Core.Word.OnOffOnlyValues)(int)xmlElement.NoWrap.Val.Value;
+                    return (OpenXMLSDK.Word.OnOffOnlyValues)(int)xmlElement.NoWrap.Val.Value;
             }
             set
             {

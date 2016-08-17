@@ -1,9 +1,9 @@
 ﻿using DocumentFormat.OpenXml.Wordprocessing;
-using MvvX.Plugins.Open_XML_SDK.Core.Word;
-using MvvX.Plugins.Open_XML_SDK.Core.Word.Tables;
+using MvvX.Plugins.OpenXMLSDK.Word;
+using MvvX.Plugins.OpenXMLSDK.Word.Tables;
 using System.Linq;
 
-namespace MvvX.Plugins.Open_XML_SDK.Shared.Word.Tables
+namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.Tables
 {
     public class PlatformTableProperties : PlatformOpenXmlElement, ITableProperties
     {
@@ -70,14 +70,14 @@ namespace MvvX.Plugins.Open_XML_SDK.Shared.Word.Tables
             }
         }
         
-        public Core.Word.Tables.TableRowAlignmentValues? TableJustification
+        public OpenXMLSDK.Word.Tables.TableRowAlignmentValues? TableJustification
         {
             get
             {
                 if (xmlElement.TableJustification == null || !xmlElement.TableJustification.Val.HasValue)
                     return null;
                 else
-                    return (Core.Word.Tables.TableRowAlignmentValues)(int)xmlElement.TableJustification.Val.Value;
+                    return (OpenXMLSDK.Word.Tables.TableRowAlignmentValues)(int)xmlElement.TableJustification.Val.Value;
             }
             set
             {

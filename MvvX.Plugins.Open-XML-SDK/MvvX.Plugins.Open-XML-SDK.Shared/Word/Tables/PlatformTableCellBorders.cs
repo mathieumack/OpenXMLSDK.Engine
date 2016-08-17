@@ -1,9 +1,9 @@
 ﻿using DocumentFormat.OpenXml.Wordprocessing;
-using MvvX.Plugins.Open_XML_SDK.Core.Word.Tables;
+using MvvX.Plugins.OpenXMLSDK.Word.Tables;
 using System;
-using MvvX.Plugins.Open_XML_SDK.Core.Word;
+using MvvX.Plugins.OpenXMLSDK.Word;
 
-namespace MvvX.Plugins.Open_XML_SDK.Shared.Word.Tables
+namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.Tables
 {
     public class PlatformTableCellBorders : PlatformOpenXmlElement, ITableCellBorders
     {

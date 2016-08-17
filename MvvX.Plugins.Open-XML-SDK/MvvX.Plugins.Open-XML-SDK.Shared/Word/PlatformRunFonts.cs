@@ -1,8 +1,8 @@
 ﻿using System;
 using DocumentFormat.OpenXml.Wordprocessing;
-using MvvX.Plugins.Open_XML_SDK.Core.Word;
+using MvvX.Plugins.OpenXMLSDK.Word;
 
-namespace MvvX.Plugins.Open_XML_SDK.Shared.Word
+namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
 {
     public class PlatformRunFonts : PlatformOpenXmlElement, IRunFonts
     {

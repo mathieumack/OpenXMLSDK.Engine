@@ -1,15 +1,18 @@
 ﻿using MvvmCross.Platform;
 using MvvmCross.Platform.Plugins;
-using MvvX.Plugins.Open_XML_SDK.Core.Word;
-using MvvX.Plugins.Open_XML_SDK.Word;
+using MvvX.Plugins.OpenXMLSDK.Platform.Word;
+using MvvX.Plugins.OpenXMLSDK.Word;
 
-namespace MvvX.Plugins.Open_XML_SDK.Platform
+namespace MvvX.Plugins.OpenXMLSDK.Platform
 {
     public class Plugin : IMvxPlugin
     {
         public void Load()
         {
-            Mvx.RegisterType<IWordManager, WordManager>();
+            Mvx.RegisterType<IWordManager>(() =>
+            {
+                return new WordManager();
+            });
         }
     }
 }

@@ -2,7 +2,7 @@ $location  = Get-Location
 
 $location.Path
 
-$strPath = $location.Path + '\..\MvvX.Plugins.Open-XML-SDK.Core\bin\Release\MvvX.Plugins.Open-XML-SDK.Core.dll'
+$strPath = $location.Path + '\..\MvvX.Plugins.Open-XML-SDK\bin\Release\MvvX.Plugins.OpenXMLSDK.dll'
 
 $strPath
 

@@ -1,9 +1,9 @@
 ﻿using System;
 using DocumentFormat.OpenXml.Wordprocessing;
-using MvvX.Plugins.Open_XML_SDK.Core.Word;
+using MvvX.Plugins.OpenXMLSDK.Word;
 using System.Linq;
 
-namespace MvvX.Plugins.Open_XML_SDK.Shared.Word
+namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
 {
     public class PlatformBorder<T> : PlatformOpenXmlElement, IBorderType 
         where T : BorderType, new()
@@ -53,14 +53,14 @@ namespace MvvX.Plugins.Open_XML_SDK.Shared.Word
 
         #region Interface
 
-        public Core.Word.BorderValues? BorderValue
+        public OpenXMLSDK.Word.BorderValues? BorderValue
         {
             get
             {
                 if (borderType.Val == null || !borderType.Val.HasValue)
                     return null;
                 else
-                    return (Core.Word.BorderValues)(int)borderType.Val.Value;
+                    return (OpenXMLSDK.Word.BorderValues)(int)borderType.Val.Value;
             }
             set
             {

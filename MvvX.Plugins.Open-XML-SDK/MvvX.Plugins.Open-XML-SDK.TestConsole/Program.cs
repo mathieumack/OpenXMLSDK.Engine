@@ -1,16 +1,16 @@
 ﻿using System;
 using System.IO;
-using MvvX.Plugins.Open_XML_SDK.Word;
+using MvvX.Plugins.OpenXMLSDK.Word;
 using System.Collections.Generic;
-using MvvX.Plugins.Open_XML_SDK.Core.Word.Tables.Models;
-using MvvX.Plugins.Open_XML_SDK.Core.Word.Tables;
-using MvvX.Plugins.Open_XML_SDK.Core.Word;
-using MvvX.Plugins.Open_XML_SDK.Core.Word.Paragraphs;
+using MvvX.Plugins.OpenXMLSDK.Word.Tables.Models;
+using MvvX.Plugins.OpenXMLSDK.Word.Tables;
+using MvvX.Plugins.OpenXMLSDK.Word;
+using MvvX.Plugins.OpenXMLSDK.Word.Paragraphs;
 using System.Diagnostics;
-using MvvX.Plugins.Open_XML_SDK.Core.Word.Models;
+using MvvX.Plugins.OpenXMLSDK.Word.Models;
 using MvvmCross.Platform;
 
-namespace MvvX.Plugins.Open_XML_SDK.TestConsole
+namespace MvvX.Plugins.OpenXMLSDK.TestConsole
 {
     class Program
     {

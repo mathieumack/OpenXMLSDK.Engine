@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using MvvX.Plugins.Open_XML_SDK.Core.Word;
-using MvvX.Plugins.Open_XML_SDK.Core.Word.Models;
-using MvvX.Plugins.Open_XML_SDK.Core.Word.Tables;
-using MvvX.Plugins.Open_XML_SDK.Core.Word.Tables.Models;
+using MvvX.Plugins.OpenXMLSDK.Word;
+using MvvX.Plugins.OpenXMLSDK.Word.Models;
+using MvvX.Plugins.OpenXMLSDK.Word.Tables;
+using MvvX.Plugins.OpenXMLSDK.Word.Tables.Models;
 
-namespace MvvX.Plugins.Open_XML_SDK.Shared.Word
+namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
 {
     public static class AutoMapperInitializer
     {

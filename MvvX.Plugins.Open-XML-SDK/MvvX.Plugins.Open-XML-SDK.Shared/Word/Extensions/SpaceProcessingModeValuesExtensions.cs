@@ -1,15 +1,14 @@
-﻿using DocumentFormat.OpenXml;
-
-namespace MvvX.Plugins.Open_XML_SDK.Shared.Word.Extensions
+﻿
+namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.Extensions
 {
     public static class SpaceProcessingModeValuesExtensions
     {
-        public static EnumValue<DocumentFormat.OpenXml.SpaceProcessingModeValues> ToOOxml(this Core.Word.SpaceProcessingModeValues value)
+        public static DocumentFormat.OpenXml.EnumValue<DocumentFormat.OpenXml.SpaceProcessingModeValues> ToOOxml(this MvvX.Plugins.OpenXMLSDK.Word.SpaceProcessingModeValues value)
         {
             return (DocumentFormat.OpenXml.SpaceProcessingModeValues)(int)value;
         }
 
-        public static EnumValue<DocumentFormat.OpenXml.SpaceProcessingModeValues> ToOOxml(this Core.Word.SpaceProcessingModeValues? value)
+        public static DocumentFormat.OpenXml.EnumValue<DocumentFormat.OpenXml.SpaceProcessingModeValues> ToOOxml(this MvvX.Plugins.OpenXMLSDK.Word.SpaceProcessingModeValues? value)
         {
             if (value.HasValue)
                 return (DocumentFormat.OpenXml.SpaceProcessingModeValues)(int)value.Value;
@@ -17,10 +16,10 @@ namespace MvvX.Plugins.Open_XML_SDK.Shared.Word.Extensions
                 return null;
         }
 
-        public static Core.Word.SpaceProcessingModeValues? ToPlatform(this EnumValue<DocumentFormat.OpenXml.SpaceProcessingModeValues> value)
+        public static MvvX.Plugins.OpenXMLSDK.Word.SpaceProcessingModeValues? ToPlatform(this DocumentFormat.OpenXml.EnumValue<DocumentFormat.OpenXml.SpaceProcessingModeValues> value)
         {
             if (value.HasValue)
-                return (Core.Word.SpaceProcessingModeValues)(int)value.Value;
+                return (MvvX.Plugins.OpenXMLSDK.Word.SpaceProcessingModeValues)(int)value.Value;
             else
                 return null;
         }
