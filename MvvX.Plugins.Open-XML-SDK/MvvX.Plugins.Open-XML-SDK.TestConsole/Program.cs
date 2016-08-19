@@ -9,6 +9,7 @@ using MvvX.Plugins.OpenXMLSDK.Word.Paragraphs;
 using System.Diagnostics;
 using MvvX.Plugins.OpenXMLSDK.Word.Models;
 using MvvmCross.Platform;
+using MvvX.Plugins.OpenXMLSDK.Platform.Word;
 
 namespace MvvX.Plugins.OpenXMLSDK.TestConsole
 {
@@ -22,7 +23,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                 Directory.CreateDirectory(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "App_Data", "Results"));
 
             string finalFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "App_Data", "Results", "FinalDoc_Test_OrientationParagraph-" + DateTime.Now.ToFileTime() + ".docx");
-            using (IWordManager word = Mvx.Resolve<IWordManager>())
+            using (IWordManager word = new WordManager())
             {
                 // TODO for debug : use your test file :
                 word.OpenDocFromTemplate(resourceName, finalFilePath, true);
@@ -117,7 +118,11 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                     text = word.CreateRunForText("Comments", new RunPropertiesModel() { Bold = true });
                     cellules = new List<ITableCell>()
                     {
-                        word.CreateTableCell(text, new TableCellPropertiesModel() {
+                        word.CreateTableCell(word.CreateImage(@"c:\temp\Tulips.jpg", new Drawing.Pictures.Model.PictureModel() {
+                            ImagePartType   = Packaging.ImagePartType.Jpeg,
+                            MaxHeight = 10,
+                            MaxWidth = 500
+                        }), new TableCellPropertiesModel() {
                                     TableCellWidth = new TableCellWidthModel()
                                     {
                                         Width = "4890"

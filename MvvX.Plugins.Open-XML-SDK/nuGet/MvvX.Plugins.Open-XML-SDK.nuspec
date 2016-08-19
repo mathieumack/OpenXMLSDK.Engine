@@ -2,7 +2,7 @@
  <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>MvvX.Plugins.Open-XML-SDK</id>
-        <version>1.2.2.20415-pre</version>
+        <version>1.4.0.29521-pre</version>
         <title>Open-XML-SDK (MvvmCross plugin)</title>
         <authors>MACK Mathieu</authors>
         <owners>MACK Mathieu</owners>

@@ -2,7 +2,6 @@
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using MvvX.Plugins.OpenXMLSDK.Word.Bookmarks;
-using MvvX.Plugins.OpenXMLSDK.Word.Images;
 using MvvX.Plugins.OpenXMLSDK.Word.Models;
 using MvvX.Plugins.OpenXMLSDK.Word.Paragraphs;
 using MvvX.Plugins.OpenXMLSDK.Word.Tables;
@@ -19,12 +18,13 @@ using A = DocumentFormat.OpenXml.Drawing;
 using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
 using PIC = DocumentFormat.OpenXml.Drawing.Pictures;
 using MvvX.Plugins.OpenXMLSDK.Word;
+using MvvX.Plugins.OpenXMLSDK.Drawing.Pictures.Model;
 
 namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
 {
     public class WordManager : IWordManager
     {
-        #region Fields
+#region Fields
 
         private MemoryStream streamFile;
 
@@ -45,9 +45,9 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
         /// </summary>
         private MainDocumentPart wdMainDocumentPart = null;
 
-        #endregion
+#endregion
 
-        #region Constructeurs
+#region Constructeurs
 
         /// <summary>
         /// 
@@ -59,13 +59,13 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
             AutoMapperInitializer.Init();
         }
 
-        #endregion
+#endregion
 
-        #region Automapper
+#region Automapper
 
-        #endregion
+#endregion
 
-        #region Dispose / fin
+#region Dispose / fin
 
         public void CloseDoc()
         {
@@ -91,9 +91,9 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
             return memoryStream;
         }
 
-        #endregion
+#endregion
 
-        #region Fonctions privées - Open/Save/Create
+#region Fonctions privées - Open/Save/Create
 
         /// <summary>
         /// Sauvegarde du document courant
@@ -249,9 +249,9 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
             }
         }
 
-        #endregion
+#endregion
 
-        #region Bookmarks
+#region Bookmarks
 
         public IBookmarkEnd FindBookmark(string bookmark)
         {
@@ -345,56 +345,94 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
             SetOnBookmark(bookmark, new PlatformRun(run));
         }
 
-        #endregion
+#endregion
 
-        #region Images
+#region Images
 
-        public void InsertPictureToBookmark(string bookmark, string fileName, ImageType type, long? maxWidth = null, long? maxHeight = null)
+        /// <summary>
+        /// Renvoie l'ID d'une part dans le document
+        /// </summary>
+        /// <typeparam name="T">Type du part</typeparam>
+        /// <param name="part">Part</param>
+        /// <returns>Id du part dans le document</returns>
+        private string GetIdOfPart<T>(T part) where T : OpenXmlPart
         {
-            if (string.IsNullOrWhiteSpace(bookmark))
-                throw new ArgumentNullException("bookmark must be not null or white spaces");
+            return wdMainDocumentPart.GetIdOfPart(part);
+        }
+
+        /// <summary>
+        /// Permet d'ajouter le type d'une image dans le document de type OpenXmlPart
+        /// </summary>
+        /// <param name="type">Type de l'image</param>
+        /// <returns></returns>
+        private ImagePart AddImagePart(ImagePartType type)
+        {
+            return wdMainDocumentPart.AddImagePart(type);
+        }
+
+        public IRun CreateImage(string fileName, PictureModel model)
+        {
             if (string.IsNullOrWhiteSpace(fileName))
-                throw new ArgumentNullException("FileName must not be null or white space");
-            if(!File.Exists(fileName))
-                throw new FileNotFoundException("File not found");
+                throw new ArgumentNullException("fileName must not be null or white space");
+            if (!File.Exists(fileName))
+                throw new ArgumentNullException("File not found");
 
-            var enumType = (int)type;
-            ImagePartType imageType = (ImagePartType)enumType;
-            var image = CreateImage(fileName, imageType, maxWidth, maxHeight);
+            ImagePart imagePart = AddImagePart((ImagePartType)(int)model.ImagePartType);
 
-            var bookmarkElement = FindBookmark(bookmark);
-            if (bookmarkElement != default(BookmarkEnd))
+            using (FileStream stream = new FileStream(fileName, FileMode.Open))
             {
-                bookmarkElement.InsertAfterSelf(image);
+                imagePart.FeedData(stream);
             }
+
+            return CreateImage(imagePart, model);
         }
 
-        public IRun CreateImage(string fileName, ImagePartType type, long? maxWidth = null, long? maxHeight = null)
+        private IRun CreateImage(ImagePart imagePart, PictureModel model)
         {
-            byte[] file = File.ReadAllBytes(fileName);
-            MemoryStream ms = new MemoryStream(file);
+            string relationshipId = GetIdOfPart(imagePart);
 
-            return CreateImage(ms, type, maxWidth, maxHeight);
-        }
-
-        public IRun CreateImage(Stream stream, ImagePartType type, long? maxWidth = null, long? maxHeight = null)
-        {
-            ImagePart imagePart = wdMainDocumentPart.AddImagePart(type);
-            MemoryStream msClone = new MemoryStream();
-            stream.CopyTo(msClone);
-            stream.Position = 0;
-            imagePart.FeedData(stream);
-
-            string relationshipId = wdMainDocumentPart.GetIdOfPart(imagePart);
-
-            return CreateImage(msClone, relationshipId, maxWidth, maxHeight);
-        }
-                
-        private IRun CreateImage(Stream ms, string relationshipId, long? maxWidth = null, long? maxHeight = null)
-        {
             long imageWidth = 990000L;
             long imageHeight = 792000L;
-          
+
+#if __WPF__ || __IOS__
+            using (var bm = new System.Drawing.Bitmap(imagePart.GetStream()))
+#endif
+#if __ANDROID__
+            using (var bm = Android.Graphics.BitmapFactory.DecodeStream(imagePart.GetStream()))
+#endif
+            {
+                long bmWidth = (long)bm.Width;
+                long bmHeight = (long)bm.Height;
+
+                // Redimensionnement de l'image car trop grande en largeur:
+                if (model.MaxWidth.HasValue && model.MaxWidth.Value < bmWidth)
+                {
+                    long ratio = model.MaxWidth.Value * 100L / bmWidth;
+
+                    bmWidth = (long)((double)bmWidth * ((double)ratio / 100D));
+                    bmHeight = (long)((double)bmHeight * ((double)ratio / 100D));
+                }
+
+                // Redimensionnement de l'image car trop grande en hauteur:
+                if (model.MaxHeight.HasValue && model.MaxHeight.Value < bmHeight)
+                {
+                    long ratio = model.MaxHeight.Value * 100L / bmHeight;
+
+                    bmWidth = (long)((double)bmWidth * ((double)ratio / 100D));
+                    bmHeight = (long)((double)bmHeight * ((double)ratio / 100D));
+                }
+
+#if __WPF__ || __IOS__
+                imageWidth = bmWidth * (long)((float)914400 / bm.HorizontalResolution);
+                imageHeight = bmHeight * (long)((float)914400 / bm.VerticalResolution);
+#endif
+#if __ANDROID__
+                // TODO : Check this method
+                imageWidth = bmWidth * (long)((float)914400 / (long)bm.Density);
+                imageHeight = bmHeight * (long)((float)914400 / (long)bm.Density);
+#endif
+            }
+
             var result = new Run();
 
             var runProperties = new RunProperties();
@@ -438,7 +476,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
                              { Uri = "http://schemas.openxmlformats.org/drawingml/2006/picture" });
             graphic.AddNamespaceDeclaration("a", "http://schemas.openxmlformats.org/drawingml/2006/main");
 
-            result.Append(new Drawing(
+            result.Append(new DocumentFormat.OpenXml.Wordprocessing.Drawing(
                      new DW.Inline(
                          new DW.Extent() { Cx = imageWidth, Cy = imageHeight },
                          new DW.EffectExtent()
@@ -466,9 +504,9 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
             return new PlatformRun(result);
         }
 
-        #endregion
+#endregion
 
-        #region Instanciate new SDK items
+#region Instanciate new SDK items
 
         public IRun CreateRun()
         {
@@ -485,9 +523,9 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
             return new T();
         }
 
-        #endregion
+#endregion
 
-        #region Texts
+#region Texts
         
         public IRun CreateRunForTable(ITable table)
         {
@@ -523,9 +561,9 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
             return platformRun;
         }
 
-        #endregion
+#endregion
 
-        #region Tables
+#region Tables
 
         public ITable CreateTable(IList<ITableRow> rows, TablePropertiesModel properties)
         {
@@ -767,7 +805,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
             return ptr;
         }
 
-        #endregion
+#endregion
     }
 }
 

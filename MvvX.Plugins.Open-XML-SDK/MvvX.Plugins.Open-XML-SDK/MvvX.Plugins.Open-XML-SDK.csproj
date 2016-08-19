@@ -39,8 +39,10 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
     <Folder Include="Excel\" />
     <Folder Include="PowerPoint\" />
+    <Folder Include="Word\Images\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Drawing\Pictures\Model\PictureModel.cs" />
     <Compile Include="IEnumValue.cs" />
     <Compile Include="OpenXmlSimpleType.cs" />
     <Compile Include="PluginLoader.cs" />
@@ -58,7 +60,7 @@
     <Compile Include="Word\IBorder.cs" />
     <Compile Include="Word\IGridSpan.cs" />
     <Compile Include="Word\IShading.cs" />
-    <Compile Include="Word\Images\ImageType.cs" />
+    <Compile Include="Packaging\ImagePartType.cs" />
     <Compile Include="Word\IWordManager.cs" />
     <Compile Include="Word\JustificationValues.cs" />
     <Compile Include="Word\Models\GridSpanModel.cs" />

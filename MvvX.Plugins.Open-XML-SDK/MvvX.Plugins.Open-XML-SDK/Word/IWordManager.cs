@@ -6,6 +6,7 @@ using MvvX.Plugins.OpenXMLSDK.Word.Paragraphs;
 using MvvX.Plugins.OpenXMLSDK.Word.Tables;
 using MvvX.Plugins.OpenXMLSDK.Word.Tables.Models;
 using MvvX.Plugins.OpenXMLSDK.Word.Models;
+using MvvX.Plugins.OpenXMLSDK.Drawing.Pictures.Model;
 
 namespace MvvX.Plugins.OpenXMLSDK.Word
 {
@@ -96,6 +97,12 @@ namespace MvvX.Plugins.OpenXMLSDK.Word
         /// <param name="isEditable">Is file open in edit mode (Read/Write)</param>
         /// <returns>True si le document a bien été ouvert</returns>
         bool OpenDocFromTemplate(string templateFilePath, string newFilePath, bool isEditable);
+
+        #endregion
+
+        #region Images
+        
+        IRun CreateImage(string fileName, PictureModel model);
 
         #endregion
 

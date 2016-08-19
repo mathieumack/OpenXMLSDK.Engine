@@ -1,6 +1,6 @@
-﻿namespace MvvX.Plugins.OpenXMLSDK.Word.Images
+﻿namespace MvvX.Plugins.OpenXMLSDK.Packaging
 {
-    public enum ImageType
+    public enum ImagePartType
     {
         Bmp = 0,
         Gif = 1,
