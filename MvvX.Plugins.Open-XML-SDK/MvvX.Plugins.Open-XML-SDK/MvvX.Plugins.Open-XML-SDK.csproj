@@ -46,6 +46,7 @@
     <Compile Include="IEnumValue.cs" />
     <Compile Include="OpenXmlSimpleType.cs" />
     <Compile Include="PluginLoader.cs" />
+    <Compile Include="Word\IAltChunk.cs" />
     <Compile Include="Word\IDecimalNumberType.cs" />
     <Compile Include="Word\IOpenXmlCompositeElement.cs" />
     <Compile Include="Word\IRunFonts.cs" />

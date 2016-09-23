@@ -19,6 +19,7 @@ using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
 using PIC = DocumentFormat.OpenXml.Drawing.Pictures;
 using MvvX.Plugins.OpenXMLSDK.Word;
 using MvvX.Plugins.OpenXMLSDK.Drawing.Pictures.Model;
+using System.Text;
 
 namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
 {
@@ -88,6 +89,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
             var memoryStream = new MemoryStream();
             streamFile.Position = 0;
             streamFile.CopyTo(memoryStream);
+            memoryStream.Position = 0;
             return memoryStream;
         }
 
@@ -345,9 +347,64 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
             SetOnBookmark(bookmark, new PlatformRun(run));
         }
 
-#endregion
+        /// <summary>
+        /// Insert an html content on bookmark
+        /// </summary>
+        /// <param name="bookmark"></param>
+        /// <param name="html"></param>
+        public void SetHtmlOnBookmark(string bookmark, string html)
+        {
+            if (string.IsNullOrWhiteSpace(bookmark))
+                throw new ArgumentNullException("bookmark must be not null or white spaces");
+            if (wdDoc == null)
+                throw new InvalidOperationException("Document not loaded");
 
-#region Images
+            using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(html)))
+            {
+                AddAltChunkOnBookmark(bookmark, ms, AlternativeFormatImportPartType.Xhtml);
+            }
+        }
+
+        /// <summary>
+        /// Insert another word document on bookmark
+        /// </summary>
+        /// <param name="bookmark"></param>
+        /// <param name="content"></param>
+        public void SetSubDocumentOnBookmark(string bookmark, Stream content)
+        {
+            if (string.IsNullOrWhiteSpace(bookmark))
+                throw new ArgumentNullException("bookmark must be not null or white spaces");
+            if (wdDoc == null)
+                throw new InvalidOperationException("Document not loaded");
+
+            AddAltChunkOnBookmark(bookmark, content, AlternativeFormatImportPartType.WordprocessingML);
+        }
+
+        /// <summary>
+        /// Insert a document on bookmark
+        /// </summary>
+        /// <param name="bookmark"></param>
+        /// <param name="content"></param>
+        /// <param name="importType"></param>
+        private void AddAltChunkOnBookmark(string bookmark, Stream content, AlternativeFormatImportPartType importType)
+        {
+            AlternativeFormatImportPart formatImportPart = wdMainDocumentPart.AddAlternativeFormatImportPart(importType);
+
+            formatImportPart.FeedData(content);
+
+            AltChunk altChunk = new AltChunk();
+            altChunk.Id = wdMainDocumentPart.GetIdOfPart(formatImportPart);
+
+            var bookmarkElement = FindBookmark(bookmark);
+            if (bookmarkElement != null)
+            {
+                var paragraph = bookmarkElement.Ancestors<IParagraph>().LastOrDefault();
+                paragraph.InsertAfterSelf(new PlatformAltChunk(altChunk));
+            }
+        }
+        #endregion
+
+        #region Images
 
         /// <summary>
         /// Renvoie l'ID d'une part dans le document

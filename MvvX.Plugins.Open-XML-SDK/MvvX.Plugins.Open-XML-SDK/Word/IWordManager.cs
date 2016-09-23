@@ -34,6 +34,20 @@ namespace MvvX.Plugins.OpenXMLSDK.Word
         void SetOnBookmark(string bookmark, IOpenXmlElement element);
 
         /// <summary>
+        /// Insert html to bookmark
+        /// </summary>
+        /// <param name="bookmark">Bookmark name</param>
+        /// <param name="html"> Text to insert</param>
+        void SetHtmlOnBookmark(string bookmark, string html);
+
+        /// <summary>
+        /// Insert docx sub-document to bookmark
+        /// </summary>
+        /// <param name="bookmark"></param>
+        /// <param name="content"></param>
+        void SetSubDocumentOnBookmark(string bookmark, Stream content);
+
+        /// <summary>
         /// Insert paragraph in bookmark
         /// </summary>
         /// <param name="bookmark">Bookmark name</param>
@@ -55,6 +69,12 @@ namespace MvvX.Plugins.OpenXMLSDK.Word
         /// Close the opened document
         /// </summary>
         void CloseDoc();
+
+        /// <summary>
+        /// Get Stream for current document
+        /// </summary>
+        /// <returns></returns>
+        MemoryStream GetMemoryStream();
 
         /// <summary>
         /// Save document
