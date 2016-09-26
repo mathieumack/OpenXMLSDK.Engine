@@ -399,6 +399,9 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
             if (bookmarkElement != null)
             {
                 var paragraph = bookmarkElement.Ancestors<IParagraph>().LastOrDefault();
+                // without an empty paragraph after altchunk, the docx might be corrupted if the bookmark is inside a table and the html only contains one paragraph
+                if(paragraph.Ancestors<ITable>().Any())
+                    paragraph.InsertAfterSelf(new PlatformParagraph());
                 paragraph.InsertAfterSelf(new PlatformAltChunk(altChunk));
             }
         }
