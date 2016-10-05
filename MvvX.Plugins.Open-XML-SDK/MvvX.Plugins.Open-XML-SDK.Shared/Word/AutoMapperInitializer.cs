@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MvvX.Plugins.OpenXMLSDK.Word;
 using MvvX.Plugins.OpenXMLSDK.Word.Models;
+using MvvX.Plugins.OpenXMLSDK.Word.Paragraphs;
 using MvvX.Plugins.OpenXMLSDK.Word.Tables;
 using MvvX.Plugins.OpenXMLSDK.Word.Tables.Models;
 
@@ -78,6 +79,13 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
                 .AfterMap((source, dest) =>
                 {
                     AutoMapper.Mapper.Map(source.RunFonts, dest.RunFonts);
+                });
+
+                cfg.CreateMap<NumberingPropertiesModel, INumberingProperties>();
+                cfg.CreateMap<ParagraphPropertiesModel, IParagraphProperties>()
+                .AfterMap((source, dest) =>
+                {
+                    AutoMapper.Mapper.Map(source.NumberingProperties, dest.NumberingProperties);
                 });
             });
         }

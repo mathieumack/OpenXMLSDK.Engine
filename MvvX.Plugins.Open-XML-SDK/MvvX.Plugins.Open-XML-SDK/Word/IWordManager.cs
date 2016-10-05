@@ -132,11 +132,16 @@ namespace MvvX.Plugins.OpenXMLSDK.Word
 
         ITable CreateTable();
 
+        /// <summary>
+        /// Create a bullet list
+        /// </summary>
+        /// <returns>numbering id</returns>
+        int CreateBulletList();
         #endregion
 
         #region Texts
         
-        IParagraph CreateParagraphForRun(IRun run);
+        IParagraph CreateParagraphForRun(IRun run, ParagraphPropertiesModel ppm = null);
 
         IRun CreateRunForTable(ITable run);
 
