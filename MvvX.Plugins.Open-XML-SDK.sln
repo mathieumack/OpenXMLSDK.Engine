@@ -5,21 +5,21 @@ VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Interface", "Interface", "{2F0EB960-8B80-4518-A8BD-A1DC635655E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvvX.Plugins.Open-XML-SDK", "MvvX.Plugins.Open-XML-SDK\MvvX.Plugins.Open-XML-SDK.csproj", "{D516410F-1AF5-49B1-98CF-00E08487EBBA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvvX.Plugins.Open-XML-SDK", "MvvX.Plugins.Open-XML-SDK\MvvX.Plugins.Open-XML-SDK\MvvX.Plugins.Open-XML-SDK.csproj", "{D516410F-1AF5-49B1-98CF-00E08487EBBA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvvX.Plugins.Open-XML-SDK.Wpf", "MvvX.Plugins.Open-XML-SDK.Wpf\MvvX.Plugins.Open-XML-SDK.Wpf.csproj", "{10897E7B-B4A3-4D09-A97D-4A1AB3DD68A7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvvX.Plugins.Open-XML-SDK.Wpf", "MvvX.Plugins.Open-XML-SDK\MvvX.Plugins.Open-XML-SDK.Wpf\MvvX.Plugins.Open-XML-SDK.Wpf.csproj", "{10897E7B-B4A3-4D09-A97D-4A1AB3DD68A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvvX.Plugins.Open-XML-SDK.Droid", "MvvX.Plugins.Open-XML-SDK.Droid\MvvX.Plugins.Open-XML-SDK.Droid.csproj", "{A6A10DA9-398A-4F56-934C-D9FEE30A7540}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvvX.Plugins.Open-XML-SDK.Droid", "MvvX.Plugins.Open-XML-SDK\MvvX.Plugins.Open-XML-SDK.Droid\MvvX.Plugins.Open-XML-SDK.Droid.csproj", "{A6A10DA9-398A-4F56-934C-D9FEE30A7540}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvvX.Plugins.Open-XML-SDK.Touch", "MvvX.Plugins.Open-XML-SDK.Touch\MvvX.Plugins.Open-XML-SDK.Touch.csproj", "{342A2579-7D8F-4BFD-8A95-68E4765A3EDC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvvX.Plugins.Open-XML-SDK.Touch", "MvvX.Plugins.Open-XML-SDK\MvvX.Plugins.Open-XML-SDK.Touch\MvvX.Plugins.Open-XML-SDK.Touch.csproj", "{342A2579-7D8F-4BFD-8A95-68E4765A3EDC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Implements", "Implements", "{52133E21-0AED-42C9-B4D1-C6A144DFDB10}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "MvvX.Plugins.Open-XML-SDK.Shared", "MvvX.Plugins.Open-XML-SDK.Shared\MvvX.Plugins.Open-XML-SDK.Shared.shproj", "{00452555-A931-4BB7-9AC4-1A900E18CB6F}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "MvvX.Plugins.Open-XML-SDK.Shared", "MvvX.Plugins.Open-XML-SDK\MvvX.Plugins.Open-XML-SDK.Shared\MvvX.Plugins.Open-XML-SDK.Shared.shproj", "{00452555-A931-4BB7-9AC4-1A900E18CB6F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{17464895-F42D-47EE-AC67-7C3947E1A69C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvvX.Plugins.Open-XML-SDK.TestConsole", "MvvX.Plugins.Open-XML-SDK.TestConsole\MvvX.Plugins.Open-XML-SDK.TestConsole.csproj", "{7B189D1B-0AD2-4EB4-96E4-5CB0781F3592}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvvX.Plugins.Open-XML-SDK.TestConsole", "MvvX.Plugins.Open-XML-SDK\MvvX.Plugins.Open-XML-SDK.TestConsole\MvvX.Plugins.Open-XML-SDK.TestConsole.csproj", "{7B189D1B-0AD2-4EB4-96E4-5CB0781F3592}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugin", "Plugin", "{2B15F36B-90B0-4D7A-8075-E912082E540C}"
 EndProject
@@ -27,7 +27,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared files", "Shared file
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		MvvX.Plugins.Open-XML-SDK.Shared\MvvX.Plugins.Open-XML-SDK.Shared.projitems*{00452555-a931-4bb7-9ac4-1a900e18cb6f}*SharedItemsImports = 13
+		MvvX.Plugins.Open-XML-SDK\MvvX.Plugins.Open-XML-SDK.Shared\MvvX.Plugins.Open-XML-SDK.Shared.projitems*{00452555-a931-4bb7-9ac4-1a900e18cb6f}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
