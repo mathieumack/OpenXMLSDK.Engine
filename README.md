@@ -1,3 +1,5 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/n159uhltbd90i3rh?svg=true)](https://ci.appveyor.com/project/mathieumack/mvvx-plugins-open-xml-sdk)
+
 # MvvX.Plugins.Open-XML-SDK
 
 Using the Open-XML-SDK-Plugin for MvvmCross is quite simple. The plugin injects the IWordManager interface into the IoC container.
