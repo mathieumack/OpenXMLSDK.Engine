@@ -32,9 +32,9 @@ before_build:
 - cmd: >-
     nuget sources update -Name nuget.org -Source https://api.nuget.org/v3/index.json
     
-    nuget restore MvvX.Plugins.CouchBaseLite.sln -verbosity detailed
+    nuget restore MvvX.Plugins.Open-XML-SDK.sln -verbosity detailed
     
-    xamarin-component.exe restore MvvX.Plugins.CouchBaseLite.sln
+    xamarin-component.exe restore MvvX.Plugins.Open-XML-SDK.sln
 build:
   verbosity: minimal
 on_success:
