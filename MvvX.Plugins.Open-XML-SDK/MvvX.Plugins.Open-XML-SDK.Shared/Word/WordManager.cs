@@ -368,6 +368,15 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
         private ImagePart AddImagePart(ImagePartType type)
         {
             return wdMainDocumentPart.AddImagePart(type);
+
+            try
+            {
+                CreateImage("", null);
+            }
+            catch(ArgumentNullException nullException)
+            {
+
+            }
         }
 
         public IRun CreateImage(string fileName, PictureModel model)

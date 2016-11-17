@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Interface", "Interface", "{2F0EB960-8B80-4518-A8BD-A1DC635655E3}"
 EndProject
@@ -23,12 +23,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvvX.Plugins.Open-XML-SDK.T
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugin", "Plugin", "{2B15F36B-90B0-4D7A-8075-E912082E540C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared files", "Shared files", "{9D4FCF9A-712A-4856-8510-6FD544BE10B0}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		MvvX.Plugins.Open-XML-SDK.Shared\MvvX.Plugins.Open-XML-SDK.Shared.projitems*{00452555-a931-4bb7-9ac4-1a900e18cb6f}*SharedItemsImports = 13
-		MvvX.Plugins.Open-XML-SDK.Shared\MvvX.Plugins.Open-XML-SDK.Shared.projitems*{10897e7b-b4a3-4d09-a97d-4a1ab3dd68a7}*SharedItemsImports = 4
-		MvvX.Plugins.Open-XML-SDK.Shared\MvvX.Plugins.Open-XML-SDK.Shared.projitems*{342a2579-7d8f-4bfd-8a95-68e4765a3edc}*SharedItemsImports = 4
-		MvvX.Plugins.Open-XML-SDK.Shared\MvvX.Plugins.Open-XML-SDK.Shared.projitems*{a6a10da9-398a-4f56-934c-d9fee30a7540}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -66,7 +65,8 @@ Global
 		{A6A10DA9-398A-4F56-934C-D9FEE30A7540} = {52133E21-0AED-42C9-B4D1-C6A144DFDB10}
 		{342A2579-7D8F-4BFD-8A95-68E4765A3EDC} = {52133E21-0AED-42C9-B4D1-C6A144DFDB10}
 		{52133E21-0AED-42C9-B4D1-C6A144DFDB10} = {2B15F36B-90B0-4D7A-8075-E912082E540C}
-		{00452555-A931-4BB7-9AC4-1A900E18CB6F} = {52133E21-0AED-42C9-B4D1-C6A144DFDB10}
+		{00452555-A931-4BB7-9AC4-1A900E18CB6F} = {9D4FCF9A-712A-4856-8510-6FD544BE10B0}
 		{7B189D1B-0AD2-4EB4-96E4-5CB0781F3592} = {17464895-F42D-47EE-AC67-7C3947E1A69C}
+		{9D4FCF9A-712A-4856-8510-6FD544BE10B0} = {52133E21-0AED-42C9-B4D1-C6A144DFDB10}
 	EndGlobalSection
 EndGlobal

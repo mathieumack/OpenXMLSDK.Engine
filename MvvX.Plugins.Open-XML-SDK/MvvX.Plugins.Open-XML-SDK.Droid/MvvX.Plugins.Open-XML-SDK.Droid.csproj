@@ -66,6 +66,102 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\PlatformOpenXmlElement.cs">
+      <Link>PlatformOpenXmlElement.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Plugin.cs">
+      <Link>Plugin.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\AutoMapperInitializer.cs">
+      <Link>Word\AutoMapperInitializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Bookmarks\PlatformBookmarkEnd.cs">
+      <Link>Word\Bookmarks\PlatformBookmarkEnd.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Extensions\BorderValuesExtensions.cs">
+      <Link>Word\Extensions\BorderValuesExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Extensions\JustificationValuesExtensions.cs">
+      <Link>Word\Extensions\JustificationValuesExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Extensions\ShadingPatternValuesExtensions.cs">
+      <Link>Word\Extensions\ShadingPatternValuesExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Extensions\SpaceProcessingModeValuesExtensions.cs">
+      <Link>Word\Extensions\SpaceProcessingModeValuesExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Extensions\TableWidthUnitValuesExtensions.cs">
+      <Link>Word\Extensions\TableWidthUnitValuesExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Extensions\TextDirectionValuesExtensions.cs">
+      <Link>Word\Extensions\TextDirectionValuesExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Paragraphs\PlatformParagraph.cs">
+      <Link>Word\Paragraphs\PlatformParagraph.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\PlatformBorder.cs">
+      <Link>Word\PlatformBorder.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\PlatformDecimalNumberType.cs">
+      <Link>Word\PlatformDecimalNumberType.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\PlatformGridSpan.cs">
+      <Link>Word\PlatformGridSpan.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\PlatformRun.cs">
+      <Link>Word\PlatformRun.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\PlatformRunFonts.cs">
+      <Link>Word\PlatformRunFonts.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\PlatformRunProperties.cs">
+      <Link>Word\PlatformRunProperties.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\PlatformShading.cs">
+      <Link>Word\PlatformShading.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\PlatformText.cs">
+      <Link>Word\PlatformText.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Tables\PlatformTable.cs">
+      <Link>Word\Tables\PlatformTable.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Tables\PlatformTableBorders.cs">
+      <Link>Word\Tables\PlatformTableBorders.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Tables\PlatformTableCell.cs">
+      <Link>Word\Tables\PlatformTableCell.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Tables\PlatformTableCellBorders.cs">
+      <Link>Word\Tables\PlatformTableCellBorders.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Tables\PlatformTableCellProperties.cs">
+      <Link>Word\Tables\PlatformTableCellProperties.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Tables\PlatformTableCellWidth.cs">
+      <Link>Word\Tables\PlatformTableCellWidth.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Tables\PlatformTableProperties.cs">
+      <Link>Word\Tables\PlatformTableProperties.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Tables\PlatformTableRow.cs">
+      <Link>Word\Tables\PlatformTableRow.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Tables\PlatformTableRowHeight.cs">
+      <Link>Word\Tables\PlatformTableRowHeight.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Tables\PlatformTableRowProperties.cs">
+      <Link>Word\Tables\PlatformTableRowProperties.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Tables\PlatformTableStyle.cs">
+      <Link>Word\Tables\PlatformTableStyle.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Tables\PlatformTableWidth.cs">
+      <Link>Word\Tables\PlatformTableWidth.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\WordManager.cs">
+      <Link>Word\WordManager.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -77,7 +173,6 @@
       <Name>MvvX.Plugins.Open-XML-SDK</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="..\MvvX.Plugins.Open-XML-SDK.Shared\MvvX.Plugins.Open-XML-SDK.Shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
