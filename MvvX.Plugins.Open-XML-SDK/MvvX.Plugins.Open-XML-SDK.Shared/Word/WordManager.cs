@@ -889,7 +889,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
             {
                 for (int i = 0; i < cellContents.Count; i++)
                 {
-                    par.AppendChild(cellContents[i].ContentItem as Paragraph);
+                    par.AppendChild(cellContents[i].ContentItem as Run);
                 }
                 tc.Append(par);
             }
