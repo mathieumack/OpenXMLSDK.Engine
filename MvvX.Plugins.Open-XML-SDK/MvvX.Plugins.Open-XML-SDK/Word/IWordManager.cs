@@ -121,7 +121,9 @@ namespace MvvX.Plugins.OpenXMLSDK.Word
         #endregion
 
         #region Images
-        
+
+        IRun CreateImage(byte[] imageData, PictureModel model);
+
         IRun CreateImage(string fileName, PictureModel model);
 
         #endregion

@@ -430,6 +430,21 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
             return wdMainDocumentPart.AddImagePart(type);
         }
 
+        public IRun CreateImage(byte[] imageData, PictureModel model)
+        {
+            if (imageData == null)
+                throw new ArgumentNullException("Image not found");
+
+            ImagePart imagePart = AddImagePart((ImagePartType)(int)model.ImagePartType);
+
+            using (MemoryStream stream = new MemoryStream(imageData))
+            {
+                imagePart.FeedData(stream);
+            }
+
+            return CreateImage(imagePart, model);
+        }
+
         public IRun CreateImage(string fileName, PictureModel model)
         {
             if (string.IsNullOrWhiteSpace(fileName))
