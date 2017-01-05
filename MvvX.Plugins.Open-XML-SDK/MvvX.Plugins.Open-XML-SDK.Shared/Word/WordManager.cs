@@ -384,7 +384,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
         /// Append SubDocument at end of current doc
         /// </summary>
         /// <param name="content"></param>
-        public void AppendSubDocument(Stream content)
+        public void AppendSubDocument(Stream content, bool withPageBreak)
         {
             if (wdDoc == null)
                 throw new InvalidOperationException("Document not loaded");
@@ -397,6 +397,14 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
             altChunk.Id = wdMainDocumentPart.GetIdOfPart(formatImportPart);
 
             wdMainDocumentPart.Document.Body.Elements<Paragraph>().Last().InsertAfterSelf(altChunk);
+
+            if (withPageBreak)
+            {
+                Paragraph p = new Paragraph(
+                    new Run(
+                        new Break() { Type = BreakValues.Page }));
+                altChunk.InsertAfterSelf(p);
+            }
         }
 
         /// <summary>

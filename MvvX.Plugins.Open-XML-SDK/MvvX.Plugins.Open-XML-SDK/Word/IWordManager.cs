@@ -51,7 +51,9 @@ namespace MvvX.Plugins.OpenXMLSDK.Word
         /// Append SubDocument at end of current doc
         /// </summary>
         /// <param name="content"></param>
-        void AppendSubDocument(Stream content);
+        /// <param name="withPageBreak"></param>
+        void AppendSubDocument(Stream content, bool withPageBreak);
+
 
         /// <summary>
         /// Insert paragraph in bookmark
