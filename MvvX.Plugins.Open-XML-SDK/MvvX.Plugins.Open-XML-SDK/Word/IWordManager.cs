@@ -48,6 +48,12 @@ namespace MvvX.Plugins.OpenXMLSDK.Word
         void SetSubDocumentOnBookmark(string bookmark, Stream content);
 
         /// <summary>
+        /// Append SubDocument at end of current doc
+        /// </summary>
+        /// <param name="content"></param>
+        void AppendSubDocument(Stream content);
+
+        /// <summary>
         /// Insert paragraph in bookmark
         /// </summary>
         /// <param name="bookmark">Bookmark name</param>

@@ -381,6 +381,25 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
         }
 
         /// <summary>
+        /// Append SubDocument at end of current doc
+        /// </summary>
+        /// <param name="content"></param>
+        public void AppendSubDocument(Stream content)
+        {
+            if (wdDoc == null)
+                throw new InvalidOperationException("Document not loaded");
+
+            AlternativeFormatImportPart formatImportPart = wdMainDocumentPart.AddAlternativeFormatImportPart(AlternativeFormatImportPartType.WordprocessingML);
+
+            formatImportPart.FeedData(content);
+
+            AltChunk altChunk = new AltChunk();
+            altChunk.Id = wdMainDocumentPart.GetIdOfPart(formatImportPart);
+
+            wdMainDocumentPart.Document.Body.Elements<Paragraph>().Last().InsertAfterSelf(altChunk);
+        }
+
+        /// <summary>
         /// Insert a document on bookmark
         /// </summary>
         /// <param name="bookmark"></param>
