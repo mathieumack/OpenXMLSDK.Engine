@@ -96,8 +96,17 @@
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Extensions\TextDirectionValuesExtensions.cs">
       <Link>Word\Extensions\TextDirectionValuesExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Paragraphs\PlatformNumberingProperties.cs">
+      <Link>Word\Paragraphs\PlatformNumberingProperties.cs</Link>
+    </Compile>
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Paragraphs\PlatformParagraph.cs">
       <Link>Word\Paragraphs\PlatformParagraph.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Paragraphs\PlatformParagraphProperties.cs">
+      <Link>Word\Paragraphs\PlatformParagraphProperties.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\PlatformAltChunk.cs">
+      <Link>Word\PlatformAltChunk.cs</Link>
     </Compile>
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\PlatformBorder.cs">
       <Link>Word\PlatformBorder.cs</Link>

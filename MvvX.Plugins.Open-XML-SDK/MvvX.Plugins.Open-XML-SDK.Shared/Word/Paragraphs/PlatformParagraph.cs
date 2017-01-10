@@ -7,6 +7,20 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.Paragraphs
     {
         private readonly Paragraph paragraph;
 
+        private IParagraphProperties properties;
+        /// <summary>
+        /// Properties of the paragraph item
+        /// </summary>
+        public IParagraphProperties ParagraphProperties
+        {
+            get
+            {
+                if (properties == null)
+                    properties = PlatformParagraphProperties.New(paragraph);
+                return properties;
+            }
+        }
+
         public PlatformParagraph()
             : this(new Paragraph())
         {
