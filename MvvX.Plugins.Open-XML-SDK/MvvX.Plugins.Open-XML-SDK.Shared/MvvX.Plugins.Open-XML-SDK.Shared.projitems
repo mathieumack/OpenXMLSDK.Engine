@@ -19,7 +19,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Word\Extensions\JustificationValuesExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\Extensions\ShadingPatternValuesExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\Extensions\TextDirectionValuesExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Word\Paragraphs\PlatformNumberingProperties.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\Paragraphs\PlatformParagraph.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Word\Paragraphs\PlatformParagraphProperties.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Word\PlatformAltChunk.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\PlatformBorder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\PlatformDecimalNumberType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\PlatformGridSpan.cs" />

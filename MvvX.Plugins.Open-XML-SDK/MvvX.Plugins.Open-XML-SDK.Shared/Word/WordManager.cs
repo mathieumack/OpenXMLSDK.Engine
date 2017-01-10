@@ -19,6 +19,7 @@ using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
 using PIC = DocumentFormat.OpenXml.Drawing.Pictures;
 using MvvX.Plugins.OpenXMLSDK.Word;
 using MvvX.Plugins.OpenXMLSDK.Drawing.Pictures.Model;
+using System.Text;
 
 namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
 {
@@ -88,6 +89,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
             var memoryStream = new MemoryStream();
             streamFile.Position = 0;
             streamFile.CopyTo(memoryStream);
+            memoryStream.Position = 0;
             return memoryStream;
         }
 
@@ -345,9 +347,94 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
             SetOnBookmark(bookmark, new PlatformRun(run));
         }
 
-#endregion
+        /// <summary>
+        /// Insert an html content on bookmark
+        /// </summary>
+        /// <param name="bookmark"></param>
+        /// <param name="html"></param>
+        public void SetHtmlOnBookmark(string bookmark, string html)
+        {
+            if (string.IsNullOrWhiteSpace(bookmark))
+                throw new ArgumentNullException("bookmark must be not null or white spaces");
+            if (wdDoc == null)
+                throw new InvalidOperationException("Document not loaded");
 
-#region Images
+            using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(html)))
+            {
+                AddAltChunkOnBookmark(bookmark, ms, AlternativeFormatImportPartType.Xhtml);
+            }
+        }
+
+        /// <summary>
+        /// Insert another word document on bookmark
+        /// </summary>
+        /// <param name="bookmark"></param>
+        /// <param name="content"></param>
+        public void SetSubDocumentOnBookmark(string bookmark, Stream content)
+        {
+            if (string.IsNullOrWhiteSpace(bookmark))
+                throw new ArgumentNullException("bookmark must be not null or white spaces");
+            if (wdDoc == null)
+                throw new InvalidOperationException("Document not loaded");
+
+            AddAltChunkOnBookmark(bookmark, content, AlternativeFormatImportPartType.WordprocessingML);
+        }
+
+        /// <summary>
+        /// Append SubDocument at end of current doc
+        /// </summary>
+        /// <param name="content"></param>
+        public void AppendSubDocument(Stream content, bool withPageBreak)
+        {
+            if (wdDoc == null)
+                throw new InvalidOperationException("Document not loaded");
+
+            AlternativeFormatImportPart formatImportPart = wdMainDocumentPart.AddAlternativeFormatImportPart(AlternativeFormatImportPartType.WordprocessingML);
+
+            formatImportPart.FeedData(content);
+
+            AltChunk altChunk = new AltChunk();
+            altChunk.Id = wdMainDocumentPart.GetIdOfPart(formatImportPart);
+
+            wdMainDocumentPart.Document.Body.Elements<Paragraph>().Last().InsertAfterSelf(altChunk);
+
+            if (withPageBreak)
+            {
+                Paragraph p = new Paragraph(
+                    new Run(
+                        new Break() { Type = BreakValues.Page }));
+                altChunk.InsertAfterSelf(p);
+            }
+        }
+
+        /// <summary>
+        /// Insert a document on bookmark
+        /// </summary>
+        /// <param name="bookmark"></param>
+        /// <param name="content"></param>
+        /// <param name="importType"></param>
+        private void AddAltChunkOnBookmark(string bookmark, Stream content, AlternativeFormatImportPartType importType)
+        {
+            AlternativeFormatImportPart formatImportPart = wdMainDocumentPart.AddAlternativeFormatImportPart(importType);
+
+            formatImportPart.FeedData(content);
+
+            AltChunk altChunk = new AltChunk();
+            altChunk.Id = wdMainDocumentPart.GetIdOfPart(formatImportPart);
+
+            var bookmarkElement = FindBookmark(bookmark);
+            if (bookmarkElement != null)
+            {
+                var paragraph = bookmarkElement.Ancestors<IParagraph>().LastOrDefault();
+                // without an empty paragraph after altchunk, the docx might be corrupted if the bookmark is inside a table and the html only contains one paragraph
+                if(paragraph.Ancestors<ITable>().Any())
+                    paragraph.InsertAfterSelf(new PlatformParagraph());
+                paragraph.InsertAfterSelf(new PlatformAltChunk(altChunk));
+            }
+        }
+        #endregion
+
+        #region Images
 
         /// <summary>
         /// Renvoie l'ID d'une part dans le document
@@ -368,15 +455,21 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
         private ImagePart AddImagePart(ImagePartType type)
         {
             return wdMainDocumentPart.AddImagePart(type);
+        }
 
-            try
-            {
-                CreateImage("", null);
-            }
-            catch(ArgumentNullException nullException)
-            {
+        public IRun CreateImage(byte[] imageData, PictureModel model)
+        {
+            if (imageData == null)
+                throw new ArgumentNullException("Image not found");
 
+            ImagePart imagePart = AddImagePart((ImagePartType)(int)model.ImagePartType);
+
+            using (MemoryStream stream = new MemoryStream(imageData))
+            {
+                imagePart.FeedData(stream);
             }
+
+            return CreateImage(imagePart, model);
         }
 
         public IRun CreateImage(string fileName, PictureModel model)
@@ -532,10 +625,62 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
             return new T();
         }
 
-#endregion
+        public int CreateBulletList()
+        {
+            NumberingDefinitionsPart numberingPart = wdMainDocumentPart.NumberingDefinitionsPart;
+            if (numberingPart == null)
+            {
+                numberingPart = wdMainDocumentPart.AddNewPart<NumberingDefinitionsPart>();
+                Numbering element = new Numbering();
+                element.Save(numberingPart);
+            }
 
-#region Texts
-        
+            // Insert an AbstractNum into the numbering part numbering list.  The order seems to matter or it will not pass the 
+            // Open XML SDK Productity Tools validation test.  AbstractNum comes first and then NumberingInstance and we want to
+            // insert this AFTER the last AbstractNum and BEFORE the first NumberingInstance or we will get a validation error.
+            var abstractNumberId = numberingPart.Numbering.Elements<AbstractNum>().Count() + 1;
+            var lvls = new List<Level>();
+            for (int i = 0; i < 6; i++)
+            {
+                var abstractLevel = new Level(new NumberingFormat() { Val = NumberFormatValues.Bullet }, new LevelText() { Val = "" }, new ParagraphProperties() { Indentation = new Indentation() { Left = (720 * (i+1)).ToString(), Hanging = "360" } }, new RunProperties() { RunFonts = new RunFonts() { Ascii = "Symbol", HighAnsi = "Symbol" } }) { LevelIndex = i };
+                lvls.Add(abstractLevel);
+            }
+            var abstractNum1 = new AbstractNum(lvls) { AbstractNumberId = abstractNumberId };
+
+            if (abstractNumberId == 1)
+            {
+                numberingPart.Numbering.Append(abstractNum1);
+            }
+            else
+            {
+                AbstractNum lastAbstractNum = numberingPart.Numbering.Elements<AbstractNum>().Last();
+                numberingPart.Numbering.InsertAfter(abstractNum1, lastAbstractNum);
+            }
+
+            // Insert an NumberingInstance into the numbering part numbering list.  The order seems to matter or it will not pass the 
+            // Open XML SDK Productity Tools validation test.  AbstractNum comes first and then NumberingInstance and we want to
+            // insert this AFTER the last NumberingInstance and AFTER all the AbstractNum entries or we will get a validation error.
+            var numberId = numberingPart.Numbering.Elements<NumberingInstance>().Count() + 1;
+            NumberingInstance numberingInstance1 = new NumberingInstance() { NumberID = numberId };
+            AbstractNumId abstractNumId1 = new AbstractNumId() { Val = abstractNumberId };
+            numberingInstance1.Append(abstractNumId1);
+
+            if (numberId == 1)
+            {
+                numberingPart.Numbering.Append(numberingInstance1);
+            }
+            else
+            {
+                var lastNumberingInstance = numberingPart.Numbering.Elements<NumberingInstance>().Last();
+                numberingPart.Numbering.InsertAfter(numberingInstance1, lastNumberingInstance);
+            }
+
+            return numberId;
+        }
+        #endregion
+
+        #region Texts
+
         public IRun CreateRunForTable(ITable table)
         {
             if (table == null)
@@ -546,14 +691,23 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
             return new PlatformRun(run);
         }
 
-        public IParagraph CreateParagraphForRun(IRun run)
+        public IParagraph CreateParagraphForRun(IRun run, ParagraphPropertiesModel ppm = null)
         {
             if (run == null)
                 throw new ArgumentNullException("run must not be null");
 
-            var paragraph = new Paragraph(run.ContentItem as Run);
+            var paragraph = new Paragraph();
 
-            return new PlatformParagraph(paragraph);
+            var platformParagraph = new PlatformParagraph(paragraph);
+
+            if (ppm != null)
+            {
+                AutoMapper.Mapper.Map(ppm, platformParagraph.ParagraphProperties);
+            }
+
+            paragraph.Append(run.ContentItem as Run);
+
+            return platformParagraph;
         }
 
         public IRun CreateRunForText(string content, RunPropertiesModel rpm = null)

@@ -34,6 +34,28 @@ namespace MvvX.Plugins.OpenXMLSDK.Word
         void SetOnBookmark(string bookmark, IOpenXmlElement element);
 
         /// <summary>
+        /// Insert html to bookmark
+        /// </summary>
+        /// <param name="bookmark">Bookmark name</param>
+        /// <param name="html"> Text to insert</param>
+        void SetHtmlOnBookmark(string bookmark, string html);
+
+        /// <summary>
+        /// Insert docx sub-document to bookmark
+        /// </summary>
+        /// <param name="bookmark"></param>
+        /// <param name="content"></param>
+        void SetSubDocumentOnBookmark(string bookmark, Stream content);
+
+        /// <summary>
+        /// Append SubDocument at end of current doc
+        /// </summary>
+        /// <param name="content"></param>
+        /// <param name="withPageBreak"></param>
+        void AppendSubDocument(Stream content, bool withPageBreak);
+
+
+        /// <summary>
         /// Insert paragraph in bookmark
         /// </summary>
         /// <param name="bookmark">Bookmark name</param>
@@ -55,6 +77,12 @@ namespace MvvX.Plugins.OpenXMLSDK.Word
         /// Close the opened document
         /// </summary>
         void CloseDoc();
+
+        /// <summary>
+        /// Get Stream for current document
+        /// </summary>
+        /// <returns></returns>
+        MemoryStream GetMemoryStream();
 
         /// <summary>
         /// Save document
@@ -101,7 +129,9 @@ namespace MvvX.Plugins.OpenXMLSDK.Word
         #endregion
 
         #region Images
-        
+
+        IRun CreateImage(byte[] imageData, PictureModel model);
+
         IRun CreateImage(string fileName, PictureModel model);
 
         #endregion
@@ -112,11 +142,16 @@ namespace MvvX.Plugins.OpenXMLSDK.Word
 
         ITable CreateTable();
 
+        /// <summary>
+        /// Create a bullet list
+        /// </summary>
+        /// <returns>numbering id</returns>
+        int CreateBulletList();
         #endregion
 
         #region Texts
         
-        IParagraph CreateParagraphForRun(IRun run);
+        IParagraph CreateParagraphForRun(IRun run, ParagraphPropertiesModel ppm = null);
 
         IRun CreateRunForTable(ITable run);
 
