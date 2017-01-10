@@ -72,6 +72,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
                     AutoMapper.Mapper.Map(source.TableWidth, dest.TableWidth);
                     AutoMapper.Mapper.Map(source.Shading, dest.Shading);
                     AutoMapper.Mapper.Map(source.TableStyle, dest.TableStyle);
+                    AutoMapper.Mapper.Map(source.Layout, dest.Layout);
                 });
 
                 cfg.CreateMap<RunFontsModel, IRunFonts>();
@@ -87,6 +88,8 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
                 {
                     AutoMapper.Mapper.Map(source.NumberingProperties, dest.NumberingProperties);
                 });
+
+                cfg.CreateMap<TableLayoutModel, ITableLayout>();
             });
         }
     }

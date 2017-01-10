@@ -33,6 +33,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Word\PlatformText.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\Tables\PlatformTableBorders.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\Tables\PlatformTableCellBorders.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Word\Tables\PlatformTableLayout.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\Tables\PlatformTableRowHeight.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\Tables\PlatformTableRowProperties.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\Tables\PlatformTableCellWidth.cs" />

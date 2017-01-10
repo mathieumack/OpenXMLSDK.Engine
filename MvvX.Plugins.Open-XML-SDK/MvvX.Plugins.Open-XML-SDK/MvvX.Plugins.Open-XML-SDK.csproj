@@ -78,6 +78,7 @@
     <Compile Include="Word\SpaceProcessingModeValues.cs" />
     <Compile Include="Word\Tables\ITableBorders.cs" />
     <Compile Include="Word\Tables\ITableCellBorders.cs" />
+    <Compile Include="Word\Tables\ITableLayout.cs" />
     <Compile Include="Word\Tables\ITableRowHeight.cs" />
     <Compile Include="Word\Tables\ITableProperties.cs" />
     <Compile Include="Word\Tables\ITableJustification.cs" />
@@ -87,10 +88,12 @@
     <Compile Include="Word\Tables\ITableWidth.cs" />
     <Compile Include="Word\Tables\Models\TableCellBordersModel.cs" />
     <Compile Include="Word\Tables\Models\TableBordersModel.cs" />
+    <Compile Include="Word\Tables\Models\TableLayoutModel.cs" />
     <Compile Include="Word\Tables\Models\TableRowHeightModel.cs" />
     <Compile Include="Word\Tables\Models\TableCellWidthModel.cs" />
     <Compile Include="Word\Tables\Models\TableStyleModel.cs" />
     <Compile Include="Word\Tables\Models\TableWidthModel.cs" />
+    <Compile Include="Word\Tables\TableLayoutValues.cs" />
     <Compile Include="Word\Tables\TableRowAlignmentValues.cs" />
     <Compile Include="Word\Tables\ITableCell.cs" />
     <Compile Include="Word\Tables\ITableCellProperties.cs" />
