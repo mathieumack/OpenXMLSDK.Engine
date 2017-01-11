@@ -21,11 +21,18 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.Tables.Models
         /// default : Center
         /// </summary>
         public TableRowAlignmentValues TableJustification { get; set; }
-        
+
+        /// <summary>
+        /// Fit column to text option
+        /// default : Autofit
+        /// </summary>
+        public TableLayoutModel Layout { get; set; }
+
         public TablePropertiesModel()
         {
             TableStyle = new TableStyleModel();
             TableJustification = TableRowAlignmentValues.Center;
+            Layout = new TableLayoutModel();
         }
     }
 }

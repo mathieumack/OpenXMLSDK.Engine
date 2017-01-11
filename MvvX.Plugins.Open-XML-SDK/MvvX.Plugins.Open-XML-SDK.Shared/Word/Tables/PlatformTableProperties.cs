@@ -2,6 +2,7 @@
 using MvvX.Plugins.OpenXMLSDK.Word;
 using MvvX.Plugins.OpenXMLSDK.Word.Tables;
 using System.Linq;
+using System;
 
 namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.Tables
 {
@@ -89,6 +90,18 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.Tables
                         xmlElement.TableJustification = new TableJustification();
                     xmlElement.TableJustification.Val = (DocumentFormat.OpenXml.Wordprocessing.TableRowAlignmentValues)(int)value;
                 }
+            }
+        }
+
+        private ITableLayout layout;
+        public ITableLayout Layout
+        {
+            get
+            {
+                if (layout == null)
+                    layout = PlatformTableLayout.New(xmlElement);
+
+                return layout;
             }
         }
 
