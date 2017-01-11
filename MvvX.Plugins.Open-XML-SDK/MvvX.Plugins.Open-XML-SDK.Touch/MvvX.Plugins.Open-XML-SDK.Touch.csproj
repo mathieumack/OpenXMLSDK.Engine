@@ -151,6 +151,9 @@
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Tables\PlatformTableCellWidth.cs">
       <Link>Word\Tables\PlatformTableCellWidth.cs</Link>
     </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Tables\PlatformTableLayout.cs">
+      <Link>Word\Tables\PlatformTableLayout.cs</Link>
+    </Compile>
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Tables\PlatformTableProperties.cs">
       <Link>Word\Tables\PlatformTableProperties.cs</Link>
     </Compile>
