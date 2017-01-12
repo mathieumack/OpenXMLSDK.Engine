@@ -874,14 +874,15 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
 
             var tableCellProperties = platformCellTable.Properties.ContentItem as TableCellProperties;
 
-            //tableCellProperties.Append(new TableCellVerticalAlignment { Val = cellModel.TableVerticalAlignementValues.ToOOxml() });
+            tableCellProperties.Append(new TableCellVerticalAlignment {
+                Val = (DocumentFormat.OpenXml.Wordprocessing.TableVerticalAlignmentValues)(int)cellModel.TableVerticalAlignementValues });
 
             // Modification de la rotation du texte dans la cellule
             if (cellModel.TextDirectionValues.HasValue)
                 tableCellProperties.Append(new TextDirection { Val = cellModel.TextDirectionValues.ToOOxml() });
 
             Paragraph par = new Paragraph();
-            ParagraphProperties pr = new ParagraphProperties(); // new TableCellVerticalAlignment { Val = cellModel.TableVerticalAlignementValues.ToOOxml() });
+            ParagraphProperties pr = new ParagraphProperties();
             //new SpacingBetweenLines() { After = cellModel.SpacingAfter, Before = cellModel.SpacingBefore, Line = "240" });
 
             if (cellModel.Justification.HasValue)

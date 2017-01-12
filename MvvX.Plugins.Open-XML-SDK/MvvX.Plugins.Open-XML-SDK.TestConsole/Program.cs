@@ -114,7 +114,8 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                             TableCellBorders = new TableCellBordersModel()
                             {
                                 TopBorder = borderTopIsOK
-                            }
+                            },
+                            TableVerticalAlignementValues = TableVerticalAlignmentValues.Center
                         }),
                         word.CreateTableCell(word.CreateRun(), new TableCellPropertiesModel() {
                                     TableCellWidth = new TableCellWidthModel()
