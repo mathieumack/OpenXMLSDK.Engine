@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using DocumentFormat.OpenXml.Wordprocessing;
+﻿using DocumentFormat.OpenXml.Wordprocessing;
 using MvvX.Plugins.OpenXMLSDK.Word.Paragraphs;
 
 namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.Paragraphs
@@ -30,6 +27,30 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.Paragraphs
                     numberingProperties = PlatformNumberingProperties.New(xmlElement);
 
                 return numberingProperties;
+            }
+        }
+
+        private IParagraphStyleId paragraphStyleId;
+        public IParagraphStyleId ParagraphStyleId
+        {
+            get
+            {
+                if (paragraphStyleId == null)
+                    paragraphStyleId = PlatformParagraphStyleId.New(xmlElement);
+
+                return paragraphStyleId;
+            }
+        }
+
+        private ISpacingBetweenLines spacingBetweenLines;
+        public ISpacingBetweenLines SpacingBetweenLines
+        {
+            get
+            {
+                if (spacingBetweenLines == null)
+                    spacingBetweenLines = PlatformSpacingBetweenLines.New(xmlElement);
+
+                return spacingBetweenLines;
             }
         }
 

@@ -1,13 +1,13 @@
 ﻿using System;
-using System.IO;
-using MvvX.Plugins.OpenXMLSDK.Word;
 using System.Collections.Generic;
-using MvvX.Plugins.OpenXMLSDK.Word.Tables.Models;
-using MvvX.Plugins.OpenXMLSDK.Word.Tables;
-using MvvX.Plugins.OpenXMLSDK.Word.Paragraphs;
 using System.Diagnostics;
-using MvvX.Plugins.OpenXMLSDK.Word.Models;
+using System.IO;
 using MvvX.Plugins.OpenXMLSDK.Platform.Word;
+using MvvX.Plugins.OpenXMLSDK.Word;
+using MvvX.Plugins.OpenXMLSDK.Word.Models;
+using MvvX.Plugins.OpenXMLSDK.Word.Paragraphs;
+using MvvX.Plugins.OpenXMLSDK.Word.Tables;
+using MvvX.Plugins.OpenXMLSDK.Word.Tables.Models;
 
 namespace MvvX.Plugins.OpenXMLSDK.TestConsole
 {
@@ -330,6 +330,21 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
 
                 IList<IParagraph> tables = new List<IParagraph>();
                 tables.Add(word.CreateParagraphForRun(word.CreateRunForTable(word.CreateTable(lines, tableProperty))));
+
+                tables.Add(word.CreateParagraphForRun(
+                    word.CreateRunForText("Test de style"),
+                        new ParagraphPropertiesModel()
+                        {
+                            ParagraphStyleId = new ParagraphStyleIdModel()
+                            {
+                                Val = "Titre01"
+                            },
+                            SpacingBetweenLines = new SpacingBetweenLinesModel()
+                            {
+                                After = "800",
+                                Before = "100"
+                            }
+                        }));
 
                 // Lignes du deuxième tableau pour les constats unchecked
                 //lines = new List<TableRow>();
