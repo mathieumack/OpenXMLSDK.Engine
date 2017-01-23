@@ -67,13 +67,17 @@
     <Compile Include="Word\Models\GridSpanModel.cs" />
     <Compile Include="Word\Models\NumberingPropertiesModel.cs" />
     <Compile Include="Word\Models\ParagraphPropertiesModel.cs" />
+    <Compile Include="Word\Models\ParagraphStyleIdModel.cs" />
     <Compile Include="Word\Models\ShadingModel.cs" />
+    <Compile Include="Word\Models\SpacingBetweenLinesModel.cs" />
     <Compile Include="Word\OnOffOnlyValues.cs" />
     <Compile Include="Word\Paragraphs\INumberingProperties.cs" />
     <Compile Include="Word\Paragraphs\IParagraph.cs" />
     <Compile Include="Word\Models\RunFontsModel.cs" />
     <Compile Include="Word\Models\RunPropertiesModel.cs" />
     <Compile Include="Word\Paragraphs\IParagraphProperties.cs" />
+    <Compile Include="Word\Paragraphs\IParagraphStyleId.cs" />
+    <Compile Include="Word\Paragraphs\ISpacingBetweenLines.cs" />
     <Compile Include="Word\ShadingPatternValues.cs" />
     <Compile Include="Word\SpaceProcessingModeValues.cs" />
     <Compile Include="Word\Tables\ITableBorders.cs" />

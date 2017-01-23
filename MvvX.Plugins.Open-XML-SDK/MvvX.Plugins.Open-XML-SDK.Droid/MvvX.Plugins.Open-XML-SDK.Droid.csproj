@@ -105,6 +105,12 @@
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Paragraphs\PlatformParagraphProperties.cs">
       <Link>Word\Paragraphs\PlatformParagraphProperties.cs</Link>
     </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Paragraphs\PlatformParagraphStyleId.cs">
+      <Link>Word\Paragraphs\PlatformParagraphStyleId.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Paragraphs\PlatformSpacingBetweenLines.cs">
+      <Link>Word\Paragraphs\PlatformSpacingBetweenLines.cs</Link>
+    </Compile>
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\PlatformAltChunk.cs">
       <Link>Word\PlatformAltChunk.cs</Link>
     </Compile>

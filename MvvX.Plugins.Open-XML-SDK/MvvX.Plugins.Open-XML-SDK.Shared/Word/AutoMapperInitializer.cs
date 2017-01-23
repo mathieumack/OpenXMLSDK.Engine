@@ -83,11 +83,15 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
                 });
 
                 cfg.CreateMap<NumberingPropertiesModel, INumberingProperties>();
+                cfg.CreateMap<ParagraphStyleIdModel, IParagraphStyleId>();
+                cfg.CreateMap<SpacingBetweenLinesModel, ISpacingBetweenLines>();
                 cfg.CreateMap<ParagraphPropertiesModel, IParagraphProperties>()
-                .AfterMap((source, dest) =>
-                {
-                    AutoMapper.Mapper.Map(source.NumberingProperties, dest.NumberingProperties);
-                });
+                    .AfterMap((source, dest) =>
+                    {
+                        AutoMapper.Mapper.Map(source.NumberingProperties, dest.NumberingProperties);
+                        AutoMapper.Mapper.Map(source.ParagraphStyleId, dest.ParagraphStyleId);
+                        AutoMapper.Mapper.Map(source.SpacingBetweenLines, dest.SpacingBetweenLines);
+                    });
 
                 cfg.CreateMap<TableLayoutModel, ITableLayout>();
             });

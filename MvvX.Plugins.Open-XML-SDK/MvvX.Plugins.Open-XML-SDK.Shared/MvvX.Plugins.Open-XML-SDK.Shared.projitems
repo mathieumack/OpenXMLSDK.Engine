@@ -22,6 +22,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Word\Paragraphs\PlatformNumberingProperties.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\Paragraphs\PlatformParagraph.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\Paragraphs\PlatformParagraphProperties.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Word\Paragraphs\PlatformParagraphStyleId.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Word\Paragraphs\PlatformSpacingBetweenLines.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\PlatformAltChunk.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\PlatformBorder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\PlatformDecimalNumberType.cs" />
