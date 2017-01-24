@@ -95,6 +95,19 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
 
         #endregion
 
+        #region Settings
+
+        /// <summary>
+        /// Force or not the update of Table of Content when the document is opened
+        /// </summary>
+        /// <param name="updateToc"></param>
+        public void SetToCUpdate(bool updateToc)
+        {
+            wdMainDocumentPart?.DocumentSettingsPart?.Settings?.Append(new UpdateFieldsOnOpen() { Val = new OnOffValue(updateToc) } );
+        }
+
+        #endregion
+
         #region Fonctions privées - Open/Save/Create
 
         /// <summary>
