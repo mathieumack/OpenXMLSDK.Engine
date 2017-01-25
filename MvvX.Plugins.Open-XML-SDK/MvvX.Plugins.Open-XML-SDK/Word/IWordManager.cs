@@ -78,6 +78,16 @@ namespace MvvX.Plugins.OpenXMLSDK.Word
 
         #endregion
 
+        #region Settings
+
+        /// <summary>
+        /// Force or not the update of Table of Content when the document is opened
+        /// </summary>
+        /// <param name="updateToc"></param>
+        void SetToCUpdate(bool updateToc);
+
+        #endregion
+
         #region Open / Save / Close
 
         /// <summary>
