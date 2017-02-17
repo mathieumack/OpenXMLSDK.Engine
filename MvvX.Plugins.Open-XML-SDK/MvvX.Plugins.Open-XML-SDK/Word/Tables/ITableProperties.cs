@@ -11,5 +11,7 @@
         ITableWidth TableWidth { get; }
 
         Word.Tables.TableRowAlignmentValues? TableJustification { get; set; }
+
+        ITableLayout Layout { get; }
     }
 }

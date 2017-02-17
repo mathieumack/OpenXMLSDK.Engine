@@ -72,6 +72,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
                     AutoMapper.Mapper.Map(source.TableWidth, dest.TableWidth);
                     AutoMapper.Mapper.Map(source.Shading, dest.Shading);
                     AutoMapper.Mapper.Map(source.TableStyle, dest.TableStyle);
+                    AutoMapper.Mapper.Map(source.Layout, dest.Layout);
                 });
 
                 cfg.CreateMap<RunFontsModel, IRunFonts>();
@@ -82,11 +83,17 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
                 });
 
                 cfg.CreateMap<NumberingPropertiesModel, INumberingProperties>();
+                cfg.CreateMap<ParagraphStyleIdModel, IParagraphStyleId>();
+                cfg.CreateMap<SpacingBetweenLinesModel, ISpacingBetweenLines>();
                 cfg.CreateMap<ParagraphPropertiesModel, IParagraphProperties>()
-                .AfterMap((source, dest) =>
-                {
-                    AutoMapper.Mapper.Map(source.NumberingProperties, dest.NumberingProperties);
-                });
+                    .AfterMap((source, dest) =>
+                    {
+                        AutoMapper.Mapper.Map(source.NumberingProperties, dest.NumberingProperties);
+                        AutoMapper.Mapper.Map(source.ParagraphStyleId, dest.ParagraphStyleId);
+                        AutoMapper.Mapper.Map(source.SpacingBetweenLines, dest.SpacingBetweenLines);
+                    });
+
+                cfg.CreateMap<TableLayoutModel, ITableLayout>();
             });
         }
     }

@@ -25,7 +25,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
 {
     public class WordManager : IWordManager
     {
-#region Fields
+        #region Fields
 
         private MemoryStream streamFile;
 
@@ -46,9 +46,9 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
         /// </summary>
         private MainDocumentPart wdMainDocumentPart = null;
 
-#endregion
+        #endregion
 
-#region Constructeurs
+        #region Constructeurs
 
         /// <summary>
         /// 
@@ -60,13 +60,13 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
             AutoMapperInitializer.Init();
         }
 
-#endregion
+        #endregion
 
-#region Automapper
+        #region Automapper
 
-#endregion
+        #endregion
 
-#region Dispose / fin
+        #region Dispose / fin
 
         public void CloseDoc()
         {
@@ -93,9 +93,22 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
             return memoryStream;
         }
 
-#endregion
+        #endregion
 
-#region Fonctions privées - Open/Save/Create
+        #region Settings
+
+        /// <summary>
+        /// Force or not the update of Table of Content when the document is opened
+        /// </summary>
+        /// <param name="updateToc"></param>
+        public void SetToCUpdate(bool updateToc)
+        {
+            wdMainDocumentPart?.DocumentSettingsPart?.Settings?.Append(new UpdateFieldsOnOpen() { Val = new OnOffValue(updateToc) });
+        }
+
+        #endregion
+
+        #region Fonctions privées - Open/Save/Create
 
         /// <summary>
         /// Sauvegarde du document courant
@@ -251,9 +264,9 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
             }
         }
 
-#endregion
+        #endregion
 
-#region Bookmarks
+        #region Bookmarks
 
         public IBookmarkEnd FindBookmark(string bookmark)
         {
@@ -427,9 +440,71 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
             {
                 var paragraph = bookmarkElement.Ancestors<IParagraph>().LastOrDefault();
                 // without an empty paragraph after altchunk, the docx might be corrupted if the bookmark is inside a table and the html only contains one paragraph
-                if(paragraph.Ancestors<ITable>().Any())
+                if (paragraph.Ancestors<ITable>().Any())
                     paragraph.InsertAfterSelf(new PlatformParagraph());
                 paragraph.InsertAfterSelf(new PlatformAltChunk(altChunk));
+            }
+        }
+
+        /// <summary>
+        /// Allow to merge documents to insert it in a bookmark
+        /// </summary>
+        /// <param name="bookmark">Bookmark name</param>
+        /// <param name="filesToInsert">Documents to insert</param>
+        /// <param name="insertPageBreaks">Indicate if a page break must be added after each document</param>
+        public void InsertDocsToBookmark(string bookmark, IList<MemoryStream> filesToInsert, bool insertPageBreaks)
+        {
+            if (string.IsNullOrWhiteSpace(bookmark))
+                throw new Exception("Bookmark must not be null or white space");
+
+            if (filesToInsert == null)
+                throw new Exception("FilesToInsert must not be null");
+
+            var bookmarkElement = FindBookmark(bookmark);
+            if (bookmarkElement != default(BookmarkEnd))
+            {
+                OpenXmlCompositeElement openXmlCompositeElement = null;
+                foreach (var file in filesToInsert)
+                {
+                    using (WordprocessingDocument pkgSourceDoc = WordprocessingDocument.Open(file, true))
+                    {
+                        var headers = pkgSourceDoc.MainDocumentPart.Document.Descendants<HeaderReference>().ToList();
+                        foreach (var header in headers)
+                            header.Remove();
+
+                        var footers = pkgSourceDoc.MainDocumentPart.Document.Descendants<FooterReference>().ToList();
+                        foreach (var footer in footers)
+                            footer.Remove();
+
+                        pkgSourceDoc.MainDocumentPart.Document.Save();
+                    }
+
+                    string altChunkId = "AltChunkId-" + Guid.NewGuid();
+
+                    AlternativeFormatImportPart chunk = wdMainDocumentPart.AddAlternativeFormatImportPart(AlternativeFormatImportPartType.WordprocessingML, altChunkId);
+                    file.Position = 0;
+                    chunk.FeedData(file);
+
+                    AltChunk altChunk = new AltChunk() { Id = altChunkId };
+
+                    if (openXmlCompositeElement == null)
+                        openXmlCompositeElement = wdDoc.MainDocumentPart.Document.Body.Descendants<BookmarkStart>().SingleOrDefault<BookmarkStart>((BookmarkStart b) => b.Name == bookmark)
+                            .Ancestors<Paragraph>().FirstOrDefault<Paragraph>();
+
+                    if (insertPageBreaks)
+                    {
+                        var lastRenderedPageBreak = new LastRenderedPageBreak();
+                        var run = new Run(lastRenderedPageBreak);
+                        Paragraph paragraph = new Paragraph(run);
+                        openXmlCompositeElement.InsertAfterSelf<Paragraph>(paragraph);
+                        openXmlCompositeElement = paragraph;
+                    }
+                    openXmlCompositeElement.InsertAfterSelf<AltChunk>(altChunk);
+                    openXmlCompositeElement = altChunk;
+
+                    if (wdDoc == null)
+                        throw new Exception("Document not loaded");
+                }
             }
         }
         #endregion
@@ -606,9 +681,9 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
             return new PlatformRun(result);
         }
 
-#endregion
+        #endregion
 
-#region Instanciate new SDK items
+        #region Instanciate new SDK items
 
         public IRun CreateRun()
         {
@@ -642,7 +717,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
             var lvls = new List<Level>();
             for (int i = 0; i < 6; i++)
             {
-                var abstractLevel = new Level(new NumberingFormat() { Val = NumberFormatValues.Bullet }, new LevelText() { Val = "" }, new ParagraphProperties() { Indentation = new Indentation() { Left = (720 * (i+1)).ToString(), Hanging = "360" } }, new RunProperties() { RunFonts = new RunFonts() { Ascii = "Symbol", HighAnsi = "Symbol" } }) { LevelIndex = i };
+                var abstractLevel = new Level(new NumberingFormat() { Val = NumberFormatValues.Bullet }, new LevelText() { Val = "" }, new ParagraphProperties() { Indentation = new Indentation() { Left = (720 * (i + 1)).ToString(), Hanging = "360" } }, new RunProperties() { RunFonts = new RunFonts() { Ascii = "Symbol", HighAnsi = "Symbol" } }) { LevelIndex = i };
                 lvls.Add(abstractLevel);
             }
             var abstractNum1 = new AbstractNum(lvls) { AbstractNumberId = abstractNumberId };
@@ -724,9 +799,9 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
             return platformRun;
         }
 
-#endregion
+        #endregion
 
-#region Tables
+        #region Tables
 
         public ITable CreateTable(IList<ITableRow> rows, TablePropertiesModel properties)
         {
@@ -804,22 +879,23 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
                 throw new ArgumentNullException("cellModel must not be null");
 
             var platformCellTable = PlatformTableCell.New();
-            
+
             if (cellModel != null)
                 AutoMapper.Mapper.Map(cellModel, platformCellTable.Properties);
 
             TableCell tc = platformCellTable.ContentItem as TableCell;
 
             var tableCellProperties = platformCellTable.Properties.ContentItem as TableCellProperties;
-            
-            //tableCellProperties.Append(new TableCellVerticalAlignment { Val = cellModel.TableVerticalAlignementValues.ToOOxml() });
+
+            tableCellProperties.Append(new TableCellVerticalAlignment {
+                Val = (DocumentFormat.OpenXml.Wordprocessing.TableVerticalAlignmentValues)(int)cellModel.TableVerticalAlignementValues });
 
             // Modification de la rotation du texte dans la cellule
             if (cellModel.TextDirectionValues.HasValue)
                 tableCellProperties.Append(new TextDirection { Val = cellModel.TextDirectionValues.ToOOxml() });
-            
+
             Paragraph par = new Paragraph();
-            ParagraphProperties pr = new ParagraphProperties(); // new TableCellVerticalAlignment { Val = cellModel.TableVerticalAlignementValues.ToOOxml() });
+            ParagraphProperties pr = new ParagraphProperties();
             //new SpacingBetweenLines() { After = cellModel.SpacingAfter, Before = cellModel.SpacingBefore, Line = "240" });
 
             if (cellModel.Justification.HasValue)
@@ -847,7 +923,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
                 throw new ArgumentNullException("All elements of cellContents must be not null");
             if (cellModel == null)
                 throw new ArgumentNullException("cellModel must not be null");
-            
+
             var platformCellTable = PlatformTableCell.New();
 
             if (cellModel != null)
@@ -856,13 +932,13 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
             TableCell tc = platformCellTable.ContentItem as TableCell;
 
             var tableCellProperties = platformCellTable.Properties.ContentItem as TableCellProperties;
-            
+
             //tableCellProperties.Append(new TableCellVerticalAlignment { Val = cellModel.TableVerticalAlignementValues.ToOOxml() });
 
             // Modification de la rotation du texte dans la cellule
             if (cellModel.TextDirectionValues.HasValue)
                 tableCellProperties.Append(new TextDirection { Val = cellModel.TextDirectionValues.ToOOxml() });
-            
+
             for (int i = 0; i < cellContents.Count; i++)
             {
                 platformCellTable.Append(cellContents[i]);
@@ -883,7 +959,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
 
         public ITableCell CreateTableMergeCell(IList<IRun> cellContents, TableCellPropertiesModel cellModel)
         {
-            if(cellContents == null)
+            if (cellContents == null)
                 throw new ArgumentNullException("cellContents must not be null");
             if (cellContents.Any(e => e == null))
                 throw new ArgumentNullException("All elements of cellContents must be not null");
@@ -898,7 +974,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
             TableCell tc = platformCellTable.ContentItem as TableCell;
 
             var tableCellProperties = platformCellTable.Properties.ContentItem as TableCellProperties;
-            
+
             //tableCellProperties.Append(new TableCellVerticalAlignment { Val = cellModel.TableVerticalAlignementValues.ToOOxml() });
 
             // Gestion de la fusion des cellules
@@ -916,7 +992,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
             // Modification de la rotation du texte dans la cellule
             if (cellModel.TextDirectionValues.HasValue)
                 tableCellProperties.Append(new TextDirection { Val = cellModel.TextDirectionValues.ToOOxml() });
-            
+
             Paragraph par = new Paragraph();
             ParagraphProperties pr = new ParagraphProperties();// new TableCellVerticalAlignment { Val = cellModel.TableVerticalAlignementValues.ToOOxml() });
             //new SpacingBetweenLines() { After = cellModel.SpacingAfter, Before = cellModel.SpacingBefore, Line = "240" });
@@ -945,7 +1021,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
                 throw new ArgumentNullException("cells must not be null");
             if (cells.Any(e => e == null))
                 throw new ArgumentNullException("All elements of cells must be not null");
-            
+
             var ptr = PlatformTableRow.New();
 
             if (properties != null)
@@ -968,7 +1044,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
             return ptr;
         }
 
-#endregion
+        #endregion
     }
 }
 

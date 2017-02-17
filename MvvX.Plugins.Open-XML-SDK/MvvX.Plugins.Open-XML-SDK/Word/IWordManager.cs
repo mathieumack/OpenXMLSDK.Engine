@@ -54,7 +54,6 @@ namespace MvvX.Plugins.OpenXMLSDK.Word
         /// <param name="withPageBreak"></param>
         void AppendSubDocument(Stream content, bool withPageBreak);
 
-
         /// <summary>
         /// Insert paragraph in bookmark
         /// </summary>
@@ -68,6 +67,24 @@ namespace MvvX.Plugins.OpenXMLSDK.Word
         /// <param name="bookmark">Bookmark name</param>
         /// <returns></returns>
         IBookmarkEnd FindBookmark(string bookmark);
+
+        /// <summary>
+        /// Allow to merge documents to insert it in a bookmark
+        /// </summary>
+        /// <param name="bookmark">Bookmark name</param>
+        /// <param name="filesToInsert">Documents to insert</param>
+        /// <param name="insertPageBreaks">Indicate if a page break must be added after each document</param>
+        void InsertDocsToBookmark(string bookmark, IList<MemoryStream> filesToInsert, bool insertPageBreaks);
+
+        #endregion
+
+        #region Settings
+
+        /// <summary>
+        /// Force or not the update of Table of Content when the document is opened
+        /// </summary>
+        /// <param name="updateToc"></param>
+        void SetToCUpdate(bool updateToc);
 
         #endregion
 
