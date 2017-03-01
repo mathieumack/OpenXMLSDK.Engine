@@ -130,6 +130,18 @@
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\PlatformText.cs">
       <Link>Word\PlatformText.cs</Link>
     </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\BaseElementExtensions.cs">
+      <Link>Word\ReportEngine\BaseElementExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\DocumentExtensions.cs">
+      <Link>Word\ReportEngine\DocumentExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\LabelExtension.cs">
+      <Link>Word\ReportEngine\LabelExtension.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\PageExtensions.cs">
+      <Link>Word\ReportEngine\PageExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Tables\PlatformTable.cs">
       <Link>Word\Tables\PlatformTable.cs</Link>
     </Compile>

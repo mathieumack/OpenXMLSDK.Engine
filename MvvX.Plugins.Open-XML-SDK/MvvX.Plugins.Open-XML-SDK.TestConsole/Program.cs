@@ -6,8 +6,11 @@ using MvvX.Plugins.OpenXMLSDK.Platform.Word;
 using MvvX.Plugins.OpenXMLSDK.Word;
 using MvvX.Plugins.OpenXMLSDK.Word.Models;
 using MvvX.Plugins.OpenXMLSDK.Word.Paragraphs;
+using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels;
+using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models;
 using MvvX.Plugins.OpenXMLSDK.Word.Tables;
 using MvvX.Plugins.OpenXMLSDK.Word.Tables.Models;
+using Newtonsoft.Json;
 
 namespace MvvX.Plugins.OpenXMLSDK.TestConsole
 {
@@ -15,6 +18,27 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
     {
         static void Main(string[] args)
         {
+            // Debut test report engine
+            using (IWordManager word = new WordManager())
+            {
+                var template = GetTemplateDocument();
+                var context = new ContextModel();
+                context.AddItem("#KeyTest1#", new StringModel("la la la"));
+                context.AddItem("#KeyTest2#", new StringModel("toto"));
+
+                var json = Newtonsoft.Json.JsonConvert.SerializeObject(context);
+                JsonConverter[] converters = { new JsonContextConverter() };
+                var obj = Newtonsoft.Json.JsonConvert.DeserializeObject<ContextModel>(json, new JsonSerializerSettings() { Converters = converters });
+
+                var res = word.GenerateReport(template, context);
+
+                // test ecriture fichier
+                File.WriteAllBytes("testeric.docx", res);
+                Process.Start("testeric.docx");
+                return;
+            }
+            // fin test report engine
+
             var resourceName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "App_Data", "Global.docx");
 
             if (!Directory.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "App_Data", "Results")))
@@ -357,6 +381,19 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             }
 
             Process.Start(finalFilePath);
+        }
+
+        private static Document GetTemplateDocument()
+        {
+            var doc = new Document();
+            var page1 = new Page();
+            var page2 = new Page();
+            doc.Pages.Add(page1);
+            doc.Pages.Add(page2);
+            page1.ChildElements.Add(new Label() { Text = "Ceci est un texte" });
+            page1.ChildElements.Add(new Label() { Text = "#KeyTest1#" });
+            page1.ChildElements.Add(new Label() { Text = "#KeyTest2#", Show = false });
+            return doc;
         }
     }
 }

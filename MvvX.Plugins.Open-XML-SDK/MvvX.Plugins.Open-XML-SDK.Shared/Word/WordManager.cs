@@ -20,6 +20,10 @@ using PIC = DocumentFormat.OpenXml.Drawing.Pictures;
 using MvvX.Plugins.OpenXMLSDK.Word;
 using MvvX.Plugins.OpenXMLSDK.Drawing.Pictures.Model;
 using System.Text;
+using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels;
+using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine;
+using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models;
+using MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine;
 
 namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
 {
@@ -1043,6 +1047,25 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
             return ptr;
         }
 
+        #endregion
+
+        #region Report Engine
+
+        public byte[] GenerateReport(OpenXMLSDK.Word.ReportEngine.Models.Document document, ContextModel context)
+        {
+            using (MemoryStream stream = new MemoryStream())
+            {
+                wdDoc = WordprocessingDocument.Create(stream, WordprocessingDocumentType.Document);
+                wdDoc.AddMainDocumentPart();
+                wdDoc.MainDocumentPart.Document = new DocumentFormat.OpenXml.Wordprocessing.Document(new Body(new Paragraph()));
+
+                document.Render(wdDoc, context);
+
+                wdDoc.MainDocumentPart.Document.Save();
+                wdDoc.Close();
+                return stream.ToArray();
+             }
+        }
         #endregion
     }
 }

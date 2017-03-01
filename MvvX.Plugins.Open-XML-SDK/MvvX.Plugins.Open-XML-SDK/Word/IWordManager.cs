@@ -7,6 +7,8 @@ using MvvX.Plugins.OpenXMLSDK.Word.Tables;
 using MvvX.Plugins.OpenXMLSDK.Word.Tables.Models;
 using MvvX.Plugins.OpenXMLSDK.Word.Models;
 using MvvX.Plugins.OpenXMLSDK.Drawing.Pictures.Model;
+using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels;
+using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models;
 
 namespace MvvX.Plugins.OpenXMLSDK.Word
 {
@@ -253,6 +255,16 @@ namespace MvvX.Plugins.OpenXMLSDK.Word
         /// <returns></returns>
         ITableRow CreateTableRow(IList<ITableCell> cells, TableRowPropertiesModel properties = null);
 
+        #endregion
+
+        #region Report Engine
+        /// <summary>
+        /// Generate a word document
+        /// </summary>
+        /// <param name="template">document template</param>
+        /// <param name="context">data used to fill document</param>
+        /// <returns></returns>
+        byte[] GenerateReport(Document template,  ContextModel context);
         #endregion
     }
 }
