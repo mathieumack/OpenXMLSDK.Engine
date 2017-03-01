@@ -1055,7 +1055,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
             {
                 wdDoc = WordprocessingDocument.Create(stream, WordprocessingDocumentType.Document);
                 wdDoc.AddMainDocumentPart();
-                wdDoc.MainDocumentPart.Document = new DocumentFormat.OpenXml.Wordprocessing.Document(new Body(new Paragraph()));
+                wdDoc.MainDocumentPart.Document = new DocumentFormat.OpenXml.Wordprocessing.Document(new Body());
 
                 document.Render(wdDoc, context);
 

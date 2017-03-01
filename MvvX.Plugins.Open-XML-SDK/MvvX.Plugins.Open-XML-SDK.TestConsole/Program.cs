@@ -391,10 +391,32 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             doc.Pages.Add(page1);
             doc.Pages.Add(page2);
             var paragraph = new Paragraph();
-            paragraph.ChildElements.Add(new Label() { Text = "Ceci est un texte", FontSize = "30" });
-            paragraph.ChildElements.Add(new Label() { Text = "#KeyTest1#", FontSize = "40" });
+            paragraph.ChildElements.Add(new Label() { Text = "Ceci est un texte", FontSize = "30", FontName = "Arial" });
+            paragraph.ChildElements.Add(new Label() { Text = "#KeyTest1#", FontSize = "40", FontColor = "FF0000", Shading = "0000FF" });
             paragraph.ChildElements.Add(new Label() { Text = "#KeyTest2#", Show = false });
             page1.ChildElements.Add(paragraph);
+            var p2 = new Paragraph();
+            p2.Shading = "FF0000";
+            p2.ChildElements.Add(new Label() { Text = "texte paragraph2", FontSize = "20" });
+            p2.ChildElements.Add(new Label() { Text = "texte2 paragraph2" });
+            page1.ChildElements.Add(p2);
+
+            // page 2
+            var p21 = new Paragraph();
+            p21.Justification = JustificationValues.Center;
+            p21.ParagraphStyleId = "Titre1";
+            p21.ChildElements.Add(new Label() { Text = "texte page2", FontName="Arial" });
+            page2.ChildElements.Add(p21);
+            var p22 = new Paragraph();
+            p22.SpacingBefore = 800;
+            p22.SpacingAfter = 800;
+            p22.Justification = JustificationValues.Both;
+            p22.ChildElements.Add(new Label() { Text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse urna augue, convallis eu enim vitae, maximus ultrices nulla. Sed egestas volutpat luctus. Maecenas sodales erat eu elit auctor, eu mattis neque maximus. Duis ac risus quis sem bibendum efficitur. Vivamus justo augue, molestie quis orci non, maximus imperdiet justo. Donec condimentum rhoncus est, ut varius lorem efficitur sed. Donec accumsan sit amet nisl vel ornare. Duis aliquet urna eu mauris porttitor facilisis. " });
+            page2.ChildElements.Add(p22);
+            var p23 = new Paragraph();
+            p23.SpacingBetweenLines = 360;
+            p23.ChildElements.Add(new Label() { Text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse urna augue, convallis eu enim vitae, maximus ultrices nulla. Sed egestas volutpat luctus. Maecenas sodales erat eu elit auctor, eu mattis neque maximus. Duis ac risus quis sem bibendum efficitur. Vivamus justo augue, molestie quis orci non, maximus imperdiet justo. Donec condimentum rhoncus est, ut varius lorem efficitur sed. Donec accumsan sit amet nisl vel ornare. Duis aliquet urna eu mauris porttitor facilisis. " });
+            page2.ChildElements.Add(p23);
             return doc;
         }
     }

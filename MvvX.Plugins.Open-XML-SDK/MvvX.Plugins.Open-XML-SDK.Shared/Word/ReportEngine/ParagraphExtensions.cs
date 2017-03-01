@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using DocumentFormat.OpenXml;
+using MvvX.Plugins.OpenXMLSDK.Platform.Word.Extensions;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models;
 
@@ -14,6 +15,20 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
             context.ReplaceItem(paragraph);
 
             var openXmlPar = new DocumentFormat.OpenXml.Wordprocessing.Paragraph();
+            openXmlPar.ParagraphProperties = new DocumentFormat.OpenXml.Wordprocessing.ParagraphProperties()
+            {
+                Shading = new DocumentFormat.OpenXml.Wordprocessing.Shading() { Fill = paragraph.Shading },
+                Justification = new DocumentFormat.OpenXml.Wordprocessing.Justification() { Val = paragraph.Justification.ToOOxml()},
+                SpacingBetweenLines = new DocumentFormat.OpenXml.Wordprocessing.SpacingBetweenLines() 
+            };
+            if (paragraph.SpacingBefore.HasValue)
+                openXmlPar.ParagraphProperties.SpacingBetweenLines.Before = paragraph.SpacingBefore.ToString();
+            if (paragraph.SpacingAfter.HasValue)
+                openXmlPar.ParagraphProperties.SpacingBetweenLines.After = paragraph.SpacingAfter.ToString();
+            if (paragraph.SpacingBetweenLines.HasValue)
+                openXmlPar.ParagraphProperties.SpacingBetweenLines.Line = paragraph.SpacingBetweenLines.ToString();
+            if (!string.IsNullOrWhiteSpace(paragraph.ParagraphStyleId))
+                openXmlPar.ParagraphProperties.ParagraphStyleId = new DocumentFormat.OpenXml.Wordprocessing.ParagraphStyleId() { Val = paragraph.ParagraphStyleId };
             parent.Append(openXmlPar);
 
             return openXmlPar;            

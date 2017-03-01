@@ -85,10 +85,13 @@
     <Compile Include="Word\ReportEngine\BatchModels\JsonContextConverter.cs" />
     <Compile Include="Word\ReportEngine\BatchModels\StringModel.cs" />
     <Compile Include="Word\ReportEngine\Models\BaseElement.cs" />
+    <Compile Include="Word\ReportEngine\Models\Cell.cs" />
     <Compile Include="Word\ReportEngine\Models\Document.cs" />
     <Compile Include="Word\ReportEngine\Models\Label.cs" />
     <Compile Include="Word\ReportEngine\Models\Page.cs" />
     <Compile Include="Word\ReportEngine\Models\Paragraph.cs" />
+    <Compile Include="Word\ReportEngine\Models\Row.cs" />
+    <Compile Include="Word\ReportEngine\Models\Table.cs" />
     <Compile Include="Word\ShadingPatternValues.cs" />
     <Compile Include="Word\SpaceProcessingModeValues.cs" />
     <Compile Include="Word\Tables\ITableBorders.cs" />

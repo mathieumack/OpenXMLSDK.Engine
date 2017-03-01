@@ -37,5 +37,10 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models
         /// Font color
         /// </summary>
         public string FontColor { get; set; }
+
+        /// <summary>
+        /// Shading color
+        /// </summary>
+        public string Shading { get; set; }
     }
 }
