@@ -14,7 +14,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
 
             foreach(var page in document.Pages)
             {
-                page.Render(wdDoc, context);
+                page.Render(wdDoc.MainDocumentPart.Document.Body, context);
             }
         }
     }

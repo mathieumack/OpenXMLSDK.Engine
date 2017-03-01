@@ -88,6 +88,7 @@
     <Compile Include="Word\ReportEngine\Models\Document.cs" />
     <Compile Include="Word\ReportEngine\Models\Label.cs" />
     <Compile Include="Word\ReportEngine\Models\Page.cs" />
+    <Compile Include="Word\ReportEngine\Models\Paragraph.cs" />
     <Compile Include="Word\ShadingPatternValues.cs" />
     <Compile Include="Word\SpaceProcessingModeValues.cs" />
     <Compile Include="Word\Tables\ITableBorders.cs" />

@@ -390,9 +390,11 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             var page2 = new Page();
             doc.Pages.Add(page1);
             doc.Pages.Add(page2);
-            page1.ChildElements.Add(new Label() { Text = "Ceci est un texte" });
-            page1.ChildElements.Add(new Label() { Text = "#KeyTest1#" });
-            page1.ChildElements.Add(new Label() { Text = "#KeyTest2#", Show = false });
+            var paragraph = new Paragraph();
+            paragraph.ChildElements.Add(new Label() { Text = "Ceci est un texte", FontSize = "30" });
+            paragraph.ChildElements.Add(new Label() { Text = "#KeyTest1#", FontSize = "40" });
+            paragraph.ChildElements.Add(new Label() { Text = "#KeyTest2#", Show = false });
+            page1.ChildElements.Add(paragraph);
             return doc;
         }
     }

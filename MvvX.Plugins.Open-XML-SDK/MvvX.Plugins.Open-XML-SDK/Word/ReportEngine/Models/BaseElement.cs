@@ -22,5 +22,20 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models
         /// Childrens
         /// </summary>
         public IList<BaseElement> ChildElements { get; set; } = new List<BaseElement>();
+
+        /// <summary>
+        /// Font
+        /// </summary>
+        public string FontName { get; set; }
+
+        /// <summary>
+        /// Font size
+        /// </summary>
+        public string FontSize { get; set; }
+
+        /// <summary>
+        /// Font color
+        /// </summary>
+        public string FontColor { get; set; }
     }
 }

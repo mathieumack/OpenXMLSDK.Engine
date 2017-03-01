@@ -21,8 +21,6 @@ using MvvX.Plugins.OpenXMLSDK.Word;
 using MvvX.Plugins.OpenXMLSDK.Drawing.Pictures.Model;
 using System.Text;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels;
-using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine;
-using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models;
 using MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine;
 
 namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
