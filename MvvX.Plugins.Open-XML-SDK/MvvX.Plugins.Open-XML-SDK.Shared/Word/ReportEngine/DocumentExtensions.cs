@@ -14,7 +14,15 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
         /// <param name="context"></param>
         public static void Render(this Document document, WordprocessingDocument wdDoc, ContextModel context)
         {
-            foreach(var page in document.Pages)
+            // add styles in document
+            var spart = wdDoc.MainDocumentPart.AddNewPart<StyleDefinitionsPart>();
+            spart.Styles = new DocumentFormat.OpenXml.Wordprocessing.Styles();
+            foreach (var style in document.Styles)
+            {
+                style.Render(spart, context);
+            }
+
+            foreach (var page in document.Pages)
             {
                 if (document.Pages.Count > 1 && document.Pages.IndexOf(page) > 0)
                 {
