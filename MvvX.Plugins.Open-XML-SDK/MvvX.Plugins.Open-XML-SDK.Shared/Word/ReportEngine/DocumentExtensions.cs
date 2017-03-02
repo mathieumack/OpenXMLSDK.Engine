@@ -14,7 +14,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
         /// <param name="context"></param>
         public static void Render(this Document document, WordprocessingDocument wdDoc, ContextModel context)
         {
-            foreach(var page in document.Pages)
+            foreach (var page in document.Pages)
             {
                 if (document.Pages.Count > 1 && document.Pages.IndexOf(page) > 0)
                 {

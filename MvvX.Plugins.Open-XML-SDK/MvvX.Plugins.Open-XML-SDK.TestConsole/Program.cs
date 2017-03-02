@@ -10,7 +10,6 @@ using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models;
 using MvvX.Plugins.OpenXMLSDK.Word.Tables;
 using MvvX.Plugins.OpenXMLSDK.Word.Tables.Models;
-using Newtonsoft.Json;
 
 namespace MvvX.Plugins.OpenXMLSDK.TestConsole
 {
@@ -25,10 +24,6 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                 var context = new ContextModel();
                 context.AddItem("#KeyTest1#", new StringModel("la la la"));
                 context.AddItem("#KeyTest2#", new StringModel("toto"));
-
-                var json = Newtonsoft.Json.JsonConvert.SerializeObject(context);
-                JsonConverter[] converters = { new JsonContextConverter() };
-                var obj = Newtonsoft.Json.JsonConvert.DeserializeObject<ContextModel>(json, new JsonSerializerSettings() { Converters = converters });
 
                 var res = word.GenerateReport(template, context);
 
@@ -405,7 +400,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             var p21 = new Paragraph();
             p21.Justification = JustificationValues.Center;
             p21.ParagraphStyleId = "Titre1";
-            p21.ChildElements.Add(new Label() { Text = "texte page2", FontName="Arial" });
+            p21.ChildElements.Add(new Label() { Text = "texte page2", FontName = "Arial" });
             page2.ChildElements.Add(p21);
             var p22 = new Paragraph();
             p22.SpacingBefore = 800;

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using DocumentFormat.OpenXml;
-using DocumentFormat.OpenXml.Packaging;
+﻿using DocumentFormat.OpenXml;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models;
 
@@ -15,7 +11,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
             context.ReplaceItem(element);
             OpenXmlElement createdElement = null;
 
-            if(element.Show)
+            if (element.Show)
             {
                 if (element is Label)
                 {
@@ -28,7 +24,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
 
                 if (element.ChildElements != null && element.ChildElements.Count > 0)
                 {
-                    foreach(var e in element.ChildElements)
+                    foreach (var e in element.ChildElements)
                     {
                         e.Render(createdElement ?? parent, context);
                     }

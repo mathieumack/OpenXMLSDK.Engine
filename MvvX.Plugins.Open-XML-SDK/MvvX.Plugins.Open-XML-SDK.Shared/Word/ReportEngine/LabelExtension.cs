@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using DocumentFormat.OpenXml;
-using DocumentFormat.OpenXml.Packaging;
+﻿using DocumentFormat.OpenXml;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models;
 
@@ -26,7 +22,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                 runProperty.Shading = new DocumentFormat.OpenXml.Wordprocessing.Shading() { Fill = label.Shading };
 
             run.RunProperties = runProperty;
-            parent.Append( run );
+            parent.Append(run);
             return run;
         }
     }
