@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models;
 
 namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels
@@ -15,7 +12,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels
     {
         #region Fields
 
-        private  Dictionary<string, BaseModel> datas;
+        private Dictionary<string, BaseModel> datas;
         #endregion
 
         #region Properties
@@ -82,6 +79,36 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels
         /// <param name="element"></param>
         public void ReplaceItem(BaseElement element)
         {
+            SetVisibilityFromContext(element);
+        }
+
+        /// <summary>
+        /// Replace an image by it context value
+        /// </summary>
+        /// <param name="element">template image object</param>
+        public void ReplaceItem(Image element)
+        {
+            if (!string.IsNullOrWhiteSpace(element.ContextKey))
+            {
+                // On va tenter de charger l'objet depuis sa base64 :
+                if (ExistItem<Base64ContentModel>(element.ContextKey))
+                {
+                    var item = GetItem<Base64ContentModel>(element.ContextKey);
+                    element.Content = Convert.FromBase64String(item.Base64Content);
+                }
+                else if (ExistItem<ByteContentModel>(element.ContextKey))
+                {
+                    var item = GetItem<ByteContentModel>(element.ContextKey);
+                    element.Content = item.Content;
+                }
+                else if (ExistItem<FileLinkModel>(element.ContextKey))
+                {
+                    var item = GetItem<FileLinkModel>(element.ContextKey);
+                    element.Path = item.Value;
+                }
+            }
+            element.ContextKey = string.Empty;
+
             SetVisibilityFromContext(element);
         }
 

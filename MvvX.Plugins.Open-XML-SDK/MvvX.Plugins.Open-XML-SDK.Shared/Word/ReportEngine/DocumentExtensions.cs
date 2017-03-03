@@ -22,7 +22,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                     wdDoc.MainDocumentPart.Document.Body.Append(new DocumentFormat.OpenXml.Wordprocessing.Paragraph(new DocumentFormat.OpenXml.Wordprocessing.Run(new DocumentFormat.OpenXml.Wordprocessing.Break() { Type = DocumentFormat.OpenXml.Wordprocessing.BreakValues.Page })));
                 }
                 // render page
-                page.Render(wdDoc.MainDocumentPart.Document.Body, context);
+                page.Render(wdDoc.MainDocumentPart.Document.Body, context, wdDoc.MainDocumentPart);
             }
         }
     }

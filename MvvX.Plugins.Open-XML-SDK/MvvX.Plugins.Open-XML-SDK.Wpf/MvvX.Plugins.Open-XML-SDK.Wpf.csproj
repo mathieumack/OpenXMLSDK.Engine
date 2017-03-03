@@ -136,6 +136,9 @@
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\DocumentExtensions.cs">
       <Link>Word\ReportEngine\DocumentExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\ImageExtensions.cs">
+      <Link>Word\ReportEngine\ImageExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\LabelExtension.cs">
       <Link>Word\ReportEngine\LabelExtension.cs</Link>
     </Compile>

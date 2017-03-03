@@ -35,6 +35,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Word\PlatformText.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\ReportEngine\BaseElementExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\ReportEngine\DocumentExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Word\ReportEngine\ImageExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\ReportEngine\LabelExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\ReportEngine\PageExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\ReportEngine\ParagraphExtensions.cs" />
