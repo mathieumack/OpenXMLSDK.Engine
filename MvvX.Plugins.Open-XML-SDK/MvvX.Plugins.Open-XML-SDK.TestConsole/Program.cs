@@ -382,6 +382,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
         private static Document GetTemplateDocument()
         {
             var doc = new Document();
+            //doc.Margin = new Word.ReportEngine.Models.Attributes.SpacingModel() { Left = 40, Right = 400, Top = 500 };
             doc.Styles.Add(new Style() { StyleId = "OnSiteTitle" });
             doc.Styles.Add(new Style() { StyleId = "toto", FontColor="FFFF00", FontSize="40" });
             var page1 = new Page();
@@ -426,6 +427,19 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             p31.ChildElements.Add(p311);
             page3.ChildElements.Add(p31);
             doc.Pages.Add(page3);
+
+            // test header
+            var header = new Header();
+            var ph = new Paragraph();
+            ph.ChildElements.Add(new Label() { Text = "test dans header" });
+            header.ChildElements.Add(ph);
+            doc.Header = header;
+
+            var footer = new Footer();
+            var pf = new Paragraph();
+            pf.ChildElements.Add(new Label() { Text = "ceci est un footer" });
+            footer.ChildElements.Add(pf);
+            doc.Footer = footer;
             return doc;
         }
     }

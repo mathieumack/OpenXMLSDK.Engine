@@ -7,7 +7,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
 {
     public static class BaseElementExtensions
     {
-        public static OpenXmlElement Render(this BaseElement element, OpenXmlElement parent, ContextModel context, MainDocumentPart mainDocumentPart)
+        public static OpenXmlElement Render(this BaseElement element, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart)
         {
             context.ReplaceItem(element);
             OpenXmlElement createdElement = null;
@@ -24,7 +24,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                 }
                 else if (element is Image)
                 {
-                    createdElement = (element as Image).Render(parent, context, mainDocumentPart);
+                    createdElement = (element as Image).Render(parent, context, documentPart); 
                 }
 
                 if (element.ChildElements != null && element.ChildElements.Count > 0)
@@ -32,7 +32,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                     foreach (var e in element.ChildElements)
                     {
                         e.InheritFromParent(element);
-                        e.Render(createdElement ?? parent, context, mainDocumentPart);
+                        e.Render(createdElement ?? parent, context, documentPart);
                     }
                 }
 

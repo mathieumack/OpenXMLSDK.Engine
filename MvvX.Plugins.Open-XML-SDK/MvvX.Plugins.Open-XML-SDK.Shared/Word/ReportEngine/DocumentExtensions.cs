@@ -32,6 +32,31 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                 // render page
                 page.Render(wdDoc.MainDocumentPart.Document.Body, context, wdDoc.MainDocumentPart);
             }
+
+            // document margins
+            if (document.Margin != null)
+            {
+                var pageMargins = new DocumentFormat.OpenXml.Wordprocessing.PageMargin()
+                {
+                    Left = document.Margin.Left,
+                    Top = document.Margin.Top,
+                    Right = document.Margin.Right,
+                    Bottom = document.Margin.Bottom
+                };
+                var sectionProps = new DocumentFormat.OpenXml.Wordprocessing.SectionProperties(pageMargins);
+                wdDoc.MainDocumentPart.Document.Body.Append(sectionProps);
+            }
+
+            // footer
+            if (document.Footer != null)
+            {
+                document.Footer.Render(wdDoc.MainDocumentPart, context);
+            }
+            // header
+            if (document.Header != null)
+            {
+                document.Header.Render(wdDoc.MainDocumentPart, context);
+            }
         }
     }
 }
