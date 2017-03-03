@@ -31,6 +31,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                 {
                     foreach (var e in element.ChildElements)
                     {
+                        e.InheritFromParent(element);
                         e.Render(createdElement ?? parent, context, mainDocumentPart);
                     }
                 }

@@ -32,6 +32,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                 Process.Start("testeric.docx");
                 return;
             }
+
             // fin test report engine
 
             var resourceName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "App_Data", "Global.docx");
@@ -381,6 +382,8 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
         private static Document GetTemplateDocument()
         {
             var doc = new Document();
+            doc.Styles.Add(new Style() { StyleId = "OnSiteTitle" });
+            doc.Styles.Add(new Style() { StyleId = "toto", FontColor="FFFF00", FontSize="40" });
             var page1 = new Page();
             var page2 = new Page();
             doc.Pages.Add(page1);
@@ -399,13 +402,14 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             // page 2
             var p21 = new Paragraph();
             p21.Justification = JustificationValues.Center;
-            p21.ParagraphStyleId = "Titre1";
-            p21.ChildElements.Add(new Label() { Text = "texte page2", FontName = "Arial" });
+            p21.ParagraphStyleId = "OnSiteTitle";
+            p21.ChildElements.Add(new Label() { Text = "texte page2", FontName="Arial" });
             page2.ChildElements.Add(p21);
             var p22 = new Paragraph();
             p22.SpacingBefore = 800;
             p22.SpacingAfter = 800;
             p22.Justification = JustificationValues.Both;
+            p22.ParagraphStyleId = "toto";
             p22.ChildElements.Add(new Label() { Text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse urna augue, convallis eu enim vitae, maximus ultrices nulla. Sed egestas volutpat luctus. Maecenas sodales erat eu elit auctor, eu mattis neque maximus. Duis ac risus quis sem bibendum efficitur. Vivamus justo augue, molestie quis orci non, maximus imperdiet justo. Donec condimentum rhoncus est, ut varius lorem efficitur sed. Donec accumsan sit amet nisl vel ornare. Duis aliquet urna eu mauris porttitor facilisis. " });
             page2.ChildElements.Add(p22);
             var p23 = new Paragraph();
@@ -413,6 +417,15 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             p23.ChildElements.Add(new Label() { Text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse urna augue, convallis eu enim vitae, maximus ultrices nulla. Sed egestas volutpat luctus. Maecenas sodales erat eu elit auctor, eu mattis neque maximus. Duis ac risus quis sem bibendum efficitur. Vivamus justo augue, molestie quis orci non, maximus imperdiet justo. Donec condimentum rhoncus est, ut varius lorem efficitur sed. Donec accumsan sit amet nisl vel ornare. Duis aliquet urna eu mauris porttitor facilisis. " });
             page2.ChildElements.Add(p23);
 
+            // page 3
+            var page3 = new Page();
+            var p31 = new Paragraph() { FontColor = "FF0000", FontSize = "26" };
+            p31.ChildElements.Add(new Label() { Text = "test héritage" });
+            var p311 = new Paragraph() { FontSize = "16" };
+            p311.ChildElements.Add(new Label() { Text = "blabla" });
+            p31.ChildElements.Add(p311);
+            page3.ChildElements.Add(p31);
+            doc.Pages.Add(page3);
             return doc;
         }
     }

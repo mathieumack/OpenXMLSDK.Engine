@@ -20,6 +20,10 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                 runProperty.Color = new DocumentFormat.OpenXml.Wordprocessing.Color() { Val = label.FontColor };
             if (!string.IsNullOrWhiteSpace(label.Shading))
                 runProperty.Shading = new DocumentFormat.OpenXml.Wordprocessing.Shading() { Fill = label.Shading };
+            if (label.Bold.HasValue)
+                runProperty.Bold = new DocumentFormat.OpenXml.Wordprocessing.Bold() { Val = OnOffValue.FromBoolean(label.Bold.Value) };
+            if (label.Italic.HasValue)
+                runProperty.Italic = new DocumentFormat.OpenXml.Wordprocessing.Italic() { Val = OnOffValue.FromBoolean(label.Italic.Value) };
 
             run.RunProperties = runProperty;
             parent.Append(run);
