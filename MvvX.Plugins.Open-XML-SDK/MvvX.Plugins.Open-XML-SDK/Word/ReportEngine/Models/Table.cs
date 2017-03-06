@@ -14,6 +14,11 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models
         public IList<Row> Rows { get; set; } = new List<Row>();
 
         /// <summary>
+        /// if bind to a datasource, contains the model of a row
+        /// </summary>
+        public Row RowModel { get; set; }
+
+        /// <summary>
         /// Header row
         /// </summary>
         public Row HeaderRow { get; set; }

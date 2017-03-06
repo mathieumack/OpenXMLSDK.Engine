@@ -50,10 +50,27 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
             }
 
             // add content rows
-            foreach (var row in table.Rows)
+            if (!string.IsNullOrEmpty(table.DataSourceKey))
             {
-                wordTable.AppendChild(row.Render(wordTable, context, documentPart, false));
+                if (context.ExistItem<DataSourceModel>(table.DataSourceKey))
+                {
+                    var datasource = context.GetItem<DataSourceModel>(table.DataSourceKey);
+
+                    foreach (ContextModel item in datasource.Items)
+                    {
+                        var row = table.RowModel.Clone();
+                        wordTable.AppendChild(row.Render(wordTable, item, documentPart, false));
+                    }
+                }
             }
+            else
+            {
+                foreach (var row in table.Rows)
+                {
+                    wordTable.AppendChild(row.Render(wordTable, context, documentPart, false));
+                }
+            }
+
 
             // add footer row
             if (table.FooterRow != null)

@@ -35,6 +35,20 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                 context.AddItem("#KeyTest1#", new StringModel("la la la"));
                 context.AddItem("#KeyTest2#", new StringModel("toto"));
 
+                ContextModel row1 = new ContextModel();
+                row1.AddItem("#Text#", new StringModel("ligne 1"));
+                row1.AddItem("#Text2#", new StringModel("ligne 1 xxx"));
+                ContextModel row2 = new ContextModel();
+                row2.AddItem("#Text#", new StringModel("ligne 2"));
+                row2.AddItem("#Text2#", new StringModel("ligne 2 xxx"));
+                context.AddItem("#Datasource#", new DataSourceModel()
+                {
+                    Items = new List<ContextModel>()
+                    {
+                        row1, row2
+                    }
+                });
+
                 var res = word.GenerateReport(template, context);
 
                 // test ecriture fichier
@@ -146,6 +160,33 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             };
 
             page1.ChildElements.Add(table);
+            page1.ChildElements.Add(new Paragraph());
+
+            var tableDataSource = new Table() {
+                RowModel = new Row()
+                {
+                    Cells = new List<Cell>()
+                    {
+                        new Cell()
+                        {
+                            ChildElements = new List<BaseElement>()
+                            {
+                                new Label() {Text = "#Text#" }
+                            }
+                        },
+                        new Cell()
+                        {
+                            ChildElements = new List<BaseElement>()
+                            {
+                                new Label() {Text = "#Text2#" }
+                            }
+                        }
+                    }
+                },
+                DataSourceKey = "#Datasource#"
+            };
+
+            page1.ChildElements.Add(tableDataSource);
 
             // page 2
             var p21 = new Paragraph();

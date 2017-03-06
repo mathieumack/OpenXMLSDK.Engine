@@ -2,11 +2,17 @@
 using DocumentFormat.OpenXml.Packaging;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models;
+using Newtonsoft.Json;
 
 namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
 {
     public static class BaseElementExtensions
     {
+        public static T Clone<T>(this T element) where T : new()
+        {
+            return JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(element, new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All }), new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All });
+        }
+
         public static OpenXmlElement Render(this BaseElement element, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart)
         {
             context.ReplaceItem(element);
