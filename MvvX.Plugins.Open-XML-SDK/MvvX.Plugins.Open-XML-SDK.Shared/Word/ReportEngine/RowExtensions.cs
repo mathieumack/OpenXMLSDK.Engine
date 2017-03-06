@@ -8,7 +8,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
 {
     public static class RowExtensions
     {
-        public static TableRow Render(this Row row, OpenXmlElement parent, ContextModel context, MainDocumentPart mainDocumentPart)
+        public static TableRow Render(this Row row, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart)
         {
             context.ReplaceItem(row);
 
@@ -16,7 +16,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
 
             foreach (var cell in row.Cells)
             {
-                wordRow.AppendChild(cell.Render(wordRow, context, mainDocumentPart));
+                wordRow.AppendChild(cell.Render(wordRow, context, documentPart));
             }
 
             return wordRow;

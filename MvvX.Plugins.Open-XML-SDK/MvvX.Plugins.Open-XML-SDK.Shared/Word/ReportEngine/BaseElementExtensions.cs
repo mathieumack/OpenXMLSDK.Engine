@@ -24,11 +24,11 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                 }
                 else if (element is Image)
                 {
-                    createdElement = (element as Image).Render(parent, context, documentPart); 
+                    createdElement = (element as Image).Render(parent, context, documentPart);
                 }
                 else if (element is Table)
                 {
-                    createdElement = (element as Table).Render(parent, context, mainDocumentPart);
+                    createdElement = (element as Table).Render(parent, context, documentPart);
                 }
 
                 if (element.ChildElements != null && element.ChildElements.Count > 0)

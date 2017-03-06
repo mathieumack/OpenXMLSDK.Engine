@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using DocumentFormat.OpenXml;
+﻿using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels;
@@ -16,15 +14,15 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
         /// <param name="parent"></param>
         /// <param name="context"></param>
         /// <returns></returns>
-        public static Table Render(this OpenXMLSDK.Word.ReportEngine.Models.Table table, OpenXmlElement parent, ContextModel context, MainDocumentPart mainDocumentPart)
+        public static Table Render(this OpenXMLSDK.Word.ReportEngine.Models.Table table, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart)
         {
             context.ReplaceItem(table);
 
             Table wordTable = new Table();
 
-            foreach(var row in table.Rows)
+            foreach (var row in table.Rows)
             {
-                wordTable.AppendChild(row.Render(wordTable, context, mainDocumentPart));
+                wordTable.AppendChild(row.Render(wordTable, context, documentPart));
             }
 
             return wordTable;
