@@ -35,6 +35,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Word\PlatformShading.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\PlatformText.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\ReportEngine\BaseElementExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Word\ReportEngine\BorderExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\ReportEngine\CellExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\ReportEngine\DocumentExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\ReportEngine\FooterExtensions.cs" />

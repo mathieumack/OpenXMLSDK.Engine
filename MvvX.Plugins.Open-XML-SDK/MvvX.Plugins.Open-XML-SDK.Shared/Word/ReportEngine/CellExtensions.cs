@@ -14,9 +14,21 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
 
             TableCell wordCell = new TableCell();
 
+            TableCellProperties cellProp = new TableCellProperties();
+            wordCell.AppendChild(cellProp);
+
+            if (cell.Borders != null)
+            {
+                TableCellBorders borders = cell.Borders.RenderCellBorder();
+
+                cellProp.AppendChild(borders);
+            }
+
             foreach (var element in cell.ChildElements)
             {
-                element.Render(wordCell, context, documentPart);
+                var paragraph = new DocumentFormat.OpenXml.Wordprocessing.Paragraph();
+                wordCell.AppendChild(paragraph);
+                var content = element.Render(paragraph, context, documentPart);
             }
 
             return wordCell;

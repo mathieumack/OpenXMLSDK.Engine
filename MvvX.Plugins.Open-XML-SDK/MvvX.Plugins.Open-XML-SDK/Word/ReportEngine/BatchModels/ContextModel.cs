@@ -16,6 +16,9 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels
         #endregion
 
         #region Properties
+        /// <summary>
+        /// Data in context (property used for json serialization)
+        /// </summary>
         public Dictionary<string, BaseModel> Data { get { return datas; } set { datas = value; } }
         #endregion
 

@@ -83,11 +83,47 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                                 ChildElements = new List<BaseElement>()
                                 {
                                     new Label() {Text = "cellule2" }
+                                },
+                                Borders = new Word.ReportEngine.Models.Attributes.BorderModel()
+                                {
+                                    BorderColor = "00FF00",
+                                    BorderWidth = 20,
+                                    BorderPositions = Word.ReportEngine.Models.Attributes.BorderPositions.LEFT | Word.ReportEngine.Models.Attributes.BorderPositions.TOP
                                 }
                             }
                         }
                     }
                 }
+            };
+
+            table.HeaderRow = new Row()
+            {
+                Cells = new List<Cell>()
+                {
+                        new Cell()
+                        {
+                            ChildElements = new List<BaseElement>()
+                            {
+                                new Label() {Text = "header1" }
+                            }
+                        },
+                        new Cell()
+                        {
+                            ChildElements = new List<BaseElement>()
+                            {
+                                new Label() {Text = "header2" }
+                            }
+                        }
+                }
+            };
+
+            table.Borders = new Word.ReportEngine.Models.Attributes.BorderModel()
+            {
+                BorderPositions = Word.ReportEngine.Models.Attributes.BorderPositions.BOTTOM | Word.ReportEngine.Models.Attributes.BorderPositions.INSIDEVERTICAL,
+                BorderWidthBottom = 50,
+                BorderWidthInsideVertical = 1,
+                UseVariableBorders = true,
+                BorderColor = "FF0000"
             };
 
             page1.ChildElements.Add(table);

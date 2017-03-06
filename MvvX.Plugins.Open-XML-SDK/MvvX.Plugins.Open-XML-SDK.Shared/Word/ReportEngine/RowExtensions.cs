@@ -8,11 +8,18 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
 {
     public static class RowExtensions
     {
-        public static TableRow Render(this Row row, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart)
+        public static TableRow Render(this Row row, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart, bool isHeader)
         {
             context.ReplaceItem(row);
 
             TableRow wordRow = new TableRow();
+
+            TableRowProperties wordRowProperties = new TableRowProperties();
+            if (isHeader)
+            {                
+                wordRowProperties.AppendChild(new TableHeader() { Val = OnOffOnlyValues.On });
+            }
+            wordRow.AppendChild(wordRowProperties);
 
             foreach (var cell in row.Cells)
             {
