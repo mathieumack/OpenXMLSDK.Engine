@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels
+﻿namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels
 {
+    /// <summary>
+    /// Model for a boolean vlaue
+    /// </summary>
     public class BooleanModel : BaseModel
     {
         /// <summary>
@@ -14,10 +11,17 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels
         public bool Value { get; set; }
 
         #region Constructors
+        /// <summary>
+        /// Default Constructor
+        /// </summary>
         public BooleanModel()
             : this(false)
         { }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="value"></param>
         public BooleanModel(bool value)
             : base( typeof(BooleanModel).Name)
         {

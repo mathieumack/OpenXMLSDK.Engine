@@ -142,6 +142,12 @@
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\DocumentExtensions.cs">
       <Link>Word\ReportEngine\DocumentExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\FooterExtensions.cs">
+      <Link>Word\ReportEngine\FooterExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\HeaderExtensions.cs">
+      <Link>Word\ReportEngine\HeaderExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\ImageExtensions.cs">
       <Link>Word\ReportEngine\ImageExtensions.cs</Link>
     </Compile>

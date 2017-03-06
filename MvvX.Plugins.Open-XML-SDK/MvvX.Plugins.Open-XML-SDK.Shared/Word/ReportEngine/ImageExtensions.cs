@@ -21,12 +21,20 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
         /// <param name="image">Image model</param>
         /// <param name="parent">Container</param>
         /// <param name="context">Context</param>
-        /// <param name="mainDocumentPart">MainDocumentPart</param>
+        /// <param name="documentPart">MainDocumentPart</param>
         /// <returns></returns>
-        public static OpenXmlElement Render(this Image image, OpenXmlElement parent, ContextModel context, MainDocumentPart mainDocumentPart)
+        public static OpenXmlElement Render(this Image image, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart)
         {
             context.ReplaceItem(image);
-            ImagePart imagePart = mainDocumentPart.AddImagePart((ImagePartType)(int)image.ImagePartType);
+            ImagePart imagePart;
+            if (documentPart is MainDocumentPart)
+                imagePart = (documentPart as MainDocumentPart).AddImagePart((ImagePartType)(int)image.ImagePartType);
+            else if (documentPart is HeaderPart)
+                imagePart = (documentPart as HeaderPart).AddImagePart((ImagePartType)(int)image.ImagePartType);
+            else if (documentPart is FooterPart)
+                imagePart = (documentPart as FooterPart).AddImagePart((ImagePartType)(int)image.ImagePartType);
+            else
+                return null;
 
             if (image.Content != null && image.Content.Length > 0)
             {
@@ -43,7 +51,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                 }
             }
 
-            OpenXmlElement result = CreateImage(imagePart, image, mainDocumentPart);
+            OpenXmlElement result = CreateImage(imagePart, image, documentPart);
             parent.AppendChild(result);
 
             return result;
@@ -56,7 +64,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
         /// <param name="model"></param>
         /// <param name="mainDocumentPart"></param>
         /// <returns></returns>
-        private static OpenXmlElement CreateImage(ImagePart imagePart, Image model, MainDocumentPart mainDocumentPart)
+        private static OpenXmlElement CreateImage(ImagePart imagePart, Image model, OpenXmlPart mainDocumentPart)
         {
             string relationshipId = mainDocumentPart.GetIdOfPart(imagePart);
 

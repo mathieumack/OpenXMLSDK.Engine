@@ -88,9 +88,12 @@
     <Compile Include="Word\ReportEngine\BatchModels\FileLinkModel.cs" />
     <Compile Include="Word\ReportEngine\BatchModels\JsonContextConverter.cs" />
     <Compile Include="Word\ReportEngine\BatchModels\StringModel.cs" />
+    <Compile Include="Word\ReportEngine\Models\Attributes\SpacingModel.cs" />
     <Compile Include="Word\ReportEngine\Models\BaseElement.cs" />
     <Compile Include="Word\ReportEngine\Models\Cell.cs" />
     <Compile Include="Word\ReportEngine\Models\Document.cs" />
+    <Compile Include="Word\ReportEngine\Models\Footer.cs" />
+    <Compile Include="Word\ReportEngine\Models\Header.cs" />
     <Compile Include="Word\ReportEngine\Models\Image.cs" />
     <Compile Include="Word\ReportEngine\Models\Label.cs" />
     <Compile Include="Word\ReportEngine\Models\Page.cs" />
