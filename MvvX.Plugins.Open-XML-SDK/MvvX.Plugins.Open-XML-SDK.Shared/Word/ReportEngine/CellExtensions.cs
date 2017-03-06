@@ -24,10 +24,27 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                 cellProp.AppendChild(borders);
             }
 
+            if(cell.ColSpan > 1)
+            {
+                cellProp.AppendChild(new GridSpan() { Val = cell.ColSpan });
+            }
+            if(cell.Fusion)
+            {
+                if(cell.FusionChild)
+                {
+                    cellProp.AppendChild(new VerticalMerge() { Val = MergedCellValues.Continue });
+                }
+                else
+                {
+                    cellProp.AppendChild(new VerticalMerge() { Val = MergedCellValues.Restart });
+                }
+            }
+
+            var paragraph = new DocumentFormat.OpenXml.Wordprocessing.Paragraph();
+            wordCell.AppendChild(paragraph);
+
             foreach (var element in cell.ChildElements)
             {
-                var paragraph = new DocumentFormat.OpenXml.Wordprocessing.Paragraph();
-                wordCell.AppendChild(paragraph);
                 var content = element.Render(paragraph, context, documentPart);
             }
 

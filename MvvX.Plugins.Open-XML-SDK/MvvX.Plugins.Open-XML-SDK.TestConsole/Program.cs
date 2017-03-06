@@ -76,7 +76,8 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                                 ChildElements = new List<BaseElement>()
                                 {
                                     new Label() {Text = "cellule1" }
-                                }
+                                },
+                                Fusion = true
                             },
                             new Cell()
                             {
@@ -89,6 +90,24 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                                     BorderColor = "00FF00",
                                     BorderWidth = 20,
                                     BorderPositions = Word.ReportEngine.Models.Attributes.BorderPositions.LEFT | Word.ReportEngine.Models.Attributes.BorderPositions.TOP
+                                }
+                            }
+                        }
+                    },
+                    new Row()
+                    {
+                        Cells = new List<Cell>()
+                        {
+                            new Cell()
+                            {
+                                Fusion = true,
+                                FusionChild = true
+                            },
+                            new Cell()
+                            {
+                                ChildElements = new List<BaseElement>()
+                                {
+                                    new Label() {Text = "cellule4" }
                                 }
                             }
                         }
