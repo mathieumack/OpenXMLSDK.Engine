@@ -35,12 +35,15 @@
     <Compile Include="$(MSBuildThisFileDirectory)Word\PlatformShading.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\PlatformText.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\ReportEngine\BaseElementExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Word\ReportEngine\CellExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\ReportEngine\DocumentExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\ReportEngine\ImageExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\ReportEngine\LabelExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\ReportEngine\PageExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\ReportEngine\ParagraphExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Word\ReportEngine\RowExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\ReportEngine\StyleExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Word\ReportEngine\TableExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\Tables\PlatformTableBorders.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\Tables\PlatformTableCellBorders.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\Tables\PlatformTableLayout.cs" />

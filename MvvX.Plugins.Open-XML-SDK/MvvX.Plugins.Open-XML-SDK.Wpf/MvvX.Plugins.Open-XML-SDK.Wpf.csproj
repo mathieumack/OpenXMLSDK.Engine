@@ -136,6 +136,9 @@
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\BaseElementExtensions.cs">
       <Link>Word\ReportEngine\BaseElementExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\CellExtensions.cs">
+      <Link>Word\ReportEngine\CellExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\DocumentExtensions.cs">
       <Link>Word\ReportEngine\DocumentExtensions.cs</Link>
     </Compile>
@@ -151,8 +154,14 @@
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\ParagraphExtensions.cs">
       <Link>Word\ReportEngine\ParagraphExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\RowExtensions.cs">
+      <Link>Word\ReportEngine\RowExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\StyleExtensions.cs">
       <Link>Word\ReportEngine\StyleExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\TableExtensions.cs">
+      <Link>Word\ReportEngine\TableExtensions.cs</Link>
     </Compile>
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Tables\PlatformTable.cs">
       <Link>Word\Tables\PlatformTable.cs</Link>

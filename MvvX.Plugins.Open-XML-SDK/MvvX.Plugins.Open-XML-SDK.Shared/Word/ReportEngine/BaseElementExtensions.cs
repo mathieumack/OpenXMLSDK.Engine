@@ -26,6 +26,10 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                 {
                     createdElement = (element as Image).Render(parent, context, mainDocumentPart);
                 }
+                else if (element is Table)
+                {
+                    createdElement = (element as Table).Render(parent, context, mainDocumentPart);
+                }
 
                 if (element.ChildElements != null && element.ChildElements.Count > 0)
                 {

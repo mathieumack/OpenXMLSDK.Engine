@@ -84,6 +84,7 @@
     <Compile Include="Word\ReportEngine\BatchModels\ByteContentModel.cs" />
     <Compile Include="Word\ReportEngine\BatchModels\ContextModel.cs" />
     <Compile Include="Word\ReportEngine\BatchModels\ContextObjectType.cs" />
+    <Compile Include="Word\ReportEngine\BatchModels\DataSourceModel.cs" />
     <Compile Include="Word\ReportEngine\BatchModels\FileLinkModel.cs" />
     <Compile Include="Word\ReportEngine\BatchModels\JsonContextConverter.cs" />
     <Compile Include="Word\ReportEngine\BatchModels\StringModel.cs" />
