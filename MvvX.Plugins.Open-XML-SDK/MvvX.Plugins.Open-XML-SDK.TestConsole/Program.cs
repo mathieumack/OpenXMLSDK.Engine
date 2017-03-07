@@ -17,51 +17,78 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
-            ReportEngine();
-            return;
+            Console.WriteLine("Enter the path of your Json file, press enter for an example");
+            var filePath = Console.ReadLine();
+            var documentName = string.Empty;
+            if (!string.IsNullOrWhiteSpace(filePath))
+            {
+                Console.WriteLine("Enter document name");
+                documentName = Console.ReadLine();
+            }
+
+            Console.WriteLine("Generation in progress");
+            ReportEngine(filePath, documentName);
 
             // fin test report engine
 
-            OldProgram();
+            //OldProgram()
         }
 
-        private static void ReportEngine()
+        private static void ReportEngine(string filePath, string documentName)
         {
             // Debut test report engine
             using (IWordManager word = new WordManager())
             {
-                var template = GetTemplateDocument();
-                var templateJson = JsonConvert.SerializeObject(template);
                 JsonConverter[] converters = { new JsonContextConverter() };
-                var templateUnserialized = JsonConvert.DeserializeObject<Document>(templateJson, new JsonSerializerSettings() { Converters = converters });
-                var context = new ContextModel();
-                context.AddItem("#KeyTest1#", new StringModel("la la la"));
-                context.AddItem("#KeyTest2#", new StringModel("toto"));
 
-                ContextModel row1 = new ContextModel();
-                row1.AddItem("#Text#", new StringModel("ligne 1"));
-                row1.AddItem("#Text2#", new StringModel("ligne 1 xxx"));
-                ContextModel row2 = new ContextModel();
-                row2.AddItem("#Text#", new StringModel("ligne 2"));
-                row2.AddItem("#Text2#", new StringModel("ligne 2 xxx"));
-                context.AddItem("#Datasource#", new DataSourceModel()
+                if (string.IsNullOrWhiteSpace(filePath))
                 {
-                    Items = new List<ContextModel>()
+                    if (string.IsNullOrWhiteSpace(documentName))
+                        documentName = "ExampleDocument.docx";
+
+                    var template = GetTemplateDocument();
+                    var templateJson = JsonConvert.SerializeObject(template);
+                    var templateUnserialized = JsonConvert.DeserializeObject<Document>(templateJson, new JsonSerializerSettings() { Converters = converters });
+                    var context = new ContextModel();
+                    context.AddItem("#KeyTest1#", new StringModel("la la la"));
+                    context.AddItem("#KeyTest2#", new StringModel("toto"));
+
+                    ContextModel row1 = new ContextModel();
+                    row1.AddItem("#Text#", new StringModel("ligne 1"));
+                    row1.AddItem("#Text2#", new StringModel("ligne 1 xxx"));
+                    ContextModel row2 = new ContextModel();
+                    row2.AddItem("#Text#", new StringModel("ligne 2"));
+                    row2.AddItem("#Text2#", new StringModel("ligne 2 xxx"));
+                    context.AddItem("#Datasource#", new DataSourceModel()
+                    {
+                        Items = new List<ContextModel>()
                     {
                         row1, row2
                     }
-                });
+                    });
 
-                var contextJson = JsonConvert.SerializeObject(context);
-                var contextUnserialized = JsonConvert.DeserializeObject<ContextModel>(contextJson, new JsonSerializerSettings() { Converters = converters });
+                    var contextJson = JsonConvert.SerializeObject(context);
+                    var contextUnserialized = JsonConvert.DeserializeObject<ContextModel>(contextJson, new JsonSerializerSettings() { Converters = converters });
 
-                var res = word.GenerateReport(templateUnserialized, contextUnserialized);
+                    var res = word.GenerateReport(templateUnserialized, contextUnserialized);
 
-                // test ecriture fichier
-                File.WriteAllBytes("testeric.docx", res);
-                Process.Start("testeric.docx");
+                    // test ecriture fichier
+                    File.WriteAllBytes(documentName, res);
+                    Process.Start(documentName);
+                }
+                else
+                {
+                    var stream = File.ReadAllText(filePath);
+                    var report = JsonConvert.DeserializeObject<Report>(stream, new JsonSerializerSettings() { Converters = converters });
+
+                    var res = word.GenerateReport(report.Document, report.ContextModel);
+
+                    // test ecriture fichier
+                    File.WriteAllBytes(documentName, res);
+                    Process.Start(documentName);
+                }
             }
         }
 
