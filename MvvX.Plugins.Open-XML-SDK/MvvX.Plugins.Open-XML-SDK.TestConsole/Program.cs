@@ -6,10 +6,12 @@ using MvvX.Plugins.OpenXMLSDK.Platform.Word;
 using MvvX.Plugins.OpenXMLSDK.Word;
 using MvvX.Plugins.OpenXMLSDK.Word.Models;
 using MvvX.Plugins.OpenXMLSDK.Word.Paragraphs;
+using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models;
 using MvvX.Plugins.OpenXMLSDK.Word.Tables;
 using MvvX.Plugins.OpenXMLSDK.Word.Tables.Models;
+using Newtonsoft.Json;
 
 namespace MvvX.Plugins.OpenXMLSDK.TestConsole
 {
@@ -31,6 +33,9 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             using (IWordManager word = new WordManager())
             {
                 var template = GetTemplateDocument();
+                var templateJson = JsonConvert.SerializeObject(template);
+                JsonConverter[] converters = { new JsonContextConverter() };
+                var templateUnserialized = JsonConvert.DeserializeObject<Document>(templateJson, new JsonSerializerSettings() { Converters = converters });
                 var context = new ContextModel();
                 context.AddItem("#KeyTest1#", new StringModel("la la la"));
                 context.AddItem("#KeyTest2#", new StringModel("toto"));
@@ -49,7 +54,10 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                     }
                 });
 
-                var res = word.GenerateReport(template, context);
+                var contextJson = JsonConvert.SerializeObject(context);
+                var contextUnserialized = JsonConvert.DeserializeObject<ContextModel>(contextJson, new JsonSerializerSettings() { Converters = converters });
+
+                var res = word.GenerateReport(templateUnserialized, contextUnserialized);
 
                 // test ecriture fichier
                 File.WriteAllBytes("testeric.docx", res);
@@ -169,7 +177,8 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             page1.ChildElements.Add(table);
             page1.ChildElements.Add(new Paragraph());
 
-            var tableDataSource = new Table() {
+            var tableDataSource = new Table()
+            {
                 RowModel = new Row()
                 {
                     Cells = new List<Cell>()

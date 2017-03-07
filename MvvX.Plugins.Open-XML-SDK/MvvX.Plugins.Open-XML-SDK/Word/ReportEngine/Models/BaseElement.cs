@@ -5,7 +5,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models
     /// <summary>
     /// Base Element for word template
     /// </summary>
-    public class BaseElement
+    public class BaseElement : BaseModel
     {
         /// <summary>
         /// Is the element visible
@@ -51,6 +51,14 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models
         /// Is text contained in current element Italic
         /// </summary>
         public bool? Italic { get; set; }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="type"></param>
+        public BaseElement(string type) : base(type)
+        {
+        }
 
         /// <summary>
         /// Inherits font properties from parent if local values are null

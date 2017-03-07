@@ -44,6 +44,10 @@
       <HintPath>..\..\packages\MvvmCross.Platform.4.2.2\lib\Xamarin.iOS10\MvvmCross.Platform.iOS.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.9.0.1\lib\portable-net45+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="OpenXmlSdk.iOS, Version=1.0.5918.19713, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\DocumentFormat.OpenXml.Touch.1.0.0.0\lib\Xamarin.iOS10\OpenXmlSdk.iOS.dll</HintPath>
       <Private>True</Private>
@@ -148,6 +152,12 @@
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\BaseElementExtensions.cs">
       <Link>Word\ReportEngine\BaseElementExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\BorderExtensions.cs">
+      <Link>Word\ReportEngine\BorderExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\CellExtensions.cs">
+      <Link>Word\ReportEngine\CellExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\DocumentExtensions.cs">
       <Link>Word\ReportEngine\DocumentExtensions.cs</Link>
     </Compile>
@@ -169,8 +179,14 @@
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\ParagraphExtensions.cs">
       <Link>Word\ReportEngine\ParagraphExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\RowExtensions.cs">
+      <Link>Word\ReportEngine\RowExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\StyleExtensions.cs">
       <Link>Word\ReportEngine\StyleExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\TableExtensions.cs">
+      <Link>Word\ReportEngine\TableExtensions.cs</Link>
     </Compile>
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Tables\PlatformTable.cs">
       <Link>Word\Tables\PlatformTable.cs</Link>

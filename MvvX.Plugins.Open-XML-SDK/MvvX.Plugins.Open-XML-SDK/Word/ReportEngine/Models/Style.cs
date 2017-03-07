@@ -14,5 +14,13 @@
         /// Type of style
         /// </summary>
         public StyleValues Type { get; set; }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public Style()
+            : base(typeof(Style).Name)
+        {
+        }
     }
 }

@@ -36,5 +36,13 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models
         /// Template key
         /// </summary>
         public string ContextKey { get; set; }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public Image()
+            : base(typeof(Image).Name)
+        {
+        }
     }
 }

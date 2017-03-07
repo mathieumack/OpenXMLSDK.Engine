@@ -5,5 +5,12 @@
     /// </summary>
     public class Header : BaseElement
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public Header()
+            : base(typeof(Header).Name)
+        {
+        }
     }
 }

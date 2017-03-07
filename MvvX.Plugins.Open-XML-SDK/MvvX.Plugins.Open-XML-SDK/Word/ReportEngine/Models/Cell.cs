@@ -4,7 +4,7 @@ using MvvX.Plugins.OpenXMLSDK.Word.Tables;
 namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models
 {
     /// <summary>
-    /// Cell
+    /// Table Cell
     /// </summary>
     public class Cell : BaseElement
     {
@@ -42,5 +42,13 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models
         /// Text direction in cell
         /// </summary>
         public TextDirectionValues? TextDirection { get; set; }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public Cell()
+            : base(typeof(Cell).Name)
+        {
+        }
     }
 }

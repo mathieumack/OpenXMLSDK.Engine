@@ -23,9 +23,9 @@
         /// </summary>
         /// <param name="value"></param>
         public BooleanModel(bool value)
-            : base( typeof(BooleanModel).Name)
+            : base(typeof(BooleanModel).Name)
         {
-            this.Value = value;
+            Value = value;
         }
         #endregion
     }

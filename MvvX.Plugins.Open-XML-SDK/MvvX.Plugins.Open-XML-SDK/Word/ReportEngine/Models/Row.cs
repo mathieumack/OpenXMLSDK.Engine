@@ -8,5 +8,13 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models
         /// Cells of the row
         /// </summary>
         public IList<Cell> Cells { get; set; } = new List<Cell>();
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public Row()
+            : base(typeof(Row).Name)
+        {
+        }
     }
 }

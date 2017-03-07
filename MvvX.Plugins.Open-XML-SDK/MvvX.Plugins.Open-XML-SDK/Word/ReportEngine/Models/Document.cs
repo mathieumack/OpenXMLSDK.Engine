@@ -32,5 +32,13 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models
         /// Margin for all pages of documents
         /// </summary>
         public SpacingModel Margin { get; set; }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public Document()
+            : base(typeof(Document).Name)
+        {
+        }
     }
 }

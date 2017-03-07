@@ -51,5 +51,13 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models
         /// value can be in pct (Fiftieths of a Percent) or in dxa (Twentieths of a Point)
         /// </summary>
         public TableWidthModel TableWidth { get; set; }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public Table()
+            : base(typeof(Table).Name)
+        {
+        }
     }
 }
