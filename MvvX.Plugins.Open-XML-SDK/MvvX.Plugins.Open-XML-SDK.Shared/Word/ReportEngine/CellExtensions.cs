@@ -74,10 +74,12 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                 paragraph.AppendChild(ppr);
             }
             wordCell.AppendChild(paragraph);
+            var r = new Run();
+            paragraph.AppendChild(r);
             foreach (var element in cell.ChildElements)
             {
                 element.InheritFromParent(cell);
-                var content = element.Render(paragraph, context, documentPart);
+                var content = element.Render(r, context, documentPart);
             }
 
             return wordCell;

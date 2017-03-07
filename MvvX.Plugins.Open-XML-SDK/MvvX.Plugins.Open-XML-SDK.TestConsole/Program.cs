@@ -33,7 +33,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             using (IWordManager word = new WordManager())
             {
                 var template = GetTemplateDocument();
-                var templateJson = JsonConvert.SerializeObject(template);
+                var templateJson = JsonConvert.SerializeObject(template, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
                 JsonConverter[] converters = { new JsonContextConverter() };
                 var templateUnserialized = JsonConvert.DeserializeObject<Document>(templateJson, new JsonSerializerSettings() { Converters = converters });
                 var context = new ContextModel();
@@ -202,10 +202,57 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                     },
                     Shading = "333333"
                 },
-                DataSourceKey = "#Datasource#"
+                DataSourceKey = "#Datasource#",
+                TableWidth = new TableWidthModel() { Width = "5000", Type = TableWidthUnitValues.Pct }
             };
 
-            page1.ChildElements.Add(tableDataSource);
+            //page1.ChildElements.Add(tableDataSource);
+
+            var table2 = new Table()
+            {
+                Rows = new List<Row>() {
+                    new Row()
+                    {
+                        Cells = new List<Cell>()
+                        {
+                            new Cell()
+                            {
+                                ChildElements = new List<BaseElement>()
+                                {
+                                    new Label() {Text = "Blop" }
+                                },
+                                Justification = JustificationValues.Right
+                            },
+                            new Cell()
+                            {
+                                ChildElements = new List<BaseElement>()
+                                {
+                                    tableDataSource
+                                }
+                            }
+                        }
+                    },
+                    new Row()
+                    {
+                        Cells = new List<Cell>()
+                        {
+                            new Cell()
+                            {
+                                ColSpan = 2,
+                                ChildElements = new List<BaseElement>()
+                                {
+                                    new Label()
+                                    {
+                                        Text = "toto"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                TableWidth = new TableWidthModel() { Width = "5000", Type = TableWidthUnitValues.Pct}
+            };
+            page1.ChildElements.Add(table2);
 
             // page 2
             var p21 = new Paragraph();
