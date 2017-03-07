@@ -23,6 +23,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
 
             foreach (var cell in row.Cells)
             {
+                cell.InheritFromParent(row);
                 wordRow.AppendChild(cell.Render(wordRow, context, documentPart));
             }
 

@@ -26,6 +26,10 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                 openXmlPar.ParagraphProperties.SpacingBetweenLines.Line = paragraph.SpacingBetweenLines.ToString();
             if (!string.IsNullOrWhiteSpace(paragraph.ParagraphStyleId))
                 openXmlPar.ParagraphProperties.ParagraphStyleId = new DocumentFormat.OpenXml.Wordprocessing.ParagraphStyleId() { Val = paragraph.ParagraphStyleId };
+            if(paragraph.Borders != null)
+            {
+                openXmlPar.ParagraphProperties.AppendChild(paragraph.Borders.RenderParagraphBorder());
+            }
             parent.Append(openXmlPar);
 
             return openXmlPar;
