@@ -36,7 +36,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                 context.AddItem("#KeyTest2#", new StringModel("toto"));
 
                 ContextModel row1 = new ContextModel();
-                row1.AddItem("#Text#", new StringModel("ligne 1"));
+                row1.AddItem("#Text#", new StringModel("ligne 1 ddddddddddddddddddddd"));
                 row1.AddItem("#Text2#", new StringModel("ligne 1 xxx"));
                 ContextModel row2 = new ContextModel();
                 row2.AddItem("#Text#", new StringModel("ligne 2"));
@@ -91,6 +91,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                                 {
                                     new Label() {Text = "cellule1" }
                                 },
+                                VerticalAlignment = TableVerticalAlignmentValues.Center,
                                 Fusion = true
                             },
                             new Cell()
@@ -138,14 +139,17 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                             ChildElements = new List<BaseElement>()
                             {
                                 new Label() {Text = "header1" }
-                            }
+                            },
+                            Shading = "00FFFF"
                         },
                         new Cell()
                         {
                             ChildElements = new List<BaseElement>()
                             {
                                 new Label() {Text = "header2" }
-                            }
+                            },
+                            VerticalAlignment = TableVerticalAlignmentValues.Center,
+                            Justification = JustificationValues.Center
                         }
                 }
             };
@@ -158,6 +162,9 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                 UseVariableBorders = true,
                 BorderColor = "FF0000"
             };
+
+            table.ColsWidth = new int[] { 1000, 6000 };
+            table.TableWidth = new TableWidthModel() { Width = "2500", Type = TableWidthUnitValues.Pct };
 
             page1.ChildElements.Add(table);
             page1.ChildElements.Add(new Paragraph());
@@ -172,14 +179,16 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                             ChildElements = new List<BaseElement>()
                             {
                                 new Label() {Text = "#Text#" }
-                            }
+                            },
+                            Justification = JustificationValues.Right
                         },
                         new Cell()
                         {
                             ChildElements = new List<BaseElement>()
                             {
                                 new Label() {Text = "#Text2#" }
-                            }
+                            },
+                            TextDirection = TextDirectionValues.TopToBottomRightToLeft
                         }
                     }
                 },
@@ -204,6 +213,12 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             var p23 = new Paragraph();
             p23.SpacingBetweenLines = 360;
             p23.ChildElements.Add(new Label() { Text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse urna augue, convallis eu enim vitae, maximus ultrices nulla. Sed egestas volutpat luctus. Maecenas sodales erat eu elit auctor, eu mattis neque maximus. Duis ac risus quis sem bibendum efficitur. Vivamus justo augue, molestie quis orci non, maximus imperdiet justo. Donec condimentum rhoncus est, ut varius lorem efficitur sed. Donec accumsan sit amet nisl vel ornare. Duis aliquet urna eu mauris porttitor facilisis. " });
+            p23.Borders = new Word.ReportEngine.Models.Attributes.BorderModel()
+            {
+                BorderWidth = 8,
+                BorderColor = "000000",
+                BorderPositions = Word.ReportEngine.Models.Attributes.BorderPositions.TOP | Word.ReportEngine.Models.Attributes.BorderPositions.BOTTOM | Word.ReportEngine.Models.Attributes.BorderPositions.LEFT | Word.ReportEngine.Models.Attributes.BorderPositions.RIGHT
+            };
             page2.ChildElements.Add(p23);
 
             // page 3

@@ -38,6 +38,19 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
         }
 
         /// <summary>
+        /// Render borders for a paragraph
+        /// </summary>
+        /// <param name="border"></param>
+        /// <returns></returns>
+        public static ParagraphBorders RenderParagraphBorder(this BorderModel border)
+        {
+            ParagraphBorders borders = new ParagraphBorders();
+            FillBorders(border, borders);
+
+            return borders;
+        }
+
+        /// <summary>
         /// Fill TableBorders or TableCellBorders element with borders.
         /// </summary>
         /// <param name="border"></param>

@@ -6,10 +6,14 @@ using System.Threading.Tasks;
 
 namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models.Attributes
 {
+    /// <summary>
+    /// Model class for a border
+    /// </summary>
     public class BorderModel
     {
         /// <summary>
-        /// Définie les bordures à utiliser : 0 = None, 1 = Top, 2 = Bottom, 4 = Left, 8 = Right
+        /// Define borders displayed : 0 = None, 1 = Top, 2 = Bottom, 4 = Left, 8 = Right
+        /// (it's a flagged enum : 3 = Top and Bottom, 7 = Top and bottom and left, etc...)
         /// </summary>
         public BorderPositions BorderPositions { get; set; }
 
@@ -19,42 +23,43 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models.Attributes
         public uint BorderWidth { get; set; }
 
         /// <summary>
-        /// Indique si les bordures doivent de la même taille ou non
+        /// If true : all borders use BorderWidth property
+        /// If false : each border use it's own borderwidth property
         /// </summary>
         public bool UseVariableBorders { get; set; }
 
         /// <summary>
-        /// Epaisseur de la bordure de gauche
+        /// Left border width (used only if UseVariableBorders = true)
         /// </summary>
         public uint BorderWidthLeft { get; set; }
 
         /// <summary>
-        /// Epaisseur de la bordure de droite
+        /// Right border width (used only if UseVariableBorders = true)
         /// </summary>
         public uint BorderWidthRight { get; set; }
 
         /// <summary>
-        /// Epaisseur de la bordure du haut
+        /// Top border width (used only if UseVariableBorders = true)
         /// </summary>
         public uint BorderWidthTop { get; set; }
 
         /// <summary>
-        /// Epaisseur de la bordure du bas
+        /// Bottom border width (used only if UseVariableBorders = true)
         /// </summary>
         public uint BorderWidthBottom { get; set; }
 
         /// <summary>
-        /// inside horizontal Border width for table
+        /// inside horizontal Border width for table (used only if UseVariableBorders = true)
         /// </summary>
         public uint BorderWidthInsideHorizontal { get; set; }
 
         /// <summary>
-        /// inside vertical border width for table
+        /// inside vertical border width for table (used only if UseVariableBorders = true)
         /// </summary>
         public uint BorderWidthInsideVertical { get; set; }
 
         /// <summary>
-        /// Couleur des bordures
+        /// Border Color
         /// </summary>
         public string BorderColor { get; set; }
 
@@ -63,7 +68,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models.Attributes
         /// </summary>
         public BorderModel()
         {
-            BorderColor = "FFFFFF";
+            BorderColor = "000000";
             BorderWidth = 1;
             BorderWidthTop = 1;
             BorderWidthRight = 1;

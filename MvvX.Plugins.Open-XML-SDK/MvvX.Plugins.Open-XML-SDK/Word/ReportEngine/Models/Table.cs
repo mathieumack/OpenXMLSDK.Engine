@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models.Attributes;
+using MvvX.Plugins.OpenXMLSDK.Word.Tables.Models;
 
 namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models
 {
@@ -37,5 +38,18 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models
         /// Borders
         /// </summary>
         public BorderModel Borders { get; set; }
+
+        /// <summary>
+        /// array containing width of each column 
+        /// value is specified in twentieths of a point
+        /// these widths determine the initial width of each grid column, which may then be overridden by the table layout algorithm applied to the current table row and the preferred widths of specific cells which are part of that grid column as the table is displayed
+        /// </summary>
+        public int[] ColsWidth { get; set; }
+
+        /// <summary>
+        /// Table Width
+        /// value can be in pct (Fiftieths of a Percent) or in dxa (Twentieths of a Point)
+        /// </summary>
+        public TableWidthModel TableWidth { get; set; }
     }
 }

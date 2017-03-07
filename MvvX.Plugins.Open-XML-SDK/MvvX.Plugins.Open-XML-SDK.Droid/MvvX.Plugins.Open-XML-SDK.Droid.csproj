@@ -93,6 +93,9 @@
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Extensions\StyleValuesExtensions.cs">
       <Link>Word\Extensions\StyleValuesExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Extensions\TableVerticalAlignementValuesExtensions.cs">
+      <Link>Word\Extensions\TableVerticalAlignementValuesExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Extensions\TableWidthUnitValuesExtensions.cs">
       <Link>Word\Extensions\TableWidthUnitValuesExtensions.cs</Link>
     </Compile>

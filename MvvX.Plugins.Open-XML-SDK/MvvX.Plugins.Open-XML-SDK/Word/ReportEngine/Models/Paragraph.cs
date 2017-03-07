@@ -1,4 +1,6 @@
-﻿namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models
+﻿using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models.Attributes;
+
+namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models
 {
     /// <summary>
     /// Model for paragraph
@@ -29,5 +31,10 @@
         /// Id of style
         /// </summary>
         public string ParagraphStyleId { get; set; }
+
+        /// <summary>
+        /// Borders
+        /// </summary>
+        public BorderModel Borders { get; set; }
     }
 }

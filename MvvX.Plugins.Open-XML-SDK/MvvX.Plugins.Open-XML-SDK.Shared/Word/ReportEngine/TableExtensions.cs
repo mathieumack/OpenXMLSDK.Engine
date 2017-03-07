@@ -1,6 +1,8 @@
-﻿using DocumentFormat.OpenXml;
+﻿using System.Globalization;
+using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
+using MvvX.Plugins.OpenXMLSDK.Platform.Word.Extensions;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models.Attributes;
 
@@ -39,6 +41,24 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                 TableBorders borders = table.Borders.Render();
 
                 wordTableProperties.AppendChild(borders);
+            }
+
+            // add column width definitions
+            if(table.ColsWidth != null)
+            {
+                wordTable.AppendChild(new TableLayout() { Type = TableLayoutValues.Fixed });
+
+                TableGrid tableGrid = new TableGrid();
+                foreach(int width in table.ColsWidth)
+                {
+                    tableGrid.AppendChild(new GridColumn() { Width = width.ToString(CultureInfo.InvariantCulture) });
+                }
+                wordTable.AppendChild(tableGrid);
+            }
+
+            if(table.TableWidth != null)
+            {
+                wordTable.AppendChild(new TableWidth() { Width = table.TableWidth.Width, Type= table.TableWidth.Type.ToOOxml() });
             }
 
             // add header row
