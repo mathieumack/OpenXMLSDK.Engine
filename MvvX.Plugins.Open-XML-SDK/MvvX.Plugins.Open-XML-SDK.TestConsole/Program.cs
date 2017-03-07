@@ -199,7 +199,8 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                             },
                             TextDirection = TextDirectionValues.TopToBottomRightToLeft
                         }
-                    }
+                    },
+                    Shading = "333333"
                 },
                 DataSourceKey = "#Datasource#"
             };

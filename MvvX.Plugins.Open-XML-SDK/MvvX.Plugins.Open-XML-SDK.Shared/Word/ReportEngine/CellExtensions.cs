@@ -76,6 +76,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
             wordCell.AppendChild(paragraph);
             foreach (var element in cell.ChildElements)
             {
+                element.InheritFromParent(cell);
                 var content = element.Render(paragraph, context, documentPart);
             }
 

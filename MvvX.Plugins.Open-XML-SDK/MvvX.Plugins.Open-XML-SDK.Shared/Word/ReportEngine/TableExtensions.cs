@@ -78,6 +78,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                     foreach (ContextModel item in datasource.Items)
                     {
                         var row = table.RowModel.Clone();
+                        row.InheritFromParent(table);
                         wordTable.AppendChild(row.Render(wordTable, item, documentPart, false));
                     }
                 }
@@ -86,6 +87,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
             {
                 foreach (var row in table.Rows)
                 {
+                    row.InheritFromParent(table);
                     wordTable.AppendChild(row.Render(wordTable, context, documentPart, false));
                 }
             }
