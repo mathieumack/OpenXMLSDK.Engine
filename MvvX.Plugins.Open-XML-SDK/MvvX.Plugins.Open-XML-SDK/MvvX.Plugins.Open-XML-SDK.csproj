@@ -79,14 +79,14 @@
     <Compile Include="Word\Paragraphs\IParagraphStyleId.cs" />
     <Compile Include="Word\Paragraphs\ISpacingBetweenLines.cs" />
     <Compile Include="Word\ReportEngine\BatchModels\Base64ContentModel.cs" />
-    <Compile Include="Word\ReportEngine\BatchModels\BaseModel.cs" />
+    <Compile Include="Word\ReportEngine\BaseModel.cs" />
     <Compile Include="Word\ReportEngine\BatchModels\BooleanModel.cs" />
     <Compile Include="Word\ReportEngine\BatchModels\ByteContentModel.cs" />
     <Compile Include="Word\ReportEngine\BatchModels\ContextModel.cs" />
     <Compile Include="Word\ReportEngine\BatchModels\ContextObjectType.cs" />
     <Compile Include="Word\ReportEngine\BatchModels\DataSourceModel.cs" />
     <Compile Include="Word\ReportEngine\BatchModels\FileLinkModel.cs" />
-    <Compile Include="Word\ReportEngine\BatchModels\JsonContextConverter.cs" />
+    <Compile Include="Word\ReportEngine\JsonContextConverter.cs" />
     <Compile Include="Word\ReportEngine\BatchModels\StringModel.cs" />
     <Compile Include="Word\ReportEngine\Models\Attributes\BorderModel.cs" />
     <Compile Include="Word\ReportEngine\Models\Attributes\BorderPositions.cs" />

@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models.Attributes;
+﻿using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models.Attributes;
 
 namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models
 {
+    /// <summary>
+    /// Table Cell
+    /// </summary>
     public class Cell : BaseElement
     {
         /// <summary>
@@ -28,5 +26,13 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models
         /// Cell is a hidden merged part of a rowspan
         /// </summary>
         public bool FusionChild { get; set; }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public Cell()
+            : base(typeof(Cell).Name)
+        {
+        }
     }
 }

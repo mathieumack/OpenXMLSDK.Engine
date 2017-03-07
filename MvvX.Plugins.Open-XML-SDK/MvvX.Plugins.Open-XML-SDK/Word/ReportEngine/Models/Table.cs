@@ -37,5 +37,13 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models
         /// Borders
         /// </summary>
         public BorderModel Borders { get; set; }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public Table()
+            : base(typeof(Table).Name)
+        {
+        }
     }
 }

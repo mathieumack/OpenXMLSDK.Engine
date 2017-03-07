@@ -1,4 +1,4 @@
-﻿namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels
+﻿namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine
 {
     /// <summary>
     /// base class for context element
@@ -9,7 +9,7 @@
 
         public BaseModel(string type)
         {
-            this.Type = type;
+            Type = type;
         }
     }
 }

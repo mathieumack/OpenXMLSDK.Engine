@@ -9,5 +9,13 @@
         /// Label content (can contains #key# from context)
         /// </summary>
         public string Text { get; set; }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public Label()
+            : base(typeof(Label).Name)
+        {
+        }
     }
 }

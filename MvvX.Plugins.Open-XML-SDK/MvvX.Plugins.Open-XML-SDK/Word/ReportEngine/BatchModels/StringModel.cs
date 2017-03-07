@@ -25,7 +25,7 @@
         public StringModel(string value)
             : base(typeof(StringModel).Name)
         {
-            this.Value = value;
+            Value = value;
         }
         #endregion
     }

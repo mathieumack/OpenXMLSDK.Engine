@@ -2,28 +2,46 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using MvvmCross.Platform;
+using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels
+namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine
 {
+    /// <summary>
+    /// Json converter
+    /// </summary>
     public class JsonContextConverter : JsonConverter
     {
         private readonly IEnumerable<Type> managedTypes;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public JsonContextConverter()
         {
             managedTypes = typeof(BaseModel).GetTypeInfo().Assembly.GetTypes().Where(t => typeof(BaseModel).IsAssignableFrom(t));
         }
 
+        /// <summary>
+        /// Indicate if the converter can be used
+        /// </summary>
+        /// <param name="objectType">object to unserialize</param>
+        /// <returns></returns>
         public override bool CanConvert(Type objectType)
         {
-            return objectType == typeof(BaseModel);
+            return objectType == typeof(BaseModel) || objectType == typeof(BaseElement);
         }
 
+        /// <summary>
+        /// Read the Json
+        /// </summary>
+        /// <param name="reader">JsonReader</param>
+        /// <param name="objectType">Type</param>
+        /// <param name="existingValue">Object to unserialize</param>
+        /// <param name="serializer">JsonSerializer</param>
+        /// <returns></returns>
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             // Load JObject from stream 
@@ -43,6 +61,12 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels
             }
         }
 
+        /// <summary>
+        /// Write the Json
+        /// </summary>
+        /// <param name="writer">JsonWriter</param>
+        /// <param name="value">Object to serialize</param>
+        /// <param name="serializer">JsonSerializer</param>
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             throw new NotImplementedException();

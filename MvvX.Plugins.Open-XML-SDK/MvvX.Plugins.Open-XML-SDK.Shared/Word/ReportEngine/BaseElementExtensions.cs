@@ -10,7 +10,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
     {
         public static T Clone<T>(this T element) where T : new()
         {
-            return JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(element, new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All }), new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All });
+            return JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(element));
         }
 
         public static OpenXmlElement Render(this BaseElement element, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart)

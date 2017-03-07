@@ -29,5 +29,13 @@
         /// Id of style
         /// </summary>
         public string ParagraphStyleId { get; set; }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public Paragraph()
+            : base(typeof(Paragraph).Name)
+        {
+        }
     }
 }

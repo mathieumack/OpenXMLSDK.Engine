@@ -5,5 +5,12 @@
     /// </summary>
     public class Footer : BaseElement
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public Footer()
+            : base(typeof(Footer).Name)
+        {
+        }
     }
 }
