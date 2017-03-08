@@ -1,4 +1,5 @@
-﻿using DocumentFormat.OpenXml.Packaging;
+﻿using System.Linq;
+using DocumentFormat.OpenXml.Packaging;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models;
 
@@ -24,27 +25,16 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
 
             foreach (var page in document.Pages)
             {
-                if (document.Pages.Count > 1 && document.Pages.IndexOf(page) > 0)
-                {
-                    // add page break
-                    wdDoc.MainDocumentPart.Document.Body.Append(new DocumentFormat.OpenXml.Wordprocessing.Paragraph(new DocumentFormat.OpenXml.Wordprocessing.Run(new DocumentFormat.OpenXml.Wordprocessing.Break() { Type = DocumentFormat.OpenXml.Wordprocessing.BreakValues.Page })));
-                }
-                // render page
-                page.Render(wdDoc.MainDocumentPart.Document.Body, context, wdDoc.MainDocumentPart);
-            }
+                bool addPageBreak = (document.Pages.IndexOf(page) < document.Pages.Count -1);
 
-            // document margins
-            if (document.Margin != null)
-            {
-                var pageMargins = new DocumentFormat.OpenXml.Wordprocessing.PageMargin()
+                // page inherit margin from doc
+                if(document.Margin != null && page.Margin == null)
                 {
-                    Left = document.Margin.Left,
-                    Top = document.Margin.Top,
-                    Right = document.Margin.Right,
-                    Bottom = document.Margin.Bottom
-                };
-                var sectionProps = new DocumentFormat.OpenXml.Wordprocessing.SectionProperties(pageMargins);
-                wdDoc.MainDocumentPart.Document.Body.Append(sectionProps);
+                    page.Margin = document.Margin;
+                }
+
+                // render page
+                page.Render(wdDoc.MainDocumentPart.Document.Body, context, wdDoc.MainDocumentPart, addPageBreak);
             }
 
             // footer

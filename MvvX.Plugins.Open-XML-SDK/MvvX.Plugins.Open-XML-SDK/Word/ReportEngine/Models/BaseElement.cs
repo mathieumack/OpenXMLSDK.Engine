@@ -33,12 +33,12 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models
         public string FontSize { get; set; }
 
         /// <summary>
-        /// Font color
+        /// Font color in hex value (RRGGBB format)
         /// </summary>
         public string FontColor { get; set; }
 
         /// <summary>
-        /// Shading color
+        /// Shading color in hex value (RRGGBB format)
         /// </summary>
         public string Shading { get; set; }
 

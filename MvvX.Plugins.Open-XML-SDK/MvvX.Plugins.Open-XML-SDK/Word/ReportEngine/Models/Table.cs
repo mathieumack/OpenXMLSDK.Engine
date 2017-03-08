@@ -11,6 +11,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models
     {
         /// <summary>
         /// Rows of the table
+        /// used only if the table is not binded to a datasource (DataSourceKey != null)
         /// </summary>
         public IList<Row> Rows { get; set; } = new List<Row>();
 

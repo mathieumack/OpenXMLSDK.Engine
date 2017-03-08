@@ -14,6 +14,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Word\AutoMapperInitializer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\Bookmarks\PlatformBookmarkEnd.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\Extensions\BorderValuesExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Word\Extensions\PageOrientationValuesExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\Extensions\SpaceProcessingModeValuesExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\Extensions\StyleValuesExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\Extensions\TableVerticalAlignementValuesExtensions.cs" />

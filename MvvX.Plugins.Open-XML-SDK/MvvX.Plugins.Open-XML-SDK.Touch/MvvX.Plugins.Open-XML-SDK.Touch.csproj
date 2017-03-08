@@ -89,6 +89,9 @@
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Extensions\JustificationValuesExtensions.cs">
       <Link>Word\Extensions\JustificationValuesExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Extensions\PageOrientationValuesExtensions.cs">
+      <Link>Word\Extensions\PageOrientationValuesExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Extensions\ShadingPatternValuesExtensions.cs">
       <Link>Word\Extensions\ShadingPatternValuesExtensions.cs</Link>
     </Compile>

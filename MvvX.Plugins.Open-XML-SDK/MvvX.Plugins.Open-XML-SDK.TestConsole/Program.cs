@@ -303,6 +303,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             var footer = new Footer();
             var pf = new Paragraph();
             pf.ChildElements.Add(new Label() { Text = "Footer Text" });
+            pf.ChildElements.Add(new Label() { IsPageNumber = true });
             footer.ChildElements.Add(pf);
             doc.Footer = footer;
 
