@@ -255,6 +255,8 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             page1.ChildElements.Add(table2);
 
             // page 2
+            page2.PageOrientation = PageOrientationValues.Landscape;
+
             var p21 = new Paragraph();
             p21.Justification = JustificationValues.Center;
             p21.ParagraphStyleId = "OnSiteTitle";
@@ -280,6 +282,8 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
 
             // page 3
             var page3 = new Page();
+            page3.Margin = new Word.ReportEngine.Models.Attributes.SpacingModel() { Top = 800, Left = 800 };
+            page3.PageOrientation = PageOrientationValues.Portrait;
             var p31 = new Paragraph() { FontColor = "FF0000", FontSize = "26" };
             p31.ChildElements.Add(new Label() { Text = "test héritage" });
             var p311 = new Paragraph() { FontSize = "16" };
@@ -298,9 +302,9 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             var footer = new Footer();
             var pf = new Paragraph();
             pf.ChildElements.Add(new Label() { Text = "ceci est un footer" });
+            pf.ChildElements.Add(new Label() { IsPageNumber = true });
             footer.ChildElements.Add(pf);
             doc.Footer = footer;
-
             return doc;
         }
 

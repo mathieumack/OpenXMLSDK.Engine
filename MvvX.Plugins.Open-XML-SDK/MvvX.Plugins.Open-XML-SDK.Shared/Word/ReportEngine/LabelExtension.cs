@@ -25,8 +25,12 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
             if (label.Italic.HasValue)
                 runProperty.Italic = new DocumentFormat.OpenXml.Wordprocessing.Italic() { Val = OnOffValue.FromBoolean(label.Italic.Value) };
 
+            if (label.IsPageNumber)
+                run.AppendChild(new DocumentFormat.OpenXml.Wordprocessing.PageNumber());
+
             run.RunProperties = runProperty;
             parent.Append(run);
+
             return run;
         }
     }

@@ -71,6 +71,7 @@
     <Compile Include="Word\Models\ShadingModel.cs" />
     <Compile Include="Word\Models\SpacingBetweenLinesModel.cs" />
     <Compile Include="Word\OnOffOnlyValues.cs" />
+    <Compile Include="Word\PageOrientationValues.cs" />
     <Compile Include="Word\Paragraphs\INumberingProperties.cs" />
     <Compile Include="Word\Paragraphs\IParagraph.cs" />
     <Compile Include="Word\Models\RunFontsModel.cs" />

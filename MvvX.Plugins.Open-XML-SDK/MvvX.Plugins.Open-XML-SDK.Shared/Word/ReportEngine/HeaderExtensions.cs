@@ -29,11 +29,11 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
             }
 
             string headerPartId = mainDocumentPart.GetIdOfPart(headerPart); 
-            if(!mainDocumentPart.Document.Body.Elements<SectionProperties>().Any())
+            if(!mainDocumentPart.Document.Body.Descendants<SectionProperties>().Any())
             {
                 mainDocumentPart.Document.Body.AppendChild(new SectionProperties());
             }
-            foreach(var section in mainDocumentPart.Document.Body.Elements<SectionProperties>())
+            foreach(var section in mainDocumentPart.Document.Body.Descendants<SectionProperties>())
             {
                 section.PrependChild(new HeaderReference() { Id = headerPartId });
             }

@@ -121,7 +121,8 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels
         /// <param name="element"></param>
         public void ReplaceItem(Label element)
         {
-            element.Text = ReplaceText(element.Text);
+            if(!string.IsNullOrEmpty(element.Text))
+                element.Text = ReplaceText(element.Text);
             SetVisibilityFromContext(element);
         }
 
