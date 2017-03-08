@@ -17,51 +17,78 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
-            ReportEngine();
-            return;
+            Console.WriteLine("Enter the path of your Json file, press enter for an example");
+            var filePath = Console.ReadLine();
+            var documentName = string.Empty;
+            if (!string.IsNullOrWhiteSpace(filePath))
+            {
+                Console.WriteLine("Enter document name");
+                documentName = Console.ReadLine();
+            }
+
+            Console.WriteLine("Generation in progress");
+            ReportEngine(filePath, documentName);
 
             // fin test report engine
 
-            OldProgram();
+            //OldProgram()
         }
 
-        private static void ReportEngine()
+        private static void ReportEngine(string filePath, string documentName)
         {
             // Debut test report engine
             using (IWordManager word = new WordManager())
             {
-                var template = GetTemplateDocument();
-                var templateJson = JsonConvert.SerializeObject(template, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
                 JsonConverter[] converters = { new JsonContextConverter() };
-                var templateUnserialized = JsonConvert.DeserializeObject<Document>(templateJson, new JsonSerializerSettings() { Converters = converters });
-                var context = new ContextModel();
-                context.AddItem("#KeyTest1#", new StringModel("la la la"));
-                context.AddItem("#KeyTest2#", new StringModel("toto"));
 
-                ContextModel row1 = new ContextModel();
-                row1.AddItem("#Text#", new StringModel("ligne 1 ddddddddddddddddddddd"));
-                row1.AddItem("#Text2#", new StringModel("ligne 1 xxx"));
-                ContextModel row2 = new ContextModel();
-                row2.AddItem("#Text#", new StringModel("ligne 2"));
-                row2.AddItem("#Text2#", new StringModel("ligne 2 xxx"));
-                context.AddItem("#Datasource#", new DataSourceModel()
+                if (string.IsNullOrWhiteSpace(filePath))
                 {
-                    Items = new List<ContextModel>()
+                    if (string.IsNullOrWhiteSpace(documentName))
+                        documentName = "ExampleDocument.docx";
+
+                    var template = GetTemplateDocument();
+                    var templateJson = JsonConvert.SerializeObject(template);
+                    var templateUnserialized = JsonConvert.DeserializeObject<Document>(templateJson, new JsonSerializerSettings() { Converters = converters });
+                    var context = new ContextModel();
+                    context.AddItem("#KeyTest1#", new StringModel("la la la"));
+                    context.AddItem("#KeyTest2#", new StringModel("toto"));
+
+                    ContextModel row1 = new ContextModel();
+                    row1.AddItem("#Text#", new StringModel("ligne 1"));
+                    row1.AddItem("#Text2#", new StringModel("ligne 1 xxx"));
+                    ContextModel row2 = new ContextModel();
+                    row2.AddItem("#Text#", new StringModel("ligne 2"));
+                    row2.AddItem("#Text2#", new StringModel("ligne 2 xxx"));
+                    context.AddItem("#Datasource#", new DataSourceModel()
+                    {
+                        Items = new List<ContextModel>()
                     {
                         row1, row2
                     }
-                });
+                    });
 
-                var contextJson = JsonConvert.SerializeObject(context);
-                var contextUnserialized = JsonConvert.DeserializeObject<ContextModel>(contextJson, new JsonSerializerSettings() { Converters = converters });
+                    var contextJson = JsonConvert.SerializeObject(context);
+                    var contextUnserialized = JsonConvert.DeserializeObject<ContextModel>(contextJson, new JsonSerializerSettings() { Converters = converters });
 
-                var res = word.GenerateReport(templateUnserialized, contextUnserialized);
+                    var res = word.GenerateReport(templateUnserialized, contextUnserialized);
 
-                // test ecriture fichier
-                File.WriteAllBytes("testeric.docx", res);
-                Process.Start("testeric.docx");
+                    // test ecriture fichier
+                    File.WriteAllBytes(documentName, res);
+                    Process.Start(documentName);
+                }
+                else
+                {
+                    var stream = File.ReadAllText(filePath);
+                    var report = JsonConvert.DeserializeObject<Report>(stream, new JsonSerializerSettings() { Converters = converters });
+
+                    var res = word.GenerateReport(report.Document, report.ContextModel);
+
+                    // test ecriture fichier
+                    File.WriteAllBytes(documentName, res);
+                    Process.Start(documentName);
+                }
             }
         }
 
@@ -99,7 +126,6 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                                 {
                                     new Label() {Text = "cellule1" }
                                 },
-                                VerticalAlignment = TableVerticalAlignmentValues.Center,
                                 Fusion = true
                             },
                             new Cell()
@@ -147,17 +173,14 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                             ChildElements = new List<BaseElement>()
                             {
                                 new Label() {Text = "header1" }
-                            },
-                            Shading = "00FFFF"
+                            }
                         },
                         new Cell()
                         {
                             ChildElements = new List<BaseElement>()
                             {
                                 new Label() {Text = "header2" }
-                            },
-                            VerticalAlignment = TableVerticalAlignmentValues.Center,
-                            Justification = JustificationValues.Center
+                            }
                         }
                 }
             };
@@ -170,9 +193,6 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                 UseVariableBorders = true,
                 BorderColor = "FF0000"
             };
-
-            table.ColsWidth = new int[] { 1000, 6000 };
-            table.TableWidth = new TableWidthModel() { Width = "2500", Type = TableWidthUnitValues.Pct };
 
             page1.ChildElements.Add(table);
             page1.ChildElements.Add(new Paragraph());
@@ -188,71 +208,21 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                             ChildElements = new List<BaseElement>()
                             {
                                 new Label() {Text = "#Text#" }
-                            },
-                            Justification = JustificationValues.Right
+                            }
                         },
                         new Cell()
                         {
                             ChildElements = new List<BaseElement>()
                             {
                                 new Label() {Text = "#Text2#" }
-                            },
-                            TextDirection = TextDirectionValues.TopToBottomRightToLeft
-                        }
-                    },
-                    Shading = "333333"
-                },
-                DataSourceKey = "#Datasource#",
-                TableWidth = new TableWidthModel() { Width = "5000", Type = TableWidthUnitValues.Pct }
-            };
-
-            //page1.ChildElements.Add(tableDataSource);
-
-            var table2 = new Table()
-            {
-                Rows = new List<Row>() {
-                    new Row()
-                    {
-                        Cells = new List<Cell>()
-                        {
-                            new Cell()
-                            {
-                                ChildElements = new List<BaseElement>()
-                                {
-                                    new Label() {Text = "Blop" }
-                                },
-                                Justification = JustificationValues.Right
-                            },
-                            new Cell()
-                            {
-                                ChildElements = new List<BaseElement>()
-                                {
-                                    tableDataSource
-                                }
-                            }
-                        }
-                    },
-                    new Row()
-                    {
-                        Cells = new List<Cell>()
-                        {
-                            new Cell()
-                            {
-                                ColSpan = 2,
-                                ChildElements = new List<BaseElement>()
-                                {
-                                    new Label()
-                                    {
-                                        Text = "toto"
-                                    }
-                                }
                             }
                         }
                     }
                 },
-                TableWidth = new TableWidthModel() { Width = "5000", Type = TableWidthUnitValues.Pct}
+                DataSourceKey = "#Datasource#"
             };
-            page1.ChildElements.Add(table2);
+
+            page1.ChildElements.Add(tableDataSource);
 
             // page 2
             page2.PageOrientation = PageOrientationValues.Landscape;
@@ -272,12 +242,6 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             var p23 = new Paragraph();
             p23.SpacingBetweenLines = 360;
             p23.ChildElements.Add(new Label() { Text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse urna augue, convallis eu enim vitae, maximus ultrices nulla. Sed egestas volutpat luctus. Maecenas sodales erat eu elit auctor, eu mattis neque maximus. Duis ac risus quis sem bibendum efficitur. Vivamus justo augue, molestie quis orci non, maximus imperdiet justo. Donec condimentum rhoncus est, ut varius lorem efficitur sed. Donec accumsan sit amet nisl vel ornare. Duis aliquet urna eu mauris porttitor facilisis. " });
-            p23.Borders = new Word.ReportEngine.Models.Attributes.BorderModel()
-            {
-                BorderWidth = 8,
-                BorderColor = "000000",
-                BorderPositions = Word.ReportEngine.Models.Attributes.BorderPositions.TOP | Word.ReportEngine.Models.Attributes.BorderPositions.BOTTOM | Word.ReportEngine.Models.Attributes.BorderPositions.LEFT | Word.ReportEngine.Models.Attributes.BorderPositions.RIGHT
-            };
             page2.ChildElements.Add(p23);
 
             // page 3
