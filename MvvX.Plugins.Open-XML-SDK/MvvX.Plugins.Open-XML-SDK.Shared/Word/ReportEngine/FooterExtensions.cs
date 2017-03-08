@@ -35,7 +35,12 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
             }
             foreach (var section in mainDocumentPart.Document.Body.Descendants<SectionProperties>())
             {
-                section.PrependChild(new FooterReference() { Id = footerPartId });
+                section.PrependChild(new FooterReference() { Id = footerPartId, Type = (HeaderFooterValues)(int)footer.Type });
+            }
+
+            if (footer.Type == OpenXMLSDK.Word.HeaderFooterValues.First)
+            {
+                mainDocumentPart.Document.Body.Descendants<SectionProperties>().First().PrependChild(new TitlePage());
             }
         }
     }

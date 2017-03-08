@@ -286,6 +286,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
 
             // Header
             var header = new Header();
+            header.Type = HeaderFooterValues.Default;
             var ph = new Paragraph();
             ph.ChildElements.Add(new Label() { Text = "Header Text" });
             if (File.Exists(@"..\..\Resources\Desert.jpg"))
@@ -297,15 +298,24 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                     ImagePartType = Packaging.ImagePartType.Jpeg
                 });
             header.ChildElements.Add(ph);
-            doc.Header = header;
+            doc.Headers.Add(header);
+
+            // first header
+            var firstHeader = new Header();
+            firstHeader.Type = HeaderFooterValues.First;
+            var fph = new Paragraph();
+            fph.ChildElements.Add(new Label() { Text = "first header Text" });
+            firstHeader.ChildElements.Add(fph);
+            doc.Headers.Add(firstHeader);
 
             // Footer
             var footer = new Footer();
+            footer.Type = HeaderFooterValues.Default;
             var pf = new Paragraph();
             pf.ChildElements.Add(new Label() { Text = "Footer Text" });
             pf.ChildElements.Add(new Label() { IsPageNumber = true });
             footer.ChildElements.Add(pf);
-            doc.Footer = footer;
+            doc.Footers.Add(footer);
 
             return doc;
         }

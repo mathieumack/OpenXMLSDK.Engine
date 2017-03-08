@@ -13,7 +13,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
         {
             // add page content
             ((BaseElement)page).Render(wdDoc, context, mainDocumentPart);
-            
+
             // add section to manage orientation. Last section is at the end of document
             var pageSize = new PageSize()
             {
@@ -30,7 +30,9 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                     Left = page.Margin.Left,
                     Top = page.Margin.Top,
                     Right = page.Margin.Right,
-                    Bottom = page.Margin.Bottom
+                    Bottom = page.Margin.Bottom,
+                    Footer = page.Margin.Footer,
+                    Header = page.Margin.Header
                 };
                 sectionProps.AppendChild(pageMargins);
             }

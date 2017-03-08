@@ -6,6 +6,11 @@
     public class Header : BaseElement
     {
         /// <summary>
+        /// Header type 
+        /// </summary>
+        public HeaderFooterValues Type { get; set; } = HeaderFooterValues.Default;
+
+        /// <summary>
         /// Constructor
         /// </summary>
         public Header()

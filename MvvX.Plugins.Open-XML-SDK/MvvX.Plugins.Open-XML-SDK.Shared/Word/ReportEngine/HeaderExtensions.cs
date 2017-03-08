@@ -22,20 +22,25 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
 
             headerPart.Header = new Header();
 
-            foreach(var element in header.ChildElements)
+            foreach (var element in header.ChildElements)
             {
                 element.InheritFromParent(header);
                 element.Render(headerPart.Header, context, headerPart);
             }
 
-            string headerPartId = mainDocumentPart.GetIdOfPart(headerPart); 
-            if(!mainDocumentPart.Document.Body.Descendants<SectionProperties>().Any())
+            string headerPartId = mainDocumentPart.GetIdOfPart(headerPart);
+            if (!mainDocumentPart.Document.Body.Descendants<SectionProperties>().Any())
             {
                 mainDocumentPart.Document.Body.AppendChild(new SectionProperties());
             }
-            foreach(var section in mainDocumentPart.Document.Body.Descendants<SectionProperties>())
+            foreach (var section in mainDocumentPart.Document.Body.Descendants<SectionProperties>())
             {
-                section.PrependChild(new HeaderReference() { Id = headerPartId });
+                section.PrependChild(new HeaderReference() { Id = headerPartId, Type = (HeaderFooterValues)(int)header.Type });
+            }
+
+            if (header.Type == OpenXMLSDK.Word.HeaderFooterValues.First)
+            {
+                mainDocumentPart.Document.Body.Descendants<SectionProperties>().First().PrependChild(new TitlePage());
             }
         }
     }

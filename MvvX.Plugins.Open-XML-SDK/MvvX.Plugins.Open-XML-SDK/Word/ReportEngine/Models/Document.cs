@@ -11,12 +11,12 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models
         /// <summary>
         /// Header of document
         /// </summary>
-        public Header Header { get; set; }
+        public IList<Header> Headers { get; set; } = new List<Header>();
 
         /// <summary>
         /// Footer of document
         /// </summary>
-        public Footer Footer { get; set; }
+        public IList<Footer> Footers { get; set; } = new List<Footer>();
 
         /// <summary>
         /// List of pages of document

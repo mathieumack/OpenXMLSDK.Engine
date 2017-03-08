@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using DocumentFormat.OpenXml.Packaging;
+﻿using DocumentFormat.OpenXml.Packaging;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models;
 
@@ -25,10 +24,10 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
 
             foreach (var page in document.Pages)
             {
-                bool addPageBreak = (document.Pages.IndexOf(page) < document.Pages.Count -1);
+                bool addPageBreak = (document.Pages.IndexOf(page) < document.Pages.Count - 1);
 
                 // page inherit margin from doc
-                if(document.Margin != null && page.Margin == null)
+                if (document.Margin != null && page.Margin == null)
                 {
                     page.Margin = document.Margin;
                 }
@@ -37,15 +36,15 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                 page.Render(wdDoc.MainDocumentPart.Document.Body, context, wdDoc.MainDocumentPart, addPageBreak);
             }
 
-            // footer
-            if (document.Footer != null)
+            // footers
+            foreach (var footer in document.Footers)
             {
-                document.Footer.Render(wdDoc.MainDocumentPart, context);
+                footer.Render(wdDoc.MainDocumentPart, context);
             }
-            // header
-            if (document.Header != null)
+            // headers
+            foreach (var header in document.Headers)
             {
-                document.Header.Render(wdDoc.MainDocumentPart, context);
+                header.Render(wdDoc.MainDocumentPart, context);
             }
         }
     }

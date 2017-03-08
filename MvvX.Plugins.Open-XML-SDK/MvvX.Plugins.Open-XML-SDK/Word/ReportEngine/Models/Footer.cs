@@ -6,6 +6,11 @@
     public class Footer : BaseElement
     {
         /// <summary>
+        /// Footer type 
+        /// </summary>
+        public HeaderFooterValues Type { get; set; } = HeaderFooterValues.Default;
+
+        /// <summary>
         /// Constructor
         /// </summary>
         public Footer()
