@@ -63,6 +63,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
+    <None Include="Resources\Test.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MvvX.Plugins.Open-XML-SDK.Wpf\MvvX.Plugins.Open-XML-SDK.Wpf.csproj">
@@ -76,6 +79,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\Results\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\Desert.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

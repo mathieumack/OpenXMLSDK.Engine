@@ -51,24 +51,8 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                     var template = GetTemplateDocument();
                     var templateJson = JsonConvert.SerializeObject(template);
                     var templateUnserialized = JsonConvert.DeserializeObject<Document>(templateJson, new JsonSerializerSettings() { Converters = converters });
-                    var context = new ContextModel();
-                    context.AddItem("#KeyTest1#", new StringModel("la la la"));
-                    context.AddItem("#KeyTest2#", new StringModel("toto"));
 
-                    ContextModel row1 = new ContextModel();
-                    row1.AddItem("#Text#", new StringModel("ligne 1"));
-                    row1.AddItem("#Text2#", new StringModel("ligne 1 xxx"));
-                    ContextModel row2 = new ContextModel();
-                    row2.AddItem("#Text#", new StringModel("ligne 2"));
-                    row2.AddItem("#Text2#", new StringModel("ligne 2 xxx"));
-                    context.AddItem("#Datasource#", new DataSourceModel()
-                    {
-                        Items = new List<ContextModel>()
-                    {
-                        row1, row2
-                    }
-                    });
-
+                    var context = GetContext();
                     var contextJson = JsonConvert.SerializeObject(context);
                     var contextUnserialized = JsonConvert.DeserializeObject<ContextModel>(contextJson, new JsonSerializerSettings() { Converters = converters });
 
@@ -80,6 +64,11 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                 }
                 else
                 {
+                    if (string.IsNullOrWhiteSpace(documentName))
+                        documentName = "ExampleDocument.docx";
+                    if (!documentName.EndsWith(".docx"))
+                        documentName = string.Concat(documentName, ".docx");
+
                     var stream = File.ReadAllText(filePath);
                     var report = JsonConvert.DeserializeObject<Report>(stream, new JsonSerializerSettings() { Converters = converters });
 
@@ -92,11 +81,15 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             }
         }
 
+        /// <summary>
+        /// Generate the template
+        /// </summary>
+        /// <returns></returns>
         private static Document GetTemplateDocument()
         {
             var doc = new Document();
-            doc.Styles.Add(new Style() { StyleId = "OnSiteTitle" });
-            doc.Styles.Add(new Style() { StyleId = "toto", FontColor = "FFFF00", FontSize = "40" });
+            doc.Styles.Add(new Style() { StyleId = "Title" });
+            doc.Styles.Add(new Style() { StyleId = "Yellow", FontColor = "FFFF00", FontSize = "40" });
             var page1 = new Page();
             var page2 = new Page();
             doc.Pages.Add(page1);
@@ -114,6 +107,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
 
             var table = new Table()
             {
+                TableWidth = new TableWidthModel() { Width = "5000", Type = TableWidthUnitValues.Pct },
                 Rows = new List<Row>()
                 {
                     new Row()
@@ -122,6 +116,8 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                         {
                             new Cell()
                             {
+                                VerticalAlignment = TableVerticalAlignmentValues.Center,
+                                Justification = JustificationValues.Center,
                                 ChildElements = new List<BaseElement>()
                                 {
                                     new Label() {Text = "cellule1" }
@@ -154,6 +150,8 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                             },
                             new Cell()
                             {
+                                VerticalAlignment = TableVerticalAlignmentValues.Bottom,
+                                Justification = JustificationValues.Right,
                                 ChildElements = new List<BaseElement>()
                                 {
                                     new Label() {Text = "cellule4" }
@@ -197,24 +195,50 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             page1.ChildElements.Add(table);
             page1.ChildElements.Add(new Paragraph());
 
+            if (File.Exists(@"..\..\Resources\Desert.jpg"))
+                page1.ChildElements.Add(
+                    new Paragraph()
+                    {
+                        ChildElements = new List<BaseElement>()
+                        {
+                        new Image()
+                        {
+                            MaxHeight = 100,
+                            MaxWidth = 100,
+                            Path = @"..\..\Resources\Desert.jpg",
+                            ImagePartType = Packaging.ImagePartType.Jpeg
+                        }
+                        }
+                    }
+                );
+
             var tableDataSource = new Table()
             {
+                TableWidth = new TableWidthModel() { Width = "5000", Type = TableWidthUnitValues.Pct },
+                ColsWidth = new int[2] { 500, 4500 },
+                Borders = new Word.ReportEngine.Models.Attributes.BorderModel()
+                {
+                    BorderPositions = (Word.ReportEngine.Models.Attributes.BorderPositions)63,
+                    BorderColor = "328864",
+                    BorderWidth = 20,
+                },
                 RowModel = new Row()
                 {
                     Cells = new List<Cell>()
                     {
                         new Cell()
                         {
+                            Shading = "FFA0FF",
                             ChildElements = new List<BaseElement>()
                             {
-                                new Label() {Text = "#Text#" }
+                                new Label() {Text = "#Cell1#" }
                             }
                         },
                         new Cell()
                         {
                             ChildElements = new List<BaseElement>()
                             {
-                                new Label() {Text = "#Text2#" }
+                                new Label() {Text = "#Cell2#" }
                             }
                         }
                     }
@@ -227,17 +251,25 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             // page 2
             var p21 = new Paragraph();
             p21.Justification = JustificationValues.Center;
-            p21.ParagraphStyleId = "OnSiteTitle";
+            p21.ParagraphStyleId = "Title";
             p21.ChildElements.Add(new Label() { Text = "texte page2", FontName = "Arial" });
             page2.ChildElements.Add(p21);
+
             var p22 = new Paragraph();
             p22.SpacingBefore = 800;
             p22.SpacingAfter = 800;
             p22.Justification = JustificationValues.Both;
-            p22.ParagraphStyleId = "toto";
+            p22.ParagraphStyleId = "Yellow";
             p22.ChildElements.Add(new Label() { Text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse urna augue, convallis eu enim vitae, maximus ultrices nulla. Sed egestas volutpat luctus. Maecenas sodales erat eu elit auctor, eu mattis neque maximus. Duis ac risus quis sem bibendum efficitur. Vivamus justo augue, molestie quis orci non, maximus imperdiet justo. Donec condimentum rhoncus est, ut varius lorem efficitur sed. Donec accumsan sit amet nisl vel ornare. Duis aliquet urna eu mauris porttitor facilisis. " });
             page2.ChildElements.Add(p22);
+
             var p23 = new Paragraph();
+            p23.Borders = new Word.ReportEngine.Models.Attributes.BorderModel()
+            {
+                BorderPositions = (Word.ReportEngine.Models.Attributes.BorderPositions)13,
+                BorderWidth = 20,
+                BorderColor = "0000FF"
+            };
             p23.SpacingBetweenLines = 360;
             p23.ChildElements.Add(new Label() { Text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse urna augue, convallis eu enim vitae, maximus ultrices nulla. Sed egestas volutpat luctus. Maecenas sodales erat eu elit auctor, eu mattis neque maximus. Duis ac risus quis sem bibendum efficitur. Vivamus justo augue, molestie quis orci non, maximus imperdiet justo. Donec condimentum rhoncus est, ut varius lorem efficitur sed. Donec accumsan sit amet nisl vel ornare. Duis aliquet urna eu mauris porttitor facilisis. " });
             page2.ChildElements.Add(p23);
@@ -245,27 +277,63 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             // page 3
             var page3 = new Page();
             var p31 = new Paragraph() { FontColor = "FF0000", FontSize = "26" };
-            p31.ChildElements.Add(new Label() { Text = "test héritage" });
+            p31.ChildElements.Add(new Label() { Text = "Test the HeritFromParent" });
             var p311 = new Paragraph() { FontSize = "16" };
-            p311.ChildElements.Add(new Label() { Text = "blabla" });
+            p311.ChildElements.Add(new Label() { Text = " Success (not the same size)" });
             p31.ChildElements.Add(p311);
             page3.ChildElements.Add(p31);
             doc.Pages.Add(page3);
 
-            // test header
+            // Header
             var header = new Header();
             var ph = new Paragraph();
-            ph.ChildElements.Add(new Label() { Text = "test dans header" });
+            ph.ChildElements.Add(new Label() { Text = "Header Text" });
+            if (File.Exists(@"..\..\Resources\Desert.jpg"))
+                ph.ChildElements.Add(new Image()
+                {
+                    MaxHeight = 100,
+                    MaxWidth = 100,
+                    Path = @"..\..\Resources\Desert.jpg",
+                    ImagePartType = Packaging.ImagePartType.Jpeg
+                });
             header.ChildElements.Add(ph);
             doc.Header = header;
 
+            // Footer
             var footer = new Footer();
             var pf = new Paragraph();
-            pf.ChildElements.Add(new Label() { Text = "ceci est un footer" });
+            pf.ChildElements.Add(new Label() { Text = "Footer Text" });
             footer.ChildElements.Add(pf);
             doc.Footer = footer;
 
             return doc;
+        }
+
+        /// <summary>
+        /// Generate the context for the generated template
+        /// </summary>
+        /// <returns></returns>
+        private static ContextModel GetContext()
+        {
+            ContextModel context = new ContextModel();
+            context.AddItem("#KeyTest1#", new StringModel("Key 1"));
+            context.AddItem("#KeyTest2#", new StringModel("Key 2"));
+
+            ContextModel row1 = new ContextModel();
+            row1.AddItem("#Cell1#", new StringModel("Col 1 Row 1"));
+            row1.AddItem("#Cell2#", new StringModel("Col 2 Row 1"));
+            ContextModel row2 = new ContextModel();
+            row2.AddItem("#Cell1#", new StringModel("Col 2 Row 1"));
+            row2.AddItem("#Cell2#", new StringModel("Col 2 Row 2"));
+            context.AddItem("#Datasource#", new DataSourceModel()
+            {
+                Items = new List<ContextModel>()
+                    {
+                        row1, row2
+                    }
+            });
+
+            return context;
         }
 
         private static void OldProgram()
