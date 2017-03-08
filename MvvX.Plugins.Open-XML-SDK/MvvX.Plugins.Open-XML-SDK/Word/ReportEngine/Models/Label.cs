@@ -11,7 +11,7 @@
         public string Text { get; set; }
 
         /// <summary>
-        /// The label contains the page number
+        /// if true, the label contains the page number
         /// </summary>
         public bool IsPageNumber { get; set; }
 

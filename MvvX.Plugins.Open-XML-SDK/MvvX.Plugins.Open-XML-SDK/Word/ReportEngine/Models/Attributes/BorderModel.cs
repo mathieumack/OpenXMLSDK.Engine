@@ -59,7 +59,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models.Attributes
         public uint BorderWidthInsideVertical { get; set; }
 
         /// <summary>
-        /// Border Color
+        /// Border Color in hex value (RRGGBB format)
         /// </summary>
         public string BorderColor { get; set; }
 
