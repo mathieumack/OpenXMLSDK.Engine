@@ -1,25 +1,27 @@
-﻿using DocumentFormat.OpenXml;
-using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml.Wordprocessing;
-using MvvX.Plugins.OpenXMLSDK.Word.Bookmarks;
-using MvvX.Plugins.OpenXMLSDK.Word.Models;
-using MvvX.Plugins.OpenXMLSDK.Word.Paragraphs;
-using MvvX.Plugins.OpenXMLSDK.Word.Tables;
-using MvvX.Plugins.OpenXMLSDK.Word.Tables.Models;
-using MvvX.Plugins.OpenXMLSDK.Platform.Word.Bookmarks;
-using MvvX.Plugins.OpenXMLSDK.Platform.Word.Extensions;
-using MvvX.Plugins.OpenXMLSDK.Platform.Word.Paragraphs;
-using MvvX.Plugins.OpenXMLSDK.Platform.Word.Tables;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
+using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Wordprocessing;
+using MvvX.Plugins.OpenXMLSDK.Drawing.Pictures.Model;
+using MvvX.Plugins.OpenXMLSDK.Platform.Word.Bookmarks;
+using MvvX.Plugins.OpenXMLSDK.Platform.Word.Extensions;
+using MvvX.Plugins.OpenXMLSDK.Platform.Word.Paragraphs;
+using MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine;
+using MvvX.Plugins.OpenXMLSDK.Platform.Word.Tables;
+using MvvX.Plugins.OpenXMLSDK.Word;
+using MvvX.Plugins.OpenXMLSDK.Word.Bookmarks;
+using MvvX.Plugins.OpenXMLSDK.Word.Models;
+using MvvX.Plugins.OpenXMLSDK.Word.Paragraphs;
+using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels;
+using MvvX.Plugins.OpenXMLSDK.Word.Tables;
+using MvvX.Plugins.OpenXMLSDK.Word.Tables.Models;
 using A = DocumentFormat.OpenXml.Drawing;
 using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
 using PIC = DocumentFormat.OpenXml.Drawing.Pictures;
-using MvvX.Plugins.OpenXMLSDK.Word;
-using MvvX.Plugins.OpenXMLSDK.Drawing.Pictures.Model;
-using System.Text;
 
 namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
 {
@@ -886,8 +888,10 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
 
             var tableCellProperties = platformCellTable.Properties.ContentItem as TableCellProperties;
 
-            tableCellProperties.Append(new TableCellVerticalAlignment {
-                Val = (DocumentFormat.OpenXml.Wordprocessing.TableVerticalAlignmentValues)(int)cellModel.TableVerticalAlignementValues });
+            tableCellProperties.Append(new TableCellVerticalAlignment
+            {
+                Val = (DocumentFormat.OpenXml.Wordprocessing.TableVerticalAlignmentValues)(int)cellModel.TableVerticalAlignementValues
+            });
 
             // Modification de la rotation du texte dans la cellule
             if (cellModel.TextDirectionValues.HasValue)
@@ -1043,6 +1047,25 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
             return ptr;
         }
 
+        #endregion
+
+        #region Report Engine
+
+        public byte[] GenerateReport(OpenXMLSDK.Word.ReportEngine.Models.Document document, ContextModel context)
+        {
+            using (MemoryStream stream = new MemoryStream())
+            {
+                wdDoc = WordprocessingDocument.Create(stream, WordprocessingDocumentType.Document);
+                wdDoc.AddMainDocumentPart();
+                wdDoc.MainDocumentPart.Document = new DocumentFormat.OpenXml.Wordprocessing.Document(new Body());
+
+                document.Render(wdDoc, context);
+
+                wdDoc.MainDocumentPart.Document.Save();
+                wdDoc.Close();
+                return stream.ToArray();
+            }
+        }
         #endregion
     }
 }

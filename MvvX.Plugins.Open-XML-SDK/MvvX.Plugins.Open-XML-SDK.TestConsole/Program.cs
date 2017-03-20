@@ -6,14 +6,348 @@ using MvvX.Plugins.OpenXMLSDK.Platform.Word;
 using MvvX.Plugins.OpenXMLSDK.Word;
 using MvvX.Plugins.OpenXMLSDK.Word.Models;
 using MvvX.Plugins.OpenXMLSDK.Word.Paragraphs;
+using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine;
+using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels;
+using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models;
 using MvvX.Plugins.OpenXMLSDK.Word.Tables;
 using MvvX.Plugins.OpenXMLSDK.Word.Tables.Models;
+using Newtonsoft.Json;
 
 namespace MvvX.Plugins.OpenXMLSDK.TestConsole
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
+        {
+            Console.WriteLine("Enter the path of your Json file, press enter for an example");
+            var filePath = Console.ReadLine();
+            var documentName = string.Empty;
+            if (!string.IsNullOrWhiteSpace(filePath))
+            {
+                Console.WriteLine("Enter document name");
+                documentName = Console.ReadLine();
+            }
+
+            Console.WriteLine("Generation in progress");
+            ReportEngine(filePath, documentName);
+
+            // fin test report engine
+
+            //OldProgram()
+        }
+
+        private static void ReportEngine(string filePath, string documentName)
+        {
+            // Debut test report engine
+            using (IWordManager word = new WordManager())
+            {
+                JsonConverter[] converters = { new JsonContextConverter() };
+
+                if (string.IsNullOrWhiteSpace(filePath))
+                {
+                    if (string.IsNullOrWhiteSpace(documentName))
+                        documentName = "ExampleDocument.docx";
+
+                    var template = GetTemplateDocument();
+                    var templateJson = JsonConvert.SerializeObject(template);
+                    var templateUnserialized = JsonConvert.DeserializeObject<Document>(templateJson, new JsonSerializerSettings() { Converters = converters });
+
+                    var context = GetContext();
+                    var contextJson = JsonConvert.SerializeObject(context);
+                    var contextUnserialized = JsonConvert.DeserializeObject<ContextModel>(contextJson, new JsonSerializerSettings() { Converters = converters });
+
+                    var res = word.GenerateReport(templateUnserialized, contextUnserialized);
+
+                    // test ecriture fichier
+                    File.WriteAllBytes(documentName, res);
+                    Process.Start(documentName);
+                }
+                else
+                {
+                    if (string.IsNullOrWhiteSpace(documentName))
+                        documentName = "ExampleDocument.docx";
+                    if (!documentName.EndsWith(".docx"))
+                        documentName = string.Concat(documentName, ".docx");
+
+                    var stream = File.ReadAllText(filePath);
+                    var report = JsonConvert.DeserializeObject<Report>(stream, new JsonSerializerSettings() { Converters = converters });
+
+                    var res = word.GenerateReport(report.Document, report.ContextModel);
+
+                    // test ecriture fichier
+                    File.WriteAllBytes(documentName, res);
+                    Process.Start(documentName);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Generate the template
+        /// </summary>
+        /// <returns></returns>
+        private static Document GetTemplateDocument()
+        {
+            var doc = new Document();
+            doc.Styles.Add(new Style() { StyleId = "Title" });
+            doc.Styles.Add(new Style() { StyleId = "Yellow", FontColor = "FFFF00", FontSize = "40" });
+            var page1 = new Page();
+            var page2 = new Page();
+            doc.Pages.Add(page1);
+            doc.Pages.Add(page2);
+            var paragraph = new Paragraph();
+            paragraph.ChildElements.Add(new Label() { Text = "Ceci est un texte", FontSize = "30", FontName = "Arial" });
+            paragraph.ChildElements.Add(new Label() { Text = "#KeyTest1#", FontSize = "40", FontColor = "FF0000", Shading = "0000FF" });
+            paragraph.ChildElements.Add(new Label() { Text = "#KeyTest2#", Show = false });
+            page1.ChildElements.Add(paragraph);
+            var p2 = new Paragraph();
+            p2.Shading = "FF0000";
+            p2.ChildElements.Add(new Label() { Text = "texte paragraph2", FontSize = "20" });
+            p2.ChildElements.Add(new Label() { Text = "texte2 paragraph2" });
+            page1.ChildElements.Add(p2);
+
+            var table = new Table()
+            {
+                TableWidth = new TableWidthModel() { Width = "5000", Type = TableWidthUnitValues.Pct },
+                Rows = new List<Row>()
+                {
+                    new Row()
+                    {
+                        Cells = new List<Cell>()
+                        {
+                            new Cell()
+                            {
+                                VerticalAlignment = TableVerticalAlignmentValues.Center,
+                                Justification = JustificationValues.Center,
+                                ChildElements = new List<BaseElement>()
+                                {
+                                    new Label() {Text = "cellule1" }
+                                },
+                                Fusion = true
+                            },
+                            new Cell()
+                            {
+                                ChildElements = new List<BaseElement>()
+                                {
+                                    new Label() {Text = "cellule2" }
+                                },
+                                Borders = new Word.ReportEngine.Models.Attributes.BorderModel()
+                                {
+                                    BorderColor = "00FF00",
+                                    BorderWidth = 20,
+                                    BorderPositions = Word.ReportEngine.Models.Attributes.BorderPositions.LEFT | Word.ReportEngine.Models.Attributes.BorderPositions.TOP
+                                }
+                            }
+                        }
+                    },
+                    new Row()
+                    {
+                        Cells = new List<Cell>()
+                        {
+                            new Cell()
+                            {
+                                Fusion = true,
+                                FusionChild = true
+                            },
+                            new Cell()
+                            {
+                                VerticalAlignment = TableVerticalAlignmentValues.Bottom,
+                                Justification = JustificationValues.Right,
+                                ChildElements = new List<BaseElement>()
+                                {
+                                    new Label() {Text = "cellule4" }
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+
+            table.HeaderRow = new Row()
+            {
+                Cells = new List<Cell>()
+                {
+                        new Cell()
+                        {
+                            ChildElements = new List<BaseElement>()
+                            {
+                                new Label() {Text = "header1" }
+                            }
+                        },
+                        new Cell()
+                        {
+                            ChildElements = new List<BaseElement>()
+                            {
+                                new Label() {Text = "header2" }
+                            }
+                        }
+                }
+            };
+
+            table.Borders = new Word.ReportEngine.Models.Attributes.BorderModel()
+            {
+                BorderPositions = Word.ReportEngine.Models.Attributes.BorderPositions.BOTTOM | Word.ReportEngine.Models.Attributes.BorderPositions.INSIDEVERTICAL,
+                BorderWidthBottom = 50,
+                BorderWidthInsideVertical = 1,
+                UseVariableBorders = true,
+                BorderColor = "FF0000"
+            };
+
+            page1.ChildElements.Add(table);
+            page1.ChildElements.Add(new Paragraph());
+
+            if (File.Exists(@"..\..\Resources\Desert.jpg"))
+                page1.ChildElements.Add(
+                    new Paragraph()
+                    {
+                        ChildElements = new List<BaseElement>()
+                        {
+                        new Image()
+                        {
+                            MaxHeight = 100,
+                            MaxWidth = 100,
+                            Path = @"..\..\Resources\Desert.jpg",
+                            ImagePartType = Packaging.ImagePartType.Jpeg
+                        }
+                        }
+                    }
+                );
+
+            var tableDataSource = new Table()
+            {
+                TableWidth = new TableWidthModel() { Width = "5000", Type = TableWidthUnitValues.Pct },
+                ColsWidth = new int[2] { 500, 4500 },
+                Borders = new Word.ReportEngine.Models.Attributes.BorderModel()
+                {
+                    BorderPositions = (Word.ReportEngine.Models.Attributes.BorderPositions)63,
+                    BorderColor = "328864",
+                    BorderWidth = 20,
+                },
+                RowModel = new Row()
+                {
+                    Cells = new List<Cell>()
+                    {
+                        new Cell()
+                        {
+                            Shading = "FFA0FF",
+                            ChildElements = new List<BaseElement>()
+                            {
+                                new Label() {Text = "#Cell1#" }
+                            }
+                        },
+                        new Cell()
+                        {
+                            ChildElements = new List<BaseElement>()
+                            {
+                                new Label() {Text = "#Cell2#" }
+                            }
+                        }
+                    }
+                },
+                DataSourceKey = "#Datasource#"
+            };
+
+            page1.ChildElements.Add(tableDataSource);
+
+            // page 2
+            var p21 = new Paragraph();
+            p21.Justification = JustificationValues.Center;
+            p21.ParagraphStyleId = "Title";
+            p21.ChildElements.Add(new Label() { Text = "texte page2", FontName = "Arial" });
+            page2.ChildElements.Add(p21);
+
+            var p22 = new Paragraph();
+            p22.SpacingBefore = 800;
+            p22.SpacingAfter = 800;
+            p22.Justification = JustificationValues.Both;
+            p22.ParagraphStyleId = "Yellow";
+            p22.ChildElements.Add(new Label() { Text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse urna augue, convallis eu enim vitae, maximus ultrices nulla. Sed egestas volutpat luctus. Maecenas sodales erat eu elit auctor, eu mattis neque maximus. Duis ac risus quis sem bibendum efficitur. Vivamus justo augue, molestie quis orci non, maximus imperdiet justo. Donec condimentum rhoncus est, ut varius lorem efficitur sed. Donec accumsan sit amet nisl vel ornare. Duis aliquet urna eu mauris porttitor facilisis. " });
+            page2.ChildElements.Add(p22);
+
+            var p23 = new Paragraph();
+            p23.Borders = new Word.ReportEngine.Models.Attributes.BorderModel()
+            {
+                BorderPositions = (Word.ReportEngine.Models.Attributes.BorderPositions)13,
+                BorderWidth = 20,
+                BorderColor = "0000FF"
+            };
+            p23.SpacingBetweenLines = 360;
+            p23.ChildElements.Add(new Label() { Text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse urna augue, convallis eu enim vitae, maximus ultrices nulla. Sed egestas volutpat luctus. Maecenas sodales erat eu elit auctor, eu mattis neque maximus. Duis ac risus quis sem bibendum efficitur. Vivamus justo augue, molestie quis orci non, maximus imperdiet justo. Donec condimentum rhoncus est, ut varius lorem efficitur sed. Donec accumsan sit amet nisl vel ornare. Duis aliquet urna eu mauris porttitor facilisis. " });
+            page2.ChildElements.Add(p23);
+
+            // page 3
+            var page3 = new Page();
+            var p31 = new Paragraph() { FontColor = "FF0000", FontSize = "26" };
+            p31.ChildElements.Add(new Label() { Text = "Test the HeritFromParent" });
+            var p311 = new Paragraph() { FontSize = "16" };
+            p311.ChildElements.Add(new Label() { Text = " Success (not the same size)" });
+            p31.ChildElements.Add(p311);
+            page3.ChildElements.Add(p31);
+            doc.Pages.Add(page3);
+
+            // Header
+            var header = new Header();
+            header.Type = HeaderFooterValues.Default;
+            var ph = new Paragraph();
+            ph.ChildElements.Add(new Label() { Text = "Header Text" });
+            if (File.Exists(@"..\..\Resources\Desert.jpg"))
+                ph.ChildElements.Add(new Image()
+                {
+                    MaxHeight = 100,
+                    MaxWidth = 100,
+                    Path = @"..\..\Resources\Desert.jpg",
+                    ImagePartType = Packaging.ImagePartType.Jpeg
+                });
+            header.ChildElements.Add(ph);
+            doc.Headers.Add(header);
+
+            // first header
+            var firstHeader = new Header();
+            firstHeader.Type = HeaderFooterValues.First;
+            var fph = new Paragraph();
+            fph.ChildElements.Add(new Label() { Text = "first header Text" });
+            firstHeader.ChildElements.Add(fph);
+            doc.Headers.Add(firstHeader);
+
+            // Footer
+            var footer = new Footer();
+            footer.Type = HeaderFooterValues.Default;
+            var pf = new Paragraph();
+            pf.ChildElements.Add(new Label() { Text = "Footer Text" });
+            pf.ChildElements.Add(new Label() { IsPageNumber = true });
+            footer.ChildElements.Add(pf);
+            doc.Footers.Add(footer);
+
+            return doc;
+        }
+
+        /// <summary>
+        /// Generate the context for the generated template
+        /// </summary>
+        /// <returns></returns>
+        private static ContextModel GetContext()
+        {
+            ContextModel context = new ContextModel();
+            context.AddItem("#KeyTest1#", new StringModel("Key 1"));
+            context.AddItem("#KeyTest2#", new StringModel("Key 2"));
+
+            ContextModel row1 = new ContextModel();
+            row1.AddItem("#Cell1#", new StringModel("Col 1 Row 1"));
+            row1.AddItem("#Cell2#", new StringModel("Col 2 Row 1"));
+            ContextModel row2 = new ContextModel();
+            row2.AddItem("#Cell1#", new StringModel("Col 2 Row 1"));
+            row2.AddItem("#Cell2#", new StringModel("Col 2 Row 2"));
+            context.AddItem("#Datasource#", new DataSourceModel()
+            {
+                Items = new List<ContextModel>()
+                    {
+                        row1, row2
+                    }
+            });
+
+            return context;
+        }
+
+        private static void OldProgram()
         {
             var resourceName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "App_Data", "Global.docx");
 

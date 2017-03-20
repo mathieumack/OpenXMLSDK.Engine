@@ -46,6 +46,10 @@
       <HintPath>..\..\packages\MvvmCross.Platform.4.2.2\lib\net45\MvvmCross.Platform.Wpf.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -76,11 +80,20 @@
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Extensions\JustificationValuesExtensions.cs">
       <Link>Word\Extensions\JustificationValuesExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Extensions\PageOrientationValuesExtensions.cs">
+      <Link>Word\Extensions\PageOrientationValuesExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Extensions\ShadingPatternValuesExtensions.cs">
       <Link>Word\Extensions\ShadingPatternValuesExtensions.cs</Link>
     </Compile>
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Extensions\SpaceProcessingModeValuesExtensions.cs">
       <Link>Word\Extensions\SpaceProcessingModeValuesExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Extensions\StyleValuesExtensions.cs">
+      <Link>Word\Extensions\StyleValuesExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Extensions\TableVerticalAlignementValuesExtensions.cs">
+      <Link>Word\Extensions\TableVerticalAlignementValuesExtensions.cs</Link>
     </Compile>
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Extensions\TableWidthUnitValuesExtensions.cs">
       <Link>Word\Extensions\TableWidthUnitValuesExtensions.cs</Link>
@@ -129,6 +142,45 @@
     </Compile>
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\PlatformText.cs">
       <Link>Word\PlatformText.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\BaseElementExtensions.cs">
+      <Link>Word\ReportEngine\BaseElementExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\BorderExtensions.cs">
+      <Link>Word\ReportEngine\BorderExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\CellExtensions.cs">
+      <Link>Word\ReportEngine\CellExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\DocumentExtensions.cs">
+      <Link>Word\ReportEngine\DocumentExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\FooterExtensions.cs">
+      <Link>Word\ReportEngine\FooterExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\HeaderExtensions.cs">
+      <Link>Word\ReportEngine\HeaderExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\ImageExtensions.cs">
+      <Link>Word\ReportEngine\ImageExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\LabelExtension.cs">
+      <Link>Word\ReportEngine\LabelExtension.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\PageExtensions.cs">
+      <Link>Word\ReportEngine\PageExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\ParagraphExtensions.cs">
+      <Link>Word\ReportEngine\ParagraphExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\RowExtensions.cs">
+      <Link>Word\ReportEngine\RowExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\StyleExtensions.cs">
+      <Link>Word\ReportEngine\StyleExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\TableExtensions.cs">
+      <Link>Word\ReportEngine\TableExtensions.cs</Link>
     </Compile>
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Tables\PlatformTable.cs">
       <Link>Word\Tables\PlatformTable.cs</Link>
