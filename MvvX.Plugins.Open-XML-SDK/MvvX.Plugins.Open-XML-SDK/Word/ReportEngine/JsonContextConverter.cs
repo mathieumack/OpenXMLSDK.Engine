@@ -47,9 +47,9 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine
             // Load JObject from stream 
             JObject jObject = JObject.Load(reader);
 
-            if (jObject["Type"] != null)
+            if (jObject["TypeName"] != null)
             {
-                var typeName = jObject["Type"].Value<string>();
+                var typeName = jObject["TypeName"].Value<string>();
                 if (managedTypes.Any(e => e.Name == typeName))
                     return jObject.ToObject(managedTypes.FirstOrDefault(e => e.Name == typeName), serializer);
 

@@ -11,13 +11,13 @@
                             "Text": "test dans header",
                             "Show": true,
                             "ChildElements": [],
-                            "Type": "Label"
+                            "TypeName": "Label"
                         }
                     ],
-                    "Type": "Paragraph"
+                    "TypeName": "Paragraph"
                 }
             ],
-            "Type": "Header"
+            "TypeName": "Header"
         },
         "Footer": {
             "Show": true,
@@ -30,13 +30,13 @@
                             "Text": "ceci est un footer",
                             "Show": true,
                             "ChildElements": [],
-                            "Type": "Label"
+                            "TypeName": "Label"
                         }
                     ],
-                    "Type": "Paragraph"
+                    "TypeName": "Paragraph"
                 }
             ],
-            "Type": "Footer"
+            "TypeName": "Footer"
         },
         "Pages": [
             {
@@ -52,7 +52,7 @@
                                 "ChildElements": [],
                                 "FontName": "Arial",
                                 "FontSize": "30",
-                                "Type": "Label"
+                                "TypeName": "Label"
                             },
                             {
                                 "Text": "#KeyTest1#",
@@ -61,16 +61,16 @@
                                 "FontSize": "40",
                                 "FontColor": "FF0000",
                                 "Shading": "0000FF",
-                                "Type": "Label"
+                                "TypeName": "Label"
                             },
                             {
                                 "Text": "#KeyTest2#",
                                 "Show": false,
                                 "ChildElements": [],
-                                "Type": "Label"
+                                "TypeName": "Label"
                             }
                         ],
-                        "Type": "Paragraph"
+                        "TypeName": "Paragraph"
                     },
                     {
                         "Justification": 0,
@@ -81,17 +81,17 @@
                                 "Show": true,
                                 "ChildElements": [],
                                 "FontSize": "20",
-                                "Type": "Label"
+                                "TypeName": "Label"
                             },
                             {
                                 "Text": "texte2 paragraph2",
                                 "Show": true,
                                 "ChildElements": [],
-                                "Type": "Label"
+                                "TypeName": "Label"
                             }
                         ],
                         "Shading": "FF0000",
-                        "Type": "Paragraph"
+                        "TypeName": "Paragraph"
                     },
                     {
                         "Rows": [
@@ -108,10 +108,10 @@
                                                 "Text": "cellule1",
                                                 "Show": true,
                                                 "ChildElements": [],
-                                                "Type": "Label"
+                                                "TypeName": "Label"
                                             }
                                         ],
-                                        "Type": "Cell"
+                                        "TypeName": "Cell"
                                     },
                                     {
                                         "Borders": {
@@ -135,15 +135,15 @@
                                                 "Text": "cellule2",
                                                 "Show": true,
                                                 "ChildElements": [],
-                                                "Type": "Label"
+                                                "TypeName": "Label"
                                             }
                                         ],
-                                        "Type": "Cell"
+                                        "TypeName": "Cell"
                                     }
                                 ],
                                 "Show": true,
                                 "ChildElements": [],
-                                "Type": "Row"
+                                "TypeName": "Row"
                             },
                             {
                                 "Cells": [
@@ -153,7 +153,7 @@
                                         "FusionChild": true,
                                         "Show": true,
                                         "ChildElements": [],
-                                        "Type": "Cell"
+                                        "TypeName": "Cell"
                                     },
                                     {
                                         "ColSpan": 0,
@@ -165,15 +165,15 @@
                                                 "Text": "cellule4",
                                                 "Show": true,
                                                 "ChildElements": [],
-                                                "Type": "Label"
+                                                "TypeName": "Label"
                                             }
                                         ],
-                                        "Type": "Cell"
+                                        "TypeName": "Cell"
                                     }
                                 ],
                                 "Show": true,
                                 "ChildElements": [],
-                                "Type": "Row"
+                                "TypeName": "Row"
                             }
                         ],
                         "HeaderRow": {
@@ -188,11 +188,11 @@
                                             "Text": "header1",
                                             "Show": true,
                                             "ChildElements": [],
-                                            "Type": "Label"
+                                            "TypeName": "Label"
                                         }
                                     ],
                                     "Shading": "00FFFF",
-                                    "Type": "Cell"
+                                    "TypeName": "Cell"
                                 },
                                 {
                                     "ColSpan": 0,
@@ -206,15 +206,15 @@
                                             "Text": "header2",
                                             "Show": true,
                                             "ChildElements": [],
-                                            "Type": "Label"
+                                            "TypeName": "Label"
                                         }
                                     ],
-                                    "Type": "Cell"
+                                    "TypeName": "Cell"
                                 }
                             ],
                             "Show": true,
                             "ChildElements": [],
-                            "Type": "Row"
+                            "TypeName": "Row"
                         },
                         "Borders": {
                             "BorderPositions": 34,
@@ -238,13 +238,13 @@
                         },
                         "Show": true,
                         "ChildElements": [],
-                        "Type": "Table"
+                        "TypeName": "Table"
                     },
                     {
                         "Justification": 0,
                         "Show": true,
                         "ChildElements": [],
-                        "Type": "Paragraph"
+                        "TypeName": "Paragraph"
                     },
                     {
                         "Rows": [
@@ -261,10 +261,10 @@
                                                 "Text": "Blop",
                                                 "Show": true,
                                                 "ChildElements": [],
-                                                "Type": "Label"
+                                                "TypeName": "Label"
                                             }
                                         ],
-                                        "Type": "Cell"
+                                        "TypeName": "Cell"
                                     },
                                     {
                                         "ColSpan": 0,
@@ -287,10 +287,10 @@
                                                                     "Text": "#Text#",
                                                                     "Show": true,
                                                                     "ChildElements": [],
-                                                                    "Type": "Label"
+                                                                    "TypeName": "Label"
                                                                 }
                                                             ],
-                                                            "Type": "Cell"
+                                                            "TypeName": "Cell"
                                                         },
                                                         {
                                                             "ColSpan": 0,
@@ -303,16 +303,16 @@
                                                                     "Text": "#Text2#",
                                                                     "Show": true,
                                                                     "ChildElements": [],
-                                                                    "Type": "Label"
+                                                                    "TypeName": "Label"
                                                                 }
                                                             ],
-                                                            "Type": "Cell"
+                                                            "TypeName": "Cell"
                                                         }
                                                     ],
                                                     "Show": true,
                                                     "ChildElements": [],
                                                     "Shading": "333333",
-                                                    "Type": "Row"
+                                                    "TypeName": "Row"
                                                 },
                                                 "DataSourceKey": "#Datasource#",
                                                 "TableWidth": {
@@ -321,15 +321,15 @@
                                                 },
                                                 "Show": true,
                                                 "ChildElements": [],
-                                                "Type": "Table"
+                                                "TypeName": "Table"
                                             }
                                         ],
-                                        "Type": "Cell"
+                                        "TypeName": "Cell"
                                     }
                                 ],
                                 "Show": true,
                                 "ChildElements": [],
-                                "Type": "Row"
+                                "TypeName": "Row"
                             },
                             {
                                 "Cells": [
@@ -343,15 +343,15 @@
                                                 "Text": "toto",
                                                 "Show": true,
                                                 "ChildElements": [],
-                                                "Type": "Label"
+                                                "TypeName": "Label"
                                             }
                                         ],
-                                        "Type": "Cell"
+                                        "TypeName": "Cell"
                                     }
                                 ],
                                 "Show": true,
                                 "ChildElements": [],
-                                "Type": "Row"
+                                "TypeName": "Row"
                             }
                         ],
                         "TableWidth": {
@@ -360,10 +360,10 @@
                         },
                         "Show": true,
                         "ChildElements": [],
-                        "Type": "Table"
+                        "TypeName": "Table"
                     }
                 ],
-                "Type": "Page"
+                "TypeName": "Page"
             },
             {
                 "Show": true,
@@ -378,10 +378,10 @@
                                 "Show": true,
                                 "ChildElements": [],
                                 "FontName": "Arial",
-                                "Type": "Label"
+                                "TypeName": "Label"
                             }
                         ],
-                        "Type": "Paragraph"
+                        "TypeName": "Paragraph"
                     },
                     {
                         "Justification": 5,
@@ -394,10 +394,10 @@
                                 "Text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse urna augue, convallis eu enim vitae, maximus ultrices nulla. Sed egestas volutpat luctus. Maecenas sodales erat eu elit auctor, eu mattis neque maximus. Duis ac risus quis sem bibendum efficitur. Vivamus justo augue, molestie quis orci non, maximus imperdiet justo. Donec condimentum rhoncus est, ut varius lorem efficitur sed. Donec accumsan sit amet nisl vel ornare. Duis aliquet urna eu mauris porttitor facilisis. ",
                                 "Show": true,
                                 "ChildElements": [],
-                                "Type": "Label"
+                                "TypeName": "Label"
                             }
                         ],
-                        "Type": "Paragraph"
+                        "TypeName": "Paragraph"
                     },
                     {
                         "Justification": 0,
@@ -420,13 +420,13 @@
                                 "Text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse urna augue, convallis eu enim vitae, maximus ultrices nulla. Sed egestas volutpat luctus. Maecenas sodales erat eu elit auctor, eu mattis neque maximus. Duis ac risus quis sem bibendum efficitur. Vivamus justo augue, molestie quis orci non, maximus imperdiet justo. Donec condimentum rhoncus est, ut varius lorem efficitur sed. Donec accumsan sit amet nisl vel ornare. Duis aliquet urna eu mauris porttitor facilisis. ",
                                 "Show": true,
                                 "ChildElements": [],
-                                "Type": "Label"
+                                "TypeName": "Label"
                             }
                         ],
-                        "Type": "Paragraph"
+                        "TypeName": "Paragraph"
                     }
                 ],
-                "Type": "Page"
+                "TypeName": "Page"
             },
             {
                 "Show": true,
@@ -439,7 +439,7 @@
                                 "Text": "test héritage",
                                 "Show": true,
                                 "ChildElements": [],
-                                "Type": "Label"
+                                "TypeName": "Label"
                             },
                             {
                                 "Justification": 0,
@@ -449,19 +449,19 @@
                                         "Text": "blabla",
                                         "Show": true,
                                         "ChildElements": [],
-                                        "Type": "Label"
+                                        "TypeName": "Label"
                                     }
                                 ],
                                 "FontSize": "16",
-                                "Type": "Paragraph"
+                                "TypeName": "Paragraph"
                             }
                         ],
                         "FontSize": "26",
                         "FontColor": "FF0000",
-                        "Type": "Paragraph"
+                        "TypeName": "Paragraph"
                     }
                 ],
-                "Type": "Page"
+                "TypeName": "Page"
             }
         ],
         "Styles": [
@@ -482,17 +482,17 @@
         ],
         "Show": true,
         "ChildElements": [],
-        "Type": "Document"
+        "TypeName": "Document"
     },
     "ContextModel":{
         "Data": {
             "#KeyTest1#": {
                 "Value": "la la la",
-                "Type": "StringModel"
+                "TypeName": "StringModel"
             },
             "#KeyTest2#": {
                 "Value": "toto",
-                "Type": "StringModel"
+                "TypeName": "StringModel"
             },
             "#Datasource#": {
                 "Items": [
@@ -500,11 +500,11 @@
                         "Data": {
                             "#Text#": {
                                 "Value": "ligne 1 ddddddddddddddddddddd",
-                                "Type": "StringModel"
+                                "TypeName": "StringModel"
                             },
                             "#Text2#": {
                                 "Value": "ligne 1 xxx",
-                                "Type": "StringModel"
+                                "TypeName": "StringModel"
                             }
                         }
                     },
@@ -512,16 +512,16 @@
                         "Data": {
                             "#Text#": {
                                 "Value": "ligne 2",
-                                "Type": "StringModel"
+                                "TypeName": "StringModel"
                             },
                             "#Text2#": {
                                 "Value": "ligne 2 xxx",
-                                "Type": "StringModel"
+                                "TypeName": "StringModel"
                             }
                         }
                     }
                 ],
-                "Type": "DataSourceModel"
+                "TypeName": "DataSourceModel"
             }
         }
     }
