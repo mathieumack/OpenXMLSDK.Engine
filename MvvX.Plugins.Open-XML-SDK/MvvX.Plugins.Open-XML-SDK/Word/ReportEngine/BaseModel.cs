@@ -5,11 +5,18 @@
     /// </summary>
     public abstract class BaseModel
     {
-        public string Type { get; }
+        /// <summary>
+        /// Type name of class : used for json serialization
+        /// </summary>
+        public string TypeName { get; }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="type"></param>
         public BaseModel(string type)
         {
-            Type = type;
+            TypeName = type;
         }
     }
 }
