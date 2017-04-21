@@ -19,6 +19,15 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
     {
         static void Main()
         {
+            //ReportEngineTest();
+
+            // fin test report engine
+
+            OldProgram();
+        }
+
+        private static void ReportEngineTest()
+        {
             Console.WriteLine("Enter the path of your Json file, press enter for an example");
             var filePath = Console.ReadLine();
             var documentName = string.Empty;
@@ -30,10 +39,6 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
 
             Console.WriteLine("Generation in progress");
             ReportEngine(filePath, documentName);
-
-            // fin test report engine
-
-            //OldProgram()
         }
 
         private static void ReportEngine(string filePath, string documentName)
@@ -91,7 +96,9 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             doc.Styles.Add(new Style() { StyleId = "Title" });
             doc.Styles.Add(new Style() { StyleId = "Yellow", FontColor = "FFFF00", FontSize = "40" });
             var page1 = new Page();
+            page1.Margin = new Word.ReportEngine.Models.Attributes.SpacingModel() { Top = 845, Bottom = 1418, Left = 567, Right = 567, Header = 709, Footer = 709 };
             var page2 = new Page();
+            page2.Margin = new Word.ReportEngine.Models.Attributes.SpacingModel() { Top = 1418, Left = 845, Header = 709, Footer = 709 };
             doc.Pages.Add(page1);
             doc.Pages.Add(page2);
             var paragraph = new Paragraph();
@@ -120,7 +127,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                                 Justification = JustificationValues.Center,
                                 ChildElements = new List<BaseElement>()
                                 {
-                                    new Label() {Text = "cellule1" }
+                                    new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "cellule1" } } }
                                 },
                                 Fusion = true
                             },
@@ -685,6 +692,10 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
 
                 if (tables.Count > 0)
                     word.SetParagraphsOnBookmark("Insert_Documents", tables);
+
+                IRun run = new PlatformRun();
+                run.Append(word.CreateParagraphForRun(word.CreateRunForText("Paragraph in the shell")));
+                word.SetOnBookmark("ParagraphInCell", run);
 
                 word.SaveDoc();
                 word.CloseDoc();

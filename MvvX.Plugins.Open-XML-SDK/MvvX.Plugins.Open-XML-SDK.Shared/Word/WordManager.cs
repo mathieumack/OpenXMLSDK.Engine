@@ -343,10 +343,12 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
             if (bookmarkElement != null)
             {
                 var paragraph = bookmarkElement.Ancestors<IParagraph>().LastOrDefault();
+                var firstParagraph = bookmarkElement.Ancestors<IParagraph>().LastOrDefault();
                 if (paragraph != null)
                 {
                     foreach (var item in paragraphs)
                         paragraph = paragraph.InsertAfterSelf(item);
+                    firstParagraph.Remove();
                 }
             }
         }

@@ -32,5 +32,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Word
         void Append(params IOpenXmlElement[] childs);
 
         void Append(IEnumerable<IOpenXmlElement> childs);
+
+        void Remove();
     }
 }

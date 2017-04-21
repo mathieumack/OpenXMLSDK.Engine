@@ -4,24 +4,24 @@ using System.Collections.Generic;
 using System.Linq;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Wordprocessing;
-using MvvX.Plugins.OpenXMLSDK.Word.Paragraphs;
-using MvvX.Plugins.OpenXMLSDK.Word.Tables;
-using MvvX.Plugins.OpenXMLSDK.Word;
+using MvvX.Plugins.OpenXMLSDK.Platform.Word;
 using MvvX.Plugins.OpenXMLSDK.Platform.Word.Paragraphs;
 using MvvX.Plugins.OpenXMLSDK.Platform.Word.Tables;
-using MvvX.Plugins.OpenXMLSDK.Platform.Word;
+using MvvX.Plugins.OpenXMLSDK.Word;
+using MvvX.Plugins.OpenXMLSDK.Word.Paragraphs;
+using MvvX.Plugins.OpenXMLSDK.Word.Tables;
 
 namespace MvvX.Plugins.OpenXMLSDK.Platform
 {
     public class PlatformOpenXmlElement : IOpenXmlElement
     {
         private readonly OpenXmlElement openXmlElement;
-        
+
         public PlatformOpenXmlElement(OpenXmlElement openXmlElement)
         {
             this.openXmlElement = openXmlElement;
         }
-        
+
         public object ContentItem
         {
             get
@@ -32,7 +32,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform
 
         public IEnumerable<T> Ancestors<T>() where T : IOpenXmlElement
         {
-            if(typeof(T) == typeof(IParagraph))
+            if (typeof(T) == typeof(IParagraph))
                 return openXmlElement.Ancestors<Paragraph>().Select(e => new PlatformParagraph(e)).Cast<T>();
             else if (typeof(T) == typeof(IText))
                 return openXmlElement.Ancestors<Text>().Select(e => new PlatformText(e)).Cast<T>();
@@ -159,6 +159,14 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform
             openXmlElement.RemoveChild(oldChild.ContentItem as OpenXmlElement);
             // TODO : Check if the result is the oldChild item.
             return oldChild;
+        }
+
+        /// <summary>
+        /// Remove element
+        /// </summary>
+        public void Remove()
+        {
+            openXmlElement.Remove();
         }
 
         #region protected methods

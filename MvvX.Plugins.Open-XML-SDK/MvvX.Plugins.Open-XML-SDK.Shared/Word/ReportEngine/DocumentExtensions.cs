@@ -26,11 +26,12 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
             {
                 bool addPageBreak = (document.Pages.IndexOf(page) < document.Pages.Count - 1);
 
+                // doc inherit margin from page
+                if (document.Margin == null && page.Margin != null)
+                    document.Margin = page.Margin;
                 // page inherit margin from doc
-                if (document.Margin != null && page.Margin == null)
-                {
+                else if (document.Margin != null && page.Margin == null)
                     page.Margin = document.Margin;
-                }
 
                 // render page
                 page.Render(wdDoc.MainDocumentPart.Document.Body, context, wdDoc.MainDocumentPart, addPageBreak);
