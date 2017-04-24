@@ -697,6 +697,12 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                 run.Append(word.CreateParagraphForRun(word.CreateRunForText("Paragraph in the shell")));
                 word.SetOnBookmark("ParagraphInCell", run);
 
+                IList<IParagraph> paragraphs = new List<IParagraph>();
+                paragraphs.Add(word.CreateParagraphForRun(word.CreateRunForText("Text 1")));
+                paragraphs.Add(word.CreateParagraphForRun(word.CreateRunForText("Line 2")));
+                paragraphs.Add(word.CreateParagraphForRun(word.CreateRunForText("Working ?")));
+                word.SetParagraphsOnBookmark("ParagraphInCell2", paragraphs);
+
                 word.SaveDoc();
                 word.CloseDoc();
             }

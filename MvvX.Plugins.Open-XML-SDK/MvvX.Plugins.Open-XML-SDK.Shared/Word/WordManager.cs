@@ -348,7 +348,9 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
                 {
                     foreach (var item in paragraphs)
                         paragraph = paragraph.InsertAfterSelf(item);
-                    firstParagraph.Remove();
+
+                    if (paragraphs.Any())
+                        firstParagraph.Remove();
                 }
             }
         }
