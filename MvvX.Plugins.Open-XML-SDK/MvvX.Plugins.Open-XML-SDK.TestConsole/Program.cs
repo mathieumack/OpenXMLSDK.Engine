@@ -650,7 +650,8 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                                                 },
                                                 TableCellBorders = new TableCellBordersModel() {
                                                     TopBorder = new TableBorderModel() { BorderValue = BorderValues.Nil },
-                                                    BottomBorder = borderBottomIsOK }
+                                                    BottomBorder = borderBottomIsOK },
+                                                TableVerticalAlignementValues = TableVerticalAlignmentValues.Center
                         }),
                         word.CreateTableMergeCell(word.CreateRun(), new TableCellPropertiesModel() {
                                                 Fusion = true,
@@ -690,8 +691,55 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                 // Lignes du deuxième tableau pour les constats unchecked
                 //lines = new List<TableRow>();
 
-                if (tables.Count > 0)
-                    word.SetParagraphsOnBookmark("Insert_Documents", tables);
+                word.SetParagraphsOnBookmark("Insert_Documents", tables);
+
+                IList<IParagraph> cell = new List<IParagraph>();
+                IParagraph productPathParagraph = word.CreateParagraphForRun(word.CreateRun());
+
+                // add asset or location name
+                productPathParagraph.Append(word.CreateRunForText("Txt 1", new RunPropertiesModel()
+                {
+                    FontSize = "22",
+                    Color = "FF0000",
+                    RunFonts = new RunFontsModel()
+                    {
+                        Ascii = "Arial Rounded Light Roman"
+                    }
+                }));
+
+                productPathParagraph.Append(word.CreateRunForText(" / ", new RunPropertiesModel()
+                {
+                    FontSize = "22",
+                    Color = "0000FF",
+                    RunFonts = new RunFontsModel()
+                    {
+                        Ascii = "Arial Rounded Light Roman"
+                    }
+                }));
+
+                productPathParagraph.Append(word.CreateRunForText(" Text 2 ", new RunPropertiesModel()
+                {
+                    FontSize = "22",
+                    Color = "00FF00",
+                    RunFonts = new RunFontsModel()
+                    {
+                        Ascii = "Arial Rounded Light Roman"
+                    }
+                }));
+                cell.Add(productPathParagraph);
+
+                ITableCell tableCells = word.CreateTableCell(cell, new TableCellPropertiesModel()
+                {
+                    TableVerticalAlignementValues = TableVerticalAlignmentValues.Center,
+                    TableCellWidth = new TableCellWidthModel()
+                    {
+                        Width = "800",
+                        Type = TableWidthUnitValues.Pct,
+                    }
+                });
+
+                ITable table = word.CreateTable(new List<ITableRow>() { word.CreateTableRow(new List<ITableCell>() { tableCells }) });
+                word.SetOnBookmark("Table", word.CreateRunForTable(table));
 
                 IRun run = new PlatformRun();
                 run.Append(word.CreateParagraphForRun(word.CreateRunForText("Paragraph in the shell")));
