@@ -650,7 +650,8 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                                                 },
                                                 TableCellBorders = new TableCellBordersModel() {
                                                     TopBorder = new TableBorderModel() { BorderValue = BorderValues.Nil },
-                                                    BottomBorder = borderBottomIsOK }
+                                                    BottomBorder = borderBottomIsOK },
+                                                TableVerticalAlignementValues = TableVerticalAlignmentValues.Center
                         }),
                         word.CreateTableMergeCell(word.CreateRun(), new TableCellPropertiesModel() {
                                                 Fusion = true,
@@ -690,8 +691,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                 // Lignes du deuxième tableau pour les constats unchecked
                 //lines = new List<TableRow>();
 
-                if (tables.Count > 0)
-                    word.SetParagraphsOnBookmark("Insert_Documents", tables);
+                word.SetParagraphsOnBookmark("Insert_Documents", tables);
 
                 IRun run = new PlatformRun();
                 run.Append(word.CreateParagraphForRun(word.CreateRunForText("Paragraph in the shell")));

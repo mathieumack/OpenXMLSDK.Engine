@@ -940,7 +940,10 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
 
             var tableCellProperties = platformCellTable.Properties.ContentItem as TableCellProperties;
 
-            //tableCellProperties.Append(new TableCellVerticalAlignment { Val = cellModel.TableVerticalAlignementValues.ToOOxml() });
+            tableCellProperties.Append(new TableCellVerticalAlignment
+            {
+                Val = (DocumentFormat.OpenXml.Wordprocessing.TableVerticalAlignmentValues)(int)cellModel.TableVerticalAlignementValues
+            });
 
             // Modification de la rotation du texte dans la cellule
             if (cellModel.TextDirectionValues.HasValue)
