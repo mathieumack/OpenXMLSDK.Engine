@@ -366,6 +366,29 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
             SetOnBookmark(bookmark, new PlatformRun(run));
         }
 
+        public void SetTextsOnBookmark(string bookmark, List<string> texts, bool formated = true)
+        {
+            if (string.IsNullOrWhiteSpace(bookmark))
+                throw new ArgumentNullException("bookmark must be not null or white spaces");
+            if (wdDoc == null)
+                throw new InvalidOperationException("Document not loaded");
+
+            var run = new Run();
+
+            for (int i = 0; i < texts.Count; i++)
+            {
+                run.Append(new Text() { Text = texts[i] });
+
+                if (i < texts.Count - 1 && formated)
+                    run.Append(new Break());
+                else if (!formated)
+                    run.Append(new Text() { Text = " ", Space = DocumentFormat.OpenXml.SpaceProcessingModeValues.Preserve });
+            }
+
+
+            SetOnBookmark(bookmark, new PlatformRun(run));
+        }
+
         /// <summary>
         /// Insert an html content on bookmark
         /// </summary>
