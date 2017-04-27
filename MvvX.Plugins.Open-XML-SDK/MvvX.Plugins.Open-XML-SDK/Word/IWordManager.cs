@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using MvvX.Plugins.OpenXMLSDK.Word.Bookmarks;
-using MvvX.Plugins.OpenXMLSDK.Word.Paragraphs;
-using MvvX.Plugins.OpenXMLSDK.Word.Tables;
-using MvvX.Plugins.OpenXMLSDK.Word.Tables.Models;
-using MvvX.Plugins.OpenXMLSDK.Word.Models;
 using MvvX.Plugins.OpenXMLSDK.Drawing.Pictures.Model;
+using MvvX.Plugins.OpenXMLSDK.Word.Bookmarks;
+using MvvX.Plugins.OpenXMLSDK.Word.Models;
+using MvvX.Plugins.OpenXMLSDK.Word.Paragraphs;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models;
+using MvvX.Plugins.OpenXMLSDK.Word.Tables;
+using MvvX.Plugins.OpenXMLSDK.Word.Tables.Models;
 
 namespace MvvX.Plugins.OpenXMLSDK.Word
 {
@@ -27,6 +27,14 @@ namespace MvvX.Plugins.OpenXMLSDK.Word
         /// <param name="bookmark">Bookmark name</param>
         /// <param name="text"> Text to insert</param>
         void SetTextOnBookmark(string bookmark, string text);
+
+        /// <summary>
+        /// Insert text to bookmark
+        /// </summary>
+        /// <param name="bookmark">Bookmark name</param>
+        /// <param name="text"> Text to insert</param>
+        /// <param name="formated">Indicate if the texts must be separated with a return</param>
+        void SetTextsOnBookmark(string bookmark, List<string> text, bool formated);
 
         /// <summary>
         /// Insert element in bookmark
@@ -169,7 +177,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Word
         #endregion
 
         #region Texts
-        
+
         IParagraph CreateParagraphForRun(IRun run, ParagraphPropertiesModel ppm = null);
 
         IRun CreateRunForTable(ITable run);
@@ -264,7 +272,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Word
         /// <param name="template">document template</param>
         /// <param name="context">data used to fill document</param>
         /// <returns></returns>
-        byte[] GenerateReport(Document template,  ContextModel context);
+        byte[] GenerateReport(Document template, ContextModel context);
         #endregion
     }
 }

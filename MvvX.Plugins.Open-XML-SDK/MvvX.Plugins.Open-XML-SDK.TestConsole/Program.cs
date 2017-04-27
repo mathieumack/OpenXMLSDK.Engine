@@ -751,6 +751,12 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                 paragraphs.Add(word.CreateParagraphForRun(word.CreateRunForText("Working ?")));
                 word.SetParagraphsOnBookmark("ParagraphInCell2", paragraphs);
 
+                List<string> texts = new List<string>();
+                texts.Add("first line");
+                texts.Add("second line");
+                texts.Add("third line");
+                word.SetTextsOnBookmark("FormatedText", texts, true);
+                word.SetTextsOnBookmark("UnFormatedText", texts, false);
                 word.SaveDoc();
                 word.CloseDoc();
             }
