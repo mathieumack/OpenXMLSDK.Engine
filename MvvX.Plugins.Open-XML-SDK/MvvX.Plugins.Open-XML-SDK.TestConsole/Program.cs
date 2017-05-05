@@ -735,6 +735,10 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                     {
                         Width = "800",
                         Type = TableWidthUnitValues.Pct,
+                    },
+                    TableCellMargin = new TableCellMarginModel()
+                    {
+                        TopMargin = new TableWidthModel() { Width = "1500", Type = TableWidthUnitValues.Dxa }
                     }
                 });
 

@@ -194,6 +194,12 @@
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Tables\PlatformTableCellBorders.cs">
       <Link>Word\Tables\PlatformTableCellBorders.cs</Link>
     </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Tables\PlatformTableCellMargin.cs">
+      <Link>Word\Tables\PlatformTableCellMargin.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Tables\PlatformTableCellMarginWidth.cs">
+      <Link>Word\Tables\PlatformTableCellMarginWidth.cs</Link>
+    </Compile>
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Tables\PlatformTableCellProperties.cs">
       <Link>Word\Tables\PlatformTableCellProperties.cs</Link>
     </Compile>

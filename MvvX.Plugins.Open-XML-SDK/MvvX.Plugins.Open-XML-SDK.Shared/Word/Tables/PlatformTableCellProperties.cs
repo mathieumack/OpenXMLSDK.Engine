@@ -1,4 +1,5 @@
-﻿using DocumentFormat.OpenXml.Wordprocessing;
+﻿using System;
+using DocumentFormat.OpenXml.Wordprocessing;
 using MvvX.Plugins.OpenXMLSDK.Word;
 using MvvX.Plugins.OpenXMLSDK.Word.Tables;
 
@@ -87,6 +88,18 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.Tables
                         xmlElement.NoWrap = new NoWrap();
                     xmlElement.NoWrap.Val = (DocumentFormat.OpenXml.Wordprocessing.OnOffOnlyValues)(int)value;
                 }
+            }
+        }
+
+        private ITableCellMargin tableCellMargin;
+        public ITableCellMargin TableCellMargin
+        {
+            get
+            {
+                if (tableCellMargin == null)
+                    tableCellMargin = PlatformTableCellMargin.New(xmlElement);
+
+                return tableCellMargin;
             }
         }
 

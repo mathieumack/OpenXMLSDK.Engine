@@ -5,7 +5,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.Tables.Models
     public class TableCellPropertiesModel
     {
         public TableCellWidthModel TableCellWidth { get; set; }
-        
+
         public ShadingModel Shading { get; set; }
 
         /// <summary>
@@ -34,6 +34,8 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.Tables.Models
         public bool ParagraphSolidarity { get; set; }
 
         public TableCellBordersModel TableCellBorders { get; set; }
+
+        public TableCellMarginModel TableCellMargin { get; set; }
 
         public TableCellPropertiesModel()
         {

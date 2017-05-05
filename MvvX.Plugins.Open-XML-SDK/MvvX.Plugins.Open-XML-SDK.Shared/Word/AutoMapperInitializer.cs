@@ -45,7 +45,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
                 });
 
 
-                cfg.CreateMap<TableRowHeightModel, ITableRowHeight > ();
+                cfg.CreateMap<TableRowHeightModel, ITableRowHeight>();
                 cfg.CreateMap<TableRowPropertiesModel, ITableRowProperties>()
                 .AfterMap((source, dest) =>
                 {
@@ -55,6 +55,15 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
                 cfg.CreateMap<TableStyleModel, ITableStyle>();
                 cfg.CreateMap<GridSpanModel, IGridSpan>();
                 cfg.CreateMap<ShadingModel, IShading>();
+                cfg.CreateMap<TableWidthModel, ITableWidth>();
+                cfg.CreateMap<TableCellMarginModel, ITableCellMargin>()
+                .AfterMap((source, dest) =>
+                {
+                    AutoMapper.Mapper.Map(source.BottomMargin, dest.BottomMargin);
+                    AutoMapper.Mapper.Map(source.TopMargin, dest.TopMargin);
+                    AutoMapper.Mapper.Map(source.LeftMargin, dest.LeftMargin);
+                    AutoMapper.Mapper.Map(source.RightMargin, dest.RightMargin);
+                });
 
                 cfg.CreateMap<TableCellPropertiesModel, ITableCellProperties>()
                 .AfterMap((source, dest) =>
@@ -63,6 +72,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
                     AutoMapper.Mapper.Map(source.Gridspan, dest.GridSpan);
                     AutoMapper.Mapper.Map(source.TableCellWidth, dest.TableCellWidth);
                     AutoMapper.Mapper.Map(source.Shading, dest.Shading);
+                    AutoMapper.Mapper.Map(source.TableCellMargin, dest.TableCellMargin);
                 });
 
                 cfg.CreateMap<TablePropertiesModel, ITableProperties>()
