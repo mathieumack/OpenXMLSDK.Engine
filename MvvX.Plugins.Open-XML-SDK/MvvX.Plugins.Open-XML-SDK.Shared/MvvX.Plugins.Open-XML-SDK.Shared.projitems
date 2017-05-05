@@ -51,6 +51,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Word\ReportEngine\TableExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\Tables\PlatformTableBorders.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\Tables\PlatformTableCellBorders.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Word\Tables\PlatformTableCellMargin.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Word\Tables\PlatformTableCellMarginWidth.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\Tables\PlatformTableLayout.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\Tables\PlatformTableRowHeight.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\Tables\PlatformTableRowProperties.cs" />
