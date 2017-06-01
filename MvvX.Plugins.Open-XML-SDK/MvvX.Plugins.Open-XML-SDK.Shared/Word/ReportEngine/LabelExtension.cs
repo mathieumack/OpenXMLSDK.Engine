@@ -13,7 +13,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
             var run = new DocumentFormat.OpenXml.Wordprocessing.Run(new DocumentFormat.OpenXml.Wordprocessing.Text(label.Text));
             var runProperty = new DocumentFormat.OpenXml.Wordprocessing.RunProperties();
             if (!string.IsNullOrWhiteSpace(label.FontName))
-                runProperty.RunFonts = new DocumentFormat.OpenXml.Wordprocessing.RunFonts() { Ascii = label.FontName };
+                runProperty.RunFonts = new DocumentFormat.OpenXml.Wordprocessing.RunFonts() { Ascii = label.FontName, HighAnsi = label.FontName, EastAsia = label.FontName, ComplexScript = label.FontName };
             if (!string.IsNullOrWhiteSpace(label.FontSize))
                 runProperty.FontSize = new DocumentFormat.OpenXml.Wordprocessing.FontSize() { Val = label.FontSize };
             if (!string.IsNullOrWhiteSpace(label.FontSize))
