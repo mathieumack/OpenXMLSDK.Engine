@@ -21,6 +21,11 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
             }
             wordRow.AppendChild(wordRowProperties);
 
+            if (row.RowHeight.HasValue)
+            {
+                wordRowProperties.AppendChild(new TableRowHeight() { Val = UInt32Value.FromUInt32((uint)row.RowHeight.Value)});
+            }
+
             foreach (var cell in row.Cells)
             {
                 cell.InheritFromParent(row);
