@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using MvvX.Plugins.OpenXMLSDK.Word.Tables.Models;
+using System.Collections.Generic;
 
 namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models
 {
@@ -8,6 +9,12 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models
         /// Cells of the row
         /// </summary>
         public IList<Cell> Cells { get; set; } = new List<Cell>();
+
+        /// <summary>
+        /// Table Width
+        /// Row height
+        /// </summary>
+        public int? RowHeight { get; set; }
 
         /// <summary>
         /// Constructor

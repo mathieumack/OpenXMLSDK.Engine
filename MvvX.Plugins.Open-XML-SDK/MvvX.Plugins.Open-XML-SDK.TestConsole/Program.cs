@@ -19,11 +19,11 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
     {
         static void Main()
         {
-            //ReportEngineTest();
+            ReportEngineTest();
 
             // fin test report engine
 
-            OldProgram();
+            //OldProgram();
         }
 
         private static void ReportEngineTest()
