@@ -19,11 +19,11 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
     {
         static void Main()
         {
-            //ReportEngineTest();
+            ReportEngineTest();
 
             // fin test report engine
 
-            OldProgram();
+            //OldProgram();
         }
 
         private static void ReportEngineTest()
@@ -102,7 +102,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             doc.Pages.Add(page1);
             doc.Pages.Add(page2);
             var paragraph = new Paragraph();
-            paragraph.ChildElements.Add(new Label() { Text = "Ceci est un texte", FontSize = "30", FontName = "Arial" });
+            paragraph.ChildElements.Add(new Label() { Text = "Ceci est un texte avec accents (éèàù)", FontSize = "30", FontName = "Arial" });
             paragraph.ChildElements.Add(new Label() { Text = "#KeyTest1#", FontSize = "40", FontColor = "FF0000", Shading = "0000FF" });
             paragraph.ChildElements.Add(new Label() { Text = "#KeyTest2#", Show = false });
             page1.ChildElements.Add(paragraph);
