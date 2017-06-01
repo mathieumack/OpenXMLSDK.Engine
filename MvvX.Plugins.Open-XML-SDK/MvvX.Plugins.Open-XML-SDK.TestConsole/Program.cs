@@ -108,8 +108,9 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             page1.ChildElements.Add(paragraph);
             var p2 = new Paragraph();
             p2.Shading = "FF0000";
-            p2.ChildElements.Add(new Label() { Text = "texte paragraph2", FontSize = "20" });
-            p2.ChildElements.Add(new Label() { Text = "texte2 paragraph2" });
+            p2.ChildElements.Add(new Label() { Text = "   texte paragraph2 avec espace avant", FontSize = "20", SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve });
+            p2.ChildElements.Add(new Label() { Text = "texte2 paragraph2 avec espace après   ", SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve });
+            p2.ChildElements.Add(new Label() { Text = "   texte3 paragraph2 avec espace avant et après   ", SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve });
             page1.ChildElements.Add(p2);
 
             var table = new Table()
@@ -222,7 +223,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             var tableDataSource = new Table()
             {
                 TableWidth = new TableWidthModel() { Width = "5000", Type = TableWidthUnitValues.Pct },
-                ColsWidth = new int[2] { 500, 4500 },
+                ColsWidth = new int[2] { 750, 4250 },
                 Borders = new Word.ReportEngine.Models.Attributes.BorderModel()
                 {
                     BorderPositions = (Word.ReportEngine.Models.Attributes.BorderPositions)63,
