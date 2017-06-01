@@ -102,7 +102,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             doc.Pages.Add(page1);
             doc.Pages.Add(page2);
             var paragraph = new Paragraph();
-            paragraph.ChildElements.Add(new Label() { Text = "Ceci est un texte avec accents (éèàù)", FontSize = "30", FontName = "Arial" });
+            paragraph.ChildElements.Add(new Label() { Text = "  Ceci est un texte avec accents (éèàù)", FontSize = "30", FontName = "Arial", SpaceProcessingModeValue = SpaceProcessingModeValues.Default });
             paragraph.ChildElements.Add(new Label() { Text = "#KeyTest1#", FontSize = "40", FontColor = "FF0000", Shading = "0000FF" });
             paragraph.ChildElements.Add(new Label() { Text = "#KeyTest2#", Show = false });
             page1.ChildElements.Add(paragraph);
@@ -222,7 +222,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             var tableDataSource = new Table()
             {
                 TableWidth = new TableWidthModel() { Width = "5000", Type = TableWidthUnitValues.Pct },
-                ColsWidth = new int[2] { 500, 4500 },
+                ColsWidth = new int[2] { 750, 4250 },
                 Borders = new Word.ReportEngine.Models.Attributes.BorderModel()
                 {
                     BorderPositions = (Word.ReportEngine.Models.Attributes.BorderPositions)63,

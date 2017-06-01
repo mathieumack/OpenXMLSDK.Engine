@@ -10,7 +10,10 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
         {
             context.ReplaceItem(label);
 
-            var run = new DocumentFormat.OpenXml.Wordprocessing.Run(new DocumentFormat.OpenXml.Wordprocessing.Text(label.Text));
+            var run = new DocumentFormat.OpenXml.Wordprocessing.Run(new DocumentFormat.OpenXml.Wordprocessing.Text(label.Text)
+            {
+                Space = (SpaceProcessingModeValues)(int)label.SpaceProcessingModeValue
+            });
             var runProperty = new DocumentFormat.OpenXml.Wordprocessing.RunProperties();
             if (!string.IsNullOrWhiteSpace(label.FontName))
                 runProperty.RunFonts = new DocumentFormat.OpenXml.Wordprocessing.RunFonts() { Ascii = label.FontName, HighAnsi = label.FontName, EastAsia = label.FontName, ComplexScript = label.FontName };
@@ -24,7 +27,6 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                 runProperty.Bold = new DocumentFormat.OpenXml.Wordprocessing.Bold() { Val = OnOffValue.FromBoolean(label.Bold.Value) };
             if (label.Italic.HasValue)
                 runProperty.Italic = new DocumentFormat.OpenXml.Wordprocessing.Italic() { Val = OnOffValue.FromBoolean(label.Italic.Value) };
-
             if (label.IsPageNumber)
                 run.AppendChild(new DocumentFormat.OpenXml.Wordprocessing.PageNumber());
 
