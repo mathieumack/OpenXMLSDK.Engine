@@ -128,7 +128,16 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                                 Justification = JustificationValues.Center,
                                 ChildElements = new List<BaseElement>()
                                 {
-                                    new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "cellule1" } } }
+                                    new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "Cell 1 - First paragraph" } } },
+                                    new Image()
+                                    {
+                                        MaxHeight = 100,
+                                        MaxWidth = 100,
+                                        Path = @"..\..\Resources\Desert.jpg",
+                                        ImagePartType = Packaging.ImagePartType.Jpeg
+                                    },
+                                    new Label() { Text = "Cell 1 - Label in a cell" },
+                                    new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "Cell 1 - Second paragraph" } } }
                                 },
                                 Fusion = true
                             },
@@ -136,7 +145,15 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                             {
                                 ChildElements = new List<BaseElement>()
                                 {
-                                    new Label() {Text = "cellule2" }
+                                    new Label() {Text = "Cell 2 - First label" },
+                                    new Image()
+                                    {
+                                        MaxHeight = 100,
+                                        MaxWidth = 100,
+                                        Path = @"..\..\Resources\Desert.jpg",
+                                        ImagePartType = Packaging.ImagePartType.Jpeg
+                                    },
+                                    new Label() { Text = "Cell 2 - Second label" }
                                 },
                                 Borders = new Word.ReportEngine.Models.Attributes.BorderModel()
                                 {
@@ -178,7 +195,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                         {
                             ChildElements = new List<BaseElement>()
                             {
-                                new Label() {Text = "header1" }
+                                new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "header1" } } }
                             }
                         },
                         new Cell()

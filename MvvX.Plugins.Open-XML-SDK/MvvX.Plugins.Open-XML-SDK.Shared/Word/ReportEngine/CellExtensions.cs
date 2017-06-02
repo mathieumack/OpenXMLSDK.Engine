@@ -1,4 +1,5 @@
-﻿using DocumentFormat.OpenXml;
+﻿using System.Linq;
+using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using MvvX.Plugins.OpenXMLSDK.Platform.Word.Extensions;
@@ -35,7 +36,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                 TableCellBorders borders = cell.Borders.RenderCellBorder();
                 cellProp.AppendChild(borders);
             }
-            if( !string.IsNullOrEmpty(cell.Shading))
+            if (!string.IsNullOrEmpty(cell.Shading))
             {
                 cellProp.Shading = new Shading() { Fill = cell.Shading };
             }
@@ -43,19 +44,19 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
             {
                 cellProp.AppendChild(new TableCellVerticalAlignment { Val = cell.VerticalAlignment.Value.ToOOxml() });
             }
-            if(cell.TextDirection.HasValue)
+            if (cell.TextDirection.HasValue)
             {
                 cellProp.AppendChild(new TextDirection { Val = cell.TextDirection.ToOOxml() });
             }
 
             // manage cell column and row span
-            if(cell.ColSpan > 1)
+            if (cell.ColSpan > 1)
             {
                 cellProp.AppendChild(new GridSpan() { Val = cell.ColSpan });
             }
-            if(cell.Fusion)
+            if (cell.Fusion)
             {
-                if(cell.FusionChild)
+                if (cell.FusionChild)
                 {
                     cellProp.AppendChild(new VerticalMerge() { Val = MergedCellValues.Continue });
                 }
@@ -64,22 +65,47 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                     cellProp.AppendChild(new VerticalMerge() { Val = MergedCellValues.Restart });
                 }
             }
+            
+            if (cell.ChildElements.Any(x => x is OpenXMLSDK.Word.ReportEngine.Models.Paragraph))
+            {
+                foreach (var element in cell.ChildElements)
+                {
+                    element.InheritFromParent(cell);
+                    if (!(element is OpenXMLSDK.Word.ReportEngine.Models.Paragraph))
+                    {
+                        var paragraph = new DocumentFormat.OpenXml.Wordprocessing.Paragraph();
+                        if (cell.Justification.HasValue)
+                        {
+                            var ppr = new ParagraphProperties();
+                            ppr.AppendChild(new Justification() { Val = cell.Justification.Value.ToOOxml() });
+                            paragraph.AppendChild(ppr);
+                        }
+                        wordCell.AppendChild(paragraph);
+                        element.Render(paragraph, context, documentPart);
+                    }
+                    else
+                    {
+                        element.Render(wordCell, context, documentPart);
+                    }
+                }
 
-            // fill cell content (need at least an empty paragraph)
-            var paragraph = new DocumentFormat.OpenXml.Wordprocessing.Paragraph();
-            if (cell.Justification.HasValue)
-            {
-                var ppr = new ParagraphProperties();
-                ppr.AppendChild(new Justification() { Val = cell.Justification.Value.ToOOxml() });
-                paragraph.AppendChild(ppr);
             }
-            wordCell.AppendChild(paragraph);
-            var r = new Run();
-            paragraph.AppendChild(r);
-            foreach (var element in cell.ChildElements)
+            else
             {
-                element.InheritFromParent(cell);
-                var content = element.Render(r, context, documentPart);
+                // fill cell content (need at least an empty paragraph)
+                var paragraph = new DocumentFormat.OpenXml.Wordprocessing.Paragraph();
+                if (cell.Justification.HasValue)
+                {
+                    var ppr = new ParagraphProperties();
+                    ppr.AppendChild(new Justification() { Val = cell.Justification.Value.ToOOxml() });
+                    paragraph.AppendChild(ppr);
+                }
+                wordCell.AppendChild(paragraph);
+                foreach (var element in cell.ChildElements)
+                {
+                    element.InheritFromParent(cell);
+                    var content = element.Render(paragraph, context, documentPart);
+                }
             }
 
             return wordCell;
