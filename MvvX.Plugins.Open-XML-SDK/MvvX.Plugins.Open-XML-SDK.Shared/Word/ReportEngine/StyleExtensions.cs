@@ -26,12 +26,12 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                 StyleName = new DocumentFormat.OpenXml.Wordprocessing.StyleName() { Val = style.StyleId }
             };
             DocumentFormat.OpenXml.Wordprocessing.StyleRunProperties srp = new DocumentFormat.OpenXml.Wordprocessing.StyleRunProperties();
-            if(style.Bold.HasValue && style.Bold.Value)
+            if (style.Bold.HasValue && style.Bold.Value)
                 srp.Append(new DocumentFormat.OpenXml.Wordprocessing.Bold());
             if (style.Italic.HasValue && style.Italic.Value)
                 srp.Append(new DocumentFormat.OpenXml.Wordprocessing.Italic());
             if (!string.IsNullOrWhiteSpace(style.FontName))
-                srp.Append( new DocumentFormat.OpenXml.Wordprocessing.RunFonts() { Ascii = style.FontName });
+                srp.Append(new DocumentFormat.OpenXml.Wordprocessing.RunFonts() { Ascii = style.FontName, HighAnsi = style.FontName, EastAsia = style.FontName, ComplexScript = style.FontName });
             if (!string.IsNullOrWhiteSpace(style.FontSize))
                 srp.Append(new DocumentFormat.OpenXml.Wordprocessing.FontSize() { Val = style.FontSize });
             if (!string.IsNullOrWhiteSpace(style.FontColor))

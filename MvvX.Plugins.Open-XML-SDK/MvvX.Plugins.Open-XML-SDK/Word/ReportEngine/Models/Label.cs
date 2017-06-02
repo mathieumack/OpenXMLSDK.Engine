@@ -16,6 +16,11 @@
         public bool IsPageNumber { get; set; }
 
         /// <summary>
+        /// Indicate if the engine must preserve empty space or space before or after text in generation
+        /// </summary>
+        public SpaceProcessingModeValues SpaceProcessingModeValue { get; set; }
+
+        /// <summary>
         /// Constructor
         /// </summary>
         public Label()
