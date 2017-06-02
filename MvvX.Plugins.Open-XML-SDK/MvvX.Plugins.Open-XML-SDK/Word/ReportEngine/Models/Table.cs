@@ -54,11 +54,17 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models
         public TableWidthModel TableWidth { get; set; }
 
         /// <summary>
+        /// Table indentation
+        /// </summary>
+        public TableIndentation TableIndentation { get; set; }
+
+        /// <summary>
         /// Constructor
         /// </summary>
         public Table()
             : base(typeof(Table).Name)
         {
+            TableIndentation = new TableIndentation();
         }
     }
 }

@@ -33,6 +33,8 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                 NoVerticalBand = OnOffValue.FromBoolean(false)
             };
             wordTableProperties.AppendChild(tableLook);
+            //The type must be Dxa, if the value is set to Pct : the open xml engine will ignored it !
+            wordTableProperties.TableIndentation = new TableIndentation() { Width = table.TableIndentation.Width, Type = TableWidthUnitValues.Dxa };
             wordTable.AppendChild(wordTableProperties);
 
             if (table.Borders != null)
@@ -43,21 +45,21 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
             }
 
             // add column width definitions
-            if(table.ColsWidth != null)
+            if (table.ColsWidth != null)
             {
                 wordTable.AppendChild(new TableLayout() { Type = TableLayoutValues.Fixed });
 
                 TableGrid tableGrid = new TableGrid();
-                foreach(int width in table.ColsWidth)
+                foreach (int width in table.ColsWidth)
                 {
                     tableGrid.AppendChild(new GridColumn() { Width = width.ToString(CultureInfo.InvariantCulture) });
                 }
                 wordTable.AppendChild(tableGrid);
             }
 
-            if(table.TableWidth != null)
+            if (table.TableWidth != null)
             {
-                wordTable.AppendChild(new TableWidth() { Width = table.TableWidth.Width, Type= table.TableWidth.Type.ToOOxml() });
+                wordTable.AppendChild(new TableWidth() { Width = table.TableWidth.Width, Type = table.TableWidth.Type.ToOOxml() });
             }
 
             // add header row

@@ -116,6 +116,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             var table = new Table()
             {
                 TableWidth = new TableWidthModel() { Width = "5000", Type = TableWidthUnitValues.Pct },
+                TableIndentation = new TableIndentation() { Width = 1000 },
                 Rows = new List<Row>()
                 {
                     new Row()
