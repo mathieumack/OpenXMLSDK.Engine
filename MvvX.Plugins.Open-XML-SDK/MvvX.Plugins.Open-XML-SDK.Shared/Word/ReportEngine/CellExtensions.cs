@@ -65,13 +65,17 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                     cellProp.AppendChild(new VerticalMerge() { Val = MergedCellValues.Restart });
                 }
             }
-            
+
             if (cell.ChildElements.Any(x => x is OpenXMLSDK.Word.ReportEngine.Models.Paragraph))
             {
                 foreach (var element in cell.ChildElements)
                 {
                     element.InheritFromParent(cell);
-                    if (!(element is OpenXMLSDK.Word.ReportEngine.Models.Paragraph))
+                    if (element is OpenXMLSDK.Word.ReportEngine.Models.Paragraph)
+                    {
+                        element.Render(wordCell, context, documentPart);
+                    }
+                    else
                     {
                         var paragraph = new DocumentFormat.OpenXml.Wordprocessing.Paragraph();
                         if (cell.Justification.HasValue)
@@ -80,12 +84,9 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                             ppr.AppendChild(new Justification() { Val = cell.Justification.Value.ToOOxml() });
                             paragraph.AppendChild(ppr);
                         }
-                        wordCell.AppendChild(paragraph);
-                        element.Render(paragraph, context, documentPart);
-                    }
-                    else
-                    {
-                        element.Render(wordCell, context, documentPart);
+                        wordCell.AppendChild(paragraph); var r = new Run();
+                        paragraph.AppendChild(r);
+                        element.Render(r, context, documentPart);
                     }
                 }
 
@@ -101,10 +102,12 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                     paragraph.AppendChild(ppr);
                 }
                 wordCell.AppendChild(paragraph);
+                var r = new Run();
+                paragraph.AppendChild(r);
                 foreach (var element in cell.ChildElements)
                 {
                     element.InheritFromParent(cell);
-                    var content = element.Render(paragraph, context, documentPart);
+                    var content = element.Render(r, context, documentPart);
                 }
             }
 

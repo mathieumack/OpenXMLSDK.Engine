@@ -129,7 +129,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                                 Justification = JustificationValues.Center,
                                 ChildElements = new List<BaseElement>()
                                 {
-                                    new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "Cell 1 - First paragraph" } } },
+                                    new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "Cell 1 - First paragraph" } }, ParagraphStyleId = "Yellow" },
                                     new Image()
                                     {
                                         MaxHeight = 100,
