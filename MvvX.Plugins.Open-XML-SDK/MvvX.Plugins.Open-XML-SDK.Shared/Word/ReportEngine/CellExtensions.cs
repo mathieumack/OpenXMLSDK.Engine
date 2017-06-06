@@ -1,4 +1,5 @@
-﻿using DocumentFormat.OpenXml;
+﻿using System.Linq;
+using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using MvvX.Plugins.OpenXMLSDK.Platform.Word.Extensions;
@@ -77,21 +78,46 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                 });
             }
 
-            // fill cell content (need at least an empty paragraph)
-            var paragraph = new DocumentFormat.OpenXml.Wordprocessing.Paragraph();
-            if (cell.Justification.HasValue)
+            if (cell.ChildElements.Any(x => x is OpenXMLSDK.Word.ReportEngine.Models.Paragraph))
             {
-                var ppr = new ParagraphProperties();
-                ppr.AppendChild(new Justification() { Val = cell.Justification.Value.ToOOxml() });
-                paragraph.AppendChild(ppr);
+                foreach (var element in cell.ChildElements)
+                {
+                    element.InheritFromParent(cell);
+                    if (!(element is OpenXMLSDK.Word.ReportEngine.Models.Paragraph))
+                    {
+                        var paragraph = new DocumentFormat.OpenXml.Wordprocessing.Paragraph();
+                        if (cell.Justification.HasValue)
+                        {
+                            var ppr = new ParagraphProperties();
+                            ppr.AppendChild(new Justification() { Val = cell.Justification.Value.ToOOxml() });
+                            paragraph.AppendChild(ppr);
+                        }
+                        wordCell.AppendChild(paragraph);
+                        element.Render(paragraph, context, documentPart);
+                    }
+                    else
+                    {
+                        element.Render(wordCell, context, documentPart);
+                    }
+                }
+
             }
-            wordCell.AppendChild(paragraph);
-            var r = new Run();
-            paragraph.AppendChild(r);
-            foreach (var element in cell.ChildElements)
+            else
             {
-                element.InheritFromParent(cell);
-                var content = element.Render(r, context, documentPart);
+                // fill cell content (need at least an empty paragraph)
+                var paragraph = new DocumentFormat.OpenXml.Wordprocessing.Paragraph();
+                if (cell.Justification.HasValue)
+                {
+                    var ppr = new ParagraphProperties();
+                    ppr.AppendChild(new Justification() { Val = cell.Justification.Value.ToOOxml() });
+                    paragraph.AppendChild(ppr);
+                }
+                wordCell.AppendChild(paragraph);
+                foreach (var element in cell.ChildElements)
+                {
+                    element.InheritFromParent(cell);
+                    var content = element.Render(paragraph, context, documentPart);
+                }
             }
 
             return wordCell;

@@ -10,7 +10,6 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
         public static OpenXmlElement Render(this Paragraph paragraph, OpenXmlElement parent, ContextModel context)
         {
             context.ReplaceItem(paragraph);
-
             var openXmlPar = new DocumentFormat.OpenXml.Wordprocessing.Paragraph();
             openXmlPar.ParagraphProperties = new DocumentFormat.OpenXml.Wordprocessing.ParagraphProperties()
             {
@@ -26,12 +25,11 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                 openXmlPar.ParagraphProperties.SpacingBetweenLines.Line = paragraph.SpacingBetweenLines.ToString();
             if (!string.IsNullOrWhiteSpace(paragraph.ParagraphStyleId))
                 openXmlPar.ParagraphProperties.ParagraphStyleId = new DocumentFormat.OpenXml.Wordprocessing.ParagraphStyleId() { Val = paragraph.ParagraphStyleId };
-            if(paragraph.Borders != null)
+            if (paragraph.Borders != null)
             {
                 openXmlPar.ParagraphProperties.AppendChild(paragraph.Borders.RenderParagraphBorder());
             }
             parent.Append(openXmlPar);
-
             return openXmlPar;
         }
     }
