@@ -44,6 +44,11 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models
         public TextDirectionValues? TextDirection { get; set; }
 
         /// <summary>
+        /// Margins in cell
+        /// </summary>
+        public MarginModel Margin { get; set; }
+
+        /// <summary>
         /// Constructor
         /// </summary>
         public Cell()
