@@ -92,6 +92,7 @@
     <Compile Include="Word\ReportEngine\BatchModels\StringModel.cs" />
     <Compile Include="Word\ReportEngine\Models\Attributes\BorderModel.cs" />
     <Compile Include="Word\ReportEngine\Models\Attributes\BorderPositions.cs" />
+    <Compile Include="Word\ReportEngine\Models\Attributes\MarginModel.cs" />
     <Compile Include="Word\ReportEngine\Models\Attributes\SpacingModel.cs" />
     <Compile Include="Word\ReportEngine\Models\BaseElement.cs" />
     <Compile Include="Word\ReportEngine\Models\Cell.cs" />
