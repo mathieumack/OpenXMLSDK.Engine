@@ -1,4 +1,5 @@
 ﻿using DocumentFormat.OpenXml.Packaging;
+using MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine.TOC;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models;
 
@@ -20,6 +21,11 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
             foreach (var style in document.Styles)
             {
                 style.Render(spart, context);
+            }
+
+            if (document.TableOfContents != null)
+            {
+                document.TableOfContents.Render(wdDoc);
             }
 
             foreach (var page in document.Pages)
