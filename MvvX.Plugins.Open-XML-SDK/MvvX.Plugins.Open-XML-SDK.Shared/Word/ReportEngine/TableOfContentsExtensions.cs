@@ -6,21 +6,18 @@ using DocumentFormat.OpenXml.Packaging;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models;
 
 namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
-
 {
     /// <summary>
     /// Table of contents extensions
     /// </summary>
     public static class TableOfContentsExtensions
     {
-        public static void Render(this TableOfContents tableOfContents, WordprocessingDocument wdDoc)
+        public static void Render(this TableOfContents tableOfContents, WordprocessingDocument document)
         {
-            //XElement firstPara = wdDoc.MainDocumentPart.GetXDocument().Descendants(W.p).FirstOrDefault();
-
-            AddToc(wdDoc, tableOfContents);
+            AddToc(document, tableOfContents);
         }
 
-        public static void AddToc(WordprocessingDocument wdDoc, TableOfContents tableOfContents)
+        public static void AddToc(WordprocessingDocument document, TableOfContents tableOfContents)
         {
             //default switches
             string switches = @"TOC \o '1-3' \h \z \u";
@@ -113,7 +110,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
 
                 re.Read();
                 OpenXmlElement oxe = re.LoadCurrentElement();
-                wdDoc.MainDocumentPart.Document.Body.AppendChild(oxe);
+                document.MainDocumentPart.Document.Body.AppendChild(oxe);
                 re.Close();
             }
         }
