@@ -93,8 +93,21 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
         private static Document GetTemplateDocument()
         {
             var doc = new Document();
-            doc.Styles.Add(new Style() { StyleId = "Title" });
+            doc.Styles.Add(new Style() { StyleId = "Red", FontColor = "FF0050", FontSize = "42" });
             doc.Styles.Add(new Style() { StyleId = "Yellow", FontColor = "FFFF00", FontSize = "40" });
+
+            doc.TableOfContents = new TableOfContents()
+            {
+                StylesAndLevels = new List<Tuple<string, string>>()
+                {
+                    new Tuple<string, string>("Red", "1"),
+                }
+            };
+            doc.TableOfContents.Title = "Tessssssst !";
+            doc.TableOfContents.TitleStyleId = "Yellow";
+            doc.TableOfContents.ToCStylesId.Add("Red");
+            doc.TableOfContents.LeaderCharValue = TabStopLeaderCharValues.underscore;
+
             var page1 = new Page();
             page1.Margin = new Word.ReportEngine.Models.Attributes.SpacingModel() { Top = 845, Bottom = 1418, Left = 567, Right = 567, Header = 709, Footer = 709 };
             var page2 = new Page();
@@ -277,7 +290,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             // page 2
             var p21 = new Paragraph();
             p21.Justification = JustificationValues.Center;
-            p21.ParagraphStyleId = "Title";
+            p21.ParagraphStyleId = "Red";
             p21.ChildElements.Add(new Label() { Text = "texte page2", FontName = "Arial" });
             page2.ChildElements.Add(p21);
 

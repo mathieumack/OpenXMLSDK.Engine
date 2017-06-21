@@ -49,6 +49,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Word\ReportEngine\RowExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\ReportEngine\StyleExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\ReportEngine\TableExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Word\ReportEngine\TableOfContentsExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\Tables\PlatformTableBorders.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\Tables\PlatformTableCellBorders.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\Tables\PlatformTableCellMargin.cs" />
