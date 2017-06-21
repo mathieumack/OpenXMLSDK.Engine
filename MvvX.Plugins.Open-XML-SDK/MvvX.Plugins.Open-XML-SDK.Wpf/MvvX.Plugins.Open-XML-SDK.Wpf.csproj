@@ -182,14 +182,8 @@
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\TableExtensions.cs">
       <Link>Word\ReportEngine\TableExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\TableOfContents\PtOpenXmlUtil.cs">
-      <Link>Word\ReportEngine\TableOfContents\PtOpenXmlUtil.cs</Link>
-    </Compile>
-    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\TableOfContents\PtUtil.cs">
-      <Link>Word\ReportEngine\TableOfContents\PtUtil.cs</Link>
-    </Compile>
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\TableOfContents\TableOfContentsExtensions.cs">
-      <Link>Word\ReportEngine\TableOfContents\TableOfContentsExtensions.cs</Link>
+      <Link>Word\ReportEngine\TableOfContentsExtensions.cs</Link>
     </Compile>
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Tables\PlatformTable.cs">
       <Link>Word\Tables\PlatformTable.cs</Link>

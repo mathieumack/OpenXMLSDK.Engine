@@ -22,7 +22,8 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
             var oxstyle = new DocumentFormat.OpenXml.Wordprocessing.Style()
             {
                 Type = style.Type.ToOOxml(),
-                CustomStyle = true,
+                CustomStyle = style.CustomStyle,
+                StyleId = style.StyleId,
                 StyleName = new DocumentFormat.OpenXml.Wordprocessing.StyleName() { Val = style.StyleId }
             };
             DocumentFormat.OpenXml.Wordprocessing.StyleRunProperties srp = new DocumentFormat.OpenXml.Wordprocessing.StyleRunProperties();
@@ -38,6 +39,9 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                 srp.Append(new DocumentFormat.OpenXml.Wordprocessing.Color() { Val = style.FontColor });
             if (!string.IsNullOrWhiteSpace(style.Shading))
                 srp.Append(new DocumentFormat.OpenXml.Wordprocessing.Shading() { Fill = style.Shading });
+
+            if (!string.IsNullOrWhiteSpace(style.StyleBasedOn))
+                oxstyle.Append(new DocumentFormat.OpenXml.Wordprocessing.BasedOn() { Val = style.StyleBasedOn });
 
             oxstyle.Append(srp);
 

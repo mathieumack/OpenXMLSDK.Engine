@@ -96,7 +96,17 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             doc.Styles.Add(new Style() { StyleId = "Red", FontColor = "FF0050", FontSize = "42" });
             doc.Styles.Add(new Style() { StyleId = "Yellow", FontColor = "FFFF00", FontSize = "40" });
 
-            doc.TableOfContents = new TableOfContents() { StylesAndLevels = new List<Tuple<string, string>>() { new Tuple<string, string>("Red", "1") } };
+            doc.TableOfContents = new TableOfContents()
+            {
+                StylesAndLevels = new List<Tuple<string, string>>()
+                {
+                    new Tuple<string, string>("Red", "1"),
+                }
+            };
+            doc.TableOfContents.Title = "Tessssssst !";
+            doc.TableOfContents.TitleStyleId = "Yellow";
+            doc.TableOfContents.ToCStylesId.Add("Red");
+            doc.TableOfContents.LeaderCharValue = TabStopLeaderCharValues.underscore;
 
             var page1 = new Page();
             page1.Margin = new Word.ReportEngine.Models.Attributes.SpacingModel() { Top = 845, Bottom = 1418, Left = 567, Right = 567, Header = 709, Footer = 709 };

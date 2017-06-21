@@ -107,6 +107,7 @@
     <Compile Include="Word\ReportEngine\Models\Style.cs" />
     <Compile Include="Word\ReportEngine\Models\Table.cs" />
     <Compile Include="Word\ReportEngine\Models\TableOfContents.cs" />
+    <Compile Include="Word\ReportEngine\Models\TabStopLeaderCharValues.cs" />
     <Compile Include="Word\ReportEngine\Report.cs" />
     <Compile Include="Word\ShadingPatternValues.cs" />
     <Compile Include="Word\SpaceProcessingModeValues.cs" />

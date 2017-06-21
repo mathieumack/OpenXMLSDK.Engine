@@ -1,10 +1,12 @@
-﻿using System.IO;
-using System.Xml.Linq;
+﻿using System;
+using System.IO;
+using System.Linq;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models;
 
-namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine.TOC
+namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
+
 {
     /// <summary>
     /// Table of contents extensions
@@ -15,20 +17,21 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine.TOC
         {
             //XElement firstPara = wdDoc.MainDocumentPart.GetXDocument().Descendants(W.p).FirstOrDefault();
 
-            AddToc(wdDoc, @"TOC TOC \h \z \t Red;1", null, null);
+            AddToc(wdDoc, tableOfContents);
         }
 
-        public static void AddToc(WordprocessingDocument wdDoc, string switches, string title, int? rightTabPos)
+        public static void AddToc(WordprocessingDocument wdDoc, TableOfContents tableOfContents)
         {
-
-            if (title == null)
-                title = "Contents";
-            if (rightTabPos == null)
-                rightTabPos = 9350;
-
-            // {0} tocTitle (default = "Contents")
-            // {1} rightTabPosition (default = 9350)
-            // {2} switches
+            //default switches
+            string switches = @"TOC \o '1-3' \h \z \u";
+            if (tableOfContents.StylesAndLevels.Any())
+            {
+                switches = @"TOC \h \z \t ";
+                foreach (Tuple<string, string> styleAndLevel in tableOfContents.StylesAndLevels)
+                {
+                    switches += styleAndLevel.Item1 + ";" + styleAndLevel.Item2 + ";";
+                }
+            }
 
             string xmlString =
             @"<w:sdt xmlns:w='http://schemas.openxmlformats.org/wordprocessingml/2006/main'>
@@ -47,30 +50,41 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine.TOC
                  <w:lang w:eastAsia='en-US'/>
                 </w:rPr>
               </w:sdtEndPr>
-              <w:sdtContent>
+              <w:sdtContent>";
+
+            if (!string.IsNullOrEmpty(tableOfContents.Title))
+            {
+                xmlString += @"
                 <w:p>
                   <w:pPr>
-                    <w:pStyle w:val='TOCHeading'/>
+                    <w:pStyle w:val='" + tableOfContents.TitleStyleId + @"'/>
                   </w:pPr>
                   <w:r>
-                    <w:t>{0}</w:t>
+                    <w:t>" + tableOfContents.Title + @"</w:t>
                   </w:r>
-                </w:p>
+                </w:p>";
+            }
+
+            xmlString += @"
                 <w:p>
                   <w:pPr>
-                    <w:pStyle w:val='TOC1'/>
-                    <w:tabs>
-                      <w:tab w:val='right' w:leader='dot' w:pos='{1}'/>
-                    </w:tabs>
                     <w:rPr>
                       <w:noProof/>
+                    </w:rPr>
+                  </w:pPr>
+                  <w:pPr>
+                    <w:tabs>
+                        <w:tab w:val='right' w:leader='" + tableOfContents.LeaderCharValue.ToString() + @"'/>
+                    </w:tabs>
+                    <w:rPr>
+                        <w:noProof/>
                     </w:rPr>
                   </w:pPr>
                   <w:r>
                     <w:fldChar w:fldCharType='begin' w:dirty='true'/>
                   </w:r>
                   <w:r>
-                    <w:instrText xml:space='preserve'> {2} </w:instrText>
+                    <w:instrText xml:space='preserve'> " + switches + @" </w:instrText>
                   </w:r>
                   <w:r>
                     <w:fldChar w:fldCharType='separate'/>
@@ -89,11 +103,9 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine.TOC
               </w:sdtContent>
             </w:sdt>";
 
-            XElement sdt = XElement.Parse(string.Format(xmlString, title, rightTabPos, switches));
-
             using (StreamWriter sw = new StreamWriter(new MemoryStream()))
             {
-                sw.Write(sdt.ToString());
+                sw.Write(xmlString);
                 sw.Flush();
                 sw.BaseStream.Seek(0, SeekOrigin.Begin);
 
