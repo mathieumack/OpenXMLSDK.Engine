@@ -191,7 +191,7 @@
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\TableExtensions.cs">
       <Link>Word\ReportEngine\TableExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\TableOfContents\TableOfContentsExtensions.cs">
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\TableOfContentsExtensions.cs">
       <Link>Word\ReportEngine\TableOfContentsExtensions.cs</Link>
     </Compile>
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Tables\PlatformTable.cs">
