@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
+using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models;
 
 namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
@@ -12,12 +13,24 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
     /// </summary>
     public static class TableOfContentsExtensions
     {
-        public static void Render(this TableOfContents tableOfContents, WordprocessingDocument document)
+        /// <summary>
+        /// Table of contents render
+        /// </summary>
+        /// <param name="tableOfContents"></param>
+        /// <param name="documentPart"></param>
+        /// <param name="context"></param>
+        public static void Render(this TableOfContents tableOfContents, OpenXmlPart documentPart, ContextModel context)
         {
-            AddToc(document, tableOfContents);
+            AddToC(documentPart as MainDocumentPart, tableOfContents);
+            AddToCStyles(documentPart as MainDocumentPart, tableOfContents, context);
         }
 
-        public static void AddToc(WordprocessingDocument document, TableOfContents tableOfContents)
+        /// <summary>
+        /// Add the table of contents
+        /// </summary>
+        /// <param name="document"></param>
+        /// <param name="tableOfContents"></param>
+        public static void AddToC(MainDocumentPart documentPart, TableOfContents tableOfContents)
         {
             //default switches
             string switches = @"TOC \o '1-3' \h \z \u";
@@ -110,8 +123,32 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
 
                 re.Read();
                 OpenXmlElement oxe = re.LoadCurrentElement();
-                document.MainDocumentPart.Document.Body.AppendChild(oxe);
+                documentPart.Document.Body.AppendChild(oxe);
                 re.Close();
+            }
+        }
+
+        /// <summary>
+        /// Add styles for table of contents levels
+        /// </summary>
+        /// <param name="document"></param>
+        /// <param name="tableOfContents"></param>
+        /// <param name="context"></param>
+        private static void AddToCStyles(MainDocumentPart document, TableOfContents tableOfContents, ContextModel context)
+        {
+            var stylesPart = document.StyleDefinitionsPart;
+            if (tableOfContents.ToCStylesId.Any())
+            {
+                for (int i = 0; i < tableOfContents.ToCStylesId.Count; i++)
+                {
+                    Style style = new Style()
+                    {
+                        StyleId = string.Concat("toc ", i + 1),
+                        StyleBasedOn = tableOfContents.ToCStylesId[i],
+                        CustomStyle = false
+                    };
+                    style.Render(stylesPart, context);
+                }
             }
         }
     }

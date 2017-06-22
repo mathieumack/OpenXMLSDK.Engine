@@ -37,6 +37,10 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                 {
                     createdElement = (element as Table).Render(parent, context, documentPart);
                 }
+                else if (element is TableOfContents)
+                {
+                    (element as TableOfContents).Render(documentPart, context);
+                }
 
                 if (element.ChildElements != null && element.ChildElements.Count > 0)
                 {
