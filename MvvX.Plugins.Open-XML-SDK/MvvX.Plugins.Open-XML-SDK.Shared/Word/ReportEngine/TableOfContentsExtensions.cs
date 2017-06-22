@@ -21,8 +21,8 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
         /// <param name="context"></param>
         public static void Render(this TableOfContents tableOfContents, OpenXmlPart documentPart, ContextModel context)
         {
-            AddToc(documentPart as MainDocumentPart, tableOfContents);
-            AddTocStyles(documentPart as MainDocumentPart, tableOfContents, context);
+            AddToC(documentPart as MainDocumentPart, tableOfContents);
+            AddToCStyles(documentPart as MainDocumentPart, tableOfContents, context);
         }
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
         /// </summary>
         /// <param name="document"></param>
         /// <param name="tableOfContents"></param>
-        public static void AddToc(MainDocumentPart documentPart, TableOfContents tableOfContents)
+        public static void AddToC(MainDocumentPart documentPart, TableOfContents tableOfContents)
         {
             //default switches
             string switches = @"TOC \o '1-3' \h \z \u";
@@ -134,7 +134,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
         /// <param name="document"></param>
         /// <param name="tableOfContents"></param>
         /// <param name="context"></param>
-        private static void AddTocStyles(MainDocumentPart document, TableOfContents tableOfContents, ContextModel context)
+        private static void AddToCStyles(MainDocumentPart document, TableOfContents tableOfContents, ContextModel context)
         {
             var stylesPart = document.StyleDefinitionsPart;
             if (tableOfContents.ToCStylesId.Any())
