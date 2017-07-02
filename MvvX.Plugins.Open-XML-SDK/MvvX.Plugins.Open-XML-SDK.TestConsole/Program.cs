@@ -104,7 +104,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             doc.Pages.Add(page2);
             var paragraph = new Paragraph();
             paragraph.ChildElements.Add(new Label() { Text = "Ceci est un texte avec accents (éèàù)", FontSize = "30", FontName = "Arial" });
-            paragraph.ChildElements.Add(new Label() { Text = "#KeyTest1#", FontSize = "40", FontColor = "FF0000", Shading = "0000FF" });
+            paragraph.ChildElements.Add(new Label() { Text = "#KeyTest1#", FontSize = "40", FontColor = "#FontColorTestRed#", Shading = "0000FF" });
             paragraph.ChildElements.Add(new Label() { Text = "#KeyTest2#", Show = false });
             page1.ChildElements.Add(paragraph);
             var p2 = new Paragraph();
@@ -371,6 +371,8 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             ContextModel context = new ContextModel();
             context.AddItem("#KeyTest1#", new StringModel("Key 1"));
             context.AddItem("#KeyTest2#", new StringModel("Key 2"));
+
+            context.AddItem("#FontColorTestRed#", new StringModel("333333"));
 
             ContextModel row1 = new ContextModel();
             row1.AddItem("#Cell1#", new StringModel("Col 1 Row 1"));
