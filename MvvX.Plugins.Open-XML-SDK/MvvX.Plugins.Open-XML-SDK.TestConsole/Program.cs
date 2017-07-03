@@ -323,7 +323,14 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                 LeaderCharValue = TabStopLeaderCharValues.underscore
             };
             page3.ChildElements.Add(tableOfContents);
-
+            
+            paragraph = new Paragraph()
+            {
+                ParagraphStyleId = "#ParagraphStyleIdTestYellow#"
+            };
+            paragraph.ChildElements.Add(new Label() { Text = "Ceci est un test de paragraph avec Style", FontSize = "30", FontName = "Arial" });
+            page3.ChildElements.Add(paragraph);
+            
             doc.Pages.Add(page3);
 
             // Header
@@ -373,6 +380,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             context.AddItem("#KeyTest2#", new StringModel("Key 2"));
 
             context.AddItem("#FontColorTestRed#", new StringModel("333333"));
+            context.AddItem("#ParagraphStyleIdTestYellow#", new StringModel("Yellow"));
 
             ContextModel row1 = new ContextModel();
             row1.AddItem("#Cell1#", new StringModel("Col 1 Row 1"));

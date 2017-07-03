@@ -128,6 +128,19 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels
             SetVisibilityFromContext(element);
         }
 
+        /// <summary>
+        /// Replace text, FontColor and visibility of element
+        /// </summary>
+        /// <param name="element"></param>
+        public void ReplaceItem(Paragraph element)
+        {
+            if (!string.IsNullOrEmpty(element.ParagraphStyleId))
+                element.ParagraphStyleId = ReplaceText(element.ParagraphStyleId);
+            if (!string.IsNullOrEmpty(element.FontColor))
+                element.FontColor = ReplaceText(element.FontColor);
+            SetVisibilityFromContext(element);
+        }
+
         private void SetVisibilityFromContext(BaseElement element)
         {
             if (!string.IsNullOrWhiteSpace(element.ShowKey))
