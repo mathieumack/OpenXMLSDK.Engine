@@ -116,13 +116,15 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels
         }
 
         /// <summary>
-        /// Replace text and visibility of element
+        /// Replace text, FontColor and visibility of element
         /// </summary>
         /// <param name="element"></param>
         public void ReplaceItem(Label element)
         {
             if(!string.IsNullOrEmpty(element.Text))
                 element.Text = ReplaceText(element.Text);
+            if (!string.IsNullOrEmpty(element.FontColor))
+                element.FontColor = ReplaceText(element.FontColor);
             SetVisibilityFromContext(element);
         }
 
