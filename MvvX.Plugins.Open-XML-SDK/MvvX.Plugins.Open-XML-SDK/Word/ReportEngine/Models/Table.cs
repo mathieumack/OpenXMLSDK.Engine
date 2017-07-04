@@ -33,7 +33,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models
         /// <summary>
         /// Key for datasource
         /// </summary>
-        public string DataSourceKey { get; set; }
+        public string DataSourceKey { get; set; } 
 
         /// <summary>
         /// Borders
@@ -57,6 +57,15 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models
         /// Table indentation
         /// </summary>
         public TableIndentation TableIndentation { get; set; }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        internal Table(string type)
+            : base(type)
+        {
+            TableIndentation = new TableIndentation();
+        }
 
         /// <summary>
         /// Constructor

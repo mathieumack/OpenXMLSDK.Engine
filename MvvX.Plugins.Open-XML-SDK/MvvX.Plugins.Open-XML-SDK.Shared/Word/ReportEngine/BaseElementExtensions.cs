@@ -37,12 +37,16 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                 {
                     createdElement = (element as Table).Render(parent, context, documentPart);
                 }
+                else if (element is UniformGrid)
+                {
+                    createdElement = (element as UniformGrid).Render(parent, context, documentPart);
+                }
                 else if (element is TableOfContents)
                 {
                     (element as TableOfContents).Render(documentPart, context);
                 }
 
-                if (element.ChildElements != null && element.ChildElements.Count > 0)
+                if (createdElement != null && element.ChildElements != null && element.ChildElements.Count > 0)
                 {
                     foreach (var e in element.ChildElements)
                     {
@@ -50,8 +54,6 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                         e.Render(createdElement ?? parent, context, documentPart);
                     }
                 }
-
-
             }
             return createdElement;
         }
