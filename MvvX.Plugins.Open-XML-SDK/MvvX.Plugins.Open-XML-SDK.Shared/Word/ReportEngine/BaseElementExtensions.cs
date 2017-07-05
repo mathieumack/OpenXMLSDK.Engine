@@ -22,6 +22,10 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
             if (element.Show)
             {
                 // Keep this statement order, because of the UniformGrid inherits from Table
+                if (element is ForEach)
+                {
+                    createdElement = (element as ForEach).Render(parent, context, documentPart);
+                }
                 if (element is Label)
                 {
                     createdElement = (element as Label).Render(parent, context);

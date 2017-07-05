@@ -439,9 +439,11 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             ContextModel row1 = new ContextModel();
             row1.AddItem("#Cell1#", new StringModel("Col 1 Row 1"));
             row1.AddItem("#Cell2#", new StringModel("Col 2 Row 1"));
+            row1.AddItem("#Label#", new StringModel("Label 1"));
             ContextModel row2 = new ContextModel();
             row2.AddItem("#Cell1#", new StringModel("Col 2 Row 1"));
             row2.AddItem("#Cell2#", new StringModel("Col 2 Row 2"));
+            row2.AddItem("#Label#", new StringModel("Label 2"));
             context.AddItem("#Datasource#", new DataSourceModel()
             {
                 Items = new List<ContextModel>()
