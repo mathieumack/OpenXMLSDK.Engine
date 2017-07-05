@@ -46,6 +46,9 @@
     <Compile Include="IEnumValue.cs" />
     <Compile Include="OpenXmlSimpleType.cs" />
     <Compile Include="PluginLoader.cs" />
+    <Compile Include="Validation\IOpenXMLValidator.cs" />
+    <Compile Include="Validation\ValidationErrorInfo.cs" />
+    <Compile Include="Validation\ValidationErrorType.cs" />
     <Compile Include="Word\HeaderFooterValues.cs" />
     <Compile Include="Word\IAltChunk.cs" />
     <Compile Include="Word\IDecimalNumberType.cs" />

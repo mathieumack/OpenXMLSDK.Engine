@@ -76,6 +76,9 @@
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Plugin.cs">
       <Link>Plugin.cs</Link>
     </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Validation\OpenXMLValidator.cs">
+      <Link>Validation\OpenXMLValidator.cs</Link>
+    </Compile>
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\AutoMapperInitializer.cs">
       <Link>Word\AutoMapperInitializer.cs</Link>
     </Compile>

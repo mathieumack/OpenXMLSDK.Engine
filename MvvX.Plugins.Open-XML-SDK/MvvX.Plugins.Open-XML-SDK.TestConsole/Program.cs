@@ -65,9 +65,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
 
                     // test ecriture fichier
                     File.WriteAllBytes(documentName, res);
-
-                    (word as WordManager).ValidateDocument(documentName);
-
+                    
                     Process.Start(documentName);
                 }
                 else
