@@ -1,36 +1,30 @@
+$location  = $env:APPVEYOR_BUILD_FOLDER
 
-write-host "Pull request" $env:APPVEYOR_PULL_REQUEST_NUMBER
+$locationNuspec = $location + "\nuspec"
+$locationNuspec
+    
+Set-Location -Path $locationNuspec
 
-if($env:APPVEYOR_PULL_REQUEST_NUMBER > 0)
-{
-    $location  = $env:APPVEYOR_BUILD_FOLDER
+"Packaging to nuget..."
+"Build folder : " + $location
 
-    $locationNuspec = $location + "\nuspec"
-    $locationNuspec
-        
-    Set-Location -Path $locationNuspec
+$strPath = $location + '\MvvX.Plugins.Open-XML-SDK\MvvX.Plugins.Open-XML-SDK\bin\Release\MvvX.Plugins.OpenXMLSDK.dll'
 
-    "Packaging to nuget..."
-    "Build folder : " + $location
+$VersionInfos = [System.Diagnostics.FileVersionInfo]::GetVersionInfo($strPath)
+$ProductVersion = $VersionInfos.ProductVersion
+"Product version : " + $ProductVersion
 
-    $strPath = $location + '\MvvX.Plugins.Open-XML-SDK\MvvX.Plugins.Open-XML-SDK\bin\Release\MvvX.Plugins.OpenXMLSDK.dll'
+"Update nuspec versions ..."
+    
+$nuSpecFile =  $locationNuspec + '\MvvX.Plugins.Open-XML-SDK.nuspec'
+(Get-Content $nuSpecFile) | 
+Foreach-Object {$_ -replace "(<version>([0-9.]+)<\/version>)", "<version>$ProductVersion</version>" } | 
+Set-Content $nuSpecFile
 
-    $VersionInfos = [System.Diagnostics.FileVersionInfo]::GetVersionInfo($strPath)
-    $ProductVersion = $VersionInfos.ProductVersion
-    "Product version : " + $ProductVersion
+"Generate nuget packages ..."
+.\NuGet.exe pack MvvX.Plugins.Open-XML-SDK.nuspec
 
-    "Update nuspec versions ..."
-        
-    $nuSpecFile =  $locationNuspec + '\MvvX.Plugins.Open-XML-SDK.nuspec'
-    (Get-Content $nuSpecFile) | 
-    Foreach-Object {$_ -replace "(<version>([0-9.]+)<\/version>)", "<version>$ProductVersion</version>" } | 
-    Set-Content $nuSpecFile
-
-    "Generate nuget packages ..."
-    .\NuGet.exe pack MvvX.Plugins.Open-XML-SDK.nuspec
-
-    $apiKey = $env:NuGetApiKey
-        
-    "Publish packages ..."	
-    .\NuGet push MvvX.Plugins.Open-XML-SDK.$ProductVersion.nupkg -Source https://www.nuget.org/api/v2/package -ApiKey $apiKey
-}
+$apiKey = $env:NuGetApiKey
+    
+"Publish packages ..."	
+.\NuGet push MvvX.Plugins.Open-XML-SDK.$ProductVersion.nupkg -Source https://www.nuget.org/api/v2/package -ApiKey $apiKey
