@@ -33,20 +33,21 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                 {
                     createdElement = (element as Image).Render(parent, context, documentPart);
                 }
-                else if (element is Table)
-                {
-                    createdElement = (element as Table).Render(parent, context, documentPart);
-                }
+                // Becarefull, keep this if statement before the test of the Table because the UniformGrid inherits from Table
                 else if (element is UniformGrid)
                 {
                     createdElement = (element as UniformGrid).Render(parent, context, documentPart);
+                }
+                else if (element is Table)
+                {
+                    createdElement = (element as Table).Render(parent, context, documentPart);
                 }
                 else if (element is TableOfContents)
                 {
                     (element as TableOfContents).Render(documentPart, context);
                 }
 
-                if (createdElement != null && element.ChildElements != null && element.ChildElements.Count > 0)
+                if (element.ChildElements != null && element.ChildElements.Count > 0)
                 {
                     foreach (var e in element.ChildElements)
                     {

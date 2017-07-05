@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Validation;
 using DocumentFormat.OpenXml.Wordprocessing;
 using MvvX.Plugins.OpenXMLSDK.Drawing.Pictures.Model;
 using MvvX.Plugins.OpenXMLSDK.Platform.Word.Bookmarks;
@@ -1096,6 +1097,27 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
                 return stream.ToArray();
             }
         }
+        #endregion
+
+        #region Validations
+
+        public bool ValidateDocument(string filePath)
+        {
+            File.Delete(filePath.Replace(".docx", ".txt"));
+            using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(filePath, false))
+            {
+                OpenXmlValidator validator = new OpenXmlValidator();
+                var errors = validator.Validate(wordDoc);
+                if (errors.Count() == 0)
+                    return true;
+                else
+                {
+                    File.AppendAllLines(filePath.Replace(".docx", ".txt"), errors.Select(e => e.ToString() + "-" + e.Node.XmlQualifiedName + "-" + e.Description));
+                    return false;
+                }
+            }
+        }
+
         #endregion
     }
 }
