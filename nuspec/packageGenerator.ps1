@@ -1,4 +1,7 @@
-if($env:APPVEYOR_REPO_BRANCH -eq 'master')
+
+write-host "Pull request" $env:APPVEYOR_PULL_REQUEST_NUMBER
+
+if($env:APPVEYOR_PULL_REQUEST_NUMBER > 0)
 {
     $location  = $env:APPVEYOR_BUILD_FOLDER
 
