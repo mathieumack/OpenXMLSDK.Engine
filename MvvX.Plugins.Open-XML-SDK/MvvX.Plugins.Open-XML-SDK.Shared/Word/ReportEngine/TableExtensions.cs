@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
@@ -20,6 +21,42 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
         {
             context.ReplaceItem(table);
 
+            var createdTable = CreateTable(table, context, documentPart);
+            var wordTable = createdTable.Item1;
+            var tableLook = createdTable.Item2;
+
+            // add content rows
+            if (!string.IsNullOrEmpty(table.DataSourceKey))
+            {
+                if (context.ExistItem<DataSourceModel>(table.DataSourceKey))
+                {
+                    var datasource = context.GetItem<DataSourceModel>(table.DataSourceKey);
+
+                    foreach (ContextModel item in datasource.Items)
+                    {
+                        var row = table.RowModel.Clone();
+                        row.InheritFromParent(table);
+                        wordTable.AppendChild(row.Render(wordTable, item, documentPart, false));
+                    }
+                }
+            }
+            else
+            {
+                foreach (var row in table.Rows)
+                {
+                    row.InheritFromParent(table);
+                    wordTable.AppendChild(row.Render(wordTable, context, documentPart, false));
+                }
+            }
+
+            ManageFooterRow(table, wordTable, tableLook, context, documentPart);
+
+            parent.AppendChild(wordTable);
+            return wordTable;
+        }
+
+        internal static Tuple<Table, TableLook> CreateTable(OpenXMLSDK.Word.ReportEngine.Models.Table table, ContextModel context, OpenXmlPart documentPart)
+        {
             Table wordTable = new Table();
 
             TableProperties wordTableProperties = new TableProperties();
@@ -70,31 +107,11 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                 tableLook.FirstRow = OnOffValue.FromBoolean(true);
             }
 
-            // add content rows
-            if (!string.IsNullOrEmpty(table.DataSourceKey))
-            {
-                if (context.ExistItem<DataSourceModel>(table.DataSourceKey))
-                {
-                    var datasource = context.GetItem<DataSourceModel>(table.DataSourceKey);
+            return new Tuple<Table, TableLook>(wordTable, tableLook);
+        }
 
-                    foreach (ContextModel item in datasource.Items)
-                    {
-                        var row = table.RowModel.Clone();
-                        row.InheritFromParent(table);
-                        wordTable.AppendChild(row.Render(wordTable, item, documentPart, false));
-                    }
-                }
-            }
-            else
-            {
-                foreach (var row in table.Rows)
-                {
-                    row.InheritFromParent(table);
-                    wordTable.AppendChild(row.Render(wordTable, context, documentPart, false));
-                }
-            }
-
-
+        internal static void ManageFooterRow(OpenXMLSDK.Word.ReportEngine.Models.Table table, Table wordTable , TableLook tableLook, ContextModel context, OpenXmlPart documentPart)
+        {
             // add footer row
             if (table.FooterRow != null)
             {
@@ -102,8 +119,6 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
 
                 tableLook.LastRow = OnOffValue.FromBoolean(true);
             }
-            parent.AppendChild(wordTable);
-            return wordTable;
         }
     }
 }
