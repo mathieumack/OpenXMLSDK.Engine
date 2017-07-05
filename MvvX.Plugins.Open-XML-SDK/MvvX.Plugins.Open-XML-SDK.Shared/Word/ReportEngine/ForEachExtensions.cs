@@ -9,7 +9,6 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
     {
         public static OpenXmlElement Render(this ForEach forEach, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart)
         {
-
             context.ReplaceItem(forEach);
 
             if (!string.IsNullOrEmpty(forEach.DataSourceKey))
@@ -29,7 +28,6 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
             }
 
             return null;
-
         }
     }
 }
