@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
@@ -25,6 +26,9 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
             var wordTable = createdTable.Item1;
             var tableLook = createdTable.Item2;
 
+            // Before rows :
+            ManageBeforeAfterRows(table, table.BeforeRows, wordTable, context, documentPart);
+
             // add content rows
             if (!string.IsNullOrEmpty(table.DataSourceKey))
             {
@@ -49,6 +53,10 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                 }
             }
 
+            // After rows :
+            ManageBeforeAfterRows(table, table.AfterRows, wordTable, context, documentPart);
+
+            // Footer
             ManageFooterRow(table, wordTable, tableLook, context, documentPart);
 
             parent.AppendChild(wordTable);
@@ -110,7 +118,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
             return new Tuple<Table, TableLook>(wordTable, tableLook);
         }
 
-        internal static void ManageFooterRow(OpenXMLSDK.Word.ReportEngine.Models.Table table, Table wordTable , TableLook tableLook, ContextModel context, OpenXmlPart documentPart)
+        internal static void ManageFooterRow(OpenXMLSDK.Word.ReportEngine.Models.Table table, Table wordTable, TableLook tableLook, ContextModel context, OpenXmlPart documentPart)
         {
             // add footer row
             if (table.FooterRow != null)
@@ -118,6 +126,19 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                 wordTable.AppendChild(table.FooterRow.Render(wordTable, context, documentPart, false));
 
                 tableLook.LastRow = OnOffValue.FromBoolean(true);
+            }
+        }
+
+        internal static void ManageBeforeAfterRows(OpenXMLSDK.Word.ReportEngine.Models.Table table, IList<OpenXMLSDK.Word.ReportEngine.Models.Row> rows, Table wordTable, ContextModel context, OpenXmlPart documentPart)
+        {
+            // After rows :
+            if (rows != null && rows.Count > 0)
+            {
+                foreach (var row in rows)
+                {
+                    row.InheritFromParent(table);
+                    wordTable.AppendChild(row.Render(wordTable, context, documentPart, false));
+                }
             }
         }
     }
