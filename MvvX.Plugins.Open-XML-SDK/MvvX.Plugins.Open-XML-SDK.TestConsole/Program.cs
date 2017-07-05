@@ -326,14 +326,14 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                 LeaderCharValue = TabStopLeaderCharValues.underscore
             };
             page3.ChildElements.Add(tableOfContents);
-            
+
             paragraph = new Paragraph()
             {
                 ParagraphStyleId = "#ParagraphStyleIdTestYellow#"
             };
             paragraph.ChildElements.Add(new Label() { Text = "Ceci est un test de paragraph avec Style", FontSize = "30", FontName = "Arial" });
             page3.ChildElements.Add(paragraph);
-            
+
             doc.Pages.Add(page3);
 
             var page4 = new Page();
@@ -368,7 +368,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                         {
                             ChildElements = new List<BaseElement>()
                             {
-                                new Label() {Text = "header2" }
+                                new Label() { Text = "header2" }
                             }
                         }
                     }
@@ -449,12 +449,12 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                         row1, row2
                     }
             });
-            
+
             List<ContextModel> cellsContext = new List<ContextModel>();
-            for(int i = 0; i < DateTime.Now.Day; i++)
+            for (int i = 0; i < DateTime.Now.Day; i++)
             {
                 ContextModel uniformGridContext = new ContextModel();
-                uniformGridContext.AddItem("#CellUniformGridTitle#", new StringModel("Item number " + (i+1)));
+                uniformGridContext.AddItem("#CellUniformGridTitle#", new StringModel("Item number " + (i + 1)));
                 cellsContext.Add(uniformGridContext);
             }
             context.AddItem("#UniformGridSample#", new DataSourceModel()

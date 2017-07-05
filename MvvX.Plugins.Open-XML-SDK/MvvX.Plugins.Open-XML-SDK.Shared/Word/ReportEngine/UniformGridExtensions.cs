@@ -22,112 +22,109 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
         {
             context.ReplaceItem(uniformGrid);
 
-            if (!string.IsNullOrEmpty(uniformGrid.DataSourceKey))
+            if (!string.IsNullOrEmpty(uniformGrid.DataSourceKey) && context.ExistItem<DataSourceModel>(uniformGrid.DataSourceKey))
             {
-                if (context.ExistItem<DataSourceModel>(uniformGrid.DataSourceKey))
+                var datasource = context.GetItem<DataSourceModel>(uniformGrid.DataSourceKey);
+
+                if (datasource != null && datasource.Items.Count > 0)
                 {
-                    var datasource = context.GetItem<DataSourceModel>(uniformGrid.DataSourceKey);
+                    DocumentFormat.OpenXml.Wordprocessing.Table wordTable = new DocumentFormat.OpenXml.Wordprocessing.Table();
 
-                    if (datasource != null && datasource.Items.Count > 0)
+                    TableProperties wordTableProperties = new TableProperties();
+                    var tableLook = new TableLook()
                     {
-                        DocumentFormat.OpenXml.Wordprocessing.Table wordTable = new DocumentFormat.OpenXml.Wordprocessing.Table();
+                        FirstRow = OnOffValue.FromBoolean(false),
+                        LastRow = OnOffValue.FromBoolean(false),
+                        FirstColumn = OnOffValue.FromBoolean(false),
+                        LastColumn = OnOffValue.FromBoolean(false),
+                        NoHorizontalBand = OnOffValue.FromBoolean(false),
+                        NoVerticalBand = OnOffValue.FromBoolean(false)
+                    };
+                    wordTableProperties.AppendChild(tableLook);
+                    //The type must be Dxa, if the value is set to Pct : the open xml engine will ignored it !
+                    wordTableProperties.TableIndentation = new TableIndentation() { Width = uniformGrid.TableIndentation.Width, Type = TableWidthUnitValues.Dxa };
+                    wordTable.AppendChild(wordTableProperties);
 
-                        TableProperties wordTableProperties = new TableProperties();
-                        var tableLook = new TableLook()
-                        {
-                            FirstRow = OnOffValue.FromBoolean(false),
-                            LastRow = OnOffValue.FromBoolean(false),
-                            FirstColumn = OnOffValue.FromBoolean(false),
-                            LastColumn = OnOffValue.FromBoolean(false),
-                            NoHorizontalBand = OnOffValue.FromBoolean(false),
-                            NoVerticalBand = OnOffValue.FromBoolean(false)
-                        };
-                        wordTableProperties.AppendChild(tableLook);
-                        //The type must be Dxa, if the value is set to Pct : the open xml engine will ignored it !
-                        wordTableProperties.TableIndentation = new TableIndentation() { Width = uniformGrid.TableIndentation.Width, Type = TableWidthUnitValues.Dxa };
-                        wordTable.AppendChild(wordTableProperties);
+                    if (uniformGrid.Borders != null)
+                    {
+                        TableBorders borders = uniformGrid.Borders.Render();
 
-                        if (uniformGrid.Borders != null)
-                        {
-                            TableBorders borders = uniformGrid.Borders.Render();
-
-                            wordTableProperties.AppendChild(borders);
-                        }
-
-                        // add column width definitions
-                        if (uniformGrid.ColsWidth != null)
-                        {
-                            wordTable.AppendChild(new TableLayout() { Type = TableLayoutValues.Fixed });
-
-                            TableGrid tableGrid = new TableGrid();
-                            foreach (int width in uniformGrid.ColsWidth)
-                            {
-                                tableGrid.AppendChild(new GridColumn() { Width = width.ToString(CultureInfo.InvariantCulture) });
-                            }
-                            wordTable.AppendChild(tableGrid);
-                        }
-
-                        if (uniformGrid.TableWidth != null)
-                        {
-                            wordTable.AppendChild(new TableWidth() { Width = uniformGrid.TableWidth.Width, Type = uniformGrid.TableWidth.Type.ToOOxml() });
-                        }
-
-                        // add header row
-                        if (uniformGrid.HeaderRow != null)
-                        {
-                            wordTable.AppendChild(uniformGrid.HeaderRow.Render(wordTable, context, documentPart, true));
-
-                            tableLook.FirstRow = OnOffValue.FromBoolean(true);
-                        }
-
-                        // Table of cells :
-                        List<List<ContextModel>> rowsContentContexts = new List<List<ContextModel>>();
-
-                        int i = 0;
-                        var lastCellsRow = new List<ContextModel>();
-
-                        // add content rows
-                        foreach (var item in datasource.Items)
-                        {
-                            if (i > 0 && i % uniformGrid.ColsWidth.Length == 0)
-                            {
-                                // end of line :
-                                rowsContentContexts.Add(lastCellsRow);
-                                lastCellsRow = new List<ContextModel>();
-                            }
-                            lastCellsRow.Add(item);
-
-                            i++;
-                        }
-
-                        var acountAddNullItems = datasource.Items.Count % uniformGrid.ColsWidth.Length;
-                        if (acountAddNullItems > 0)
-                        {
-                            for (int j = 0; j < acountAddNullItems; j++)
-                                lastCellsRow.Add(new ContextModel());
-                            rowsContentContexts.Add(lastCellsRow);
-                        }
-                        // Now we create all row :
-                        foreach(var rowContentContext in rowsContentContexts)
-                        { 
-                            var row = new Row();
-                            row.InheritFromParent(uniformGrid);
-
-                            wordTable.AppendChild(row.Render(wordTable, context, rowContentContext, uniformGrid.CellModel, documentPart, false));
-
-                            i++;
-                        }
-
-                        // add footer row
-                        if (uniformGrid.FooterRow != null)
-                        {
-                            wordTable.AppendChild(uniformGrid.FooterRow.Render(wordTable, context, documentPart, false));
-
-                            tableLook.LastRow = OnOffValue.FromBoolean(true);
-                        }
-                        parent.AppendChild(wordTable);
-                        return wordTable;
+                        wordTableProperties.AppendChild(borders);
                     }
+
+                    // add column width definitions
+                    if (uniformGrid.ColsWidth != null)
+                    {
+                        wordTable.AppendChild(new TableLayout() { Type = TableLayoutValues.Fixed });
+
+                        TableGrid tableGrid = new TableGrid();
+                        foreach (int width in uniformGrid.ColsWidth)
+                        {
+                            tableGrid.AppendChild(new GridColumn() { Width = width.ToString(CultureInfo.InvariantCulture) });
+                        }
+                        wordTable.AppendChild(tableGrid);
+                    }
+
+                    if (uniformGrid.TableWidth != null)
+                    {
+                        wordTable.AppendChild(new TableWidth() { Width = uniformGrid.TableWidth.Width, Type = uniformGrid.TableWidth.Type.ToOOxml() });
+                    }
+
+                    // add header row
+                    if (uniformGrid.HeaderRow != null)
+                    {
+                        wordTable.AppendChild(uniformGrid.HeaderRow.Render(wordTable, context, documentPart, true));
+
+                        tableLook.FirstRow = OnOffValue.FromBoolean(true);
+                    }
+
+                    // Table of cells :
+                    List<List<ContextModel>> rowsContentContexts = new List<List<ContextModel>>();
+
+                    int i = 0;
+                    var lastCellsRow = new List<ContextModel>();
+
+                    // add content rows
+                    foreach (var item in datasource.Items)
+                    {
+                        if (i > 0 && i % uniformGrid.ColsWidth.Length == 0)
+                        {
+                            // end of line :
+                            rowsContentContexts.Add(lastCellsRow);
+                            lastCellsRow = new List<ContextModel>();
+                        }
+                        lastCellsRow.Add(item);
+
+                        i++;
+                    }
+
+                    var acountAddNullItems = datasource.Items.Count % uniformGrid.ColsWidth.Length;
+                    if (acountAddNullItems > 0)
+                    {
+                        for (int j = 0; j < acountAddNullItems; j++)
+                            lastCellsRow.Add(new ContextModel());
+                        rowsContentContexts.Add(lastCellsRow);
+                    }
+                    // Now we create all row :
+                    foreach (var rowContentContext in rowsContentContexts)
+                    {
+                        var row = new Row();
+                        row.InheritFromParent(uniformGrid);
+
+                        wordTable.AppendChild(row.Render(wordTable, context, rowContentContext, uniformGrid.CellModel, documentPart, false));
+
+                        i++;
+                    }
+
+                    // add footer row
+                    if (uniformGrid.FooterRow != null)
+                    {
+                        wordTable.AppendChild(uniformGrid.FooterRow.Render(wordTable, context, documentPart, false));
+
+                        tableLook.LastRow = OnOffValue.FromBoolean(true);
+                    }
+                    parent.AppendChild(wordTable);
+                    return wordTable;
                 }
             }
 

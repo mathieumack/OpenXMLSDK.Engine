@@ -21,6 +21,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
 
             if (element.Show)
             {
+                // Keep this statement order, because of the UniformGrid inherits from Table
                 if (element is Label)
                 {
                     createdElement = (element as Label).Render(parent, context);
@@ -33,7 +34,6 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                 {
                     createdElement = (element as Image).Render(parent, context, documentPart);
                 }
-                // Becarefull, keep this if statement before the test of the Table because the UniformGrid inherits from Table
                 else if (element is UniformGrid)
                 {
                     createdElement = (element as UniformGrid).Render(parent, context, documentPart);
