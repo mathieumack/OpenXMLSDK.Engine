@@ -28,56 +28,10 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
 
                 if (datasource != null && datasource.Items.Count > 0)
                 {
-                    DocumentFormat.OpenXml.Wordprocessing.Table wordTable = new DocumentFormat.OpenXml.Wordprocessing.Table();
-
-                    TableProperties wordTableProperties = new TableProperties();
-                    var tableLook = new TableLook()
-                    {
-                        FirstRow = OnOffValue.FromBoolean(false),
-                        LastRow = OnOffValue.FromBoolean(false),
-                        FirstColumn = OnOffValue.FromBoolean(false),
-                        LastColumn = OnOffValue.FromBoolean(false),
-                        NoHorizontalBand = OnOffValue.FromBoolean(false),
-                        NoVerticalBand = OnOffValue.FromBoolean(false)
-                    };
-                    wordTableProperties.AppendChild(tableLook);
-                    //The type must be Dxa, if the value is set to Pct : the open xml engine will ignored it !
-                    wordTableProperties.TableIndentation = new TableIndentation() { Width = uniformGrid.TableIndentation.Width, Type = TableWidthUnitValues.Dxa };
-                    wordTable.AppendChild(wordTableProperties);
-
-                    if (uniformGrid.Borders != null)
-                    {
-                        TableBorders borders = uniformGrid.Borders.Render();
-
-                        wordTableProperties.AppendChild(borders);
-                    }
-
-                    // add column width definitions
-                    if (uniformGrid.ColsWidth != null)
-                    {
-                        wordTable.AppendChild(new TableLayout() { Type = TableLayoutValues.Fixed });
-
-                        TableGrid tableGrid = new TableGrid();
-                        foreach (int width in uniformGrid.ColsWidth)
-                        {
-                            tableGrid.AppendChild(new GridColumn() { Width = width.ToString(CultureInfo.InvariantCulture) });
-                        }
-                        wordTable.AppendChild(tableGrid);
-                    }
-
-                    if (uniformGrid.TableWidth != null)
-                    {
-                        wordTable.AppendChild(new TableWidth() { Width = uniformGrid.TableWidth.Width, Type = uniformGrid.TableWidth.Type.ToOOxml() });
-                    }
-
-                    // add header row
-                    if (uniformGrid.HeaderRow != null)
-                    {
-                        wordTable.AppendChild(uniformGrid.HeaderRow.Render(wordTable, context, documentPart, true));
-
-                        tableLook.FirstRow = OnOffValue.FromBoolean(true);
-                    }
-
+                    var createdTable = TableExtensions.CreateTable(uniformGrid, context, documentPart);
+                    var wordTable = createdTable.Item1;
+                    var tableLook = createdTable.Item2;
+                    
                     // Table of cells :
                     List<List<ContextModel>> rowsContentContexts = new List<List<ContextModel>>();
 
@@ -116,13 +70,8 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                         i++;
                     }
 
-                    // add footer row
-                    if (uniformGrid.FooterRow != null)
-                    {
-                        wordTable.AppendChild(uniformGrid.FooterRow.Render(wordTable, context, documentPart, false));
+                    TableExtensions.ManageFooterRow(uniformGrid, wordTable, tableLook, context, documentPart);
 
-                        tableLook.LastRow = OnOffValue.FromBoolean(true);
-                    }
                     parent.AppendChild(wordTable);
                     return wordTable;
                 }
