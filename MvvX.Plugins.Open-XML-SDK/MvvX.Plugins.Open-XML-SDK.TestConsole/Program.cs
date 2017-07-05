@@ -150,7 +150,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                             {
                                 ChildElements = new List<BaseElement>()
                                 {
-                                    new Label() {Text = "Cell 2 - First label" },
+                                    new Label() { Text = "Cell 2 - First label" },
                                     new Image()
                                     {
                                         MaxHeight = 100,
@@ -184,7 +184,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                                 Justification = JustificationValues.Right,
                                 ChildElements = new List<BaseElement>()
                                 {
-                                    new Label() {Text = "cellule4" }
+                                    new Label() { Text = "cellule4" }
                                 }
                             }
                         }
@@ -207,7 +207,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                         {
                             ChildElements = new List<BaseElement>()
                             {
-                                new Label() {Text = "header2" }
+                                new Label() { Text = "header2" }
                             }
                         }
                 }
@@ -261,14 +261,14 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                             Shading = "FFA0FF",
                             ChildElements = new List<BaseElement>()
                             {
-                                new Label() {Text = "#Cell1#" }
+                                new Label() { Text = "#Cell1#" }
                             }
                         },
                         new Cell()
                         {
                             ChildElements = new List<BaseElement>()
                             {
-                                new Label() {Text = "#Cell2#" }
+                                new Label() { Text = "#Cell2#" }
                             }
                         }
                     }
@@ -418,7 +418,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                                         Path = @"..\..\Resources\Desert.jpg",
                                         ImagePartType = Packaging.ImagePartType.Jpeg
                                     },
-                                    new Label() { Text = "Cell 1 - Label in a cell" },
+                                    new Label() { Text = "Custom header" },
                                     new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "Cell 1 - Second paragraph" } } }
                                 },
                                 Fusion = true
@@ -427,7 +427,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                             {
                                 ChildElements = new List<BaseElement>()
                                 {
-                                    new Label() {Text = "Cell 2 - First label" },
+                                    new Label() { Text = "Cell 2 - First label" },
                                     new Image()
                                     {
                                         MaxHeight = 100,
@@ -461,7 +461,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                                 Justification = JustificationValues.Right,
                                 ChildElements = new List<BaseElement>()
                                 {
-                                    new Label() {Text = "cellule4" }
+                                    new Label() { Text = "celluleX" }
                                 }
                             }
                         }
@@ -476,14 +476,14 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                             Shading = "FFA0FF",
                             ChildElements = new List<BaseElement>()
                             {
-                                new Label() {Text = "#Cell1#" }
+                                new Label() { Text = "#Cell1#" }
                             }
                         },
                         new Cell()
                         {
                             ChildElements = new List<BaseElement>()
                             {
-                                new Label() {Text = "#Cell2#" }
+                                new Label() { Text = "#Cell2#" }
                             }
                         }
                     }
