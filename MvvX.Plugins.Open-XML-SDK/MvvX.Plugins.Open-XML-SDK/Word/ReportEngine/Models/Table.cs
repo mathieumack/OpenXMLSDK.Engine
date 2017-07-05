@@ -10,10 +10,22 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models
     public class Table : BaseElement
     {
         /// <summary>
+        /// Rows of the table, generated before Rows field content
+        /// used only if the table is not binded to a datasource (DataSourceKey != null)
+        /// </summary>
+        public IList<Row> BeforeRows { get; set; } = new List<Row>();
+
+        /// <summary>
         /// Rows of the table
         /// used only if the table is not binded to a datasource (DataSourceKey != null)
         /// </summary>
         public IList<Row> Rows { get; set; } = new List<Row>();
+
+        /// <summary>
+        /// Rows of the table, generated after Rows field content
+        /// used only if the table is not binded to a datasource (DataSourceKey != null)
+        /// </summary>
+        public IList<Row> AfterRows { get; set; } = new List<Row>();
 
         /// <summary>
         /// if bind to a datasource, contains the model of a row

@@ -31,7 +31,10 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                     var createdTable = TableExtensions.CreateTable(uniformGrid, context, documentPart);
                     var wordTable = createdTable.Item1;
                     var tableLook = createdTable.Item2;
-                    
+
+                    // Before rows :
+                    TableExtensions.ManageBeforeAfterRows(uniformGrid, uniformGrid.BeforeRows, wordTable, context, documentPart);
+
                     // Table of cells :
                     List<List<ContextModel>> rowsContentContexts = new List<List<ContextModel>>();
 
@@ -69,6 +72,9 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
 
                         i++;
                     }
+
+                    // After rows :
+                    TableExtensions.ManageBeforeAfterRows(uniformGrid, uniformGrid.AfterRows, wordTable, context, documentPart);
 
                     TableExtensions.ManageFooterRow(uniformGrid, wordTable, tableLook, context, documentPart);
 

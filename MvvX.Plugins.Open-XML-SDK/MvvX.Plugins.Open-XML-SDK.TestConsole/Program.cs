@@ -387,6 +387,114 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
 
             doc.Pages.Add(page4);
 
+            var page5 = new Page();
+            var tableDataSourceWithBeforeAfter = new Table()
+            {
+                TableWidth = new TableWidthModel() { Width = "5000", Type = TableWidthUnitValues.Pct },
+                ColsWidth = new int[2] { 750, 4250 },
+                Borders = new Word.ReportEngine.Models.Attributes.BorderModel()
+                {
+                    BorderPositions = (Word.ReportEngine.Models.Attributes.BorderPositions)63,
+                    BorderColor = "328864",
+                    BorderWidth = 20,
+                },
+                BeforeRows = new List<Row>()
+                {
+                    new Row()
+                    {
+                        Cells = new List<Cell>()
+                        {
+                            new Cell()
+                            {
+                                VerticalAlignment = TableVerticalAlignmentValues.Center,
+                                Justification = JustificationValues.Center,
+                                ChildElements = new List<BaseElement>()
+                                {
+                                    new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "Cell 1 - First paragraph" } }, ParagraphStyleId = "Yellow" },
+                                    new Image()
+                                    {
+                                        MaxHeight = 100,
+                                        MaxWidth = 100,
+                                        Path = @"..\..\Resources\Desert.jpg",
+                                        ImagePartType = Packaging.ImagePartType.Jpeg
+                                    },
+                                    new Label() { Text = "Cell 1 - Label in a cell" },
+                                    new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "Cell 1 - Second paragraph" } } }
+                                },
+                                Fusion = true
+                            },
+                            new Cell()
+                            {
+                                ChildElements = new List<BaseElement>()
+                                {
+                                    new Label() {Text = "Cell 2 - First label" },
+                                    new Image()
+                                    {
+                                        MaxHeight = 100,
+                                        MaxWidth = 100,
+                                        Path = @"..\..\Resources\Desert.jpg",
+                                        ImagePartType = Packaging.ImagePartType.Jpeg
+                                    },
+                                    new Label() { Text = "Cell 2 - Second label" }
+                                },
+                                Borders = new Word.ReportEngine.Models.Attributes.BorderModel()
+                                {
+                                    BorderColor = "00FF00",
+                                    BorderWidth = 20,
+                                    BorderPositions = Word.ReportEngine.Models.Attributes.BorderPositions.LEFT | Word.ReportEngine.Models.Attributes.BorderPositions.TOP
+                                }
+                            }
+                        }
+                    },
+                    new Row()
+                    {
+                        Cells = new List<Cell>()
+                        {
+                            new Cell()
+                            {
+                                Fusion = true,
+                                FusionChild = true
+                            },
+                            new Cell()
+                            {
+                                VerticalAlignment = TableVerticalAlignmentValues.Bottom,
+                                Justification = JustificationValues.Right,
+                                ChildElements = new List<BaseElement>()
+                                {
+                                    new Label() {Text = "cellule4" }
+                                }
+                            }
+                        }
+                    }
+                },
+                RowModel = new Row()
+                {
+                    Cells = new List<Cell>()
+                    {
+                        new Cell()
+                        {
+                            Shading = "FFA0FF",
+                            ChildElements = new List<BaseElement>()
+                            {
+                                new Label() {Text = "#Cell1#" }
+                            }
+                        },
+                        new Cell()
+                        {
+                            ChildElements = new List<BaseElement>()
+                            {
+                                new Label() {Text = "#Cell2#" }
+                            }
+                        }
+                    }
+                },
+                DataSourceKey = "#Datasource#"
+            };
+
+            page5.ChildElements.Add(tableDataSourceWithBeforeAfter);
+
+            doc.Pages.Add(page5);
+
             // Header
             var header = new Header();
             header.Type = HeaderFooterValues.Default;
