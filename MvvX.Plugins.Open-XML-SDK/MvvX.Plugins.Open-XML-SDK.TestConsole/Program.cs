@@ -406,11 +406,11 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                         {
                             new Cell()
                             {
-                                VerticalAlignment = TableVerticalAlignmentValues.Center,
-                                Justification = JustificationValues.Center,
+                                VerticalAlignment = TableVerticalAlignmentValues.Bottom,
+                                Justification = JustificationValues.Left,
                                 ChildElements = new List<BaseElement>()
                                 {
-                                    new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "Cell 1 - First paragraph" } }, ParagraphStyleId = "Yellow" },
+                                    new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "Cell 1 - A small paragraph" } }, ParagraphStyleId = "Yellow" },
                                     new Image()
                                     {
                                         MaxHeight = 100,
@@ -419,7 +419,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                                         ImagePartType = Packaging.ImagePartType.Jpeg
                                     },
                                     new Label() { Text = "Custom header" },
-                                    new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "Cell 1 - Second paragraph" } } }
+                                    new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "Cell 1 - an other paragraph" } } }
                                 },
                                 Fusion = true
                             },
@@ -427,7 +427,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                             {
                                 ChildElements = new List<BaseElement>()
                                 {
-                                    new Label() { Text = "Cell 2 - First label" },
+                                    new Label() { Text = "Cell 2 - an other label" },
                                     new Image()
                                     {
                                         MaxHeight = 100,
@@ -435,11 +435,11 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                                         Path = @"..\..\Resources\Desert.jpg",
                                         ImagePartType = Packaging.ImagePartType.Jpeg
                                     },
-                                    new Label() { Text = "Cell 2 - Second label" }
+                                    new Label() { Text = "Cell 2 - an other other label" }
                                 },
                                 Borders = new Word.ReportEngine.Models.Attributes.BorderModel()
                                 {
-                                    BorderColor = "00FF00",
+                                    BorderColor = "00FF22",
                                     BorderWidth = 20,
                                     BorderPositions = Word.ReportEngine.Models.Attributes.BorderPositions.LEFT | Word.ReportEngine.Models.Attributes.BorderPositions.TOP
                                 }
@@ -473,17 +473,17 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                     {
                         new Cell()
                         {
-                            Shading = "FFA0FF",
+                            Shading = "FFA2FF",
                             ChildElements = new List<BaseElement>()
                             {
-                                new Label() { Text = "#Cell1#" }
+                                new Label() { Text = "Cell : #Cell1#" }
                             }
                         },
                         new Cell()
                         {
                             ChildElements = new List<BaseElement>()
                             {
-                                new Label() { Text = "#Cell2#" }
+                                new Label() { Text = "Cell : #Cell2#" }
                             }
                         }
                     }
