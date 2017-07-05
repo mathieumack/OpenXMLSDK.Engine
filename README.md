@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/mathieumack/MvvX.Plugins.Open-XML-SDK.png?label=ready&title=Ready)](https://waffle.io/mathieumack/MvvX.Plugins.Open-XML-SDK?utm_source=badge)
 [![Build status](https://ci.appveyor.com/api/projects/status/n159uhltbd90i3rh?svg=true)](https://ci.appveyor.com/project/mathieumack/mvvx-plugins-open-xml-sdk)
 
 # MvvX.Plugins.Open-XML-SDK
