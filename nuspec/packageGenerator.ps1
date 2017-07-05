@@ -1,9 +1,8 @@
-
 $location  = $env:APPVEYOR_BUILD_FOLDER
 
 $locationNuspec = $location + "\nuspec"
 $locationNuspec
-	
+    
 Set-Location -Path $locationNuspec
 
 "Packaging to nuget..."
@@ -16,7 +15,7 @@ $ProductVersion = $VersionInfos.ProductVersion
 "Product version : " + $ProductVersion
 
 "Update nuspec versions ..."
-	
+    
 $nuSpecFile =  $locationNuspec + '\MvvX.Plugins.Open-XML-SDK.nuspec'
 (Get-Content $nuSpecFile) | 
 Foreach-Object {$_ -replace "(<version>([0-9.]+)<\/version>)", "<version>$ProductVersion</version>" } | 
@@ -26,6 +25,6 @@ Set-Content $nuSpecFile
 .\NuGet.exe pack MvvX.Plugins.Open-XML-SDK.nuspec
 
 $apiKey = $env:NuGetApiKey
-	
+    
 "Publish packages ..."	
 .\NuGet push MvvX.Plugins.Open-XML-SDK.$ProductVersion.nupkg -Source https://www.nuget.org/api/v2/package -ApiKey $apiKey
