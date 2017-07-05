@@ -15,7 +15,6 @@
         public ForEach()
             : base(typeof(ForEach).Name)
         {
-
         }
     }
 }

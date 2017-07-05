@@ -20,7 +20,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
 
                     if (datasource != null && datasource.Items.Count > 0)
                     {
-                        foreach(var item in datasource.Items)
+                        foreach (var item in datasource.Items)
                         {
                             forEach.ItemTemplate.Render(parent, item, documentPart);
                         }
