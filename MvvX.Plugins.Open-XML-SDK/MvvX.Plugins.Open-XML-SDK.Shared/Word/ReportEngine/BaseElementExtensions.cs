@@ -21,6 +21,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
 
             if (element.Show)
             {
+                // Keep this statement order, because of the UniformGrid inherits from Table
                 if (element is ForEach)
                 {
                     createdElement = (element as ForEach).Render(parent, context, documentPart);
@@ -36,6 +37,10 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                 else if (element is Image)
                 {
                     createdElement = (element as Image).Render(parent, context, documentPart);
+                }
+                else if (element is UniformGrid)
+                {
+                    createdElement = (element as UniformGrid).Render(parent, context, documentPart);
                 }
                 else if (element is Table)
                 {
@@ -54,8 +59,6 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                         e.Render(createdElement ?? parent, context, documentPart);
                     }
                 }
-
-
             }
             return createdElement;
         }

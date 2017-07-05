@@ -65,6 +65,9 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
 
                     // test ecriture fichier
                     File.WriteAllBytes(documentName, res);
+
+                    (word as WordManager).ValidateDocument(documentName);
+
                     Process.Start(documentName);
                 }
                 else
@@ -323,33 +326,65 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                 LeaderCharValue = TabStopLeaderCharValues.underscore
             };
             page3.ChildElements.Add(tableOfContents);
-            
+
             paragraph = new Paragraph()
             {
                 ParagraphStyleId = "#ParagraphStyleIdTestYellow#"
             };
             paragraph.ChildElements.Add(new Label() { Text = "Ceci est un test de paragraph avec Style", FontSize = "30", FontName = "Arial" });
             page3.ChildElements.Add(paragraph);
-            
+
             doc.Pages.Add(page3);
 
-            // page 4
             var page4 = new Page();
-            var forEeach = new ForEach()
+            //New page to manage UniformGrid:
+            var uniformGrid = new UniformGrid()
             {
-                ItemTemplate = new Paragraph()
+                DataSourceKey = "#UniformGridSample#",
+                ColsWidth = new int[2] { 2500, 2500 },
+                TableWidth = new TableWidthModel() { Width = "5000", Type = TableWidthUnitValues.Pct },
+                CellModel = new Cell()
                 {
-                    FontColor = "FF0000",
-                    FontSize = "26",
+                    VerticalAlignment = TableVerticalAlignmentValues.Center,
+                    Justification = JustificationValues.Center,
                     ChildElements = new List<BaseElement>()
+                        {
+                            new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "#CellUniformGridTitle#" } } },
+                            new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "Cell 1 - Second paragraph" } } }
+                        }
+                },
+                HeaderRow = new Row()
+                {
+                    Cells = new List<Cell>()
                     {
-                        new Label() { Text = "Foreach line. Content : #Label#" }
+                        new Cell()
+                        {
+                            ChildElements = new List<BaseElement>()
+                            {
+                                new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "header1" } } }
+                            }
+                        },
+                        new Cell()
+                        {
+                            ChildElements = new List<BaseElement>()
+                            {
+                                new Label() { Text = "header2" }
+                            }
+                        }
                     }
                 },
-                DataSourceKey = "#Datasource#"
+                Borders = new Word.ReportEngine.Models.Attributes.BorderModel()
+                {
+                    BorderPositions = Word.ReportEngine.Models.Attributes.BorderPositions.BOTTOM | Word.ReportEngine.Models.Attributes.BorderPositions.INSIDEVERTICAL,
+                    BorderWidthBottom = 50,
+                    BorderWidthInsideVertical = 1,
+                    UseVariableBorders = true,
+                    BorderColor = "FF0000"
+                }
             };
-            page4.ChildElements.Add(forEeach);
-            
+
+            page4.ChildElements.Add(uniformGrid);
+
             doc.Pages.Add(page4);
 
             // Header
@@ -415,6 +450,18 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                     {
                         row1, row2
                     }
+            });
+
+            List<ContextModel> cellsContext = new List<ContextModel>();
+            for (int i = 0; i < DateTime.Now.Day; i++)
+            {
+                ContextModel uniformGridContext = new ContextModel();
+                uniformGridContext.AddItem("#CellUniformGridTitle#", new StringModel("Item number " + (i + 1)));
+                cellsContext.Add(uniformGridContext);
+            }
+            context.AddItem("#UniformGridSample#", new DataSourceModel()
+            {
+                Items = cellsContext
             });
 
             return context;
