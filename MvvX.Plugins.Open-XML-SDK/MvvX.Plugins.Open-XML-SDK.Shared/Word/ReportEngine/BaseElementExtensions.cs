@@ -21,6 +21,10 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
 
             if (element.Show)
             {
+                if (element is ForEach)
+                {
+                    createdElement = (element as ForEach).Render(parent, context, documentPart);
+                }
                 if (element is Label)
                 {
                     createdElement = (element as Label).Render(parent, context);
