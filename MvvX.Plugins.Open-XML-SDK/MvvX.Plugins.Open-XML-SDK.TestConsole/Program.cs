@@ -440,8 +440,8 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                                 Borders = new Word.ReportEngine.Models.Attributes.BorderModel()
                                 {
                                     BorderColor = "00FF22",
-                                    BorderWidth = 20,
-                                    BorderPositions = Word.ReportEngine.Models.Attributes.BorderPositions.LEFT | Word.ReportEngine.Models.Attributes.BorderPositions.TOP
+                                    BorderWidth = 15,
+                                    BorderPositions = Word.ReportEngine.Models.Attributes.BorderPositions.RIGHT | Word.ReportEngine.Models.Attributes.BorderPositions.TOP
                                 }
                             }
                         }
