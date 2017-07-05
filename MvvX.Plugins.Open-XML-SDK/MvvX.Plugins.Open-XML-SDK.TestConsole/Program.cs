@@ -350,37 +350,29 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                     ChildElements = new List<BaseElement>()
                         {
                             new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "#CellUniformGridTitle#" } } },
-                            new Image()
-                            {
-                                MaxHeight = 100,
-                                MaxWidth = 100,
-                                Path = @"..\..\Resources\Desert.jpg",
-                                ImagePartType = Packaging.ImagePartType.Jpeg
-                            },
-                            new Label() { Text = "Cell 1 - Label in a cell" },
                             new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "Cell 1 - Second paragraph" } } }
                         }
                 },
-                //HeaderRow = new Row()
-                //{
-                //    Cells = new List<Cell>()
-                //    {
-                //        new Cell()
-                //        {
-                //            ChildElements = new List<BaseElement>()
-                //            {
-                //                new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "header1" } } }
-                //            }
-                //        },
-                //        new Cell()
-                //        {
-                //            ChildElements = new List<BaseElement>()
-                //            {
-                //                new Label() {Text = "header2" }
-                //            }
-                //        }
-                //    }
-                //},
+                HeaderRow = new Row()
+                {
+                    Cells = new List<Cell>()
+                    {
+                        new Cell()
+                        {
+                            ChildElements = new List<BaseElement>()
+                            {
+                                new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "header1" } } }
+                            }
+                        },
+                        new Cell()
+                        {
+                            ChildElements = new List<BaseElement>()
+                            {
+                                new Label() {Text = "header2" }
+                            }
+                        }
+                    }
+                },
                 Borders = new Word.ReportEngine.Models.Attributes.BorderModel()
                 {
                     BorderPositions = Word.ReportEngine.Models.Attributes.BorderPositions.BOTTOM | Word.ReportEngine.Models.Attributes.BorderPositions.INSIDEVERTICAL,

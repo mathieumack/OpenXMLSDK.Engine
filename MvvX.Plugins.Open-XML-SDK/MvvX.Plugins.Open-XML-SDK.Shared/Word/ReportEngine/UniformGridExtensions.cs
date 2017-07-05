@@ -6,7 +6,6 @@ using DocumentFormat.OpenXml.Wordprocessing;
 using MvvX.Plugins.OpenXMLSDK.Platform.Word.Extensions;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models;
-using Table = DocumentFormat.OpenXml.Drawing.Table;
 
 namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
 {
@@ -19,7 +18,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
         /// <param name="parent"></param>
         /// <param name="context"></param>
         /// <returns></returns>
-        public static Table Render(this OpenXMLSDK.Word.ReportEngine.Models.UniformGrid uniformGrid, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart)
+        public static DocumentFormat.OpenXml.Wordprocessing.Table Render(this OpenXMLSDK.Word.ReportEngine.Models.UniformGrid uniformGrid, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart)
         {
             context.ReplaceItem(uniformGrid);
 
@@ -31,7 +30,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
 
                     if (datasource != null && datasource.Items.Count > 0)
                     {
-                        Table wordTable = new Table();
+                        DocumentFormat.OpenXml.Wordprocessing.Table wordTable = new DocumentFormat.OpenXml.Wordprocessing.Table();
 
                         TableProperties wordTableProperties = new TableProperties();
                         var tableLook = new TableLook()
@@ -72,7 +71,15 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                         {
                             wordTable.AppendChild(new TableWidth() { Width = uniformGrid.TableWidth.Width, Type = uniformGrid.TableWidth.Type.ToOOxml() });
                         }
-                        
+
+                        // add header row
+                        if (uniformGrid.HeaderRow != null)
+                        {
+                            wordTable.AppendChild(uniformGrid.HeaderRow.Render(wordTable, context, documentPart, true));
+
+                            tableLook.FirstRow = OnOffValue.FromBoolean(true);
+                        }
+
                         // Table of cells :
                         List<List<ContextModel>> rowsContentContexts = new List<List<ContextModel>>();
 
@@ -111,6 +118,13 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                             i++;
                         }
 
+                        // add footer row
+                        if (uniformGrid.FooterRow != null)
+                        {
+                            wordTable.AppendChild(uniformGrid.FooterRow.Render(wordTable, context, documentPart, false));
+
+                            tableLook.LastRow = OnOffValue.FromBoolean(true);
+                        }
                         parent.AppendChild(wordTable);
                         return wordTable;
                     }
