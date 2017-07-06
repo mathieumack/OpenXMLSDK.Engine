@@ -4,6 +4,7 @@
     {
         /// <summary>
         /// Describe the template of each final item
+        /// Warning : If the ForEach control is under a Cell, the ItemTemplate must be a Paragraph !
         /// </summary>
         public BaseElement ItemTemplate { get; set; }
 

@@ -9,7 +9,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
 {
     public static class BaseElementExtensions
     {
-        public static T Clone<T>(this T element) where T : new()
+        public static T Clone<T>(this T element) where T : BaseElement
         {
             return JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(element), new JsonSerializerSettings() { Converters = { new JsonContextConverter() } });
         }
