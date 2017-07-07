@@ -14,21 +14,21 @@
         <dependencies>
           <group>
             <!-- Always include regardless of target framework -->
-            <dependency id="MvvmCross.Platform" version="4.2.2" />
+            <dependency id="MvvmCross.Platform" version="5.0.5" />
         </group>
           <group targetFramework="net45">
             <!-- Always include regardless of target framework -->
-            <dependency id="DocumentFormat.OpenXml" version="2.5" />
+            <dependency id="DocumentFormat.OpenXml" version="2.7.2" />
             <dependency id="AutoMapper" version="5.0.2" />
         </group>
           <group targetFramework="MonoAndroid10">
             <!-- Always include regardless of target framework -->
-            <dependency id="DocumentFormat.OpenXml.Touch" version="1.0.0.0" />
+            <dependency id="DocumentFormat.OpenXml" version="2.7.2" />
             <dependency id="AutoMapper" version="5.0.2" />
         </group>
-          <group targetFramework="MonoTouch10">
+          <group targetFramework="xamarinios10">
             <!-- Always include regardless of target framework -->
-            <dependency id="DocumentFormat.OpenXml.Droid" version="1.0.0.0" />
+            <dependency id="DocumentFormat.OpenXml" version="2.7.2" />
             <dependency id="AutoMapper" version="5.0.2" />
         </group>
         <group targetFramework="portable-win+sl50+wp8">
