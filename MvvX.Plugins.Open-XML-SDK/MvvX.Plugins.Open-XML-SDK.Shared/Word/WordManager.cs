@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Validation;
 using DocumentFormat.OpenXml.Wordprocessing;
 using MvvX.Plugins.OpenXMLSDK.Drawing.Pictures.Model;
 using MvvX.Plugins.OpenXMLSDK.Platform.Word.Bookmarks;

@@ -16,11 +16,22 @@
         public StyleValues Type { get; set; }
 
         /// <summary>
+        /// Id of the based on style
+        /// </summary>
+        public string StyleBasedOn { get; set; }
+
+        /// <summary>
+        /// Custom style flag
+        /// </summary>
+        public bool CustomStyle { get; set; }
+
+        /// <summary>
         /// Constructor
         /// </summary>
         public Style()
             : base(typeof(Style).Name)
         {
+            CustomStyle = true;
         }
     }
 }
