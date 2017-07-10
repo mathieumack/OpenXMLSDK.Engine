@@ -513,9 +513,6 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
                     Paragraph paragraph = new Paragraph(run);
                     openXmlCompositeElement.InsertAfterSelf<Paragraph>(paragraph);
                     openXmlCompositeElement = paragraph;
-                    Paragraph paragraphAdded = new Paragraph(new Run(new Text("SepaSepaSepaSepaSepaSepa")));
-                    openXmlCompositeElement.InsertAfterSelf<Paragraph>(paragraphAdded);
-                    openXmlCompositeElement = paragraphAdded;
                 }
                 openXmlCompositeElement.InsertAfterSelf<AltChunk>(altChunk);
                 openXmlCompositeElement = altChunk;
