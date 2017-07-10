@@ -455,7 +455,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
         /// </summary>
         /// <param name="filePath">Destination file path</param>
         /// <param name="filesToInsert">Documents to insert</param>
-        /// <param name="insertPageBreaks">Indicate if a page break must be added after each document</param>
+        /// <param name="insertPageBreaks">Indicate if a page break must be added before each document</param>
         public void AppendSubDocumentsList(string filePath, IList<MemoryStream> filesToInsert, bool withPageBreak)
         {
             wdDoc = WordprocessingDocument.Open(filePath, true);
@@ -508,8 +508,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
 
                 if (insertPageBreaks)
                 {
-                    var lastRenderedPageBreak = new LastRenderedPageBreak();
-                    var run = new Run(lastRenderedPageBreak);
+                    var run = new Run(new Break() { Type = BreakValues.Page });
                     Paragraph paragraph = new Paragraph(run);
                     openXmlCompositeElement.InsertAfterSelf<Paragraph>(paragraph);
                     openXmlCompositeElement = paragraph;

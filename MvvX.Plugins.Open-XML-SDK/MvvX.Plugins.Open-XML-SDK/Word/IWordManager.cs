@@ -69,7 +69,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Word
         /// </summary>
         /// <param name="filePath">Destination file path</param>
         /// <param name="filesToInsert">Documents to insert</param>
-        /// <param name="insertPageBreaks">Indicate if a page break must be added after each document</param>
+        /// <param name="insertPageBreaks">Indicate if a page break must be added before each document</param>
         void AppendSubDocumentsList(string filePath, IList<MemoryStream> filesToInsert, bool insertPageBreaks);
 
         /// <summary>
