@@ -28,7 +28,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                 }
                 if (element is Label)
                 {
-                    createdElement = (element as Label).Render(parent, context, (OpenXmlPart) documentPart);
+                    createdElement = (element as Label).Render(parent, context, documentPart);
                 }
                 else if (element is Paragraph)
                 {
