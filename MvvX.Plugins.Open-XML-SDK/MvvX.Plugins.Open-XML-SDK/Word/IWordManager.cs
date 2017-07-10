@@ -65,6 +65,14 @@ namespace MvvX.Plugins.OpenXMLSDK.Word
         void AppendSubDocument(Stream content, bool withPageBreak);
 
         /// <summary>
+        /// Append a list of SubDocuments at end of current doc
+        /// </summary>
+        /// <param name="filePath">Destination file path</param>
+        /// <param name="filesToInsert">Documents to insert</param>
+        /// <param name="insertPageBreaks">Indicate if a page break must be added before each document</param>
+        void AppendSubDocumentsList(string filePath, IList<MemoryStream> filesToInsert, bool insertPageBreaks);
+
+        /// <summary>
         /// Insert paragraph in bookmark
         /// </summary>
         /// <param name="bookmark">Bookmark name</param>
