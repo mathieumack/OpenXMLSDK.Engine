@@ -78,12 +78,14 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                 });
             }
 
-            if (cell.ChildElements.Any(x => x is OpenXMLSDK.Word.ReportEngine.Models.Paragraph))
+            if (cell.ChildElements.Any(x => x is OpenXMLSDK.Word.ReportEngine.Models.Paragraph)
+                || cell.ChildElements.Any(x => x is OpenXMLSDK.Word.ReportEngine.Models.ForEach))
             {
                 foreach (var element in cell.ChildElements)
                 {
                     element.InheritFromParent(cell);
-                    if (element is OpenXMLSDK.Word.ReportEngine.Models.Paragraph)
+                    if (element is OpenXMLSDK.Word.ReportEngine.Models.Paragraph
+                        || element is OpenXMLSDK.Word.ReportEngine.Models.ForEach)
                     {
                         element.Render(wordCell, context, documentPart);
                     }
@@ -101,7 +103,6 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                         element.Render(r, context, documentPart);
                     }
                 }
-
             }
             else
             {

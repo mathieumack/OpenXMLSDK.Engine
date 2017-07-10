@@ -34,11 +34,6 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models
         public SpacingModel Margin { get; set; }
 
         /// <summary>
-        /// Table of contents
-        /// </summary>
-        public TableOfContents TableOfContents { get; set; }
-
-        /// <summary>
         /// Constructor
         /// </summary>
         public Document()

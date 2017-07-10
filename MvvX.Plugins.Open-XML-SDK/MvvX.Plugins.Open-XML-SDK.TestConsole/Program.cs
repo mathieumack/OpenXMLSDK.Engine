@@ -65,6 +65,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
 
                     // test ecriture fichier
                     File.WriteAllBytes(documentName, res);
+                    
                     Process.Start(documentName);
                 }
                 else
@@ -96,18 +97,6 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             doc.Styles.Add(new Style() { StyleId = "Red", FontColor = "FF0050", FontSize = "42" });
             doc.Styles.Add(new Style() { StyleId = "Yellow", FontColor = "FFFF00", FontSize = "40" });
 
-            doc.TableOfContents = new TableOfContents()
-            {
-                StylesAndLevels = new List<Tuple<string, string>>()
-                {
-                    new Tuple<string, string>("Red", "1"),
-                }
-            };
-            doc.TableOfContents.Title = "Tessssssst !";
-            doc.TableOfContents.TitleStyleId = "Yellow";
-            doc.TableOfContents.ToCStylesId.Add("Red");
-            doc.TableOfContents.LeaderCharValue = TabStopLeaderCharValues.underscore;
-
             var page1 = new Page();
             page1.Margin = new Word.ReportEngine.Models.Attributes.SpacingModel() { Top = 845, Bottom = 1418, Left = 567, Right = 567, Header = 709, Footer = 709 };
             var page2 = new Page();
@@ -116,7 +105,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             doc.Pages.Add(page2);
             var paragraph = new Paragraph();
             paragraph.ChildElements.Add(new Label() { Text = "Ceci est un texte avec accents (éèàù)", FontSize = "30", FontName = "Arial" });
-            paragraph.ChildElements.Add(new Label() { Text = "#KeyTest1#", FontSize = "40", FontColor = "FF0000", Shading = "0000FF" });
+            paragraph.ChildElements.Add(new Label() { Text = "#KeyTest1#", FontSize = "40", FontColor = "#FontColorTestRed#", Shading = "0000FF" });
             paragraph.ChildElements.Add(new Label() { Text = "#KeyTest2#", Show = false });
             page1.ChildElements.Add(paragraph);
             var p2 = new Paragraph();
@@ -159,7 +148,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                             {
                                 ChildElements = new List<BaseElement>()
                                 {
-                                    new Label() {Text = "Cell 2 - First label" },
+                                    new Label() { Text = "Cell 2 - First label" },
                                     new Image()
                                     {
                                         MaxHeight = 100,
@@ -193,7 +182,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                                 Justification = JustificationValues.Right,
                                 ChildElements = new List<BaseElement>()
                                 {
-                                    new Label() {Text = "cellule4" }
+                                    new Label() { Text = "cellule4" }
                                 }
                             }
                         }
@@ -216,7 +205,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                         {
                             ChildElements = new List<BaseElement>()
                             {
-                                new Label() {Text = "header2" }
+                                new Label() { Text = "header2" }
                             }
                         }
                 }
@@ -270,14 +259,14 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                             Shading = "FFA0FF",
                             ChildElements = new List<BaseElement>()
                             {
-                                new Label() {Text = "#Cell1#" }
+                                new Label() { Text = "#Cell1#" }
                             }
                         },
                         new Cell()
                         {
                             ChildElements = new List<BaseElement>()
                             {
-                                new Label() {Text = "#Cell2#" }
+                                new Label() { Text = "#Cell2#" }
                             }
                         }
                     }
@@ -321,7 +310,188 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             p311.ChildElements.Add(new Label() { Text = " Success (not the same size)" });
             p31.ChildElements.Add(p311);
             page3.ChildElements.Add(p31);
+
+            TableOfContents tableOfContents = new TableOfContents()
+            {
+                StylesAndLevels = new List<Tuple<string, string>>()
+                {
+                    new Tuple<string, string>("Red", "1"),
+                    new Tuple<string, string>("Yellow", "2"),
+                },
+                Title = "Tessssssst !",
+                TitleStyleId = "Yellow",
+                ToCStylesId = new List<string>() { "Red" },
+                LeaderCharValue = TabStopLeaderCharValues.underscore
+            };
+            page3.ChildElements.Add(tableOfContents);
+
+            paragraph = new Paragraph()
+            {
+                ParagraphStyleId = "#ParagraphStyleIdTestYellow#"
+            };
+            paragraph.ChildElements.Add(new Label() { Text = "Ceci est un test de paragraph avec Style", FontSize = "30", FontName = "Arial" });
+            page3.ChildElements.Add(paragraph);
+
             doc.Pages.Add(page3);
+
+            var page4 = new Page();
+            //New page to manage UniformGrid:
+            var uniformGrid = new UniformGrid()
+            {
+                DataSourceKey = "#UniformGridSample#",
+                ColsWidth = new int[2] { 2500, 2500 },
+                TableWidth = new TableWidthModel() { Width = "5000", Type = TableWidthUnitValues.Pct },
+                CellModel = new Cell()
+                {
+                    VerticalAlignment = TableVerticalAlignmentValues.Center,
+                    Justification = JustificationValues.Center,
+                    ChildElements = new List<BaseElement>()
+                        {
+                            new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "#CellUniformGridTitle#" } } },
+                            new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "Cell 1 - Second paragraph" } } }
+                        }
+                },
+                HeaderRow = new Row()
+                {
+                    Cells = new List<Cell>()
+                    {
+                        new Cell()
+                        {
+                            ChildElements = new List<BaseElement>()
+                            {
+                                new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "header1" } } }
+                            }
+                        },
+                        new Cell()
+                        {
+                            ChildElements = new List<BaseElement>()
+                            {
+                                new Label() { Text = "header2" }
+                            }
+                        }
+                    }
+                },
+                Borders = new Word.ReportEngine.Models.Attributes.BorderModel()
+                {
+                    BorderPositions = Word.ReportEngine.Models.Attributes.BorderPositions.BOTTOM | Word.ReportEngine.Models.Attributes.BorderPositions.INSIDEVERTICAL,
+                    BorderWidthBottom = 50,
+                    BorderWidthInsideVertical = 1,
+                    UseVariableBorders = true,
+                    BorderColor = "FF0000"
+                }
+            };
+
+            page4.ChildElements.Add(uniformGrid);
+
+            doc.Pages.Add(page4);
+
+            var page5 = new Page();
+            var tableDataSourceWithBeforeAfter = new Table()
+            {
+                TableWidth = new TableWidthModel() { Width = "5000", Type = TableWidthUnitValues.Pct },
+                ColsWidth = new int[2] { 750, 4250 },
+                Borders = new Word.ReportEngine.Models.Attributes.BorderModel()
+                {
+                    BorderPositions = (Word.ReportEngine.Models.Attributes.BorderPositions)63,
+                    BorderColor = "328864",
+                    BorderWidth = 20,
+                },
+                BeforeRows = new List<Row>()
+                {
+                    new Row()
+                    {
+                        Cells = new List<Cell>()
+                        {
+                            new Cell()
+                            {
+                                VerticalAlignment = TableVerticalAlignmentValues.Bottom,
+                                Justification = JustificationValues.Left,
+                                ChildElements = new List<BaseElement>()
+                                {
+                                    new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "Cell 1 - A small paragraph" } }, ParagraphStyleId = "Yellow" },
+                                    new Image()
+                                    {
+                                        MaxHeight = 100,
+                                        MaxWidth = 100,
+                                        Path = @"..\..\Resources\Desert.jpg",
+                                        ImagePartType = Packaging.ImagePartType.Jpeg
+                                    },
+                                    new Label() { Text = "Custom header" },
+                                    new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "Cell 1 - an other paragraph" } } }
+                                },
+                                Fusion = true
+                            },
+                            new Cell()
+                            {
+                                ChildElements = new List<BaseElement>()
+                                {
+                                    new Label() { Text = "Cell 2 - an other label" },
+                                    new Image()
+                                    {
+                                        MaxHeight = 100,
+                                        MaxWidth = 100,
+                                        Path = @"..\..\Resources\Desert.jpg",
+                                        ImagePartType = Packaging.ImagePartType.Jpeg
+                                    },
+                                    new Label() { Text = "Cell 2 - an other other label" }
+                                },
+                                Borders = new Word.ReportEngine.Models.Attributes.BorderModel()
+                                {
+                                    BorderColor = "00FF22",
+                                    BorderWidth = 15,
+                                    BorderPositions = Word.ReportEngine.Models.Attributes.BorderPositions.RIGHT | Word.ReportEngine.Models.Attributes.BorderPositions.TOP
+                                }
+                            }
+                        }
+                    },
+                    new Row()
+                    {
+                        Cells = new List<Cell>()
+                        {
+                            new Cell()
+                            {
+                                Fusion = true,
+                                FusionChild = true
+                            },
+                            new Cell()
+                            {
+                                VerticalAlignment = TableVerticalAlignmentValues.Bottom,
+                                Justification = JustificationValues.Right,
+                                ChildElements = new List<BaseElement>()
+                                {
+                                    new Label() { Text = "celluleX" }
+                                }
+                            }
+                        }
+                    }
+                },
+                RowModel = new Row()
+                {
+                    Cells = new List<Cell>()
+                    {
+                        new Cell()
+                        {
+                            Shading = "FFA2FF",
+                            ChildElements = new List<BaseElement>()
+                            {
+                                new Label() { Text = "Cell : #Cell1#" }
+                            }
+                        },
+                        new Cell()
+                        {
+                            ChildElements = new List<BaseElement>()
+                            {
+                                new Label() { Text = "Cell : #Cell2#" }
+                            }
+                        }
+                    }
+                },
+                DataSourceKey = "#Datasource#"
+            };
+
+            page5.ChildElements.Add(tableDataSourceWithBeforeAfter);
+
+            doc.Pages.Add(page5);
 
             // Header
             var header = new Header();
@@ -369,18 +539,35 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             context.AddItem("#KeyTest1#", new StringModel("Key 1"));
             context.AddItem("#KeyTest2#", new StringModel("Key 2"));
 
+            context.AddItem("#FontColorTestRed#", new StringModel("333333"));
+            context.AddItem("#ParagraphStyleIdTestYellow#", new StringModel("Yellow"));
+
             ContextModel row1 = new ContextModel();
             row1.AddItem("#Cell1#", new StringModel("Col 1 Row 1"));
             row1.AddItem("#Cell2#", new StringModel("Col 2 Row 1"));
+            row1.AddItem("#Label#", new StringModel("Label 1"));
             ContextModel row2 = new ContextModel();
             row2.AddItem("#Cell1#", new StringModel("Col 2 Row 1"));
             row2.AddItem("#Cell2#", new StringModel("Col 2 Row 2"));
+            row2.AddItem("#Label#", new StringModel("Label 2"));
             context.AddItem("#Datasource#", new DataSourceModel()
             {
                 Items = new List<ContextModel>()
                     {
                         row1, row2
                     }
+            });
+
+            List<ContextModel> cellsContext = new List<ContextModel>();
+            for (int i = 0; i < DateTime.Now.Day; i++)
+            {
+                ContextModel uniformGridContext = new ContextModel();
+                uniformGridContext.AddItem("#CellUniformGridTitle#", new StringModel("Item number " + (i + 1)));
+                cellsContext.Add(uniformGridContext);
+            }
+            context.AddItem("#UniformGridSample#", new DataSourceModel()
+            {
+                Items = cellsContext
             });
 
             return context;

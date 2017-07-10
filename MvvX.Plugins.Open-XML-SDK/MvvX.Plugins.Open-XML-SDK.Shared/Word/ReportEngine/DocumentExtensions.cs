@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using DocumentFormat.OpenXml.Packaging;
+﻿using DocumentFormat.OpenXml.Packaging;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models;
 
@@ -21,24 +20,6 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
             foreach (var style in document.Styles)
             {
                 style.Render(spart, context);
-            }
-
-            if (document.TableOfContents != null)
-            {
-                document.TableOfContents.Render(wdDoc);
-                if (document.TableOfContents.ToCStylesId.Any())
-                {
-                    for (int i = 0; i < document.TableOfContents.ToCStylesId.Count; i++)
-                    {
-                        Style style = new Style()
-                        {
-                            StyleId = string.Concat("toc ", i + 1),
-                            StyleBasedOn = document.TableOfContents.ToCStylesId[i],
-                            CustomStyle = false
-                        };
-                        style.Render(spart, context);
-                    }
-                }
             }
 
             foreach (var page in document.Pages)
