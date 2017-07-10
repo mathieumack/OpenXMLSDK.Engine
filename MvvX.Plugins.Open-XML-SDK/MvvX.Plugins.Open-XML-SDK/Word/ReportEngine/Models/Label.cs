@@ -8,7 +8,7 @@
         /// <summary>
         /// Flag html content
         /// </summary>
-        public bool IsHtml {get; set;}
+        public bool IsHtml { get; set; }
         
         /// <summary>
         /// Label content (can contains #key# from context)
