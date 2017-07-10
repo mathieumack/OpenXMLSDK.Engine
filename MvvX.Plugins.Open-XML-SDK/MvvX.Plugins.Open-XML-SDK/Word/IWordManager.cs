@@ -70,7 +70,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Word
         /// <param name="filePath">Destination file path</param>
         /// <param name="filesToInsert">Documents to insert</param>
         /// <param name="insertPageBreaks">Indicate if a page break must be added after each document</param>
-        void AppendSubDocumentsList(string filePath, IList<Stream> filesToInsert, bool insertPageBreaks);
+        void AppendSubDocumentsList(string filePath, IList<MemoryStream> filesToInsert, bool insertPageBreaks);
 
         /// <summary>
         /// Insert paragraph in bookmark
