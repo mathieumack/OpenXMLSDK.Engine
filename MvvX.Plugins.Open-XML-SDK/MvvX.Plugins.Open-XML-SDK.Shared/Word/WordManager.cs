@@ -473,7 +473,6 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
             CloseDocNoSave();
         }
 
-
         /// <summary>
         ///  Append a list of SubDocuments after the predecessorElement.
         /// </summary>
@@ -569,13 +568,12 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
             var bookmarkElement = FindBookmark(bookmark);
             if (bookmarkElement != default(BookmarkEnd))
             {
-                var insertAfterElement = wdDoc.MainDocumentPart.Document.Body.Descendants<BookmarkStart>().SingleOrDefault<BookmarkStart>((BookmarkStart b) => b.Name == bookmark)
+                OpenXmlCompositeElement insertAfterElement = wdDoc.MainDocumentPart.Document.Body.Descendants<BookmarkStart>().SingleOrDefault<BookmarkStart>((BookmarkStart b) => b.Name == bookmark)
                     .Ancestors<Paragraph>().FirstOrDefault<Paragraph>();
-                AppendStreams(filesToInsert, insertPageBreaks, insertAfterElement);
-                
-                
+                AppendStreams(filesToInsert, insertPageBreaks, insertAfterElement);                
             }
         }
+
         #endregion
 
         #region Images
