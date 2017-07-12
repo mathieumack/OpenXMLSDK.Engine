@@ -39,6 +39,9 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
 
         public static TableRow Render(this Row row, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart, bool isHeader)
         {
+            if (!string.IsNullOrWhiteSpace(row.ShowKey) && context.ExistItem<BooleanModel>(row.ShowKey) && !context.GetItem<BooleanModel>(row.ShowKey).Value)
+                return null;
+
             context.ReplaceItem(row);
 
             TableRow wordRow = new TableRow();
