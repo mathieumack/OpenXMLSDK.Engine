@@ -121,10 +121,12 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels
         /// <param name="element"></param>
         public void ReplaceItem(Label element)
         {
-            if(!string.IsNullOrEmpty(element.Text))
+            if (!string.IsNullOrEmpty(element.Text))
                 element.Text = ReplaceText(element.Text);
             if (!string.IsNullOrEmpty(element.FontColor))
                 element.FontColor = ReplaceText(element.FontColor);
+            if (!string.IsNullOrEmpty(element.Shading))
+                element.Shading = ReplaceText(element.Shading);
             SetVisibilityFromContext(element);
         }
 
@@ -138,6 +140,40 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels
                 element.ParagraphStyleId = ReplaceText(element.ParagraphStyleId);
             if (!string.IsNullOrEmpty(element.FontColor))
                 element.FontColor = ReplaceText(element.FontColor);
+            if (!string.IsNullOrEmpty(element.Shading))
+                element.Shading = ReplaceText(element.Shading);
+            if (element.Borders != null && !string.IsNullOrEmpty(element.Borders.BorderColor))
+                element.Borders.BorderColor = ReplaceText(element.Borders.BorderColor);
+            SetVisibilityFromContext(element);
+        }
+
+        /// <summary>
+        /// Replace text, FontColor and visibility of element
+        /// </summary>
+        /// <param name="element"></param>
+        public void ReplaceItem(Cell element)
+        {
+            if (!string.IsNullOrEmpty(element.FontColor))
+                element.FontColor = ReplaceText(element.FontColor);
+            if (!string.IsNullOrEmpty(element.Shading))
+                element.Shading = ReplaceText(element.Shading);
+            if (element.Borders != null && !string.IsNullOrEmpty(element.Borders.BorderColor))
+                element.Borders.BorderColor = ReplaceText(element.Borders.BorderColor);
+            SetVisibilityFromContext(element);
+        }
+
+        /// <summary>
+        /// Replace text, FontColor and visibility of element
+        /// </summary>
+        /// <param name="element"></param>
+        public void ReplaceItem(Table element)
+        {
+            if (!string.IsNullOrEmpty(element.FontColor))
+                element.FontColor = ReplaceText(element.FontColor);
+            if (!string.IsNullOrEmpty(element.Shading))
+                element.Shading = ReplaceText(element.Shading);
+            if (element.Borders != null && !string.IsNullOrEmpty(element.Borders.BorderColor))
+                element.Borders.BorderColor = ReplaceText(element.Borders.BorderColor);
             SetVisibilityFromContext(element);
         }
 
