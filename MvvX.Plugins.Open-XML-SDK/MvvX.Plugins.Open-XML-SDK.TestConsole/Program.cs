@@ -65,7 +65,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
 
                     // test ecriture fichier
                     File.WriteAllBytes(documentName, res);
-                    
+
                     Process.Start(documentName);
                 }
                 else
@@ -109,7 +109,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             paragraph.ChildElements.Add(new Label() { Text = "#KeyTest2#", Show = false });
             page1.ChildElements.Add(paragraph);
             var p2 = new Paragraph();
-            p2.Shading = "FF0000";
+            p2.Shading = "#ParagraphShading#";
             p2.ChildElements.Add(new Label() { Text = "   texte paragraph2 avec espace avant", FontSize = "20", SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve });
             p2.ChildElements.Add(new Label() { Text = "texte2 paragraph2 avec espace après   ", SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve });
             p2.ChildElements.Add(new Label() { Text = "   texte3 paragraph2 avec espace avant et après   ", SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve });
@@ -160,7 +160,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                                 },
                                 Borders = new Word.ReportEngine.Models.Attributes.BorderModel()
                                 {
-                                    BorderColor = "00FF00",
+                                    BorderColor = "#BorderColor#",
                                     BorderWidth = 20,
                                     BorderPositions = Word.ReportEngine.Models.Attributes.BorderPositions.LEFT | Word.ReportEngine.Models.Attributes.BorderPositions.TOP
                                 }
@@ -296,7 +296,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             {
                 BorderPositions = (Word.ReportEngine.Models.Attributes.BorderPositions)13,
                 BorderWidth = 20,
-                BorderColor = "0000FF"
+                BorderColor = "#ParagraphBorderColor#"
             };
             p23.SpacingBetweenLines = 360;
             p23.ChildElements.Add(new Label() { Text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse urna augue, convallis eu enim vitae, maximus ultrices nulla. Sed egestas volutpat luctus. Maecenas sodales erat eu elit auctor, eu mattis neque maximus. Duis ac risus quis sem bibendum efficitur. Vivamus justo augue, molestie quis orci non, maximus imperdiet justo. Donec condimentum rhoncus est, ut varius lorem efficitur sed. Donec accumsan sit amet nisl vel ornare. Duis aliquet urna eu mauris porttitor facilisis. " });
@@ -536,6 +536,9 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
         private static ContextModel GetContext()
         {
             ContextModel context = new ContextModel();
+            context.AddItem("#ParagraphShading#", new StringModel("00FF00"));
+            context.AddItem("#ParagraphBorderColor#", new StringModel("105296"));
+            context.AddItem("#BorderColor#", new StringModel("00FF00"));
             context.AddItem("#KeyTest1#", new StringModel("Key 1"));
             context.AddItem("#KeyTest2#", new StringModel("Key 2"));
 

@@ -11,6 +11,9 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
     {
         public static void Render(this Page page, OpenXmlElement wdDoc, ContextModel context, MainDocumentPart mainDocumentPart, bool addPageBreak)
         {
+            if (!string.IsNullOrWhiteSpace(page.ShowKey) && context.Data.ContainsKey(page.ShowKey) && !context.GetItem<BooleanModel>(page.ShowKey).Value)
+                return;
+
             // add page content
             ((BaseElement)page).Render(wdDoc, context, mainDocumentPart);
 
