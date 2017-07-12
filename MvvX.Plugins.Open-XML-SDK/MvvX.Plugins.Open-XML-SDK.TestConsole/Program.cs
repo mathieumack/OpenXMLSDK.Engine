@@ -169,6 +169,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                     },
                     new Row()
                     {
+                        ShowKey = "#NoRow#",
                         Cells = new List<Cell>()
                         {
                             new Cell()
@@ -536,6 +537,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
         private static ContextModel GetContext()
         {
             ContextModel context = new ContextModel();
+            context.AddItem("#NoRow#", new BooleanModel(false));
             context.AddItem("#ParagraphShading#", new StringModel("00FF00"));
             context.AddItem("#ParagraphBorderColor#", new StringModel("105296"));
             context.AddItem("#BorderColor#", new StringModel("00FF00"));
