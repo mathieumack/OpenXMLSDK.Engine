@@ -89,6 +89,9 @@
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Extensions\BorderValuesExtensions.cs">
       <Link>Word\Extensions\BorderValuesExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Extensions\ChartsExtensions.cs">
+      <Link>Word\Extensions\ChartsExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Extensions\JustificationValuesExtensions.cs">
       <Link>Word\Extensions\JustificationValuesExtensions.cs</Link>
     </Compile>
@@ -154,6 +157,9 @@
     </Compile>
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\PlatformText.cs">
       <Link>Word\PlatformText.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\BarChartExtensions.cs">
+      <Link>Word\ReportEngine\BarChartExtensions.cs</Link>
     </Compile>
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\BaseElementExtensions.cs">
       <Link>Word\ReportEngine\BaseElementExtensions.cs</Link>

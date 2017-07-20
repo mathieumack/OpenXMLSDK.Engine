@@ -49,6 +49,7 @@
     <Compile Include="Validation\IOpenXMLValidator.cs" />
     <Compile Include="Validation\ValidationErrorInfo.cs" />
     <Compile Include="Validation\ValidationErrorType.cs" />
+    <Compile Include="Word\Charts\ChartModelException.cs" />
     <Compile Include="Word\HeaderFooterValues.cs" />
     <Compile Include="Word\IAltChunk.cs" />
     <Compile Include="Word\IDecimalNumberType.cs" />
@@ -68,6 +69,9 @@
     <Compile Include="Packaging\ImagePartType.cs" />
     <Compile Include="Word\IWordManager.cs" />
     <Compile Include="Word\JustificationValues.cs" />
+    <Compile Include="Word\Models\Charts\ChartCategorie.cs" />
+    <Compile Include="Word\Models\Charts\ChartModel.cs" />
+    <Compile Include="Word\Models\Charts\ChartSerie.cs" />
     <Compile Include="Word\Models\GridSpanModel.cs" />
     <Compile Include="Word\Models\NumberingPropertiesModel.cs" />
     <Compile Include="Word\Models\ParagraphPropertiesModel.cs" />
@@ -83,6 +87,7 @@
     <Compile Include="Word\Paragraphs\IParagraphProperties.cs" />
     <Compile Include="Word\Paragraphs\IParagraphStyleId.cs" />
     <Compile Include="Word\Paragraphs\ISpacingBetweenLines.cs" />
+    <Compile Include="Word\ReportEngine\BatchModels\BarChartModel.cs" />
     <Compile Include="Word\ReportEngine\BatchModels\Base64ContentModel.cs" />
     <Compile Include="Word\ReportEngine\BaseModel.cs" />
     <Compile Include="Word\ReportEngine\BatchModels\BooleanModel.cs" />
@@ -99,6 +104,8 @@
     <Compile Include="Word\ReportEngine\Models\Attributes\SpacingModel.cs" />
     <Compile Include="Word\ReportEngine\Models\BaseElement.cs" />
     <Compile Include="Word\ReportEngine\Models\Cell.cs" />
+    <Compile Include="Word\ReportEngine\Models\Charts\BarModel.cs" />
+    <Compile Include="Word\ReportEngine\Models\Charts\BarSerie.cs" />
     <Compile Include="Word\ReportEngine\Models\Document.cs" />
     <Compile Include="Word\ReportEngine\Models\Footer.cs" />
     <Compile Include="Word\ReportEngine\Models\ForEach.cs" />

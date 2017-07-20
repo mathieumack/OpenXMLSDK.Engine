@@ -572,7 +572,17 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
 
         #endregion
 
-        #region Images
+        #region Parts
+
+        /// <summary>
+        /// Add a new part in the document
+        /// </summary>
+        /// <typeparam name="T">Type of the object</typeparam>
+        /// <returns>created part</returns>
+        public T AddNewPart<T>() where T : OpenXmlPart, IFixedContentTypePart
+        {
+            return wdMainDocumentPart.AddNewPart<T>();
+        }
 
         /// <summary>
         /// Renvoie l'ID d'une part dans le document
@@ -580,10 +590,14 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
         /// <typeparam name="T">Type du part</typeparam>
         /// <param name="part">Part</param>
         /// <returns>Id du part dans le document</returns>
-        private string GetIdOfPart<T>(T part) where T : OpenXmlPart
+        public string GetIdOfPart<T>(T part) where T : OpenXmlPart
         {
             return wdMainDocumentPart.GetIdOfPart(part);
         }
+
+        #endregion
+
+        #region Images
 
         /// <summary>
         /// Permet d'ajouter le type d'une image dans le document de type OpenXmlPart
