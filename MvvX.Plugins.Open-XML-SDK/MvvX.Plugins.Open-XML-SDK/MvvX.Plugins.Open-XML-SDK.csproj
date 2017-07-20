@@ -103,6 +103,7 @@
     <Compile Include="Word\ReportEngine\Models\Cell.cs" />
     <Compile Include="Word\ReportEngine\Models\Charts\BarCategory.cs" />
     <Compile Include="Word\ReportEngine\Models\Charts\BarChartType.cs" />
+    <Compile Include="Word\ReportEngine\Models\Charts\BarDirectionValues.cs" />
     <Compile Include="Word\ReportEngine\Models\Charts\BarModel.cs" />
     <Compile Include="Word\ReportEngine\Models\Charts\BarSerie.cs" />
     <Compile Include="Word\ReportEngine\Models\Document.cs" />

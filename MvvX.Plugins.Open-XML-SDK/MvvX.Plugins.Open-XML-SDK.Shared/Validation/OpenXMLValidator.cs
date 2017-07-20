@@ -10,17 +10,18 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Validation
     {
         public IEnumerable<OpenXMLSDK.Validation.ValidationErrorInfo> ValidateWordDocument(string filePath)
         {
-                using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(filePath, false))
+            using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(filePath, false))
+            {
+                var validator = new OpenXmlValidator();
+                var errors = validator.Validate(wordDoc);
+                var listError = errors.ToList();
+                return errors.Select(e => new OpenXMLSDK.Validation.ValidationErrorInfo()
                 {
-                    var validator = new OpenXmlValidator();
-                    var errors = validator.Validate(wordDoc);
-                    return errors.Select(e => new OpenXMLSDK.Validation.ValidationErrorInfo()
-                    {
-                        Id = e.Id,
-                        ErrorType = (OpenXMLSDK.Validation.ValidationErrorType)(int)e.ErrorType,
-                        Description = e.Description,
-                        XmlPath = e.Path.XPath
-                    });
+                    Id = e.Id,
+                    ErrorType = (OpenXMLSDK.Validation.ValidationErrorType)(int)e.ErrorType,
+                    Description = e.Description,
+                    XmlPath = e.Path.XPath
+                });
             }
         }
     }

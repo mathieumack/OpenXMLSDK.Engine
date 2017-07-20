@@ -10,6 +10,13 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models.Charts
         public BarChartType BarChartType { get; set; }
 
         /// <summary>
+        /// Direction of bar chart
+        /// Horizontal = Bar chart (default)
+        /// Vertical = Column chart
+        /// </summary>
+        public BarDirectionValues BarDirectionValues { get; set; } = BarDirectionValues.Bar;
+
+        /// <summary>
         /// Graph Title
         /// </summary>
         public string Title { get; set; }

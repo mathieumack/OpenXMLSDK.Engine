@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using MvvX.Plugins.OpenXMLSDK.Platform.Validation;
 using MvvX.Plugins.OpenXMLSDK.Platform.Word;
 using MvvX.Plugins.OpenXMLSDK.Word;
 using MvvX.Plugins.OpenXMLSDK.Word.Models;
@@ -22,6 +23,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
         {
             ReportEngineTest();
 
+            ValidateDocument();
             // fin test report engine
 
             //OldProgram();
@@ -42,6 +44,21 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             ReportEngine(filePath, documentName);
         }
 
+        private static void ValidateDocument()
+        {
+            // Debut test report engine
+            var validator = new OpenXMLValidator();
+            var results = validator.ValidateWordDocument("ExampleDocument.docx");
+            File.Delete("ValidateDocument.txt");
+            foreach(var result in results)
+            {
+                File.AppendAllText("ValidateDocument.txt", 
+                                    result.XmlPath + Environment.NewLine + 
+                                    result.Description + Environment.NewLine +
+                                    result.ErrorType.ToString() + Environment.NewLine +
+                                    " - - - - - - - - - ");
+            }
+        }
         private static void ReportEngine(string filePath, string documentName)
         {
             // Debut test report engine
@@ -497,66 +514,68 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
 
             var page6 = new Page();
 
-            // New page with a graph
-            var barGraph = new BarModel()
+            var pr = new Paragraph()
             {
-                Title = "Graph test",
-                ShowTitle = true,
-                FontSize = 23,
-                ShowBarBorder = true,
-                BarChartType = BarChartType.BarGroupingChart,
-                Categories = new List<BarCategory>()
-                {
-                    new BarCategory()
+                ChildElements = new List<BaseElement>() {
+                    new BarModel()
                     {
-                        Name = "Category 1"
-                    },
-                    new BarCategory()
-                    {
-                        Name = "Category 2"
-                    },
-                    new BarCategory()
-                    {
-                        Name = "Category 3"
-                    },
-                    new BarCategory()
-                    {
-                        Name = "Category 4"
+                        Title = "Graph test",
+                        ShowTitle = true,
+                        FontSize = 23,
+                        ShowBarBorder = true,
+                        BarChartType = BarChartType.BarChart,
+                        BarDirectionValues = BarDirectionValues.Column,
+                        Categories = new List<BarCategory>()
+                        {
+                            new BarCategory()
+                            {
+                                Name = "Category 1"
+                            },
+                            new BarCategory()
+                            {
+                                Name = "Category 2"
+                            },
+                            new BarCategory()
+                            {
+                                Name = "Category 3"
+                            },
+                            new BarCategory()
+                            {
+                                Name = "Category 4"
+                            }
+                        },
+                        Series = new List<BarSerie>()
+                        {
+                            new BarSerie()
+                            {
+                                Values = new List<double>()
+                                {
+                                    1, 2, 3, 4
+                                },
+                                Name = "Bar serie 1"
+                            },
+                            new BarSerie()
+                            {
+                                Values = new List<double>()
+                                {
+                                    5, 6, 7, 8
+                                },
+                                Name = "Bar serie 2"
+                            },
+                            new BarSerie()
+                            {
+                                Values = new List<double>()
+                                {
+                                    9, 10, 11, 12
+                                },
+                                Name = "Bar serie 3"
+                            },
+                        }
                     }
-                },
-                Series = new List<BarSerie>()
-                {
-                    new BarSerie()
-                    {
-                        Values = new List<double>()
-                        {
-                            1, 2, 3, 4
-                        },
-                        Name = "Bar serie 1",
-                        Color = "#111111"
-                    },
-                    new BarSerie()
-                    {
-                        Values = new List<double>()
-                        {
-                            5, 6, 7, 8
-                        },
-                        Name = "Bar serie 2",
-                        Color = "#444444"
-                    },
-                    new BarSerie()
-                    {
-                        Values = new List<double>()
-                        {
-                            9, 10, 11, 12
-                        },
-                        Name = "Bar serie 3",
-                        Color = "#AAAAAA"
-                    },
                 }
             };
 
-            page6.ChildElements.Add(barGraph);
+            page6.ChildElements.Add(pr);
 
             doc.Pages.Add(page6);
 

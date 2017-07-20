@@ -2,7 +2,6 @@
 {
     public enum BarChartType
     {
-        BarChart = 1,
-        BarGroupingChart = 2
+        BarChart = 1
     }
 }

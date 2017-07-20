@@ -30,10 +30,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
             switch(barChart.BarChartType)
             {
                 case BarChartType.BarChart:
-                    runItem = null;
-                    break;
-                case BarChartType.BarGroupingChart:
-                    runItem = InsertGraphBarGroupingToBookmark(barChart, documentPart);
+                    runItem = CreateBarGraph(barChart, documentPart);
                     break;
             }
            
@@ -44,26 +41,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
         }
 
         #region Internal methods
-
-        /// <summary>
-        /// Permet de créer un graphique en barres empilées pour un document word et l'insère dans un bookmark
-        /// </summary>
-        /// <param name="chartModel">Modèle de données du graph</param>
-        /// <param name="showLegend">Indique si la légende sera présente ou non sur le graphique</param>
-        /// <param name="title">Titre du graphique</param>
-        /// <param name="maxWidth">Largeur maximum du graphique en pixel</param>
-        /// <param name="maxHeight">Hauteur maximum du graphique en pixel</param>
-        /// <exception cref="ChartModelException">Model de graphique invalide</exception>
-        private static Run InsertGraphBarGroupingToBookmark(BarModel chartModel, OpenXmlPart documentPart)
-        {
-            if (chartModel.Categories == null)
-                throw new ArgumentNullException("categories of chartModel must not be null");
-            if (chartModel.Series == null)
-                throw new ArgumentNullException("series of chartModel must be not null");
-
-            return CreateBarGroupingGraph(chartModel, documentPart);
-        }
-
+        
         /// <summary>
         /// Permet de créer un graphique en barres empilées pour un document word
         /// </summary>
@@ -74,7 +52,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
         /// <param name="maxHeight">Hauteur maximum du graphique en pixel</param>
         /// <exception cref="ChartModelException">Model de graphique invalide</exception>
         /// <returns></returns>
-        private static Run CreateBarGroupingGraph(BarModel chartModel, OpenXmlPart documentPart)
+        private static Run CreateBarGraph(BarModel chartModel, OpenXmlPart documentPart)
         {
             if (chartModel.Categories == null)
                 throw new ArgumentNullException("categories of chartModel must not be null");
@@ -111,7 +89,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
             // Create a new clustered column chart.
             dc.PlotArea plotArea = chart.AppendChild<dc.PlotArea>(new dc.PlotArea());
             dc.Layout layout = plotArea.AppendChild<dc.Layout>(new dc.Layout());
-            dc.BarChart barChart = plotArea.AppendChild<dc.BarChart>(new dc.BarChart(new dc.BarDirection() { Val = new DocumentFormat.OpenXml.EnumValue<dc.BarDirectionValues>(dc.BarDirectionValues.Bar) },
+            dc.BarChart barChart = plotArea.AppendChild<dc.BarChart>(new dc.BarChart(new dc.BarDirection() { Val = new DocumentFormat.OpenXml.EnumValue<dc.BarDirectionValues>((dc.BarDirectionValues)(int)chartModel.BarDirectionValues) },
                 new dc.BarGrouping() { Val = new DocumentFormat.OpenXml.EnumValue<dc.BarGroupingValues>(dc.BarGroupingValues.Stacked) }));
 
             uint i = 0;
@@ -193,15 +171,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
             }
 
             barChart.Append(dLbls);
-
-            //barChart.Append(new dc.DataLabels(
-            //    new dc.ShowLegendKey() { Val = false },
-            //    new dc.ShowValue() { Val = chartModel.ShowDataLabel },
-            //    new dc.ShowCategoryName() { Val = false },
-            //    new dc.ShowSeriesName() { Val = false },
-            //    new dc.ShowPercent() { Val = false },
-            //    new dc.ShowBubbleSize() { Val = false }));
-
+            
             if (chartModel.SpaceBetweenLineCategories.HasValue)
                 barChart.Append(new dc.GapWidth() { Val = (UInt16)chartModel.SpaceBetweenLineCategories.Value });
             else
@@ -299,47 +269,36 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
 
             // Gestion de l'élément Drawing
             var element = new Run(
-                            new DocumentFormat.OpenXml.Wordprocessing.Drawing(
-                                new DW.Inline(
-                                    new DW.Extent() { Cx = imageWidth, Cy = imageHeight },
-                                    new DW.EffectExtent()
-                                    {
-                                        LeftEdge = 0L,
-                                        TopEdge = 0L,
-                                        RightEdge = 0L,
-                                        BottomEdge = 0L
-                                    },
-                                    new DW.DocProperties()
-                                    {
-                                        Id = (UInt32Value)1U,
-                                        Name = "Chart 1"
-                                    },
-                                    new DW.NonVisualGraphicFrameDrawingProperties(
-                                        new A.GraphicFrameLocks() { NoChangeAspect = true }),
-                                    new A.Graphic(
-                                        new A.GraphicData(
-                                            // Lien avec l'Id du graphique
-                                            new DocumentFormat.OpenXml.Drawing.Charts.ChartReference() { Id = relationshipId }
-                                            )
-                                        { Uri = "http://schemas.openxmlformats.org/drawingml/2006/chart" })
+                new DocumentFormat.OpenXml.Wordprocessing.Drawing(
+                    new DW.Inline(
+                        new DW.Extent() { Cx = imageWidth, Cy = imageHeight },
+                        new DW.EffectExtent()
+                        {
+                            LeftEdge = 0L,
+                            TopEdge = 0L,
+                            RightEdge = 0L,
+                            BottomEdge = 0L
+                        },
+                        new DW.DocProperties()
+                        {
+                            Id = (UInt32Value)1U,
+                            Name = "Chart 1"
+                        },
+                        new DW.NonVisualGraphicFrameDrawingProperties(
+                            new A.GraphicFrameLocks() { NoChangeAspect = true }),
+                        new A.Graphic(
+                            new A.GraphicData(
+                                // Lien avec l'Id du graphique
+                                new DocumentFormat.OpenXml.Drawing.Charts.ChartReference() { Id = relationshipId }
                                 )
-                            )
-                        );
+                            { Uri = "http://schemas.openxmlformats.org/drawingml/2006/chart" })
+                    )
+                )
+            );
 
             return element;
         }
-
-
-        private static Run InsertGraphDoughnutToBookmark(BarModel chartModel, WordManager manager)
-        {
-            if (chartModel.Categories == null)
-                throw new ArgumentNullException("categories of chartModel must not be null");
-            if (chartModel.Series == null)
-                throw new ArgumentNullException("series of chartModel must be not null");
-
-            return CreateDoughnutGraph(chartModel, manager);
-        }
-
+        
         /// <summary>
         /// Permet de créer un graphique en forme de doughnut pour un document word
         /// </summary>
