@@ -7,13 +7,13 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels
         /// <summary>
         /// Contenu du graphique
         /// </summary>
-        public BarChartModel BarChartContent { get; set; }
+        public BarModel BarChartContent { get; set; }
 
         public BarChartModel()
             : this(null)
         { }
 
-        public BarChartModel(Models.Charts.BarChartModel barChartContent)
+        public BarChartModel(BarModel barChartContent)
             : base(typeof(BarChartModel).Name)
         {
             this.BarChartContent = barChartContent;

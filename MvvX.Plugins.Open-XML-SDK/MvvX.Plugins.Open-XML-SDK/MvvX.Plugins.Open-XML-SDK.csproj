@@ -69,9 +69,6 @@
     <Compile Include="Packaging\ImagePartType.cs" />
     <Compile Include="Word\IWordManager.cs" />
     <Compile Include="Word\JustificationValues.cs" />
-    <Compile Include="Word\Models\Charts\ChartCategorie.cs" />
-    <Compile Include="Word\Models\Charts\ChartModel.cs" />
-    <Compile Include="Word\Models\Charts\ChartSerie.cs" />
     <Compile Include="Word\Models\GridSpanModel.cs" />
     <Compile Include="Word\Models\NumberingPropertiesModel.cs" />
     <Compile Include="Word\Models\ParagraphPropertiesModel.cs" />
@@ -104,6 +101,8 @@
     <Compile Include="Word\ReportEngine\Models\Attributes\SpacingModel.cs" />
     <Compile Include="Word\ReportEngine\Models\BaseElement.cs" />
     <Compile Include="Word\ReportEngine\Models\Cell.cs" />
+    <Compile Include="Word\ReportEngine\Models\Charts\BarCategory.cs" />
+    <Compile Include="Word\ReportEngine\Models\Charts\BarChartType.cs" />
     <Compile Include="Word\ReportEngine\Models\Charts\BarModel.cs" />
     <Compile Include="Word\ReportEngine\Models\Charts\BarSerie.cs" />
     <Compile Include="Word\ReportEngine\Models\Document.cs" />

@@ -9,6 +9,7 @@ using MvvX.Plugins.OpenXMLSDK.Word.Paragraphs;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models;
+using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models.Charts;
 using MvvX.Plugins.OpenXMLSDK.Word.Tables;
 using MvvX.Plugins.OpenXMLSDK.Word.Tables.Models;
 using Newtonsoft.Json;
@@ -493,6 +494,71 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             page5.ChildElements.Add(tableDataSourceWithBeforeAfter);
 
             doc.Pages.Add(page5);
+
+            var page6 = new Page();
+
+            // New page with a graph
+            var barGraph = new BarModel()
+            {
+                Title = "Graph test",
+                ShowTitle = true,
+                FontSize = 23,
+                ShowBarBorder = true,
+                BarChartType = BarChartType.BarGroupingChart,
+                Categories = new List<BarCategory>()
+                {
+                    new BarCategory()
+                    {
+                        Name = "Category 1"
+                    },
+                    new BarCategory()
+                    {
+                        Name = "Category 2"
+                    },
+                    new BarCategory()
+                    {
+                        Name = "Category 3"
+                    },
+                    new BarCategory()
+                    {
+                        Name = "Category 4"
+                    }
+                },
+                Series = new List<BarSerie>()
+                {
+                    new BarSerie()
+                    {
+                        Values = new List<double>()
+                        {
+                            1, 2, 3, 4
+                        },
+                        Name = "Bar serie 1",
+                        Color = "#111111"
+                    },
+                    new BarSerie()
+                    {
+                        Values = new List<double>()
+                        {
+                            5, 6, 7, 8
+                        },
+                        Name = "Bar serie 2",
+                        Color = "#444444"
+                    },
+                    new BarSerie()
+                    {
+                        Values = new List<double>()
+                        {
+                            9, 10, 11, 12
+                        },
+                        Name = "Bar serie 3",
+                        Color = "#AAAAAA"
+                    },
+                }
+            };
+
+            page6.ChildElements.Add(barGraph);
+
+            doc.Pages.Add(page6);
 
             // Header
             var header = new Header();

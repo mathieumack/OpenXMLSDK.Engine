@@ -2,27 +2,37 @@
 
 namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models.Charts
 {
-    public class BarSerie
+    public class BarSerie : BaseElement
     {
         /// <summary>
-        /// Label
+        /// Name of the serie
         /// </summary>
-        public string Label { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Values
         /// </summary>
-        public IList<double> Values { get; set; }
+        public List<double> Values { get; set; }
+        
+        /// <summary>
+        /// Color of the serie
+        /// </summary>
+        public string Color { get; set; }
 
         /// <summary>
-        /// Color (#000000 -> #FFFFFF)
+        /// Color of labels
         /// </summary>
-        public string RGBbColor { get; set; }
+        public string DataLabelColor { get; set; }
 
         /// <summary>
         /// Format de rendu des labels
         /// {0} par défaut
         /// </summary>
         public string LabelFormatString { get; set; } = "{0}";
+
+        public BarSerie()
+            : base(typeof(BarSerie).Name)
+        {
+        }
     }
 }
