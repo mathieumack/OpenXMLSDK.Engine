@@ -58,13 +58,17 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                     if (i % uniformGrid.ColsWidth.Length == 0)
                         rowsContentContexts.Add(lastCellsRow);
 
-                    var acountAddNullItems = uniformGrid.ColsWidth.Length - (datasource.Items.Count % uniformGrid.ColsWidth.Length);
-                    if (acountAddNullItems > 0)
+                    if (datasource.Items.Count % uniformGrid.ColsWidth.Length > 0)
                     {
-                        for (int j = 0; j < acountAddNullItems; j++)
-                            lastCellsRow.Add(new ContextModel());
-                        rowsContentContexts.Add(lastCellsRow);
+                        var acountAddNullItems = uniformGrid.ColsWidth.Length - (datasource.Items.Count % uniformGrid.ColsWidth.Length);
+                        if (acountAddNullItems > 0)
+                        {
+                            for (int j = 0; j < acountAddNullItems; j++)
+                                lastCellsRow.Add(new ContextModel());
+                            rowsContentContexts.Add(lastCellsRow);
+                        }
                     }
+
                     // Now we create all row :
                     foreach (var rowContentContext in rowsContentContexts)
                     {
