@@ -27,28 +27,35 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
         {
             context.ReplaceItem(barChart);
 
+            Run runItem = null;
+
             if(!string.IsNullOrWhiteSpace(barChart.DataSourceKey) && context.ExistItem<BarChartModel>(barChart.DataSourceKey))
             {
                 // We construct categories and series from the context object
                 var contextModel = context.GetItem<BarChartModel>(barChart.DataSourceKey);
 
-                // Update barChart object :
-                barChart.Categories = contextModel.BarChartContent.Categories.Select(e => new BarCategory()
+                if (contextModel.BarChartContent != null && contextModel.BarChartContent.Categories != null
+                   && contextModel.BarChartContent.Series != null)
                 {
-                    Name = e.Name,
-                    Color = e.Color
-                }).ToList();
-                barChart.Series = contextModel.BarChartContent.Series.Select(e => new BarSerie()
-                {
-                    LabelFormatString = e.LabelFormatString,
-                    Color = e.Color,
-                    DataLabelColor = e.DataLabelColor,
-                    Values = e.Values,
-                    Name = e.Name
-                }).ToList();
+                    // Update barChart object :
+                    barChart.Categories = contextModel.BarChartContent.Categories.Select(e => new BarCategory()
+                    {
+                        Name = e.Name,
+                        Color = e.Color
+                    }).ToList();
+                    barChart.Series = contextModel.BarChartContent.Series.Select(e => new BarSerie()
+                    {
+                        LabelFormatString = e.LabelFormatString,
+                        Color = e.Color,
+                        DataLabelColor = e.DataLabelColor,
+                        Values = e.Values,
+                        Name = e.Name
+                    }).ToList();
+                }
+                else
+                    return runItem;
             }
 
-            Run runItem = null;
             switch(barChart.BarChartType)
             {
                 case BarChartType.BarChart:
