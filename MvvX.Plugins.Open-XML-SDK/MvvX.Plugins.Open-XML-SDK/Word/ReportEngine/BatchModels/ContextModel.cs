@@ -93,6 +93,8 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels
                 element.FontName = ReplaceText(element.FontName);
             if (!string.IsNullOrEmpty(element.FontColor))
                 element.FontColor = ReplaceText(element.FontColor);
+            if (!string.IsNullOrEmpty(element.MajorGridlinesColor))
+                element.FontColor = ReplaceText(element.MajorGridlinesColor);
         }
 
         /// <summary>
