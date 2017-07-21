@@ -94,7 +94,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels
             if (!string.IsNullOrEmpty(element.FontColor))
                 element.FontColor = ReplaceText(element.FontColor);
             if (!string.IsNullOrEmpty(element.MajorGridlinesColor))
-                element.FontColor = ReplaceText(element.MajorGridlinesColor);
+                element.MajorGridlinesColor = ReplaceText(element.MajorGridlinesColor);
         }
 
         /// <summary>
