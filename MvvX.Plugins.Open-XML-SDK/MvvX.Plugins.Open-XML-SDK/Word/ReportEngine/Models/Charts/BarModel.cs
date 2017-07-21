@@ -112,6 +112,11 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models.Charts
         /// </summary>
         public bool ShowMajorGridlines { get; set; }
 
+        /// <summary>
+        /// Indicate the color of major grid lines
+        /// </summary>
+        public string MajorGridlinesColor { get; set; }
+
         public BarModel()
             : base(typeof(BarModel).Name)
         {

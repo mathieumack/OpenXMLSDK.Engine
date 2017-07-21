@@ -72,7 +72,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
         }
 
         #region Internal methods
-        
+
         /// <summary>
         /// Permet de créer un graphique en barres empilées pour un document word
         /// </summary>
@@ -202,7 +202,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
             }
 
             barChart.Append(dLbls);
-            
+
             if (chartModel.SpaceBetweenLineCategories.HasValue)
                 barChart.Append(new dc.GapWidth() { Val = (UInt16)chartModel.SpaceBetweenLineCategories.Value });
             else
@@ -213,6 +213,28 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
             barChart.Append(new dc.AxisId() { Val = new UInt32Value(48650112u) });
             barChart.Append(new dc.AxisId() { Val = new UInt32Value(48672768u) });
 
+
+            // Set ShapeProperties
+            dc.ShapeProperties dcSP = null;
+            if (chartModel.ShowMajorGridlines)
+            {
+                if (!string.IsNullOrWhiteSpace(chartModel.MajorGridlinesColor))
+                {
+                    string color = chartModel.MajorGridlinesColor;
+                    color = color.Replace("#", "");
+                    if (!Regex.IsMatch(color, "^[0-9-A-F]{6}$"))
+                        throw new Exception("Error in color of grid lines.");
+                    dcSP = new dc.ShapeProperties(new A.Outline(new A.SolidFill() { RgbColorModelHex = new A.RgbColorModelHex() { Val = color }}));                    
+                }
+                else
+                {
+                    dcSP = new dc.ShapeProperties();
+                }              
+            }
+            else
+            {
+                dcSP = new dc.ShapeProperties(new A.Outline(new A.NoFill()));
+            }
             // Add the Category Axis.
             dc.CategoryAxis catAx = plotArea.AppendChild<dc.CategoryAxis>(new dc.CategoryAxis(new dc.AxisId() { Val = new UInt32Value(48650112u) }, new dc.Scaling(new dc.Orientation()
             {
@@ -229,7 +251,8 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                 new dc.LabelAlignment() { Val = new DocumentFormat.OpenXml.EnumValue<dc.LabelAlignmentValues>(dc.LabelAlignmentValues.Center) },
                 new dc.LabelOffset() { Val = new UInt16Value((ushort)100) },
                 new dc.NoMultiLevelLabels() { Val = false },
-                !chartModel.ShowMajorGridlines ? new dc.ShapeProperties(new A.Outline(new A.NoFill())) : new dc.ShapeProperties()));
+                dcSP
+                ));
 
             // Add the Value Axis.
             dc.ValueAxis valAx = plotArea.AppendChild<dc.ValueAxis>(new dc.ValueAxis(new dc.AxisId() { Val = new UInt32Value(48672768u) },
@@ -254,7 +277,22 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                 }, new dc.CrossBetween() { Val = new DocumentFormat.OpenXml.EnumValue<dc.CrossBetweenValues>(dc.CrossBetweenValues.Between) }));
 
             if (chartModel.ShowMajorGridlines)
-                valAx.AppendChild(new dc.MajorGridlines());
+            {
+                if (!string.IsNullOrWhiteSpace(chartModel.MajorGridlinesColor))
+                {
+                    string color = chartModel.MajorGridlinesColor;
+                    color = color.Replace("#", "");
+                    if (!Regex.IsMatch(color, "^[0-9-A-F]{6}$"))
+                        throw new Exception("Error in color of grid lines.");
+
+                    valAx.AppendChild(new dc.MajorGridlines(new dc.ShapeProperties(new A.Outline(new A.SolidFill() { RgbColorModelHex = new A.RgbColorModelHex() { Val = color } }))));
+                }
+                else
+                {
+                    valAx.AppendChild(new dc.MajorGridlines());
+                }
+            }
+                
 
             // Add the chart Legend.
             if (chartModel.ShowLegend)
