@@ -525,52 +525,53 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                         ShowBarBorder = true,
                         BarChartType = BarChartType.BarChart,
                         BarDirectionValues = BarDirectionValues.Column,
-                        Categories = new List<BarCategory>()
-                        {
-                            new BarCategory()
-                            {
-                                Name = "Category 1"
-                            },
-                            new BarCategory()
-                            {
-                                Name = "Category 2"
-                            },
-                            new BarCategory()
-                            {
-                                Name = "Category 3"
-                            },
-                            new BarCategory()
-                            {
-                                Name = "Category 4"
-                            }
-                        },
-                        Series = new List<BarSerie>()
-                        {
-                            new BarSerie()
-                            {
-                                Values = new List<double>()
-                                {
-                                    1, 2, 3, 4
-                                },
-                                Name = "Bar serie 1"
-                            },
-                            new BarSerie()
-                            {
-                                Values = new List<double>()
-                                {
-                                    5, 6, 7, 8
-                                },
-                                Name = "Bar serie 2"
-                            },
-                            new BarSerie()
-                            {
-                                Values = new List<double>()
-                                {
-                                    9, 10, 11, 12
-                                },
-                                Name = "Bar serie 3"
-                            },
-                        }
+                        DataSourceKey = "##",
+                        //Categories = new List<BarCategory>()
+                        //{
+                        //    new BarCategory()
+                        //    {
+                        //        Name = "Category 1"
+                        //    },
+                        //    new BarCategory()
+                        //    {
+                        //        Name = "Category 2"
+                        //    },
+                        //    new BarCategory()
+                        //    {
+                        //        Name = "Category 3"
+                        //    },
+                        //    new BarCategory()
+                        //    {
+                        //        Name = "Category 4"
+                        //    }
+                        //},
+                        //Series = new List<BarSerie>()
+                        //{
+                        //    new BarSerie()
+                        //    {
+                        //        Values = new List<double>()
+                        //        {
+                        //            1, 2, 3, 4
+                        //        },
+                        //        Name = "Bar serie 1"
+                        //    },
+                        //    new BarSerie()
+                        //    {
+                        //        Values = new List<double>()
+                        //        {
+                        //            5, 6, 7, 8
+                        //        },
+                        //        Name = "Bar serie 2"
+                        //    },
+                        //    new BarSerie()
+                        //    {
+                        //        Values = new List<double>()
+                        //        {
+                        //            9, 10, 11, 12
+                        //        },
+                        //        Name = "Bar serie 3"
+                        //    },
+                        //}
                     }
                 }
             };

@@ -1,4 +1,4 @@
-﻿using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models.Charts;
+﻿using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels.Charts;
 
 namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels
 {

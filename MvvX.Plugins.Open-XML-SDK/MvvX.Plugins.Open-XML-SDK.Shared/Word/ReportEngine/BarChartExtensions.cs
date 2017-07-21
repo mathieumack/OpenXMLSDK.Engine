@@ -26,6 +26,15 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
         {
             context.ReplaceItem(barChart);
 
+            if(!string.IsNullOrWhiteSpace(barChart.DataSourceKey) && context.ExistItem<BarChartModel>(barChart.DataSourceKey))
+            {
+                // We construct categories and series from the context object
+                var contextModel = context.GetItem<BarChartModel>(barChart.DataSourceKey);
+
+                // Update barChart object :
+
+            }
+
             Run runItem = null;
             switch(barChart.BarChartType)
             {

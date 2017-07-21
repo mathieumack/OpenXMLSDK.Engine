@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models;
+using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models.Charts;
 
 namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels
 {
@@ -74,6 +75,18 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels
                 }
             }
             return result;
+        }
+
+        /// <summary>
+        /// Replace text and visibility of element
+        /// </summary>
+        /// <param name="element"></param>
+        public void ReplaceItem(BarModel element)
+        {
+            SetVisibilityFromContext(element);
+
+            if (!string.IsNullOrEmpty(element.Title))
+                element.Title = ReplaceText(element.Title);
         }
 
         /// <summary>
