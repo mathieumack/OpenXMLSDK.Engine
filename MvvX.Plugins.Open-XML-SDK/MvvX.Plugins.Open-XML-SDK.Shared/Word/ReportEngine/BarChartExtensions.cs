@@ -43,6 +43,8 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                         Name = e.Name,
                         Color = e.Color
                     }).ToList();
+
+                    // We update
                     barChart.Series = contextModel.BarChartContent.Series.Select(e => new BarSerie()
                     {
                         LabelFormatString = e.LabelFormatString,
@@ -119,7 +121,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
             dc.PlotArea plotArea = chart.AppendChild<dc.PlotArea>(new dc.PlotArea());
             dc.Layout layout = plotArea.AppendChild<dc.Layout>(new dc.Layout());
             dc.BarChart barChart = plotArea.AppendChild<dc.BarChart>(new dc.BarChart(new dc.BarDirection() { Val = new DocumentFormat.OpenXml.EnumValue<dc.BarDirectionValues>((dc.BarDirectionValues)(int)chartModel.BarDirectionValues) },
-                new dc.BarGrouping() { Val = new DocumentFormat.OpenXml.EnumValue<dc.BarGroupingValues>(dc.BarGroupingValues.Stacked) }));
+                new dc.BarGrouping() { Val = new DocumentFormat.OpenXml.EnumValue<dc.BarGroupingValues>((dc.BarGroupingValues)(int)chartModel.BarGroupingValues) }));
 
             uint i = 0;
             uint p = 0;

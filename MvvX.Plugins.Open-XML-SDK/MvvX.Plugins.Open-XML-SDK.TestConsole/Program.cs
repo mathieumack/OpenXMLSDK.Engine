@@ -9,6 +9,7 @@ using MvvX.Plugins.OpenXMLSDK.Word.Models;
 using MvvX.Plugins.OpenXMLSDK.Word.Paragraphs;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels;
+using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels.Charts;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models.Charts;
 using MvvX.Plugins.OpenXMLSDK.Word.Tables;
@@ -517,7 +518,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             var pr = new Paragraph()
             {
                 ChildElements = new List<BaseElement>() {
-                    new BarModel()
+                    new Word.ReportEngine.Models.Charts.BarModel()
                     {
                         Title = "Graph test",
                         ShowTitle = true,
@@ -525,53 +526,9 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                         ShowBarBorder = true,
                         BarChartType = BarChartType.BarChart,
                         BarDirectionValues = BarDirectionValues.Column,
-                        DataSourceKey = "##",
-                        //Categories = new List<BarCategory>()
-                        //{
-                        //    new BarCategory()
-                        //    {
-                        //        Name = "Category 1"
-                        //    },
-                        //    new BarCategory()
-                        //    {
-                        //        Name = "Category 2"
-                        //    },
-                        //    new BarCategory()
-                        //    {
-                        //        Name = "Category 3"
-                        //    },
-                        //    new BarCategory()
-                        //    {
-                        //        Name = "Category 4"
-                        //    }
-                        //},
-                        //Series = new List<BarSerie>()
-                        //{
-                        //    new BarSerie()
-                        //    {
-                        //        Values = new List<double>()
-                        //        {
-                        //            1, 2, 3, 4
-                        //        },
-                        //        Name = "Bar serie 1"
-                        //    },
-                        //    new BarSerie()
-                        //    {
-                        //        Values = new List<double>()
-                        //        {
-                        //            5, 6, 7, 8
-                        //        },
-                        //        Name = "Bar serie 2"
-                        //    },
-                        //    new BarSerie()
-                        //    {
-                        //        Values = new List<double>()
-                        //        {
-                        //            9, 10, 11, 12
-                        //        },
-                        //        Name = "Bar serie 3"
-                        //    },
-                        //}
+                        BarGroupingValues = BarGroupingValues.PercentStacked,
+                        DataSourceKey = "#GrahSampleData#",
+                        ShowMajorGridlines = true
                     }
                 }
             };
@@ -659,6 +616,75 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             context.AddItem("#UniformGridSample#", new DataSourceModel()
             {
                 Items = cellsContext
+            });
+
+            context.AddItem("#GrahSampleData#", new BarChartModel()
+            {
+                BarChartContent = new Word.ReportEngine.BatchModels.Charts.BarModel()
+                {
+                    Categories = new List<BarCategoryModel>()
+                    {
+                        new BarCategoryModel()
+                        {
+                            Name = "Category 1"
+                        },
+                        new BarCategoryModel()
+                        {
+                            Name = "Category 2"
+                        },
+                        new BarCategoryModel()
+                        {
+                            Name = "Category 3"
+                        },
+                        new BarCategoryModel()
+                        {
+                            Name = "Category 4"
+                        },
+                        new BarCategoryModel()
+                        {
+                            Name = "Category 5"
+                        },
+                        new BarCategoryModel()
+                        {
+                            Name = "Category 6"
+                        }
+                    },
+                    Series = new List<BarSerieModel>()
+                    {
+                        new BarSerieModel()
+                        {
+                            Values = new List<double>()
+                            {
+                                1, 2, 3, 4, 5, 6
+                            },
+                            Name = "Bar serie 1"
+                        },
+                        new BarSerieModel()
+                        {
+                            Values = new List<double>()
+                            {
+                                5, 6, 7, 8, 9, 10
+                            },
+                            Name = "Bar serie 2"
+                        },
+                        new BarSerieModel()
+                        {
+                            Values = new List<double>()
+                            {
+                                9, 10, 11, 12, 13, 14
+                            },
+                            Name = "Bar serie 3"
+                        },
+                        new BarSerieModel()
+                        {
+                            Values = new List<double>()
+                            {
+                                9, 10, 11, 12, 15, 25
+                            },
+                            Name = "Bar serie 4"
+                        }
+                    }
+                }
             });
 
             return context;

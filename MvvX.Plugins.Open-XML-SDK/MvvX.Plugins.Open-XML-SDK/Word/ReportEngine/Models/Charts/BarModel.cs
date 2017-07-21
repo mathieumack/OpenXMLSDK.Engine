@@ -17,6 +17,11 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models.Charts
         public BarDirectionValues BarDirectionValues { get; set; } = BarDirectionValues.Bar;
 
         /// <summary>
+        /// Type of bar grouping
+        /// </summary>
+        public BarGroupingValues BarGroupingValues { get; set; } = BarGroupingValues.Stacked;
+
+        /// <summary>
         /// BarChart data source
         /// </summary>
         public string DataSourceKey { get; set; }
