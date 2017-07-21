@@ -10,6 +10,7 @@ using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
 using MvvX.Plugins.OpenXMLSDK.Word.Charts;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models.Charts;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels;
+using System.Collections.Generic;
 
 namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
 {
@@ -32,7 +33,19 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                 var contextModel = context.GetItem<BarChartModel>(barChart.DataSourceKey);
 
                 // Update barChart object :
-
+                barChart.Categories = contextModel.BarChartContent.Categories.Select(e => new BarCategory()
+                {
+                    Name = e.Name,
+                    Color = e.Color
+                }).ToList();
+                barChart.Series = contextModel.BarChartContent.Series.Select(e => new BarSerie()
+                {
+                    LabelFormatString = e.LabelFormatString,
+                    Color = e.Color,
+                    DataLabelColor = e.DataLabelColor,
+                    Values = e.Values,
+                    Name = e.Name
+                }).ToList();
             }
 
             Run runItem = null;

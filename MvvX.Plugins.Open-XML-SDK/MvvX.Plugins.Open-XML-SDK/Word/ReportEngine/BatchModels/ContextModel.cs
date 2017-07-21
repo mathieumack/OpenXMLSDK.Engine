@@ -87,6 +87,12 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels
 
             if (!string.IsNullOrEmpty(element.Title))
                 element.Title = ReplaceText(element.Title);
+            if (!string.IsNullOrEmpty(element.DataLabelColor))
+                element.DataLabelColor = ReplaceText(element.DataLabelColor);
+            if (!string.IsNullOrEmpty(element.FontName))
+                element.FontName = ReplaceText(element.FontName);
+            if (!string.IsNullOrEmpty(element.FontColor))
+                element.FontColor = ReplaceText(element.FontColor);
         }
 
         /// <summary>
