@@ -9,7 +9,6 @@
     <Import_RootNamespace>MvvX.Plugins.OpenXMLSDK.Platform</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)Word\Extensions\ChartsExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PlatformOpenXmlElement.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Plugin.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Validation\OpenXMLValidator.cs" />

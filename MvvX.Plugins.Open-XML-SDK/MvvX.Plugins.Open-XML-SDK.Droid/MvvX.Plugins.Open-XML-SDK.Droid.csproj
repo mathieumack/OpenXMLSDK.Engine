@@ -88,9 +88,6 @@
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Extensions\BorderValuesExtensions.cs">
       <Link>Word\Extensions\BorderValuesExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Extensions\ChartsExtensions.cs">
-      <Link>Word\Extensions\ChartsExtensions.cs</Link>
-    </Compile>
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Extensions\JustificationValuesExtensions.cs">
       <Link>Word\Extensions\JustificationValuesExtensions.cs</Link>
     </Compile>
