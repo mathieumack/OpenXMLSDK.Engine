@@ -98,7 +98,8 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                             ppr.AppendChild(new Justification() { Val = cell.Justification.Value.ToOOxml() });
                             paragraph.AppendChild(ppr);
                         }
-                        wordCell.AppendChild(paragraph); var r = new Run();
+                        wordCell.AppendChild(paragraph);
+                        var r = new Run();
                         paragraph.AppendChild(r);
                         element.Render(r, context, documentPart);
                     }
@@ -120,7 +121,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                 foreach (var element in cell.ChildElements)
                 {
                     element.InheritFromParent(cell);
-                    var content = element.Render(r, context, documentPart);
+                    element.Render(r, context, documentPart);
                 }
             }
 

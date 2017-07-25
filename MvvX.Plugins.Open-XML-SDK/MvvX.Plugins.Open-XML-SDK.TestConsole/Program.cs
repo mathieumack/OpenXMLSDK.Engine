@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using MvvX.Plugins.OpenXMLSDK.Platform.Validation;
 using MvvX.Plugins.OpenXMLSDK.Platform.Word;
 using MvvX.Plugins.OpenXMLSDK.Word;
 using MvvX.Plugins.OpenXMLSDK.Word.Models;
 using MvvX.Plugins.OpenXMLSDK.Word.Paragraphs;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels;
+using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels.Charts;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models;
+using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models.Charts;
 using MvvX.Plugins.OpenXMLSDK.Word.Tables;
 using MvvX.Plugins.OpenXMLSDK.Word.Tables.Models;
 using Newtonsoft.Json;
@@ -21,6 +24,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
         {
             ReportEngineTest();
 
+            ValidateDocument();
             // fin test report engine
 
             //OldProgram();
@@ -41,6 +45,21 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             ReportEngine(filePath, documentName);
         }
 
+        private static void ValidateDocument()
+        {
+            // Debut test report engine
+            var validator = new OpenXMLValidator();
+            var results = validator.ValidateWordDocument("ExampleDocument.docx");
+            File.Delete("ValidateDocument.txt");
+            foreach(var result in results)
+            {
+                File.AppendAllText("ValidateDocument.txt", 
+                                    result.XmlPath + Environment.NewLine + 
+                                    result.Description + Environment.NewLine +
+                                    result.ErrorType.ToString() + Environment.NewLine +
+                                    " - - - - - - - - - ");
+            }
+        }
         private static void ReportEngine(string filePath, string documentName)
         {
             // Debut test report engine
@@ -494,6 +513,30 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
 
             doc.Pages.Add(page5);
 
+            var page6 = new Page();
+
+            var pr = new Paragraph()
+            {
+                ChildElements = new List<BaseElement>() {
+                    new Word.ReportEngine.Models.Charts.BarModel()
+                    {
+                        Title = "Graph test",
+                        ShowTitle = true,
+                        FontSize = 23,
+                        ShowBarBorder = true,
+                        BarChartType = BarChartType.BarChart,
+                        BarDirectionValues = BarDirectionValues.Column,
+                        BarGroupingValues = BarGroupingValues.PercentStacked,
+                        DataSourceKey = "#GrahSampleData#",
+                        ShowMajorGridlines = true
+                    }
+                }
+            };
+
+            page6.ChildElements.Add(pr);
+
+            doc.Pages.Add(page6);
+
             // Header
             var header = new Header();
             header.Type = HeaderFooterValues.Default;
@@ -573,6 +616,75 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             context.AddItem("#UniformGridSample#", new DataSourceModel()
             {
                 Items = cellsContext
+            });
+
+            context.AddItem("#GrahSampleData#", new BarChartModel()
+            {
+                BarChartContent = new Word.ReportEngine.BatchModels.Charts.BarModel()
+                {
+                    Categories = new List<BarCategoryModel>()
+                    {
+                        new BarCategoryModel()
+                        {
+                            Name = "Category 1"
+                        },
+                        new BarCategoryModel()
+                        {
+                            Name = "Category 2"
+                        },
+                        new BarCategoryModel()
+                        {
+                            Name = "Category 3"
+                        },
+                        new BarCategoryModel()
+                        {
+                            Name = "Category 4"
+                        },
+                        new BarCategoryModel()
+                        {
+                            Name = "Category 5"
+                        },
+                        new BarCategoryModel()
+                        {
+                            Name = "Category 6"
+                        }
+                    },
+                    Series = new List<BarSerieModel>()
+                    {
+                        new BarSerieModel()
+                        {
+                            Values = new List<double>()
+                            {
+                                1, 2, 3, 4, 5, 6
+                            },
+                            Name = "Bar serie 1"
+                        },
+                        new BarSerieModel()
+                        {
+                            Values = new List<double>()
+                            {
+                                5, 6, 7, 8, 9, 10
+                            },
+                            Name = "Bar serie 2"
+                        },
+                        new BarSerieModel()
+                        {
+                            Values = new List<double>()
+                            {
+                                9, 10, 11, 12, 13, 14
+                            },
+                            Name = "Bar serie 3"
+                        },
+                        new BarSerieModel()
+                        {
+                            Values = new List<double>()
+                            {
+                                9, 10, 11, 12, 15, 25
+                            },
+                            Name = "Bar serie 4"
+                        }
+                    }
+                }
             });
 
             return context;

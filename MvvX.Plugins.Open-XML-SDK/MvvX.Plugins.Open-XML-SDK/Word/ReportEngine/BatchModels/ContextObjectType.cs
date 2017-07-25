@@ -7,6 +7,7 @@
         Base64Content = 3,
         DataSource = 4,
         Boolean = 5,
-        ByteContent = 6
+        ByteContent = 6,
+        BarChart = 7
     }
 }

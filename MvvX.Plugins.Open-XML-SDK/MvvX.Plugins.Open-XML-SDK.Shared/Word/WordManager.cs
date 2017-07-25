@@ -386,7 +386,6 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
                     run.Append(new Text() { Text = " ", Space = DocumentFormat.OpenXml.SpaceProcessingModeValues.Preserve });
             }
 
-
             SetOnBookmark(bookmark, new PlatformRun(run));
         }
 
@@ -572,7 +571,17 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
 
         #endregion
 
-        #region Images
+        #region Parts
+
+        /// <summary>
+        /// Add a new part in the document
+        /// </summary>
+        /// <typeparam name="T">Type of the object</typeparam>
+        /// <returns>created part</returns>
+        public T AddNewPart<T>() where T : OpenXmlPart, IFixedContentTypePart
+        {
+            return wdMainDocumentPart.AddNewPart<T>();
+        }
 
         /// <summary>
         /// Renvoie l'ID d'une part dans le document
@@ -580,10 +589,14 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
         /// <typeparam name="T">Type du part</typeparam>
         /// <param name="part">Part</param>
         /// <returns>Id du part dans le document</returns>
-        private string GetIdOfPart<T>(T part) where T : OpenXmlPart
+        public string GetIdOfPart<T>(T part) where T : OpenXmlPart
         {
             return wdMainDocumentPart.GetIdOfPart(part);
         }
+
+        #endregion
+
+        #region Images
 
         /// <summary>
         /// Permet d'ajouter le type d'une image dans le document de type OpenXmlPart
@@ -921,11 +934,6 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
 
         public ITableCell CreateTableCell(IRun cellContent, TableCellPropertiesModel cellModel)
         {
-            if (cellContent == null)
-                throw new ArgumentNullException("cellContent must not be null");
-            if (cellModel == null)
-                throw new ArgumentNullException("cellModel must not be null");
-
             return CreateTableCell(new List<IRun>() { cellContent }, cellModel);
         }
 
@@ -1041,9 +1049,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
             TableCell tc = platformCellTable.ContentItem as TableCell;
 
             var tableCellProperties = platformCellTable.Properties.ContentItem as TableCellProperties;
-
-            //tableCellProperties.Append(new TableCellVerticalAlignment { Val = cellModel.TableVerticalAlignementValues.ToOOxml() });
-
+            
             // Gestion de la fusion des cellules
             if (cellModel.Fusion)
             {
@@ -1061,8 +1067,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
                 tableCellProperties.Append(new TextDirection { Val = cellModel.TextDirectionValues.ToOOxml() });
 
             Paragraph par = new Paragraph();
-            ParagraphProperties pr = new ParagraphProperties();// new TableCellVerticalAlignment { Val = cellModel.TableVerticalAlignementValues.ToOOxml() });
-            //new SpacingBetweenLines() { After = cellModel.SpacingAfter, Before = cellModel.SpacingBefore, Line = "240" });
+            ParagraphProperties pr = new ParagraphProperties();
 
             if (cellModel.Justification.HasValue)
                 pr.Append(new Justification() { Val = cellModel.Justification.Value.ToOOxml() });
@@ -1130,6 +1135,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
                 return stream.ToArray();
             }
         }
+
         #endregion
     }
 }

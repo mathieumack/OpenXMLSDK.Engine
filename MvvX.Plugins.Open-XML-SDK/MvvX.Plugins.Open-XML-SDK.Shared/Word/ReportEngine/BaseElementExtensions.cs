@@ -3,6 +3,7 @@ using DocumentFormat.OpenXml.Packaging;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models;
+using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models.Charts;
 using Newtonsoft.Json;
 
 namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
@@ -49,6 +50,10 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                 else if (element is TableOfContents)
                 {
                     (element as TableOfContents).Render(documentPart, context);
+                }
+                else if (element is BarModel)
+                {
+                    (element as BarModel).Render(parent, context, documentPart);
                 }
 
                 if (element.ChildElements != null && element.ChildElements.Count > 0)

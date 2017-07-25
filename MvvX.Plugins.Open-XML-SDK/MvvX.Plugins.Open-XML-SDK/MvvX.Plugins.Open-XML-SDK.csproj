@@ -49,6 +49,7 @@
     <Compile Include="Validation\IOpenXMLValidator.cs" />
     <Compile Include="Validation\ValidationErrorInfo.cs" />
     <Compile Include="Validation\ValidationErrorType.cs" />
+    <Compile Include="Word\Charts\ChartModelException.cs" />
     <Compile Include="Word\HeaderFooterValues.cs" />
     <Compile Include="Word\IAltChunk.cs" />
     <Compile Include="Word\IDecimalNumberType.cs" />
@@ -83,10 +84,14 @@
     <Compile Include="Word\Paragraphs\IParagraphProperties.cs" />
     <Compile Include="Word\Paragraphs\IParagraphStyleId.cs" />
     <Compile Include="Word\Paragraphs\ISpacingBetweenLines.cs" />
+    <Compile Include="Word\ReportEngine\BatchModels\BarChartModel.cs" />
     <Compile Include="Word\ReportEngine\BatchModels\Base64ContentModel.cs" />
     <Compile Include="Word\ReportEngine\BaseModel.cs" />
     <Compile Include="Word\ReportEngine\BatchModels\BooleanModel.cs" />
     <Compile Include="Word\ReportEngine\BatchModels\ByteContentModel.cs" />
+    <Compile Include="Word\ReportEngine\BatchModels\Charts\BarCategoryModel.cs" />
+    <Compile Include="Word\ReportEngine\BatchModels\Charts\BarModel.cs" />
+    <Compile Include="Word\ReportEngine\BatchModels\Charts\BarSerieModel.cs" />
     <Compile Include="Word\ReportEngine\BatchModels\ContextModel.cs" />
     <Compile Include="Word\ReportEngine\BatchModels\ContextObjectType.cs" />
     <Compile Include="Word\ReportEngine\BatchModels\DataSourceModel.cs" />
@@ -99,6 +104,12 @@
     <Compile Include="Word\ReportEngine\Models\Attributes\SpacingModel.cs" />
     <Compile Include="Word\ReportEngine\Models\BaseElement.cs" />
     <Compile Include="Word\ReportEngine\Models\Cell.cs" />
+    <Compile Include="Word\ReportEngine\Models\Charts\BarCategory.cs" />
+    <Compile Include="Word\ReportEngine\Models\Charts\BarChartType.cs" />
+    <Compile Include="Word\ReportEngine\Models\Charts\BarDirectionValues.cs" />
+    <Compile Include="Word\ReportEngine\Models\Charts\BarGroupingValues.cs" />
+    <Compile Include="Word\ReportEngine\Models\Charts\BarModel.cs" />
+    <Compile Include="Word\ReportEngine\Models\Charts\BarSerie.cs" />
     <Compile Include="Word\ReportEngine\Models\Document.cs" />
     <Compile Include="Word\ReportEngine\Models\Footer.cs" />
     <Compile Include="Word\ReportEngine\Models\ForEach.cs" />
