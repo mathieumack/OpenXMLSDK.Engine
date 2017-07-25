@@ -4,13 +4,12 @@ using DocumentFormat.OpenXml.Wordprocessing;
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
-using A = DocumentFormat.OpenXml.Drawing;
-using dc = DocumentFormat.OpenXml.Drawing.Charts;
-using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
 using MvvX.Plugins.OpenXMLSDK.Word.Charts;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models.Charts;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels;
-using System.Collections.Generic;
+using A = DocumentFormat.OpenXml.Drawing;
+using dc = DocumentFormat.OpenXml.Drawing.Charts;
+using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
 
 namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
 {
@@ -212,8 +211,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
 
             barChart.Append(new dc.AxisId() { Val = new UInt32Value(48650112u) });
             barChart.Append(new dc.AxisId() { Val = new UInt32Value(48672768u) });
-
-
+            
             // Set ShapeProperties
             dc.ShapeProperties dcSP = null;
             if (chartModel.ShowMajorGridlines)
@@ -292,7 +290,6 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                     valAx.AppendChild(new dc.MajorGridlines());
                 }
             }
-                
 
             // Add the chart Legend.
             if (chartModel.ShowLegend)
@@ -334,8 +331,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                 imageWidth = (long)chartModel.MaxWidth * 9525;
             if (chartModel.MaxHeight.HasValue)
                 imageHeight = (long)chartModel.MaxHeight * 9525;
-
-
+            
             // Gestion de l'élément Drawing
             var element = new Run(
                 new DocumentFormat.OpenXml.Wordprocessing.Drawing(

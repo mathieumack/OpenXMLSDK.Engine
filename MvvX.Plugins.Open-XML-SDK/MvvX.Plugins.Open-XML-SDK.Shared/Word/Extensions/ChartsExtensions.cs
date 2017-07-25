@@ -4,11 +4,11 @@
 //using System;
 //using System.Linq;
 //using System.Text.RegularExpressions;
+//using MvvX.Plugins.OpenXMLSDK.Word.Charts;
+//using MvvX.Plugins.OpenXMLSDK.Word.Models.Charts;
 //using A = DocumentFormat.OpenXml.Drawing;
 //using dc = DocumentFormat.OpenXml.Drawing.Charts;
 //using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
-//using MvvX.Plugins.OpenXMLSDK.Word.Charts;
-//using MvvX.Plugins.OpenXMLSDK.Word.Models.Charts;
 
 //namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.Extensions
 //{
@@ -268,7 +268,6 @@
 //            if (chartModel.MaxHeight.HasValue)
 //                imageHeight = (long)chartModel.MaxHeight * 9525;
 
-
 //            // Gestion de l'élément Drawing
 //            var element = new Run(
 //                            new DocumentFormat.OpenXml.Wordprocessing.Drawing(
@@ -300,7 +299,6 @@
 
 //            return new PlatformRun(element);
 //        }
-
 
 //        public static void InsertGraphDoughnutToBookmark(this WordManager eoWord, string bookmark, ChartModel chartModel)
 //        {
