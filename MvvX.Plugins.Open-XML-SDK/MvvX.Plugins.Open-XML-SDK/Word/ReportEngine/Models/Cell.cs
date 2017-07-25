@@ -1,5 +1,6 @@
 ﻿using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models.Attributes;
 using MvvX.Plugins.OpenXMLSDK.Word.Tables;
+using MvvX.Plugins.OpenXMLSDK.Word.Tables.Models;
 
 namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models
 {
@@ -47,6 +48,11 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models
         /// Margins in cell
         /// </summary>
         public MarginModel Margin { get; set; }
+
+        /// <summary>
+        /// Width of the cell
+        /// </summary>
+        public TableCellWidthModel CellWidth { get; set; }
 
         /// <summary>
         /// Constructor

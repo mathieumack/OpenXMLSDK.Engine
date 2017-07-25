@@ -37,6 +37,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                 TableCellBorders borders = cell.Borders.RenderCellBorder();
                 cellProp.AppendChild(borders);
             }
+
             if (!string.IsNullOrEmpty(cell.Shading))
             {
                 cellProp.Shading = new Shading() { Fill = cell.Shading };
@@ -49,6 +50,11 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
             {
                 cellProp.AppendChild(new TextDirection { Val = cell.TextDirection.ToOOxml() });
             }
+            if (cell.CellWidth != null)
+            {
+                cellProp.AppendChild(new TableCellWidth() { Width = cell.CellWidth.Width, Type = cell.CellWidth.Type.ToOOxml() });
+            }
+
 
             // manage cell column and row span
             if (cell.ColSpan > 1)
