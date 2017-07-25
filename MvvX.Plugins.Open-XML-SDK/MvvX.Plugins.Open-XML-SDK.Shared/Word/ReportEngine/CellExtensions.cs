@@ -37,7 +37,6 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                 TableCellBorders borders = cell.Borders.RenderCellBorder();
                 cellProp.AppendChild(borders);
             }
-
             if (!string.IsNullOrEmpty(cell.Shading))
             {
                 cellProp.Shading = new Shading() { Fill = cell.Shading };
@@ -71,7 +70,6 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                     cellProp.AppendChild(new VerticalMerge() { Val = MergedCellValues.Restart });
                 }
             }
-
             if (cell.Margin != null)
             {
                 cellProp.AppendChild(new TableCellMargin()
