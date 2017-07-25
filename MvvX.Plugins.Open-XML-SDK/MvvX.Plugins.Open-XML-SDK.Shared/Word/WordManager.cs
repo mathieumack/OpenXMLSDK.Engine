@@ -386,7 +386,6 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
                     run.Append(new Text() { Text = " ", Space = DocumentFormat.OpenXml.SpaceProcessingModeValues.Preserve });
             }
 
-
             SetOnBookmark(bookmark, new PlatformRun(run));
         }
 
@@ -935,11 +934,6 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
 
         public ITableCell CreateTableCell(IRun cellContent, TableCellPropertiesModel cellModel)
         {
-            if (cellContent == null)
-                throw new ArgumentNullException("cellContent must not be null");
-            if (cellModel == null)
-                throw new ArgumentNullException("cellModel must not be null");
-
             return CreateTableCell(new List<IRun>() { cellContent }, cellModel);
         }
 
@@ -1075,7 +1069,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
                 tableCellProperties.Append(new TextDirection { Val = cellModel.TextDirectionValues.ToOOxml() });
 
             Paragraph par = new Paragraph();
-            ParagraphProperties pr = new ParagraphProperties();// new TableCellVerticalAlignment { Val = cellModel.TableVerticalAlignementValues.ToOOxml() });
+            ParagraphProperties pr = new ParagraphProperties(); // new TableCellVerticalAlignment { Val = cellModel.TableVerticalAlignementValues.ToOOxml() });
             //new SpacingBetweenLines() { After = cellModel.SpacingAfter, Before = cellModel.SpacingBefore, Line = "240" });
 
             if (cellModel.Justification.HasValue)
@@ -1144,6 +1138,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
                 return stream.ToArray();
             }
         }
+
         #endregion
     }
 }
