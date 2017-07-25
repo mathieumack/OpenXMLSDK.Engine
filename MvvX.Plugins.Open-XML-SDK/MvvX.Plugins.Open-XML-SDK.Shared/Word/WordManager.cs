@@ -1049,9 +1049,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
             TableCell tc = platformCellTable.ContentItem as TableCell;
 
             var tableCellProperties = platformCellTable.Properties.ContentItem as TableCellProperties;
-
-            //tableCellProperties.Append(new TableCellVerticalAlignment { Val = cellModel.TableVerticalAlignementValues.ToOOxml() });
-
+            
             // Gestion de la fusion des cellules
             if (cellModel.Fusion)
             {
@@ -1069,8 +1067,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
                 tableCellProperties.Append(new TextDirection { Val = cellModel.TextDirectionValues.ToOOxml() });
 
             Paragraph par = new Paragraph();
-            ParagraphProperties pr = new ParagraphProperties(); // new TableCellVerticalAlignment { Val = cellModel.TableVerticalAlignementValues.ToOOxml() });
-            //new SpacingBetweenLines() { After = cellModel.SpacingAfter, Before = cellModel.SpacingBefore, Line = "240" });
+            ParagraphProperties pr = new ParagraphProperties();
 
             if (cellModel.Justification.HasValue)
                 pr.Append(new Justification() { Val = cellModel.Justification.Value.ToOOxml() });

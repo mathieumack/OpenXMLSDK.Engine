@@ -73,14 +73,14 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
         #region Internal methods
 
         /// <summary>
-        /// Permet de créer un graphique en barres empilées pour un document word
+        /// Create a bargraph inside a word document
         /// </summary>
-        /// <param name="chartModel">Modèle de données du graph</param>
-        /// <param name="showLegend">Indique si la légende sera présente ou non sur le graphique</param>
-        /// <param name="title">Titre du graphique</param>
-        /// <param name="maxWidth">Largeur maximum du graphique en pixel</param>
-        /// <param name="maxHeight">Hauteur maximum du graphique en pixel</param>
-        /// <exception cref="ChartModelException">Model de graphique invalide</exception>
+        /// <param name="chartModel">Graph model</param>
+        /// <param name="showLegend"></param>
+        /// <param name="title"></param>
+        /// <param name="maxWidth"></param>
+        /// <param name="maxHeight"></param>
+        /// <exception cref="ChartModelException"></exception>
         /// <returns></returns>
         private static Run CreateBarGraph(BarModel chartModel, OpenXmlPart documentPart)
         {
@@ -152,7 +152,6 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                 strLit.AppendChild(new dc.StringCache());
                 strLit.StringCache.AppendChild(new dc.PointCount() { Val = (uint)countCategories });
                 // Liste catégorie
-                //for (int k = 0; k < countCategories; k++)
                 foreach (var categorie in chartModel.Categories)
                 {
                     strLit.StringCache.AppendChild(new dc.StringPoint() { Index = p, NumericValue = new dc.NumericValue(categorie.Name) }); // chartModel.Categories[k].Name
