@@ -168,7 +168,8 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                 numLit.NumberingCache.AppendChild(new dc.PointCount() { Val = (uint)serie.Values.Count });
                 foreach (var value in serie.Values)
                 {
-                    numLit.NumberingCache.AppendChild<dc.NumericPoint>(new dc.NumericPoint() { Index = p, NumericValue = new dc.NumericValue(value.ToString()) });
+                    if (value > 0)
+                        numLit.NumberingCache.AppendChild<dc.NumericPoint>(new dc.NumericPoint() { Index = p, NumericValue = new dc.NumericValue(value.ToString()) });
                     p++;
                 }
                 i++;
