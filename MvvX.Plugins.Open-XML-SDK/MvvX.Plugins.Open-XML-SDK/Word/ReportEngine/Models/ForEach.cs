@@ -1,4 +1,6 @@
-﻿namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models
+﻿using System.Collections.Generic;
+
+namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models
 {
     public class ForEach : BaseElement
     {
@@ -6,7 +8,7 @@
         /// Describe the template of each final item
         /// Warning : If the ForEach control is under a Cell, the ItemTemplate must be a Paragraph !
         /// </summary>
-        public BaseElement ItemTemplate { get; set; }
+        public List<BaseElement> ItemTemplate { get; set; }
 
         /// <summary>
         /// Items that will be repeated

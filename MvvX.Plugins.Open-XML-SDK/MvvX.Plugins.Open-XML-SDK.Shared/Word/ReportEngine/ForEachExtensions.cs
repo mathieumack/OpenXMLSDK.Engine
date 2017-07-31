@@ -21,7 +21,10 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                     {
                         foreach (var item in datasource.Items)
                         {
-                            forEach.ItemTemplate.Clone().Render(parent, item, documentPart);
+                            foreach (var template in forEach.ItemTemplate)
+                            {
+                                template.Clone().Render(parent, item, documentPart);
+                            }
                         }
                     }
                 }
