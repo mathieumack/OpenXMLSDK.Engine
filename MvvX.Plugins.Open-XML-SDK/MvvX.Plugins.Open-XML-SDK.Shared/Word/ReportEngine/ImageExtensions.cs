@@ -36,12 +36,14 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
             else
                 return null;
 
+            bool isNotEmpty = false;
             if (image.Content != null && image.Content.Length > 0)
             {
                 using (MemoryStream stream = new MemoryStream(image.Content))
                 {
                     imagePart.FeedData(stream);
                 }
+                isNotEmpty = true;
             }
             else if (!string.IsNullOrWhiteSpace(image.Path))
             {
@@ -49,12 +51,18 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                 {
                     imagePart.FeedData(stream);
                 }
+                isNotEmpty = true;
             }
-
-            OpenXmlElement result = CreateImage(imagePart, image, documentPart);
-            parent.AppendChild(result);
-
-            return result;
+            if (isNotEmpty)
+            {
+                OpenXmlElement result = CreateImage(imagePart, image, documentPart);
+                parent.AppendChild(result);
+                return result;
+            }
+            else
+            {
+                return null;
+            }            
         }
 
         /// <summary>

@@ -27,7 +27,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             ValidateDocument();
             // fin test report engine
 
-            //OldProgram();
+            //  OldProgram();
         }
 
         private static void ReportEngineTest()
@@ -537,6 +537,55 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
 
             doc.Pages.Add(page6);
 
+            var page7 = new Page();
+
+            var tableDataSourceWithCellFusion = new Table()
+            {
+                TableWidth = new TableWidthModel() { Width = "5000", Type = TableWidthUnitValues.Pct },
+                ColsWidth = new int[3] { 1200, 1200, 1200 },
+                Borders = new Word.ReportEngine.Models.Attributes.BorderModel()
+                {
+                    BorderPositions = (Word.ReportEngine.Models.Attributes.BorderPositions)63,
+                    BorderColor = "328864",
+                    BorderWidth = 20,
+                },
+                RowModel = new Row()
+                {
+                    Cells = new List<Cell>()
+                    {
+                        new Cell()
+                        {
+                            Shading = "FFA0FF",
+                            ChildElements = new List<BaseElement>()
+                            {
+                                new Label() { Text = "#Cell1#" }
+                            },
+                            FusionKey = "#IsInGroup#",
+                            FusionChildKey = "#IsNotFirstLineGroup#"
+                        },
+                        new Cell()
+                        {
+                            ChildElements = new List<BaseElement>()
+                            {
+                                new Label() { Text = "#Cell2#" }
+                            }
+                        },
+                        new Cell()
+                        {
+                            ChildElements = new List<BaseElement>()
+                            {
+                                new Label() { Text = "#Cell2#" }
+                            }
+                        }
+                    }
+                },
+                DataSourceKey = "#DatasourceTableFusion#"
+            };
+
+            page7.ChildElements.Add(tableDataSourceWithCellFusion);
+
+            doc.Pages.Add(page7);
+
             // Header
             var header = new Header();
             header.Type = HeaderFooterValues.Default;
@@ -598,11 +647,51 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             row2.AddItem("#Cell1#", new StringModel("Col 2 Row 1"));
             row2.AddItem("#Cell2#", new StringModel("Col 2 Row 2"));
             row2.AddItem("#Label#", new StringModel("Label 2"));
+
             context.AddItem("#Datasource#", new DataSourceModel()
             {
                 Items = new List<ContextModel>()
                     {
                         row1, row2
+                    }
+            });
+
+            ContextModel row11 = new ContextModel();
+            row11.AddItem("#IsInGroup#", new BooleanModel(true));
+            row11.AddItem("#IsNotFirstLineGroup#", new BooleanModel(false));
+            row11.AddItem("#Cell1#", new StringModel("Col 1 Row 1"));
+            row11.AddItem("#Cell2#", new StringModel("Col 2 Row 1"));
+            row11.AddItem("#Label#", new StringModel("Label 1"));
+            ContextModel row12 = new ContextModel();
+            row12.AddItem("#IsInGroup#", new BooleanModel(true));
+            row12.AddItem("#IsNotFirstLineGroup#", new BooleanModel(true));
+            row12.AddItem("#Cell1#", new StringModel("Col 1 Row 1"));
+            row12.AddItem("#Cell2#", new StringModel("Col 2 Row 1"));
+            row12.AddItem("#Label#", new StringModel("Label 1"));
+            ContextModel row13 = new ContextModel();
+            row13.AddItem("#IsInGroup#", new BooleanModel(true));
+            row13.AddItem("#IsNotFirstLineGroup#", new BooleanModel(true));
+            row13.AddItem("#Cell1#", new StringModel("Col 1 Row 1"));
+            row13.AddItem("#Cell2#", new StringModel("Col 2 Row 1"));
+            row13.AddItem("#Label#", new StringModel("Label 1"));
+            ContextModel row22 = new ContextModel();
+            row22.AddItem("#IsInGroup#", new BooleanModel(true));
+            row22.AddItem("#IsNotFirstLineGroup#", new BooleanModel(false));
+            row22.AddItem("#Cell1#", new StringModel("Col 2 Row 1"));
+            row22.AddItem("#Cell2#", new StringModel("Col 2 Row 2"));
+            row22.AddItem("#Label#", new StringModel("Label 2"));
+            ContextModel row23 = new ContextModel();
+            row23.AddItem("#IsInGroup#", new BooleanModel(true));
+            row23.AddItem("#IsNotFirstLineGroup#", new BooleanModel(true));
+            row23.AddItem("#Cell1#", new StringModel("Col 2 Row 1"));
+            row23.AddItem("#Cell2#", new StringModel("Col 2 Row 2"));
+            row23.AddItem("#Label#", new StringModel("Label 2"));
+
+            context.AddItem("#DatasourceTableFusion#", new DataSourceModel()
+            {
+                Items = new List<ContextModel>()
+                    {
+                        row11, row12, row13, row22, row23
                     }
             });
 

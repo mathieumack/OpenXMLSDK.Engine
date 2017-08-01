@@ -25,9 +25,19 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models
         public bool Fusion { get; set; }
 
         /// <summary>
+        /// BooleanModelobject linked that will be linked to the Fusion property
+        /// </summary>
+        public string FusionKey { get; set; }
+
+        /// <summary>
         /// Cell is a hidden merged part of a rowspan
         /// </summary>
         public bool FusionChild { get; set; }
+
+        /// <summary>
+        /// BooleanModelobject linked that will be linked to the FusionChild property
+        /// </summary>
+        public string FusionChildKey { get; set; }
 
         /// <summary>
         /// Justification/ horizontal alignment of cells content

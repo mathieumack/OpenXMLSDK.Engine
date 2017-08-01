@@ -180,6 +180,16 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels
                 element.Shading = ReplaceText(element.Shading);
             if (element.Borders != null && !string.IsNullOrEmpty(element.Borders.BorderColor))
                 element.Borders.BorderColor = ReplaceText(element.Borders.BorderColor);
+            if (!string.IsNullOrEmpty(element.FusionKey) && ExistItem<BooleanModel>(element.FusionKey))
+            {
+                var item = GetItem<BooleanModel>(element.FusionKey);
+                element.Fusion = item.Value;
+            }
+            if (!string.IsNullOrEmpty(element.FusionChildKey) && ExistItem<BooleanModel>(element.FusionChildKey))
+            {
+                var item = GetItem<BooleanModel>(element.FusionChildKey);
+                element.FusionChild = item.Value;
+            }
             SetVisibilityFromContext(element);
         }
 
@@ -200,13 +210,10 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels
 
         private void SetVisibilityFromContext(BaseElement element)
         {
-            if (!string.IsNullOrWhiteSpace(element.ShowKey))
+            if (!string.IsNullOrWhiteSpace(element.ShowKey) && ExistItem<BooleanModel>(element.ShowKey))
             {
-                if (ExistItem<BooleanModel>(element.ShowKey))
-                {
-                    var item = GetItem<BooleanModel>(element.ShowKey);
-                    element.Show = item.Value;
-                }
+                var item = GetItem<BooleanModel>(element.ShowKey);
+                element.Show = item.Value;
             }
             element.ShowKey = string.Empty;
         }
