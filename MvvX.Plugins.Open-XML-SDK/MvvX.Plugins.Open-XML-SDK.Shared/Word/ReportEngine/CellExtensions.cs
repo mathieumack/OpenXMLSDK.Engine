@@ -49,6 +49,10 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
             {
                 cellProp.AppendChild(new TextDirection { Val = cell.TextDirection.ToOOxml() });
             }
+            if (cell.CellWidth != null)
+            {
+                cellProp.AppendChild(new TableCellWidth() { Width = cell.CellWidth.Width, Type = cell.CellWidth.Type.ToOOxml() });
+            }
 
             // manage cell column and row span
             if (cell.ColSpan > 1)
@@ -66,7 +70,6 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                     cellProp.AppendChild(new VerticalMerge() { Val = MergedCellValues.Restart });
                 }
             }
-
             if (cell.Margin != null)
             {
                 cellProp.AppendChild(new TableCellMargin()
