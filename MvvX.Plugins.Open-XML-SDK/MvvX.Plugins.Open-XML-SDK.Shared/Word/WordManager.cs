@@ -426,26 +426,42 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
         /// Append SubDocument at end of current doc
         /// </summary>
         /// <param name="content"></param>
+        /// <param name="withPageBreak">If true insert a page break before.</param>
         public void AppendSubDocument(Stream content, bool withPageBreak)
         {
             if (wdDoc == null)
                 throw new InvalidOperationException("Document not loaded");
 
             AlternativeFormatImportPart formatImportPart = wdMainDocumentPart.AddAlternativeFormatImportPart(AlternativeFormatImportPartType.WordprocessingML);
-
             formatImportPart.FeedData(content);
 
             AltChunk altChunk = new AltChunk();
             altChunk.Id = wdMainDocumentPart.GetIdOfPart(formatImportPart);
 
-            wdMainDocumentPart.Document.Body.Elements<Paragraph>().Last().InsertAfterSelf(altChunk);
-
-            if (withPageBreak)
+            var lastElement = wdMainDocumentPart.Document.Body.Elements().Last(x => (x.GetType() == typeof(Paragraph)) || (x.GetType() == typeof(SectionProperties)));
+            if (lastElement is Paragraph)
             {
-                Paragraph p = new Paragraph(
-                    new Run(
-                        new Break() { Type = BreakValues.Page }));
-                altChunk.InsertAfterSelf(p);
+                lastElement.InsertAfterSelf(altChunk);
+                if (withPageBreak)
+                {
+                    Paragraph p = new Paragraph(
+                        new Run(
+                            new Break() { Type = BreakValues.Page }));
+                    altChunk.InsertBeforeSelf(p);
+                }
+            }
+            else
+            {
+                if (withPageBreak)
+                {
+                    SectionProperties sectionProps = (SectionProperties)lastElement.Clone();
+                    var p = new DocumentFormat.OpenXml.Wordprocessing.Paragraph();
+                    var ppr = new DocumentFormat.OpenXml.Wordprocessing.ParagraphProperties();
+                    p.AppendChild(ppr);
+                    ppr.AppendChild(sectionProps);
+                    lastElement.InsertBeforeSelf(p);
+                }
+                lastElement.InsertBeforeSelf(altChunk);
             }
         }
 
@@ -467,7 +483,12 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
 
             //Append documents
             OpenDoc(filePath, true);
-            AppendStreams(filesToInsert, withPageBreak, wdMainDocumentPart.Document.Body.Elements<Paragraph>().Last());            
+            foreach (var file in filesToInsert)
+            {
+                file.Position = 0;
+                AppendSubDocument(file, withPageBreak);
+            }
+
             SaveDoc();
             CloseDocNoSave();
         }
@@ -478,10 +499,10 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
         /// <param name="filesToInsert"></param>
         /// <param name="insertPageBreaks"></param>
         /// <param name="predecessorElement"></param>
-        private void AppendStreams( IList<MemoryStream> filesToInsert, bool insertPageBreaks, OpenXmlCompositeElement predecessorElement)
+        private void AppendStreams(IList<MemoryStream> filesToInsert, bool insertPageBreaks, OpenXmlCompositeElement predecessorElement)
         {
             OpenXmlCompositeElement openXmlCompositeElement = null;
-            foreach (var file in filesToInsert)
+            foreach (var file in filesToInsert.Reverse())
             {
                 using (WordprocessingDocument pkgSourceDoc = WordprocessingDocument.Open(file, true))
                 {
@@ -517,7 +538,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
 
                 if (wdDoc == null)
                     throw new Exception("Document not loaded");
-            }           
+            }
         }
 
         /// <summary>
@@ -565,7 +586,44 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
             {
                 OpenXmlCompositeElement insertAfterElement = wdDoc.MainDocumentPart.Document.Body.Descendants<BookmarkStart>().SingleOrDefault<BookmarkStart>((BookmarkStart b) => b.Name == bookmark)
                     .Ancestors<Paragraph>().FirstOrDefault<Paragraph>();
-                AppendStreams(filesToInsert, insertPageBreaks, insertAfterElement);                
+                OpenXmlCompositeElement openXmlCompositeElement = null;
+                foreach (var file in filesToInsert.Reverse())
+                {
+                    using (WordprocessingDocument pkgSourceDoc = WordprocessingDocument.Open(file, true))
+                    {
+                        var headers = pkgSourceDoc.MainDocumentPart.Document.Descendants<HeaderReference>().ToList();
+                        foreach (var header in headers)
+                            header.Remove();
+                        var footers = pkgSourceDoc.MainDocumentPart.Document.Descendants<FooterReference>().ToList();
+                        foreach (var footer in footers)
+                            footer.Remove();
+                        pkgSourceDoc.MainDocumentPart.Document.Save();
+                    }
+
+                    string altChunkId = "AltChunkId-" + Guid.NewGuid();
+
+                    AlternativeFormatImportPart chunk = wdMainDocumentPart.AddAlternativeFormatImportPart(AlternativeFormatImportPartType.WordprocessingML, altChunkId);
+                    file.Position = 0;
+                    chunk.FeedData(file);
+
+                    AltChunk altChunk = new AltChunk() { Id = altChunkId };
+
+                    if (openXmlCompositeElement == null)
+                        openXmlCompositeElement = insertAfterElement;
+
+                    if (insertPageBreaks)
+                    {
+                        var run = new Run(new Break() { Type = BreakValues.Page });
+                        Paragraph paragraph = new Paragraph(run);
+                        openXmlCompositeElement.InsertAfterSelf<Paragraph>(paragraph);
+                        openXmlCompositeElement = paragraph;
+                    }
+                    openXmlCompositeElement.InsertAfterSelf<AltChunk>(altChunk);
+                    openXmlCompositeElement = altChunk;
+
+                    if (wdDoc == null)
+                        throw new Exception("Document not loaded");
+                }
             }
         }
 
@@ -1049,7 +1107,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
             TableCell tc = platformCellTable.ContentItem as TableCell;
 
             var tableCellProperties = platformCellTable.Properties.ContentItem as TableCellProperties;
-            
+
             // Gestion de la fusion des cellules
             if (cellModel.Fusion)
             {
