@@ -499,10 +499,10 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
         /// <param name="filesToInsert"></param>
         /// <param name="insertPageBreaks"></param>
         /// <param name="predecessorElement"></param>
-        private void AppendStreams(IList<MemoryStream> filesToInsert, bool insertPageBreaks, OpenXmlCompositeElement predecessorElement)
+        private void AppendStreams(IList<MemoryStream> filesToInsert, bool insertPageBreaks, OpenXmlCompositeElement insertAfterElement)
         {
             OpenXmlCompositeElement openXmlCompositeElement = null;
-            foreach (var file in filesToInsert.Reverse())
+            foreach (var file in filesToInsert)
             {
                 using (WordprocessingDocument pkgSourceDoc = WordprocessingDocument.Open(file, true))
                 {
@@ -524,7 +524,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
                 AltChunk altChunk = new AltChunk() { Id = altChunkId };
 
                 if (openXmlCompositeElement == null)
-                    openXmlCompositeElement = predecessorElement;
+                    openXmlCompositeElement = insertAfterElement;
 
                 if (insertPageBreaks)
                 {
@@ -586,44 +586,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
             {
                 OpenXmlCompositeElement insertAfterElement = wdDoc.MainDocumentPart.Document.Body.Descendants<BookmarkStart>().SingleOrDefault<BookmarkStart>((BookmarkStart b) => b.Name == bookmark)
                     .Ancestors<Paragraph>().FirstOrDefault<Paragraph>();
-                OpenXmlCompositeElement openXmlCompositeElement = null;
-                foreach (var file in filesToInsert.Reverse())
-                {
-                    using (WordprocessingDocument pkgSourceDoc = WordprocessingDocument.Open(file, true))
-                    {
-                        var headers = pkgSourceDoc.MainDocumentPart.Document.Descendants<HeaderReference>().ToList();
-                        foreach (var header in headers)
-                            header.Remove();
-                        var footers = pkgSourceDoc.MainDocumentPart.Document.Descendants<FooterReference>().ToList();
-                        foreach (var footer in footers)
-                            footer.Remove();
-                        pkgSourceDoc.MainDocumentPart.Document.Save();
-                    }
-
-                    string altChunkId = "AltChunkId-" + Guid.NewGuid();
-
-                    AlternativeFormatImportPart chunk = wdMainDocumentPart.AddAlternativeFormatImportPart(AlternativeFormatImportPartType.WordprocessingML, altChunkId);
-                    file.Position = 0;
-                    chunk.FeedData(file);
-
-                    AltChunk altChunk = new AltChunk() { Id = altChunkId };
-
-                    if (openXmlCompositeElement == null)
-                        openXmlCompositeElement = insertAfterElement;
-
-                    if (insertPageBreaks)
-                    {
-                        var run = new Run(new Break() { Type = BreakValues.Page });
-                        Paragraph paragraph = new Paragraph(run);
-                        openXmlCompositeElement.InsertAfterSelf<Paragraph>(paragraph);
-                        openXmlCompositeElement = paragraph;
-                    }
-                    openXmlCompositeElement.InsertAfterSelf<AltChunk>(altChunk);
-                    openXmlCompositeElement = altChunk;
-
-                    if (wdDoc == null)
-                        throw new Exception("Document not loaded");
-                }
+                AppendStreams(filesToInsert, insertPageBreaks, insertAfterElement);
             }
         }
 
