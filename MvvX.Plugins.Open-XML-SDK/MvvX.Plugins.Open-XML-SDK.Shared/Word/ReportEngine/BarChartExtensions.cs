@@ -330,8 +330,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
             {
                 chartPart.ChartSpace.Append(new dc.ChartShapeProperties(new A.Outline(new A.NoFill())));
             }
-
-
+            
             // Save the chart part.
             chartPart.ChartSpace.Save();
 
