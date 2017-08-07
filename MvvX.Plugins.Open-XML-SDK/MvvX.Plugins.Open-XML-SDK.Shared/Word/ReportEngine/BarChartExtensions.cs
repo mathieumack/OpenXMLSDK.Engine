@@ -101,9 +101,10 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
             ChartPart chartPart = documentPart.AddNewPart<ChartPart>();
             chartPart.ChartSpace = new dc.ChartSpace();
             chartPart.ChartSpace.Append(new dc.EditingLanguage() { Val = new StringValue("en-US") });
-            DocumentFormat.OpenXml.Drawing.Charts.Chart chart = chartPart.ChartSpace.AppendChild
+            chartPart.ChartSpace.Append(new dc.RoundedCorners { Val = new BooleanValue(chartModel.RoundedCorner) });
+            dc.Chart chart = chartPart.ChartSpace.AppendChild
                 <DocumentFormat.OpenXml.Drawing.Charts.Chart>
-                (new DocumentFormat.OpenXml.Drawing.Charts.Chart());
+                (new dc.Chart());
 
             // Ajout du titre au graphique
             if (chartModel.ShowTitle)
@@ -161,7 +162,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
 
                 // Gestion des valeurs
                 dc.NumberReference numLit = barChartSeries.AppendChild<DocumentFormat.OpenXml.Drawing.Charts.Values>
-                    (new DocumentFormat.OpenXml.Drawing.Charts.Values())
+                    (new dc.Values())
                         .AppendChild<dc.NumberReference>(new dc.NumberReference());
                 numLit.AppendChild(new dc.NumberingCache());
                 numLit.NumberingCache.AppendChild(new dc.FormatCode("General"));
@@ -255,12 +256,12 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
             dc.ValueAxis valAx = plotArea.AppendChild<dc.ValueAxis>(new dc.ValueAxis(new dc.AxisId() { Val = new UInt32Value(48672768u) },
                 new dc.Scaling(new dc.Orientation()
                 {
-                    Val = new DocumentFormat.OpenXml.EnumValue<DocumentFormat.OpenXml.Drawing.Charts.OrientationValues>(
+                    Val = new DocumentFormat.OpenXml.EnumValue<dc.OrientationValues>(
                         DocumentFormat.OpenXml.Drawing.Charts.OrientationValues.MinMax)
                 }),
                 new dc.Delete() { Val = chartModel.DeleteAxeValue },
                 new dc.AxisPosition() { Val = new DocumentFormat.OpenXml.EnumValue<dc.AxisPositionValues>(dc.AxisPositionValues.Bottom) },
-                new DocumentFormat.OpenXml.Drawing.Charts.NumberingFormat()
+                new dc.NumberingFormat()
                 {
                     FormatCode = new StringValue("General"),
                     SourceLinked = new BooleanValue(true)
@@ -312,8 +313,24 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                 new dc.ShowDataLabelsOverMaximum() { Val = false });
 
             // Gestion des bordures du graphique
-            if (!chartModel.HasBorder)
+            if (chartModel.HasBorder)
+            {
+                chartModel.BorderWidth = chartModel.BorderWidth.HasValue ? chartModel.BorderWidth.Value : 12700;
+
+                if (!string.IsNullOrEmpty(chartModel.BorderColor))
+                {
+                    chartPart.ChartSpace.Append(new dc.ChartShapeProperties(new A.Outline(new A.SolidFill(new A.RgbColorModelHex() { Val = chartModel.BorderColor })) { Width = chartModel.BorderWidth.Value }));
+                }
+                else
+                {
+                    chartPart.ChartSpace.Append(new dc.ChartShapeProperties(new A.Outline(new A.SolidFill(new A.RgbColorModelHex() { Val = "000000" })) { Width = chartModel.BorderWidth.Value }));
+                }
+            }
+            else
+            {
                 chartPart.ChartSpace.Append(new dc.ChartShapeProperties(new A.Outline(new A.NoFill())));
+            }
+
 
             // Save the chart part.
             chartPart.ChartSpace.Save();
@@ -353,7 +370,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                         new A.Graphic(
                             new A.GraphicData(
                                 // Lien avec l'Id du graphique
-                                new DocumentFormat.OpenXml.Drawing.Charts.ChartReference() { Id = relationshipId }
+                                new dc.ChartReference() { Id = relationshipId }
                                 )
                             { Uri = "http://schemas.openxmlformats.org/drawingml/2006/chart" })
                     )
