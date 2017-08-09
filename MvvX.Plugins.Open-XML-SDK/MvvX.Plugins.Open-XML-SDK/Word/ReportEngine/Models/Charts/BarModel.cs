@@ -117,6 +117,24 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models.Charts
         /// </summary>
         public string MajorGridlinesColor { get; set; }
 
+        /// <summary>
+        /// Border color
+        /// </summary>
+        public string BorderColor { get; set; }
+
+        /// <summary>
+        /// Border width
+        /// </summary>
+        public int? BorderWidth { get; set; }
+
+        /// <summary>
+        /// Rounded corner for border
+        /// </summary>
+        public bool RoundedCorner { get; set; }
+
+        /// <summary>
+        /// Ctor
+        /// </summary>
         public BarModel()
             : base(typeof(BarModel).Name)
         {
