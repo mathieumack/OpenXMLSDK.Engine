@@ -48,6 +48,11 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models
         public bool? Bold { get; set; }
 
         /// <summary>
+        /// Key from context used to determine element boldness
+        /// </summary>
+        public string BoldKey { get; set; }
+
+        /// <summary>
         /// Is text contained in current element Italic
         /// </summary>
         public bool? Italic { get; set; }

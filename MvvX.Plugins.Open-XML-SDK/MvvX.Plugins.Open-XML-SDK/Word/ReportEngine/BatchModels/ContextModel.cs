@@ -148,6 +148,11 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels
                 element.FontColor = ReplaceText(element.FontColor);
             if (!string.IsNullOrEmpty(element.Shading))
                 element.Shading = ReplaceText(element.Shading);
+            if (!string.IsNullOrEmpty(element.BoldKey) && ExistItem<BooleanModel>(element.BoldKey))
+            {
+                var item = GetItem<BooleanModel>(element.BoldKey);
+                element.Bold = item.Value;
+            }
             SetVisibilityFromContext(element);
         }
 
@@ -165,6 +170,11 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels
                 element.Shading = ReplaceText(element.Shading);
             if (element.Borders != null && !string.IsNullOrEmpty(element.Borders.BorderColor))
                 element.Borders.BorderColor = ReplaceText(element.Borders.BorderColor);
+            if (!string.IsNullOrEmpty(element.BoldKey) && ExistItem<BooleanModel>(element.BoldKey))
+            {
+                var item = GetItem<BooleanModel>(element.BoldKey);
+                element.Bold = item.Value;
+            }
             SetVisibilityFromContext(element);
         }
 
