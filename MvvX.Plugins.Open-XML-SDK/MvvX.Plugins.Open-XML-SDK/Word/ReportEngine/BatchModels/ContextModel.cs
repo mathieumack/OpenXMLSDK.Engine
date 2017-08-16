@@ -118,7 +118,8 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels
                 if (ExistItem<Base64ContentModel>(element.ContextKey))
                 {
                     var item = GetItem<Base64ContentModel>(element.ContextKey);
-                    element.Content = Convert.FromBase64String(item.Base64Content);
+                    if (!string.IsNullOrWhiteSpace(item.Base64Content))
+                        element.Content = Convert.FromBase64String(item.Base64Content);
                 }
                 else if (ExistItem<ByteContentModel>(element.ContextKey))
                 {
