@@ -118,7 +118,8 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels
                 if (ExistItem<Base64ContentModel>(element.ContextKey))
                 {
                     var item = GetItem<Base64ContentModel>(element.ContextKey);
-                    element.Content = Convert.FromBase64String(item.Base64Content);
+                    if (!string.IsNullOrWhiteSpace(item.Base64Content))
+                        element.Content = Convert.FromBase64String(item.Base64Content);
                 }
                 else if (ExistItem<ByteContentModel>(element.ContextKey))
                 {
@@ -148,6 +149,11 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels
                 element.FontColor = ReplaceText(element.FontColor);
             if (!string.IsNullOrEmpty(element.Shading))
                 element.Shading = ReplaceText(element.Shading);
+            if (!string.IsNullOrEmpty(element.BoldKey) && ExistItem<BooleanModel>(element.BoldKey))
+            {
+                var item = GetItem<BooleanModel>(element.BoldKey);
+                element.Bold = item.Value;
+            }
             SetVisibilityFromContext(element);
         }
 
@@ -165,6 +171,11 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels
                 element.Shading = ReplaceText(element.Shading);
             if (element.Borders != null && !string.IsNullOrEmpty(element.Borders.BorderColor))
                 element.Borders.BorderColor = ReplaceText(element.Borders.BorderColor);
+            if (!string.IsNullOrEmpty(element.BoldKey) && ExistItem<BooleanModel>(element.BoldKey))
+            {
+                var item = GetItem<BooleanModel>(element.BoldKey);
+                element.Bold = item.Value;
+            }
             SetVisibilityFromContext(element);
         }
 
@@ -180,6 +191,16 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels
                 element.Shading = ReplaceText(element.Shading);
             if (element.Borders != null && !string.IsNullOrEmpty(element.Borders.BorderColor))
                 element.Borders.BorderColor = ReplaceText(element.Borders.BorderColor);
+            if (!string.IsNullOrEmpty(element.FusionKey) && ExistItem<BooleanModel>(element.FusionKey))
+            {
+                var item = GetItem<BooleanModel>(element.FusionKey);
+                element.Fusion = item.Value;
+            }
+            if (!string.IsNullOrEmpty(element.FusionChildKey) && ExistItem<BooleanModel>(element.FusionChildKey))
+            {
+                var item = GetItem<BooleanModel>(element.FusionChildKey);
+                element.FusionChild = item.Value;
+            }
             SetVisibilityFromContext(element);
         }
 
@@ -200,13 +221,10 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels
 
         private void SetVisibilityFromContext(BaseElement element)
         {
-            if (!string.IsNullOrWhiteSpace(element.ShowKey))
+            if (!string.IsNullOrWhiteSpace(element.ShowKey) && ExistItem<BooleanModel>(element.ShowKey))
             {
-                if (ExistItem<BooleanModel>(element.ShowKey))
-                {
-                    var item = GetItem<BooleanModel>(element.ShowKey);
-                    element.Show = item.Value;
-                }
+                var item = GetItem<BooleanModel>(element.ShowKey);
+                element.Show = item.Value;
             }
             element.ShowKey = string.Empty;
         }

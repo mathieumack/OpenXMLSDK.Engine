@@ -1,5 +1,6 @@
 ﻿using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models.Attributes;
 using MvvX.Plugins.OpenXMLSDK.Word.Tables;
+using MvvX.Plugins.OpenXMLSDK.Word.Tables.Models;
 
 namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models
 {
@@ -24,9 +25,19 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models
         public bool Fusion { get; set; }
 
         /// <summary>
+        /// BooleanModelobject linked that will be linked to the Fusion property
+        /// </summary>
+        public string FusionKey { get; set; }
+
+        /// <summary>
         /// Cell is a hidden merged part of a rowspan
         /// </summary>
         public bool FusionChild { get; set; }
+
+        /// <summary>
+        /// BooleanModelobject linked that will be linked to the FusionChild property
+        /// </summary>
+        public string FusionChildKey { get; set; }
 
         /// <summary>
         /// Justification/ horizontal alignment of cells content
@@ -47,6 +58,11 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models
         /// Margins in cell
         /// </summary>
         public MarginModel Margin { get; set; }
+
+        /// <summary>
+        /// Width of the cell
+        /// </summary>
+        public TableCellWidthModel CellWidth { get; set; }
 
         /// <summary>
         /// Constructor

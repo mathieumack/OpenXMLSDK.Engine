@@ -7,7 +7,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
 {
     public static class ForEachExtensions
     {
-        public static OpenXmlElement Render(this ForEach forEach, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart)
+        public static void Render(this ForEach forEach, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart)
         {
             context.ReplaceItem(forEach);
 
@@ -21,13 +21,14 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                     {
                         foreach (var item in datasource.Items)
                         {
-                            forEach.ItemTemplate.Clone().Render(parent, item, documentPart);
+                            foreach (var template in forEach.ItemTemplate)
+                            {
+                                template.Clone().Render(parent, item, documentPart);
+                            }
                         }
                     }
                 }
             }
-
-            return null;
         }
     }
 }
