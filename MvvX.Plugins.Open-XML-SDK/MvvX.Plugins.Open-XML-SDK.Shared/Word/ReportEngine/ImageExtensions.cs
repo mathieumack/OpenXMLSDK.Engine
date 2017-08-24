@@ -89,10 +89,28 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                 long bmWidth = bm.Width;
                 long bmHeight = bm.Height;
 
+                // Resize width
+                if (model.Width.HasValue)
+                {
+                    long ratio = model.Width.Value * 100L / bmWidth;
+
+                    bmWidth = (long)(bmWidth * (ratio / 100D));
+                    bmHeight = (long)(bmHeight * (ratio / 100D));
+                }
+
                 // Resize width if too big
                 if (model.MaxWidth.HasValue && model.MaxWidth.Value < bmWidth)
                 {
                     long ratio = model.MaxWidth.Value * 100L / bmWidth;
+
+                    bmWidth = (long)(bmWidth * (ratio / 100D));
+                    bmHeight = (long)(bmHeight * (ratio / 100D));
+                }
+
+                // Resize height
+                if (model.Height.HasValue)
+                {
+                    long ratio = model.Height.Value * 100L / bmHeight;
 
                     bmWidth = (long)(bmWidth * (ratio / 100D));
                     bmHeight = (long)(bmHeight * (ratio / 100D));
