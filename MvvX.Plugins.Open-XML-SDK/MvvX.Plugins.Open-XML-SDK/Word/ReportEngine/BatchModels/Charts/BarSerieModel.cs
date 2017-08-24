@@ -12,7 +12,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels.Charts
         /// <summary>
         /// Values
         /// </summary>
-        public List<double> Values { get; set; }
+        public List<double?> Values { get; set; }
         
         /// <summary>
         /// Color of the serie
