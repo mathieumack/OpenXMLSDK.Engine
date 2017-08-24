@@ -13,6 +13,16 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models
         public ImagePartType ImagePartType { get; set; }
 
         /// <summary>
+        /// Set a fixed width. Less priority than MaxWidth
+        /// </summary>
+        public long? Width { get; set; }
+
+        /// <summary>
+        /// Set a fixed height. Less priority than MaxHeight
+        /// </summary>
+        public long? Height { get; set; }
+
+        /// <summary>
         /// Max width
         /// </summary>
         public long? MaxWidth { get; set; }

@@ -153,8 +153,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                                     new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "Cell 1 - First paragraph" } }, ParagraphStyleId = "Yellow" },
                                     new Image()
                                     {
-                                        MaxHeight = 100,
-                                        MaxWidth = 100,
+                                        Width = 50,
                                         Path = @"..\..\Resources\Desert.jpg",
                                         ImagePartType = Packaging.ImagePartType.Jpeg
                                     },
@@ -170,8 +169,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                                     new Label() { Text = "Cell 2 - First label" },
                                     new Image()
                                     {
-                                        MaxHeight = 100,
-                                        MaxWidth = 100,
+                                        Height = 10,
                                         Path = @"..\..\Resources\Desert.jpg",
                                         ImagePartType = Packaging.ImagePartType.Jpeg
                                     },
