@@ -107,6 +107,9 @@
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Paragraphs\PlatformParagraph.cs">
       <Link>Word\Paragraphs\PlatformParagraph.cs</Link>
     </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Paragraphs\PlatformParagraphBorders.cs">
+      <Link>Word\Paragraphs\PlatformParagraphBorders.cs</Link>
+    </Compile>
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Paragraphs\PlatformParagraphProperties.cs">
       <Link>Word\Paragraphs\PlatformParagraphProperties.cs</Link>
     </Compile>

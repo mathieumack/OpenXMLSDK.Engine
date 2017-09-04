@@ -7,6 +7,7 @@ using MvvX.Plugins.OpenXMLSDK.Platform.Word;
 using MvvX.Plugins.OpenXMLSDK.Word;
 using MvvX.Plugins.OpenXMLSDK.Word.Models;
 using MvvX.Plugins.OpenXMLSDK.Word.Paragraphs;
+using MvvX.Plugins.OpenXMLSDK.Word.Paragraphs.Models;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels.Charts;
@@ -22,12 +23,12 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
     {
         static void Main()
         {
-            ReportEngineTest();
+            //ReportEngineTest();
 
-            ValidateDocument();
+            //ValidateDocument();
             // fin test report engine
 
-            //  OldProgram();
+            OldProgram();
         }
 
         private static void ReportEngineTest()
@@ -60,6 +61,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                                     " - - - - - - - - - ");
             }
         }
+
         private static void ReportEngine(string filePath, string documentName)
         {
             // Debut test report engine
@@ -788,7 +790,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             string finalFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "App_Data", "Results", "FinalDoc_Test_OrientationParagraph-" + DateTime.Now.ToFileTime() + ".docx");
             using (IWordManager word = new WordManager())
             {
-                // TODO for debug : use your test file :
+                //TODO for debug : use your test file :
                 word.OpenDocFromTemplate(resourceName, finalFilePath, true);
 
                 //    word.SaveDoc();
@@ -1098,7 +1100,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                 tables.Add(word.CreateParagraphForRun(word.CreateRunForTable(word.CreateTable(lines, tableProperty))));
 
                 tables.Add(word.CreateParagraphForRun(
-                    word.CreateRunForText("Test de style"),
+                        word.CreateRunForText("Test de style avec bordures de paragraph"),
                         new ParagraphPropertiesModel()
                         {
                             ParagraphStyleId = new ParagraphStyleIdModel()
@@ -1109,6 +1111,13 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                             {
                                 After = "800",
                                 Before = "100"
+                            },
+                            ParagraphBorders = new ParagraphBordersModel()
+                            {
+                                TopBorder = new ParagraphBorderModel() { Color = "F7941F", Size = 40, BorderValue = BorderValues.Birds },
+                                LeftBorder = new ParagraphBorderModel() { Color = "CCCCCC", Size = 20, BorderValue = BorderValues.Birds },
+                                RightBorder = new ParagraphBorderModel() { Color = "CCCCCC", Size = 20, BorderValue = BorderValues.Birds },
+                                BottomBorder = new ParagraphBorderModel() { Color = "F7941F", Size = 40, BorderValue = BorderValues.Birds }
                             }
                         }));
 

@@ -54,6 +54,18 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.Paragraphs
             }
         }
 
+        private IParagraphBorders paragraphborder;
+        public IParagraphBorders ParagraphBorders
+        {
+            get
+            {
+                if (paragraphborder == null)
+                    paragraphborder = PlatformParagraphBorders.New(xmlElement);
+
+                return paragraphborder;
+            }
+        }
+
         #region Static helpers methods
 
         public static PlatformParagraphProperties New(Paragraph paragraph)

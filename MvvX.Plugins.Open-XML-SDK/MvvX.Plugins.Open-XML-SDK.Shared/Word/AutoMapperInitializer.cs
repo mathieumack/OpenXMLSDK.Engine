@@ -2,6 +2,7 @@
 using MvvX.Plugins.OpenXMLSDK.Word;
 using MvvX.Plugins.OpenXMLSDK.Word.Models;
 using MvvX.Plugins.OpenXMLSDK.Word.Paragraphs;
+using MvvX.Plugins.OpenXMLSDK.Word.Paragraphs.Models;
 using MvvX.Plugins.OpenXMLSDK.Word.Tables;
 using MvvX.Plugins.OpenXMLSDK.Word.Tables.Models;
 
@@ -95,12 +96,22 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
                 cfg.CreateMap<NumberingPropertiesModel, INumberingProperties>();
                 cfg.CreateMap<ParagraphStyleIdModel, IParagraphStyleId>();
                 cfg.CreateMap<SpacingBetweenLinesModel, ISpacingBetweenLines>();
+                cfg.CreateMap<ParagraphBorderModel, IBorderType>();
+                cfg.CreateMap<ParagraphBordersModel, IParagraphBorders>()
+                .AfterMap((source, dest) =>
+                {
+                    AutoMapper.Mapper.Map(source.BottomBorder, dest.BottomBorder);
+                    AutoMapper.Mapper.Map(source.TopBorder, dest.TopBorder);
+                    AutoMapper.Mapper.Map(source.LeftBorder, dest.LeftBorder);
+                    AutoMapper.Mapper.Map(source.RightBorder, dest.RightBorder);
+                });
                 cfg.CreateMap<ParagraphPropertiesModel, IParagraphProperties>()
                     .AfterMap((source, dest) =>
                     {
                         AutoMapper.Mapper.Map(source.NumberingProperties, dest.NumberingProperties);
                         AutoMapper.Mapper.Map(source.ParagraphStyleId, dest.ParagraphStyleId);
                         AutoMapper.Mapper.Map(source.SpacingBetweenLines, dest.SpacingBetweenLines);
+                        AutoMapper.Mapper.Map(source.ParagraphBorders, dest.ParagraphBorders);
                     });
 
                 cfg.CreateMap<TableLayoutModel, ITableLayout>();

@@ -36,6 +36,19 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
             return new PlatformBorder<T>(xmlElement);
         }
 
+        public static PlatformBorder<T> New(ParagraphBorders paragraphBorders)
+        {
+            T xmlElement = null;
+            if (paragraphBorders.Descendants<T>().Any())
+                xmlElement = paragraphBorders.Descendants<T>().First();
+            else
+            {
+                xmlElement = new T();
+                paragraphBorders.Append(xmlElement);
+            }
+            return new PlatformBorder<T>(xmlElement);
+        }
+
         public static PlatformBorder<T> New(TableBorders tableBorders)
         {
             T xmlElement = null;

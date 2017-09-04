@@ -7,5 +7,10 @@
         IParagraphStyleId ParagraphStyleId { get; }
 
         ISpacingBetweenLines SpacingBetweenLines { get; }
+
+        /// <summary>
+        /// Borders of the paragraph
+        /// </summary>
+        IParagraphBorders ParagraphBorders { get; }
     }
 }
