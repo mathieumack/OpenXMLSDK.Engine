@@ -21,7 +21,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models
         /// <summary>
         /// List of pages of document
         /// </summary>
-        public IList<Page> Pages { get; set; } = new List<Page>();
+        public IList<BaseElement> Pages { get; set; } = new List<BaseElement>();
 
         /// <summary>
         /// List of styles used in document

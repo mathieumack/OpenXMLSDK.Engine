@@ -47,6 +47,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Word\ReportEngine\HeaderExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\ReportEngine\ImageExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\ReportEngine\LabelExtension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Word\ReportEngine\ForEachPageExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\ReportEngine\PageExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\ReportEngine\ParagraphExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\ReportEngine\RowExtensions.cs" />
