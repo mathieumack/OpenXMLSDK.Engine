@@ -60,7 +60,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
             if (border.BorderPositions.HasFlag(BorderPositions.LEFT))
             {
                 LeftBorder leftBorder = new LeftBorder();
-                leftBorder.Color = border.BorderColor;
+                leftBorder.Color = border.UseVariableBorders && !string.IsNullOrWhiteSpace(border.BorderLeftColor) ? border.BorderLeftColor : border.BorderColor;
                 leftBorder.Val = BorderValues.Thick;
                 leftBorder.Size = border.UseVariableBorders ? border.BorderWidthLeft : border.BorderWidth;
                 borders.AppendChild(leftBorder);
@@ -69,7 +69,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
             if (border.BorderPositions.HasFlag(BorderPositions.TOP))
             {
                 TopBorder topBorder = new TopBorder();
-                topBorder.Color = border.BorderColor;
+                topBorder.Color = border.UseVariableBorders && !string.IsNullOrWhiteSpace(border.BorderTopColor) ? border.BorderTopColor : border.BorderColor;
                 topBorder.Val = BorderValues.Thick;
                 topBorder.Size = border.UseVariableBorders ? border.BorderWidthTop : border.BorderWidth;
                 borders.AppendChild(topBorder);
@@ -78,7 +78,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
             if (border.BorderPositions.HasFlag(BorderPositions.RIGHT))
             {
                 RightBorder rightBorder = new RightBorder();
-                rightBorder.Color = border.BorderColor;
+                rightBorder.Color = border.UseVariableBorders && !string.IsNullOrWhiteSpace(border.BorderRightColor) ? border.BorderRightColor : border.BorderColor;
                 rightBorder.Val = BorderValues.Thick;
                 rightBorder.Size = border.UseVariableBorders ? border.BorderWidthRight : border.BorderWidth;
                 borders.AppendChild(rightBorder);
@@ -87,7 +87,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
             if (border.BorderPositions.HasFlag(BorderPositions.BOTTOM))
             {
                 BottomBorder bottomBorder = new BottomBorder();
-                bottomBorder.Color = border.BorderColor;
+                bottomBorder.Color = border.UseVariableBorders && !string.IsNullOrWhiteSpace(border.BorderBottomColor) ? border.BorderBottomColor : border.BorderColor;
                 bottomBorder.Val = BorderValues.Thick;
                 bottomBorder.Size = border.UseVariableBorders ? border.BorderWidthBottom : border.BorderWidth;
                 borders.AppendChild(bottomBorder);

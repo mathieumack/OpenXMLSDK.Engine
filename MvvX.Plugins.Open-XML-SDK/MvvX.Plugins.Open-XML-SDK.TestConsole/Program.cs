@@ -23,12 +23,12 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
     {
         static void Main()
         {
-            //ReportEngineTest();
+            ReportEngineTest();
 
             //ValidateDocument();
             // fin test report engine
 
-            OldProgram();
+            //OldProgram();
         }
 
         private static void ReportEngineTest()
@@ -128,6 +128,22 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             paragraph.ChildElements.Add(new Label() { Text = "Ceci est un texte avec accents (éèàù)", FontSize = "30", FontName = "Arial" });
             paragraph.ChildElements.Add(new Label() { Text = "#KeyTest1#", FontSize = "40", FontColor = "#FontColorTestRed#", Shading = "9999FF", BoldKey = "#BoldKey#", Bold = false });
             paragraph.ChildElements.Add(new Label() { Text = "#KeyTest2#", Show = false });
+            paragraph.Borders = new Word.ReportEngine.Models.Attributes.BorderModel()
+            {
+                BorderPositions = Word.ReportEngine.Models.Attributes.BorderPositions.BOTTOM | 
+                                        Word.ReportEngine.Models.Attributes.BorderPositions.TOP |
+                                        Word.ReportEngine.Models.Attributes.BorderPositions.LEFT,
+                BorderWidthBottom = 3,
+                BorderWidthLeft = 10,
+                BorderWidthTop = 20,
+                BorderWidthInsideVertical = 1,
+                UseVariableBorders = true,
+                BorderColor = "FF0000",
+                BorderLeftColor = "CCCCCC",
+                BorderTopColor = "123456",
+                BorderRightColor = "FFEEDD",
+                BorderBottomColor = "FF1234"
+            };
             page1.ChildElements.Add(paragraph);
             var p2 = new Paragraph();
             p2.Shading = "#ParagraphShading#";
