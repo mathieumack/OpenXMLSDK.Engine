@@ -116,6 +116,7 @@
     <Compile Include="Word\ReportEngine\Models\Document.cs" />
     <Compile Include="Word\ReportEngine\Models\Footer.cs" />
     <Compile Include="Word\ReportEngine\Models\ForEach.cs" />
+    <Compile Include="Word\ReportEngine\Models\ForEachPage.cs" />
     <Compile Include="Word\ReportEngine\Models\Header.cs" />
     <Compile Include="Word\ReportEngine\Models\Image.cs" />
     <Compile Include="Word\ReportEngine\Models\Label.cs" />

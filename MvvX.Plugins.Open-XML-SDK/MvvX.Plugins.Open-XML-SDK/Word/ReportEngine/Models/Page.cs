@@ -18,6 +18,14 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models
         public SpacingModel Margin { get; set; }
 
         /// <summary>
+        /// Internal constructor used for ForEachPage
+        /// </summary>
+        internal Page(string type)
+            : base(type)
+        {
+        }
+
+        /// <summary>
         /// Constructor
         /// </summary>
         public Page()

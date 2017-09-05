@@ -22,19 +22,28 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                 style.Render(spart, context);
             }
 
-            foreach (var page in document.Pages)
+            foreach (var pageItem in document.Pages)
             {
-                bool addPageBreak = (document.Pages.IndexOf(page) < document.Pages.Count - 1);
+                if (pageItem is ForEachPage)
+                {
+                    // render page
+                    ((ForEachPage)pageItem).Render(wdDoc.MainDocumentPart.Document.Body, context, wdDoc.MainDocumentPart, document);
+                }
+                else if(pageItem is Page)
+                {
+                    var page = (Page)pageItem;
+                    bool addPageBreak = (document.Pages.IndexOf(page) < document.Pages.Count - 1);
 
-                // doc inherit margin from page
-                if (document.Margin == null && page.Margin != null)
-                    document.Margin = page.Margin;
-                // page inherit margin from doc
-                else if (document.Margin != null && page.Margin == null)
-                    page.Margin = document.Margin;
+                    // doc inherit margin from page
+                    if (document.Margin == null && page.Margin != null)
+                        document.Margin = page.Margin;
+                    // page inherit margin from doc
+                    else if (document.Margin != null && page.Margin == null)
+                        page.Margin = document.Margin;
 
-                // render page
-                page.Render(wdDoc.MainDocumentPart.Document.Body, context, wdDoc.MainDocumentPart, addPageBreak);
+                    // render page
+                    page.Render(wdDoc.MainDocumentPart.Document.Body, context, wdDoc.MainDocumentPart, addPageBreak);
+                }
             }
 
             // footers
