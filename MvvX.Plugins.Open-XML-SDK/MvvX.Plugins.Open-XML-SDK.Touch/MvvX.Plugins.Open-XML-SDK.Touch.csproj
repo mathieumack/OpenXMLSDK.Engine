@@ -176,6 +176,9 @@
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\ForEachExtensions.cs">
       <Link>Word\ReportEngine\ForEachExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\ForEachPageExtensions.cs">
+      <Link>Word\ReportEngine\ForEachPageExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\HeaderExtensions.cs">
       <Link>Word\ReportEngine\HeaderExtensions.cs</Link>
     </Compile>

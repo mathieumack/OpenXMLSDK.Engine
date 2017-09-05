@@ -320,6 +320,20 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             p23.ChildElements.Add(new Label() { Text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse urna augue, convallis eu enim vitae, maximus ultrices nulla. Sed egestas volutpat luctus. Maecenas sodales erat eu elit auctor, eu mattis neque maximus. Duis ac risus quis sem bibendum efficitur. Vivamus justo augue, molestie quis orci non, maximus imperdiet justo. Donec condimentum rhoncus est, ut varius lorem efficitur sed. Donec accumsan sit amet nisl vel ornare. Duis aliquet urna eu mauris porttitor facilisis. " });
             page2.ChildElements.Add(p23);
 
+            // Adding a foreach page :
+            var foreachPage = new ForEachPage();
+            foreachPage.DataSourceKey = "#DatasourceTableFusion#";
+
+            foreachPage.Margin = new Word.ReportEngine.Models.Attributes.SpacingModel() { Top = 1418, Left = 845, Header = 709, Footer = 709 };
+            var paragraph21 = new Paragraph();
+            paragraph21.ChildElements.Add(new Label() { Text = "Page label : #Label#" });
+            foreachPage.ChildElements.Add(paragraph21);
+            var p223 = new Paragraph();
+            p223.Shading = "#ParagraphShading#";
+            p223.ChildElements.Add(new Label() { Text = "Texte paragraph2 avec espace avant", FontSize = "20", SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve });
+            foreachPage.ChildElements.Add(p223);
+            doc.Pages.Add(foreachPage);
+
             // page 3
             var page3 = new Page();
             var p31 = new Paragraph() { FontColor = "FF0000", FontSize = "26" };
