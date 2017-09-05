@@ -64,11 +64,35 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models.Attributes
         public string BorderColor { get; set; }
 
         /// <summary>
+        /// Border Color in hex value (RRGGBB format)
+        /// </summary>
+        public string BorderTopColor { get; set; }
+
+        /// <summary>
+        /// Border Color in hex value (RRGGBB format)
+        /// </summary>
+        public string BorderBottomColor { get; set; }
+
+        /// <summary>
+        /// Border Color in hex value (RRGGBB format)
+        /// </summary>
+        public string BorderLeftColor { get; set; }
+
+        /// <summary>
+        /// Border Color in hex value (RRGGBB format)
+        /// </summary>
+        public string BorderRightColor { get; set; }
+
+        /// <summary>
         /// Default constructor
         /// </summary>
         public BorderModel()
         {
             BorderColor = "000000";
+            BorderTopColor = "000000";
+            BorderBottomColor = "000000";
+            BorderLeftColor = "000000";
+            BorderRightColor = "000000";
             BorderWidth = 1;
             BorderWidthTop = 1;
             BorderWidthRight = 1;

@@ -71,8 +71,8 @@
     <Compile Include="Word\JustificationValues.cs" />
     <Compile Include="Word\Models\GridSpanModel.cs" />
     <Compile Include="Word\Models\NumberingPropertiesModel.cs" />
-    <Compile Include="Word\Models\ParagraphPropertiesModel.cs" />
-    <Compile Include="Word\Models\ParagraphStyleIdModel.cs" />
+    <Compile Include="Word\Paragraphs\Models\ParagraphPropertiesModel.cs" />
+    <Compile Include="Word\Paragraphs\Models\ParagraphStyleIdModel.cs" />
     <Compile Include="Word\Models\ShadingModel.cs" />
     <Compile Include="Word\Models\SpacingBetweenLinesModel.cs" />
     <Compile Include="Word\OnOffOnlyValues.cs" />
@@ -84,6 +84,9 @@
     <Compile Include="Word\Paragraphs\IParagraphProperties.cs" />
     <Compile Include="Word\Paragraphs\IParagraphStyleId.cs" />
     <Compile Include="Word\Paragraphs\ISpacingBetweenLines.cs" />
+    <Compile Include="Word\Paragraphs\IParagraphBorders.cs" />
+    <Compile Include="Word\Paragraphs\Models\ParagraphBorderModel.cs" />
+    <Compile Include="Word\Paragraphs\Models\ParagraphBordersModel.cs" />
     <Compile Include="Word\ReportEngine\BatchModels\BarChartModel.cs" />
     <Compile Include="Word\ReportEngine\BatchModels\Base64ContentModel.cs" />
     <Compile Include="Word\ReportEngine\BaseModel.cs" />

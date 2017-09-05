@@ -1,4 +1,4 @@
-﻿namespace MvvX.Plugins.OpenXMLSDK.Word.Models
+﻿namespace MvvX.Plugins.OpenXMLSDK.Word.Paragraphs.Models
 {
     public class ParagraphStyleIdModel
     {

@@ -7,6 +7,7 @@ using MvvX.Plugins.OpenXMLSDK.Platform.Word;
 using MvvX.Plugins.OpenXMLSDK.Word;
 using MvvX.Plugins.OpenXMLSDK.Word.Models;
 using MvvX.Plugins.OpenXMLSDK.Word.Paragraphs;
+using MvvX.Plugins.OpenXMLSDK.Word.Paragraphs.Models;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels.Charts;
@@ -24,10 +25,10 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
         {
             ReportEngineTest();
 
-            ValidateDocument();
+            //ValidateDocument();
             // fin test report engine
 
-            //  OldProgram();
+            //OldProgram();
         }
 
         private static void ReportEngineTest()
@@ -60,6 +61,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                                     " - - - - - - - - - ");
             }
         }
+
         private static void ReportEngine(string filePath, string documentName)
         {
             // Debut test report engine
@@ -126,6 +128,22 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             paragraph.ChildElements.Add(new Label() { Text = "Ceci est un texte avec accents (éèàù)", FontSize = "30", FontName = "Arial" });
             paragraph.ChildElements.Add(new Label() { Text = "#KeyTest1#", FontSize = "40", FontColor = "#FontColorTestRed#", Shading = "9999FF", BoldKey = "#BoldKey#", Bold = false });
             paragraph.ChildElements.Add(new Label() { Text = "#KeyTest2#", Show = false });
+            paragraph.Borders = new Word.ReportEngine.Models.Attributes.BorderModel()
+            {
+                BorderPositions = Word.ReportEngine.Models.Attributes.BorderPositions.BOTTOM | 
+                                        Word.ReportEngine.Models.Attributes.BorderPositions.TOP |
+                                        Word.ReportEngine.Models.Attributes.BorderPositions.LEFT,
+                BorderWidthBottom = 3,
+                BorderWidthLeft = 10,
+                BorderWidthTop = 20,
+                BorderWidthInsideVertical = 1,
+                UseVariableBorders = true,
+                BorderColor = "FF0000",
+                BorderLeftColor = "CCCCCC",
+                BorderTopColor = "123456",
+                BorderRightColor = "FFEEDD",
+                BorderBottomColor = "FF1234"
+            };
             page1.ChildElements.Add(paragraph);
             var p2 = new Paragraph();
             p2.Shading = "#ParagraphShading#";
@@ -802,7 +820,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             string finalFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "App_Data", "Results", "FinalDoc_Test_OrientationParagraph-" + DateTime.Now.ToFileTime() + ".docx");
             using (IWordManager word = new WordManager())
             {
-                // TODO for debug : use your test file :
+                //TODO for debug : use your test file :
                 word.OpenDocFromTemplate(resourceName, finalFilePath, true);
 
                 //    word.SaveDoc();
@@ -1112,7 +1130,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                 tables.Add(word.CreateParagraphForRun(word.CreateRunForTable(word.CreateTable(lines, tableProperty))));
 
                 tables.Add(word.CreateParagraphForRun(
-                    word.CreateRunForText("Test de style"),
+                        word.CreateRunForText("Test de style avec bordures de paragraph"),
                         new ParagraphPropertiesModel()
                         {
                             ParagraphStyleId = new ParagraphStyleIdModel()
@@ -1123,6 +1141,13 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                             {
                                 After = "800",
                                 Before = "100"
+                            },
+                            ParagraphBorders = new ParagraphBordersModel()
+                            {
+                                TopBorder = new ParagraphBorderModel() { Color = "F7941F", Size = 40, BorderValue = BorderValues.Birds },
+                                LeftBorder = new ParagraphBorderModel() { Color = "CCCCCC", Size = 20, BorderValue = BorderValues.Birds },
+                                RightBorder = new ParagraphBorderModel() { Color = "CCCCCC", Size = 20, BorderValue = BorderValues.Birds },
+                                BottomBorder = new ParagraphBorderModel() { Color = "F7941F", Size = 40, BorderValue = BorderValues.Birds }
                             }
                         }));
 

@@ -25,6 +25,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Word\Extensions\TextDirectionValuesExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\Paragraphs\PlatformNumberingProperties.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\Paragraphs\PlatformParagraph.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Word\Paragraphs\PlatformParagraphBorders.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\Paragraphs\PlatformParagraphProperties.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\Paragraphs\PlatformParagraphStyleId.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\Paragraphs\PlatformSpacingBetweenLines.cs" />

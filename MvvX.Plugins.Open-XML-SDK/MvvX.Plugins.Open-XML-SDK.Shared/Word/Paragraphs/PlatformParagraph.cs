@@ -5,7 +5,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.Paragraphs
 {
     public class PlatformParagraph : PlatformOpenXmlElement, IParagraph
     {
-        private readonly Paragraph paragraph;
+        private readonly Paragraph xmlElement;
 
         private IParagraphProperties properties;
         /// <summary>
@@ -16,7 +16,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.Paragraphs
             get
             {
                 if (properties == null)
-                    properties = PlatformParagraphProperties.New(paragraph);
+                    properties = PlatformParagraphProperties.New(xmlElement);
                 return properties;
             }
         }
@@ -29,7 +29,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.Paragraphs
         public PlatformParagraph(Paragraph paragraph)
             : base(paragraph)
         {
-            this.paragraph = paragraph;
+            this.xmlElement = paragraph;
         }
     }
 }

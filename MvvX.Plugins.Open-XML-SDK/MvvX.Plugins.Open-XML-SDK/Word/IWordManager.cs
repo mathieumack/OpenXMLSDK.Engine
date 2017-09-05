@@ -5,6 +5,7 @@ using MvvX.Plugins.OpenXMLSDK.Drawing.Pictures.Model;
 using MvvX.Plugins.OpenXMLSDK.Word.Bookmarks;
 using MvvX.Plugins.OpenXMLSDK.Word.Models;
 using MvvX.Plugins.OpenXMLSDK.Word.Paragraphs;
+using MvvX.Plugins.OpenXMLSDK.Word.Paragraphs.Models;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models;
 using MvvX.Plugins.OpenXMLSDK.Word.Tables;
