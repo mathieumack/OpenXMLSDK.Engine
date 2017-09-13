@@ -440,29 +440,13 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
             altChunk.Id = wdMainDocumentPart.GetIdOfPart(formatImportPart);
 
             var lastElement = wdMainDocumentPart.Document.Body.Elements().Last(x => (x.GetType() == typeof(Paragraph)) || (x.GetType() == typeof(SectionProperties)));
-            if (lastElement is Paragraph)
+            lastElement.InsertAfterSelf(altChunk);
+            if (withPageBreak && lastElement is Paragraph)
             {
-                lastElement.InsertAfterSelf(altChunk);
-                if (withPageBreak)
-                {
-                    Paragraph p = new Paragraph(
-                        new Run(
-                            new Break() { Type = BreakValues.Page }));
-                    altChunk.InsertBeforeSelf(p);
-                }
-            }
-            else
-            {
-                if (withPageBreak)
-                {
-                    SectionProperties sectionProps = (SectionProperties)lastElement.Clone();
-                    var p = new DocumentFormat.OpenXml.Wordprocessing.Paragraph();
-                    var ppr = new DocumentFormat.OpenXml.Wordprocessing.ParagraphProperties();
-                    p.AppendChild(ppr);
-                    ppr.AppendChild(sectionProps);
-                    lastElement.InsertBeforeSelf(p);
-                }
-                lastElement.InsertBeforeSelf(altChunk);
+                Paragraph p = new Paragraph(
+                    new Run(
+                        new Break() { Type = BreakValues.Page }));
+                altChunk.InsertBeforeSelf(p);
             }
         }
 
