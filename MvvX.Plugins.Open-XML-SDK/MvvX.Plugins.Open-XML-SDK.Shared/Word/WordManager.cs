@@ -450,20 +450,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
                             new Break() { Type = BreakValues.Page }));
                     altChunk.InsertBeforeSelf(p);
                 }
-            }
-            else
-            {
-                if (withPageBreak)
-                {
-                    SectionProperties sectionProps = (SectionProperties)lastElement.Clone();
-                    var p = new DocumentFormat.OpenXml.Wordprocessing.Paragraph();
-                    var ppr = new DocumentFormat.OpenXml.Wordprocessing.ParagraphProperties();
-                    p.AppendChild(ppr);
-                    ppr.AppendChild(sectionProps);
-                    lastElement.InsertBeforeSelf(p);
-                }
-                lastElement.InsertBeforeSelf(altChunk);
-            }
+            }         
         }
 
         /// <summary>
