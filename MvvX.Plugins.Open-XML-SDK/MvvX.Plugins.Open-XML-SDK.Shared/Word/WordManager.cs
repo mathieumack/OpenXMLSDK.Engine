@@ -438,6 +438,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
 
             AltChunk altChunk = new AltChunk();
             altChunk.Id = wdMainDocumentPart.GetIdOfPart(formatImportPart);
+
             OpenXmlElement lastElement = wdMainDocumentPart.Document.LastChild;
 
             if(lastElement is SectionProperties)
