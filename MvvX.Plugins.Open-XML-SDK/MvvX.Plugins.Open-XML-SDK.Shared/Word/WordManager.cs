@@ -438,8 +438,8 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
 
             AltChunk altChunk = new AltChunk();
             altChunk.Id = wdMainDocumentPart.GetIdOfPart(formatImportPart);
-
-            var lastElement = wdMainDocumentPart.Document.Body.Elements().Last(x => x.GetType() == typeof(Paragraph) || x.GetType() == typeof(SectionProperties)||x.GetType() == typeof(AltChunk));
+            
+            var lastElement = wdMainDocumentPart.Document.Body.Elements().Last(x => x.GetType() == typeof(Paragraph) || x.GetType() == typeof(SectionProperties)|| x.GetType() == typeof(AltChunk));
             lastElement.InsertAfterSelf(altChunk);
             if (withPageBreak && (lastElement is Paragraph|| lastElement is AltChunk))
             {
