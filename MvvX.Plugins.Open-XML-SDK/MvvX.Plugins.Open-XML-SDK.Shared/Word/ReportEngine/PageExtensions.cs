@@ -9,7 +9,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
 {
     public static class PageExtensions
     {
-        public static void Render(this Page page, OpenXmlElement wdDoc, ContextModel context, MainDocumentPart mainDocumentPart, bool addPageBreak)
+        public static void Render(this Page page, OpenXmlElement wdDoc, ContextModel context, MainDocumentPart mainDocumentPart)
         {
             if (!string.IsNullOrWhiteSpace(page.ShowKey) && context.ExistItem<BooleanModel>(page.ShowKey) && !context.GetItem<BooleanModel>(page.ShowKey).Value)
                 return;
@@ -39,20 +39,11 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                 };
                 sectionProps.AppendChild(pageMargins);
             }
-
-            if (addPageBreak)
-            {
-                var p = new DocumentFormat.OpenXml.Wordprocessing.Paragraph();
-                var ppr = new DocumentFormat.OpenXml.Wordprocessing.ParagraphProperties();
-                p.AppendChild(ppr);
-                ppr.AppendChild(sectionProps);
-                wdDoc.AppendChild(p);
-            }
-            else
-            {
-                // for last section, the sectionproperty is added at end of document body
-                wdDoc.AppendChild(sectionProps);
-            }
+            var p = new DocumentFormat.OpenXml.Wordprocessing.Paragraph();
+            var ppr = new DocumentFormat.OpenXml.Wordprocessing.ParagraphProperties();
+            p.AppendChild(ppr);
+            ppr.AppendChild(sectionProps);
+            wdDoc.AppendChild(p);
         }
     }
 }

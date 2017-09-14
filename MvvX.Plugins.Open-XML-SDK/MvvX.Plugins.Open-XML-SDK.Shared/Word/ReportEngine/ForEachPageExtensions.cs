@@ -23,10 +23,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                     {
                         foreach (var item in datasource.Items)
                         {
-                            var newPage = forEach.Clone();
-
-                            bool addPageBreak = (document.Pages.IndexOf(newPage) < document.Pages.Count - 1);
-
+                            var newPage = forEach.Clone();                          
                             // doc inherit margin from page
                             if (document.Margin == null && newPage.Margin != null)
                                 document.Margin = newPage.Margin;
@@ -34,7 +31,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                             else if (document.Margin != null && newPage.Margin == null)
                                 newPage.Margin = document.Margin;
 
-                            newPage.Clone().Render(wdDoc, item, mainDocumentPart, addPageBreak);
+                            newPage.Clone().Render(wdDoc, item, mainDocumentPart);
                         }
                     }
                 }

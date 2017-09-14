@@ -42,8 +42,21 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                         page.Margin = document.Margin;
 
                     // render page
-                    page.Render(wdDoc.MainDocumentPart.Document.Body, context, wdDoc.MainDocumentPart, addPageBreak);
+                    page.Render(wdDoc.MainDocumentPart.Document.Body, context, wdDoc.MainDocumentPart);
                 }
+            }
+
+            //Replace Last page breack
+            if (wdDoc.MainDocumentPart.Document.Body.LastChild != null && 
+                wdDoc.MainDocumentPart.Document.Body.LastChild is DocumentFormat.OpenXml.Wordprocessing.Paragraph &&
+                wdDoc.MainDocumentPart.Document.Body.LastChild.FirstChild != null &&
+                wdDoc.MainDocumentPart.Document.Body.LastChild.FirstChild is DocumentFormat.OpenXml.Wordprocessing.ParagraphProperties &&
+                wdDoc.MainDocumentPart.Document.Body.LastChild.FirstChild.FirstChild != null &&
+                wdDoc.MainDocumentPart.Document.Body.LastChild.FirstChild.FirstChild is DocumentFormat.OpenXml.Wordprocessing.SectionProperties)
+            {
+                DocumentFormat.OpenXml.Wordprocessing.Paragraph lastChild = (DocumentFormat.OpenXml.Wordprocessing.Paragraph)wdDoc.MainDocumentPart.Document.Body.LastChild;
+                DocumentFormat.OpenXml.Wordprocessing.SectionProperties sectionPropertie = (DocumentFormat.OpenXml.Wordprocessing.SectionProperties)lastChild.FirstChild.FirstChild.Clone();
+                wdDoc.MainDocumentPart.Document.Body.ReplaceChild(sectionPropertie, wdDoc.MainDocumentPart.Document.Body.LastChild);
             }
 
             // footers
