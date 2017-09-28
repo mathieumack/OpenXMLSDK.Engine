@@ -26,7 +26,6 @@ using A = DocumentFormat.OpenXml.Drawing;
 using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
 using PIC = DocumentFormat.OpenXml.Drawing.Pictures;
 
-
 namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
 {
     public class WordManager : IWordManager
@@ -1237,4 +1236,3 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
         #endregion
     }
 }
-
