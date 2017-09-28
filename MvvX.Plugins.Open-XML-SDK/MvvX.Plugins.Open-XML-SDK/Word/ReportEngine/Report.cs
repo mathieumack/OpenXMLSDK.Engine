@@ -17,5 +17,11 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine
         /// Context
         /// </summary>
         public ContextModel ContextModel { get; set; }
+
+        /// <summary>
+        /// Indicates whether or not a pagebreack is added at the end of report.
+        /// </summary>
+        public bool AddPageBreack { get; set; }
+
     }
 }

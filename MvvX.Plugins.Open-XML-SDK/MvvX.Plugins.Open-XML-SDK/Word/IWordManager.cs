@@ -10,6 +10,7 @@ using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models;
 using MvvX.Plugins.OpenXMLSDK.Word.Tables;
 using MvvX.Plugins.OpenXMLSDK.Word.Tables.Models;
+using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine;
 
 namespace MvvX.Plugins.OpenXMLSDK.Word
 {
@@ -282,6 +283,15 @@ namespace MvvX.Plugins.OpenXMLSDK.Word
         /// <param name="context">data used to fill document</param>
         /// <returns></returns>
         byte[] GenerateReport(Document template, ContextModel context);
+
+        /// <summary>
+        /// Generate a word document 
+        /// </summary>
+        /// <param name="reportList">A list of Reports</param>
+        /// <param name="mergeStyles">Indicates whether or not styles are merged</param>
+        /// <returns></returns>
+        byte[] GenerateReport(IList<Report> reportList, bool mergeStyles);
+
         #endregion
     }
 }

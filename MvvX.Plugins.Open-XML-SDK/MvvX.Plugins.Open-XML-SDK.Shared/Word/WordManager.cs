@@ -24,6 +24,7 @@ using MvvX.Plugins.OpenXMLSDK.Word.Tables.Models;
 using A = DocumentFormat.OpenXml.Drawing;
 using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
 using PIC = DocumentFormat.OpenXml.Drawing.Pictures;
+using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine;
 
 namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
 {
@@ -439,7 +440,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
             AltChunk altChunk = new AltChunk();
             altChunk.Id = wdMainDocumentPart.GetIdOfPart(formatImportPart);
 
-            OpenXmlElement lastElement = wdMainDocumentPart.Document.LastChild;
+            OpenXmlElement lastElement = wdMainDocumentPart.Document.Body.LastChild;
 
             if(lastElement is SectionProperties)
             {
@@ -1152,6 +1153,79 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
                 wdDoc.MainDocumentPart.Document = new DocumentFormat.OpenXml.Wordprocessing.Document(new Body());
 
                 document.Render(wdDoc, context);
+
+                wdDoc.MainDocumentPart.Document.Save();
+                wdDoc.Close();
+                return stream.ToArray();
+            }
+        }
+
+        /// <summary>
+        /// Generate a word document 
+        /// </summary>
+        /// <param name="reportList">A list of Reports</param>
+        /// <param name="mergeStyles">Indicates whether or not styles are merged</param>
+        /// <returns></returns>
+        public byte[] GenerateReport(IList<Report> reportList, bool mergeStyles)
+        {
+            using (MemoryStream stream = new MemoryStream())
+            {
+                wdDoc = WordprocessingDocument.Create(stream, WordprocessingDocumentType.Document);
+                wdDoc.AddMainDocumentPart();
+                wdDoc.MainDocumentPart.Document = new DocumentFormat.OpenXml.Wordprocessing.Document(new Body());
+                // add styles in document
+                var spart = wdDoc.MainDocumentPart.AddNewPart<StyleDefinitionsPart>();
+                spart.Styles = new DocumentFormat.OpenXml.Wordprocessing.Styles();
+                IList<string> stylesId= null;
+                if (mergeStyles)
+                {
+                    stylesId = reportList.Where(report => report.Document.Styles != null).SelectMany(r => r.Document.Styles).Select(style => style.StyleId)?.Distinct()?.ToList();                    
+                }
+
+                foreach (Report report in reportList)
+                {
+                    if (report.Document.Styles != null)
+                    {
+                        foreach (var style in report.Document.Styles)
+                        {
+                            if(!mergeStyles)
+                            {
+                                style.Render(spart, report.ContextModel);
+                            }
+                            else if (stylesId.Count > 0 && stylesId.Contains(style.StyleId))
+                            {
+                                stylesId.Remove(style.StyleId);
+                                style.Render(spart, report.ContextModel);
+                            }
+                        }
+                    }
+                    // Document render
+                    report.Document.Render(wdDoc, report.ContextModel, report.AddPageBreack);
+
+                    // footers
+                    foreach (var footer in report.Document.Footers)
+                    {
+                        footer.Render(wdDoc.MainDocumentPart, report.ContextModel);
+                    }
+                    // headers
+                    foreach (var header in report.Document.Headers)
+                    {
+                        header.Render(wdDoc.MainDocumentPart, report.ContextModel);
+                    }
+                }
+
+                //Replace Last page breack
+                if (wdDoc.MainDocumentPart.Document.Body.LastChild != null &&
+                    wdDoc.MainDocumentPart.Document.Body.LastChild is DocumentFormat.OpenXml.Wordprocessing.Paragraph &&
+                    wdDoc.MainDocumentPart.Document.Body.LastChild.FirstChild != null &&
+                    wdDoc.MainDocumentPart.Document.Body.LastChild.FirstChild is DocumentFormat.OpenXml.Wordprocessing.ParagraphProperties &&
+                    wdDoc.MainDocumentPart.Document.Body.LastChild.FirstChild.FirstChild != null &&
+                    wdDoc.MainDocumentPart.Document.Body.LastChild.FirstChild.FirstChild is DocumentFormat.OpenXml.Wordprocessing.SectionProperties)
+                {
+                    DocumentFormat.OpenXml.Wordprocessing.Paragraph lastChild = (DocumentFormat.OpenXml.Wordprocessing.Paragraph)wdDoc.MainDocumentPart.Document.Body.LastChild;
+                    DocumentFormat.OpenXml.Wordprocessing.SectionProperties sectionPropertie = (DocumentFormat.OpenXml.Wordprocessing.SectionProperties)lastChild.FirstChild.FirstChild.Clone();
+                    wdDoc.MainDocumentPart.Document.Body.ReplaceChild(sectionPropertie, wdDoc.MainDocumentPart.Document.Body.LastChild);
+                }
 
                 wdDoc.MainDocumentPart.Document.Save();
                 wdDoc.Close();
