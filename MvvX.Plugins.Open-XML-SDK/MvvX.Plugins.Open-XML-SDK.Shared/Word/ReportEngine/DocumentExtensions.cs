@@ -46,7 +46,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                 }
             }
 
-            //Replace Last page breack
+            //Replace Last page break
             if (wdDoc.MainDocumentPart.Document.Body.LastChild != null && 
                 wdDoc.MainDocumentPart.Document.Body.LastChild is DocumentFormat.OpenXml.Wordprocessing.Paragraph &&
                 wdDoc.MainDocumentPart.Document.Body.LastChild.FirstChild != null &&
@@ -68,6 +68,50 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
             foreach (var header in document.Headers)
             {
                 header.Render(wdDoc.MainDocumentPart, context);
+            }
+        }
+
+        /// <summary>
+        /// Render the document
+        /// </summary>
+        /// <param name="document"></param>
+        /// <param name="wdDoc"></param>
+        /// <param name="context"></param>
+        public static void Render(this Document document, WordprocessingDocument wdDoc, ContextModel context, bool addPageBreak)
+        {
+            foreach (var pageItem in document.Pages)
+            {
+                if (pageItem is ForEachPage)
+                {
+                    // render page
+                    ((ForEachPage)pageItem).Render(wdDoc.MainDocumentPart.Document.Body, context, wdDoc.MainDocumentPart, document);
+                }
+                else if (pageItem is Page)
+                {
+                    var page = (Page)pageItem;
+                   
+                    // doc inherit margin from page
+                    if (document.Margin == null && page.Margin != null)
+                        document.Margin = page.Margin;
+                    // page inherit margin from doc
+                    else if (document.Margin != null && page.Margin == null)
+                        page.Margin = document.Margin;
+
+                    // render page
+                    page.Render(wdDoc.MainDocumentPart.Document.Body, context, wdDoc.MainDocumentPart);
+                }
+            }
+            //Replace Last page break
+            if (!addPageBreak &&
+                wdDoc.MainDocumentPart.Document.Body.LastChild != null &&
+                wdDoc.MainDocumentPart.Document.Body.LastChild is DocumentFormat.OpenXml.Wordprocessing.Paragraph &&
+                wdDoc.MainDocumentPart.Document.Body.LastChild.FirstChild != null &&
+                wdDoc.MainDocumentPart.Document.Body.LastChild.FirstChild is DocumentFormat.OpenXml.Wordprocessing.ParagraphProperties &&
+                wdDoc.MainDocumentPart.Document.Body.LastChild.FirstChild.FirstChild != null &&
+                wdDoc.MainDocumentPart.Document.Body.LastChild.FirstChild.FirstChild is DocumentFormat.OpenXml.Wordprocessing.SectionProperties)
+            {
+                DocumentFormat.OpenXml.Wordprocessing.Paragraph lastChild = (DocumentFormat.OpenXml.Wordprocessing.Paragraph)wdDoc.MainDocumentPart.Document.Body.LastChild;
+                wdDoc.MainDocumentPart.Document.Body.RemoveChild(lastChild);
             }
         }
     }
