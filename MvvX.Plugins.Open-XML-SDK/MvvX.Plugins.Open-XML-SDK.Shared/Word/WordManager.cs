@@ -18,13 +18,14 @@ using MvvX.Plugins.OpenXMLSDK.Word.Bookmarks;
 using MvvX.Plugins.OpenXMLSDK.Word.Models;
 using MvvX.Plugins.OpenXMLSDK.Word.Paragraphs;
 using MvvX.Plugins.OpenXMLSDK.Word.Paragraphs.Models;
+using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels;
 using MvvX.Plugins.OpenXMLSDK.Word.Tables;
 using MvvX.Plugins.OpenXMLSDK.Word.Tables.Models;
 using A = DocumentFormat.OpenXml.Drawing;
 using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
 using PIC = DocumentFormat.OpenXml.Drawing.Pictures;
-using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine;
+
 
 namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
 {

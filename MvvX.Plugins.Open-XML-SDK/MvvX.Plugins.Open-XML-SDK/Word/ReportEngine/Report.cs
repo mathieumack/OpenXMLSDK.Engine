@@ -22,6 +22,5 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine
         /// Indicates whether or not a pagebreack is added at the end of report.
         /// </summary>
         public bool AddPageBreack { get; set; }
-
     }
 }
