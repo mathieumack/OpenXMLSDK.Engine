@@ -46,7 +46,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                 }
             }
 
-            //Replace Last page breack
+            //Replace Last page break
             if (wdDoc.MainDocumentPart.Document.Body.LastChild != null && 
                 wdDoc.MainDocumentPart.Document.Body.LastChild is DocumentFormat.OpenXml.Wordprocessing.Paragraph &&
                 wdDoc.MainDocumentPart.Document.Body.LastChild.FirstChild != null &&
@@ -77,7 +77,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
         /// <param name="document"></param>
         /// <param name="wdDoc"></param>
         /// <param name="context"></param>
-        public static void Render(this Document document, WordprocessingDocument wdDoc, ContextModel context, bool addPageBreack)
+        public static void Render(this Document document, WordprocessingDocument wdDoc, ContextModel context, bool addPageBreak)
         {
             foreach (var pageItem in document.Pages)
             {
@@ -101,8 +101,8 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                     page.Render(wdDoc.MainDocumentPart.Document.Body, context, wdDoc.MainDocumentPart);
                 }
             }
-            //Replace Last page breack
-            if (!addPageBreack &&
+            //Replace Last page break
+            if (!addPageBreak &&
                 wdDoc.MainDocumentPart.Document.Body.LastChild != null &&
                 wdDoc.MainDocumentPart.Document.Body.LastChild is DocumentFormat.OpenXml.Wordprocessing.Paragraph &&
                 wdDoc.MainDocumentPart.Document.Body.LastChild.FirstChild != null &&

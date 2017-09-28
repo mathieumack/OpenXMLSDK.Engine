@@ -1200,7 +1200,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
                         }
                     }
                     // Document render
-                    report.Document.Render(wdDoc, report.ContextModel, report.AddPageBreack);
+                    report.Document.Render(wdDoc, report.ContextModel, report.AddPageBreak);
 
                     // footers
                     foreach (var footer in report.Document.Footers)
@@ -1214,7 +1214,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
                     }
                 }
 
-                //Replace Last page breack
+                //Replace Last page Break
                 if (wdDoc.MainDocumentPart.Document.Body.LastChild != null &&
                     wdDoc.MainDocumentPart.Document.Body.LastChild is DocumentFormat.OpenXml.Wordprocessing.Paragraph &&
                     wdDoc.MainDocumentPart.Document.Body.LastChild.FirstChild != null &&
