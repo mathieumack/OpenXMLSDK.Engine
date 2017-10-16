@@ -310,7 +310,48 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                 DataSourceKey = "#Datasource#"
             };
 
+            var tableDataSourceWithPrefix = new Table()
+            {
+                TableWidth = new TableWidthModel() { Width = "5000", Type = TableWidthUnitValues.Pct },
+                ColsWidth = new int[2] { 750, 4250 },
+                Borders = new Word.ReportEngine.Models.Attributes.BorderModel()
+                {
+                    BorderPositions = (Word.ReportEngine.Models.Attributes.BorderPositions)63,
+                    BorderColor = "328864",
+                    BorderWidth = 20,
+                },
+                DataSourceKey = "#DatasourcePrefix#",
+                AutoContextAddItemsPrefix = "DataSourcePrefix",
+                RowModel = new Row()
+                {
+                    Cells = new List<Cell>()
+                    {
+                        new Cell()
+                        {
+                            Shading = "FFA0FF",
+                            ChildElements = new List<BaseElement>()
+                            {
+                                new Label() { Text = "Item Datasource (0 index) #DataSourcePrefix_TableRow_IndexBaseZero# - ",
+                                                ShowKey = "#DataSourcePrefix_TableRow_IsFirstItem#" },
+                                new Label() { Text = "#Cell1#" }
+                            }
+                        },
+                        new Cell()
+                        {
+                            ChildElements = new List<BaseElement>()
+                            {
+                                new Label() { Text = "Item Datasource (1 index) #DataSourcePrefix_TableRow_IndexBaseOne# - ",
+                                                ShowKey = "#DataSourcePrefix_TableRow_IsLastItem#" },
+                                new Label() { Text = "#Cell2#" }
+                            }
+                        }
+                    }
+                }
+            };
+
             page1.ChildElements.Add(tableDataSource);
+
+            page1.ChildElements.Add(tableDataSourceWithPrefix);
 
             // page 2
             var p21 = new Paragraph();
@@ -678,12 +719,28 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             row2.AddItem("#Cell1#", new StringModel("Col 2 Row 1"));
             row2.AddItem("#Cell2#", new StringModel("Col 2 Row 2"));
             row2.AddItem("#Label#", new StringModel("Label 2"));
+            ContextModel row3 = new ContextModel();
+            row3.AddItem("#Cell1#", new StringModel("Col 1 Row 3"));
+            row3.AddItem("#Cell2#", new StringModel("Col 2 Row 3"));
+            row3.AddItem("#Label#", new StringModel("Label 1"));
+            ContextModel row4 = new ContextModel();
+            row4.AddItem("#Cell1#", new StringModel("Col 2 Row 4"));
+            row4.AddItem("#Cell2#", new StringModel("Col 2 Row 4"));
+            row4.AddItem("#Label#", new StringModel("Label 2"));
 
             context.AddItem("#Datasource#", new DataSourceModel()
             {
                 Items = new List<ContextModel>()
                     {
                         row1, row2
+                    }
+            });
+
+            context.AddItem("#DatasourcePrefix#", new DataSourceModel()
+            {
+                Items = new List<ContextModel>()
+                    {
+                        row1, row2, row3, row4
                     }
             });
 

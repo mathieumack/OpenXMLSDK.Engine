@@ -28,15 +28,21 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
 
                             if (!string.IsNullOrWhiteSpace(forEach.AutoContextAddItemsPrefix))
                             {
-                                if (i == 0)
-                                    item.AddItem("", new BooleanModel(true));
-                                if (i == datasource.Items.Count -1)
-                                    item.AddItem("", new BooleanModel(true));
+                                // We add automatic keys :
+                                // Is first item
+                                item.AddItem("#" + forEach.AutoContextAddItemsPrefix + "_ForEach_IsFirstItem#", new BooleanModel(i == 0));
+                                // Is last item
+                                item.AddItem("#" + forEach.AutoContextAddItemsPrefix + "_ForEach_IsLastItem#", new BooleanModel(i == datasource.Items.Count - 1));
+                                // Index of the element (Based on 0, and based on 1)
+                                item.AddItem("#" + forEach.AutoContextAddItemsPrefix + "_ForEach_IndexBaseZero#", new StringModel(i.ToString()));
+                                item.AddItem("#" + forEach.AutoContextAddItemsPrefix + "_ForEach_IndexBaseOne#", new StringModel((i+1).ToString()));
                             }
+
                             foreach (var template in forEach.ItemTemplate)
                             {
                                 template.Clone().Render(parent, item, documentPart);
                             }
+
                             i++;
                         }
                     }

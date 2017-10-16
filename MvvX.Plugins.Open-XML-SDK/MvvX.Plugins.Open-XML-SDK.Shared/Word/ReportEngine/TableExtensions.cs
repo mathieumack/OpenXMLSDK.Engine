@@ -36,11 +36,28 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                 {
                     var datasource = context.GetItem<DataSourceModel>(table.DataSourceKey);
 
+                    int i = 0;
+
                     foreach (ContextModel item in datasource.Items)
                     {
                         var row = table.RowModel.Clone();
                         row.InheritFromParent(table);
+
+                        if (!string.IsNullOrWhiteSpace(table.AutoContextAddItemsPrefix))
+                        {
+                            // We add automatic keys :
+                            // Is first item
+                            item.AddItem("#" + table.AutoContextAddItemsPrefix + "_TableRow_IsFirstItem#", new BooleanModel(i == 0));
+                            // Is last item
+                            item.AddItem("#" + table.AutoContextAddItemsPrefix + "_TableRow_IsLastItem#", new BooleanModel(i == datasource.Items.Count - 1));
+                            // Index of the element (Based on 0, and based on 1)
+                            item.AddItem("#" + table.AutoContextAddItemsPrefix + "_TableRow_IndexBaseZero#", new StringModel(i.ToString()));
+                            item.AddItem("#" + table.AutoContextAddItemsPrefix + "_TableRow_IndexBaseOne#", new StringModel((i + 1).ToString()));
+                        }
+
                         wordTable.AppendChild(row.Render(wordTable, item, documentPart, false));
+
+                        i++;
                     }
                 }
             }
