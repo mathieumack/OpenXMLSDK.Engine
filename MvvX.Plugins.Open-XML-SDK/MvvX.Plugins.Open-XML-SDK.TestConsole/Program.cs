@@ -310,44 +310,44 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                 DataSourceKey = "#Datasource#"
             };
 
-            var tableDataSourceWithPrefix = new Table()
+var tableDataSourceWithPrefix = new Table()
+{
+TableWidth = new TableWidthModel() { Width = "5000", Type = TableWidthUnitValues.Pct },
+ColsWidth = new int[2] { 750, 4250 },
+Borders = new Word.ReportEngine.Models.Attributes.BorderModel()
+{
+    BorderPositions = (Word.ReportEngine.Models.Attributes.BorderPositions)63,
+    BorderColor = "328864",
+    BorderWidth = 20,
+},
+DataSourceKey = "#DatasourcePrefix#",
+AutoContextAddItemsPrefix = "DataSourcePrefix",
+RowModel = new Row()
+{
+    Cells = new List<Cell>()
+    {
+        new Cell()
+        {
+            Shading = "FFA0FF",
+            ChildElements = new List<BaseElement>()
             {
-                TableWidth = new TableWidthModel() { Width = "5000", Type = TableWidthUnitValues.Pct },
-                ColsWidth = new int[2] { 750, 4250 },
-                Borders = new Word.ReportEngine.Models.Attributes.BorderModel()
-                {
-                    BorderPositions = (Word.ReportEngine.Models.Attributes.BorderPositions)63,
-                    BorderColor = "328864",
-                    BorderWidth = 20,
-                },
-                DataSourceKey = "#DatasourcePrefix#",
-                AutoContextAddItemsPrefix = "DataSourcePrefix",
-                RowModel = new Row()
-                {
-                    Cells = new List<Cell>()
-                    {
-                        new Cell()
-                        {
-                            Shading = "FFA0FF",
-                            ChildElements = new List<BaseElement>()
-                            {
-                                new Label() { Text = "Item Datasource (0 index) #DataSourcePrefix_TableRow_IndexBaseZero# - ",
-                                                ShowKey = "#DataSourcePrefix_TableRow_IsFirstItem#" },
-                                new Label() { Text = "#Cell1#" }
-                            }
-                        },
-                        new Cell()
-                        {
-                            ChildElements = new List<BaseElement>()
-                            {
-                                new Label() { Text = "Item Datasource (1 index) #DataSourcePrefix_TableRow_IndexBaseOne# - ",
-                                                ShowKey = "#DataSourcePrefix_TableRow_IsLastItem#" },
-                                new Label() { Text = "#Cell2#" }
-                            }
-                        }
-                    }
-                }
-            };
+                new Label() { Text = "Item Datasource (0 index) #DataSourcePrefix_TableRow_IndexBaseZero# - ",
+                                ShowKey = "#DataSourcePrefix_TableRow_IsFirstItem#" },
+                new Label() { Text = "#Cell1#" }
+            }
+        },
+        new Cell()
+        {
+            ChildElements = new List<BaseElement>()
+            {
+                new Label() { Text = "Item Datasource (1 index) #DataSourcePrefix_TableRow_IndexBaseOne# - ",
+                                ShowKey = "#DataSourcePrefix_TableRow_IsLastItem#" },
+                new Label() { Text = "#Cell2#" }
+            }
+        }
+    }
+}
+};
 
             page1.ChildElements.Add(tableDataSource);
 
