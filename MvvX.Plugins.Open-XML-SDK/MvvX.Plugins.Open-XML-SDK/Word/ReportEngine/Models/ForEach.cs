@@ -5,6 +5,12 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models
     public class ForEach : BaseElement
     {
         /// <summary>
+        /// Define the prefix that will be used for automatically added items
+        /// IsFirstItem, ...
+        /// </summary>
+        public string AutoContextAddItemsPrefix { get; set; }
+
+        /// <summary>
         /// Describe the template of each final item
         /// Warning : If the ForEach control is under a Cell, the ItemTemplate must be a Paragraph !
         /// </summary>
