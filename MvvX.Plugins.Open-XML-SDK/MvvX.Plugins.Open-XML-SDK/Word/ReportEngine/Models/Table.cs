@@ -10,6 +10,12 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models
     public class Table : BaseElement
     {
         /// <summary>
+        /// Define the prefix that will be used for automatically added items
+        /// IsFirstItem, ...
+        /// </summary>
+        public string AutoContextAddItemsPrefix { get; set; }
+
+        /// <summary>
         /// Rows of the table, generated before Rows field content
         /// used only if the table is not binded to a datasource (DataSourceKey != null)
         /// </summary>
