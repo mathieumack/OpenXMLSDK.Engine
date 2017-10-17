@@ -657,6 +657,14 @@ RowModel = new Row()
 
             doc.Pages.Add(page7);
 
+            // page 8
+            var page8 = new Page();
+            var p8 = new Paragraph() { FontColor = "FF0000", FontSize = "26" };
+            p8.ChildElements.Add(new Label() { Text = "Label with" + Environment.NewLine + Environment.NewLine + "A new line" });
+            page8.ChildElements.Add(p8);
+
+            doc.Pages.Add(page8);
+
             // Header
             var header = new Header();
             header.Type = HeaderFooterValues.Default;
