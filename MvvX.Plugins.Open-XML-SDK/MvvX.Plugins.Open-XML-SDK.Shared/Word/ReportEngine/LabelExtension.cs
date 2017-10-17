@@ -6,6 +6,7 @@ using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System;
 
 namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
 {
@@ -79,10 +80,25 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
         /// <returns></returns>
         private static Run SetTextContent(Label label, OpenXmlElement parent)
         {
-            var run = new Run(new Text(label.Text)
+            Run run = run = new Run();
+
+            if (!string.IsNullOrWhiteSpace(label.Text))
             {
-                Space = (SpaceProcessingModeValues)(int)label.SpaceProcessingModeValue
-            });
+                var lines = label.Text.Split('\n');
+                
+                for(int i = 0; i < lines.Length; i++)
+                {
+                    run.AppendChild(new Text(lines[i])
+                    {
+                        Space = (SpaceProcessingModeValues)(int)label.SpaceProcessingModeValue
+                    });
+                    if (i < lines.Length - 1)
+                    {
+                        run.AppendChild(new Break());
+                    }
+                }
+            }
+
             var runProperty = new RunProperties();
             if (!string.IsNullOrWhiteSpace(label.FontName))
                 runProperty.RunFonts = new RunFonts() { Ascii = label.FontName, HighAnsi = label.FontName, EastAsia = label.FontName, ComplexScript = label.FontName };
