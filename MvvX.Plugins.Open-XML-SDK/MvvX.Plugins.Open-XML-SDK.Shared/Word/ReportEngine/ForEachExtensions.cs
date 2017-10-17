@@ -20,12 +20,8 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                     if (datasource != null && datasource.Items.Count > 0)
                     {
                         int i = 0;
-                        string oldKey = null;
                         foreach (var item in datasource.Items)
                         {
-                            if (!string.IsNullOrWhiteSpace(oldKey))
-                                item.Data.Remove(oldKey);
-
                             if (!string.IsNullOrWhiteSpace(forEach.AutoContextAddItemsPrefix))
                             {
                                 // We add automatic keys :
