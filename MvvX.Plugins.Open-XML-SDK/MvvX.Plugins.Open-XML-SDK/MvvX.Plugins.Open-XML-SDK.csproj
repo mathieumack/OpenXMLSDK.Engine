@@ -149,6 +149,7 @@
     <Compile Include="Word\Tables\Models\TableCellMarginModel.cs" />
     <Compile Include="Word\Tables\Models\TableIndentation.cs" />
     <Compile Include="Word\Tables\Models\TableLayoutModel.cs" />
+    <Compile Include="Word\Tables\Models\TableRowCantSplitModel.cs" />
     <Compile Include="Word\Tables\Models\TableRowHeightModel.cs" />
     <Compile Include="Word\Tables\Models\TableCellWidthModel.cs" />
     <Compile Include="Word\Tables\Models\TableStyleModel.cs" />

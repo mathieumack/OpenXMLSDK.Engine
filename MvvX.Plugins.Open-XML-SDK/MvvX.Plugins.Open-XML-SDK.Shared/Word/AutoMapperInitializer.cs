@@ -51,6 +51,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
                 .AfterMap((source, dest) =>
                 {
                     AutoMapper.Mapper.Map(source.TableRowHeight, dest.TableRowHeight);
+                    AutoMapper.Mapper.Map(source.TableRowCantSplit, dest.TableRowCantSplit);
                 });
 
                 cfg.CreateMap<TableStyleModel, ITableStyle>();

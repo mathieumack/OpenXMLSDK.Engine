@@ -7,6 +7,8 @@
     {
         public TableRowHeightModel TableRowHeight { get; set; }
 
+        public TableRowCantSplitModel TableRowCantSplit { get; set; }
+
         public TableRowPropertiesModel()
         {
         }
