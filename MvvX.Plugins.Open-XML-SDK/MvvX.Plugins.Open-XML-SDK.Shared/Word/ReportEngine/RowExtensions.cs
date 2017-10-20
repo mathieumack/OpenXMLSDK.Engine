@@ -38,8 +38,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
 
             return wordRow;
         }
-
-
+        
         /// <summary>
         /// Commun Render 
         /// </summary>
