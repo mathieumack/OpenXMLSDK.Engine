@@ -1,6 +1,4 @@
-﻿
-
-namespace MvvX.Plugins.OpenXMLSDK.Word.Tables
+﻿namespace MvvX.Plugins.OpenXMLSDK.Word.Tables
 {
     public interface ITableRowCantSplit : IOpenXmlElement
     {
