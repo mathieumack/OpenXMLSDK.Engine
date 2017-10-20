@@ -3,5 +3,7 @@
     public interface ITableRowProperties : IOpenXmlElement
     {
         ITableRowHeight TableRowHeight { get; }
+
+        ITableRowCantSplit TableRowCantSplit { get; }
     }
 }

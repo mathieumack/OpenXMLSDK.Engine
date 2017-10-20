@@ -136,6 +136,7 @@
     <Compile Include="Word\Tables\ITableCellBorders.cs" />
     <Compile Include="Word\Tables\ITableCellMargin.cs" />
     <Compile Include="Word\Tables\ITableLayout.cs" />
+    <Compile Include="Word\Tables\ITableRowCantSplit.cs" />
     <Compile Include="Word\Tables\ITableRowHeight.cs" />
     <Compile Include="Word\Tables\ITableProperties.cs" />
     <Compile Include="Word\Tables\ITableJustification.cs" />

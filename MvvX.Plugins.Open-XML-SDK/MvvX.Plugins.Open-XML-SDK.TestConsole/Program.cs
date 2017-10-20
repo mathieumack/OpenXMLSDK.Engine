@@ -288,6 +288,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                 },
                 RowModel = new Row()
                 {
+                    CantSplit = true,
                     Cells = new List<Cell>()
                     {
                         new Cell()
@@ -558,6 +559,7 @@ RowModel = new Row()
                 },
                 RowModel = new Row()
                 {
+                    CantSplit = false,
                     Cells = new List<Cell>()
                     {
                         new Cell()
@@ -724,9 +726,9 @@ RowModel = new Row()
             row1.AddItem("#Cell2#", new StringModel("Col 2 Row 1"));
             row1.AddItem("#Label#", new StringModel("Label 1"));
             ContextModel row2 = new ContextModel();
-            row2.AddItem("#Cell1#", new StringModel("Col 2 Row 1"));
+            row2.AddItem("#Cell1#", new StringModel("Col 2 Row 1 \n col 2 Row 1 bis \n col 2 Row 1 bis \n col 2 Row 1 bis \n col 2 Row 1 bis \n blabla"));
             row2.AddItem("#Cell2#", new StringModel("Col 2 Row 2"));
-            row2.AddItem("#Label#", new StringModel("Label 2"));
+            row2.AddItem("#Label#", new StringModel("Label 2")); 
             ContextModel row3 = new ContextModel();
             row3.AddItem("#Cell1#", new StringModel("Col 1 Row 3"));
             row3.AddItem("#Cell2#", new StringModel("Col 2 Row 3"));
@@ -740,7 +742,7 @@ RowModel = new Row()
             {
                 Items = new List<ContextModel>()
                     {
-                        row1, row2
+                        row1, row2, row1, row2, row1, row2,row1, row2,row1, row2,row1, row2,row1, row2,row1, row2,row1, row2
                     }
             });
 

@@ -32,6 +32,17 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.Tables
             }
         }
 
+        private ITableRowCantSplit tableRowCantSplit;
+        public ITableRowCantSplit TableRowCantSplit
+        {
+            get
+            {
+                if (tableRowCantSplit == null)
+                    tableRowCantSplit = PlatformTableRowCantSplit.New(xmlElement);
+
+                return tableRowCantSplit;
+            }
+        }
         #endregion
 
         #region Static helpers methods
