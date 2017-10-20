@@ -21,6 +21,8 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
                 cfg.CreateMap<TableCellWidthModel, ITableCellWidth>();
                 cfg.CreateMap<TableWidthModel, ITableWidth>();
                 cfg.CreateMap<TableBorderModel, IBorderType>();
+                cfg.CreateMap<TableRowCantSplitModel, ITableRowCantSplit>();
+
                 cfg.CreateMap<TableBordersModel, ITableBorders>()
                 .AfterMap((source, dest) =>
                 {
