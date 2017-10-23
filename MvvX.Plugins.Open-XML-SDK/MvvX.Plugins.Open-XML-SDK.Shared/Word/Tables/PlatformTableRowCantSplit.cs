@@ -1,6 +1,7 @@
 ﻿using DocumentFormat.OpenXml.Wordprocessing;
 using MvvX.Plugins.OpenXMLSDK.Word.Tables;
 using System;
+using System.Linq;
 
 namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.Tables
 {
@@ -9,7 +10,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.Tables
         private readonly CantSplit xmlElement;
 
         public PlatformTableRowCantSplit()
-            : this(new CantSplit())
+            : this(new CantSplit() { Val = OnOffOnlyValues.Off })
         {
         }
 
@@ -20,12 +21,12 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.Tables
         }
 
         #region Interface :
-
+                
         public bool Val
         {
             get
             {
-                return (xmlElement.Val == OnOffOnlyValues.On ? true : false);
+                return xmlElement.Val == OnOffOnlyValues.On ? true : false;
             }
             set
             {
@@ -39,7 +40,15 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.Tables
 
         public static PlatformTableRowCantSplit New(TableRowProperties tableProperties)
         {
-            var xmlElement = CheckDescendantsOrAppendNewOne<CantSplit>(tableProperties);
+            CantSplit xmlElement = null;
+            if (tableProperties.Descendants<CantSplit>().Any())
+                xmlElement = tableProperties.Descendants<CantSplit>().First();
+            else
+            {
+                xmlElement = new CantSplit() { Val = OnOffOnlyValues.Off };
+                tableProperties.Append(xmlElement);
+            }
+            
             return new PlatformTableRowCantSplit(xmlElement);
         }
 
