@@ -1000,6 +1000,10 @@ RowModel = new Row()
                         TableRowHeight = new TableRowHeightModel()
                         {
                             Val = 380
+                        },
+                        TableRowCantSplit = new TableRowCantSplitModel()
+                        {
+                            Val = true
                         }
                     }));
 
