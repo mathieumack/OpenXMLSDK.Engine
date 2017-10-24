@@ -245,6 +245,9 @@
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Tables\PlatformTableRow.cs">
       <Link>Word\Tables\PlatformTableRow.cs</Link>
     </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Tables\PlatformTableRowCantSplit.cs">
+      <Link>Word\Tables\PlatformTableRowCantSplit.cs</Link>
+    </Compile>
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Tables\PlatformTableRowHeight.cs">
       <Link>Word\Tables\PlatformTableRowHeight.cs</Link>
     </Compile>
