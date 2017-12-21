@@ -83,7 +83,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                     var contextJson = JsonConvert.SerializeObject(context);
                     var contextUnserialized = JsonConvert.DeserializeObject<ContextModel>(contextJson, new JsonSerializerSettings() { Converters = converters });
 
-                    var res = word.GenerateReport(templateUnserialized, contextUnserialized, new CultureInfo("fr-FR"));
+                    var res = word.GenerateReport(templateUnserialized, contextUnserialized, new CultureInfo("en-US"));
 
                     // test ecriture fichier
                     File.WriteAllBytes(documentName, res);
@@ -100,7 +100,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                     var stream = File.ReadAllText(filePath);
                     var report = JsonConvert.DeserializeObject<Report>(stream, new JsonSerializerSettings() { Converters = converters });
 
-                    var res = word.GenerateReport(report.Document, report.ContextModel, new CultureInfo("fr-FR"));
+                    var res = word.GenerateReport(report.Document, report.ContextModel, new CultureInfo("en-US"));
 
                     // test ecriture fichier
                     File.WriteAllBytes(documentName, res);
@@ -133,6 +133,9 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             paragraph.ChildElements.Add(new Label() { Text = "Double value : #KeyTestDouble1#" });
             paragraph.ChildElements.Add(new Label() { Text = "Double value 2 : #KeyTestDouble2#" });
 
+            paragraph.ChildElements.Add(new Label() { Text = "DateTime value : #KeyTestDatetime1#" });
+            paragraph.ChildElements.Add(new Label() { Text = "Double value 2 : #KeyTestDatetime2#" });            
+                
             paragraph.Borders = new Word.ReportEngine.Models.Attributes.BorderModel()
             {
                 BorderPositions = Word.ReportEngine.Models.Attributes.BorderPositions.BOTTOM | 
@@ -722,6 +725,9 @@ RowModel = new Row()
 
             context.AddItem("#KeyTestDouble1#", new DoubleModel(125.2345, "{0:0.##} kV"));
             context.AddItem("#KeyTestDouble2#", new DoubleModel(1025.2345, "Before - {0:0.###} - After"));
+
+            context.AddItem("#KeyTestDatetime1#", new DateTimeModel(DateTime.Now, null));
+            context.AddItem("#KeyTestDatetime2#", new DateTimeModel(DateTime.Now, "d"));
 
             context.AddItem("#BoldKey#", new BooleanModel(true));
 

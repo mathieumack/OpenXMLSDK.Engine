@@ -77,6 +77,8 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels
                         result = result.Replace(key, GetItem<StringModel>(key).Value);
                     else if (ExistItem<DoubleModel>(key))
                         result = result.Replace(key, GetItem<DoubleModel>(key).Render(formatProvider));
+                    else if (ExistItem<DateTimeModel>(key))
+                        result = result.Replace(key, GetItem<DateTimeModel>(key).Render(formatProvider));
                     else
                         result = result.Replace(key, string.Empty);
                 }
