@@ -12,9 +12,18 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
 {
     public static class LabelExtension
     {
-        public static OpenXmlElement Render(this Label label, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart)
+        /// <summary>
+        /// Render a label
+        /// </summary>
+        /// <param name="label"></param>
+        /// <param name="parent"></param>
+        /// <param name="context"></param>
+        /// <param name="documentPart"></param>
+        /// <param name="formatProvider"></param>
+        /// <returns></returns>
+        public static OpenXmlElement Render(this Label label, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart, IFormatProvider formatProvider)
         {
-            context.ReplaceItem(label);
+            context.ReplaceItem(label, formatProvider);
 
             if (label.IsHtml)
             {

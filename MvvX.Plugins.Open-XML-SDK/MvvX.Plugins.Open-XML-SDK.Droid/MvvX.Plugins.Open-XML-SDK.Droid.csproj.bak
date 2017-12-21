@@ -15,7 +15,7 @@
     <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     <AndroidUseLatestPlatformSdk>True</AndroidUseLatestPlatformSdk>
-    <TargetFrameworkVersion>v6.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v7.1</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -118,6 +118,9 @@
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Paragraphs\PlatformParagraph.cs">
       <Link>Word\Paragraphs\PlatformParagraph.cs</Link>
     </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Paragraphs\PlatformParagraphBorders.cs">
+      <Link>Word\Paragraphs\PlatformParagraphBorders.cs</Link>
+    </Compile>
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\Paragraphs\PlatformParagraphProperties.cs">
       <Link>Word\Paragraphs\PlatformParagraphProperties.cs</Link>
     </Compile>
@@ -174,6 +177,9 @@
     </Compile>
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\ForEachExtensions.cs">
       <Link>Word\ReportEngine\ForEachExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\ForEachPageExtensions.cs">
+      <Link>Word\ReportEngine\ForEachPageExtensions.cs</Link>
     </Compile>
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\HeaderExtensions.cs">
       <Link>Word\ReportEngine\HeaderExtensions.cs</Link>

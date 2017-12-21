@@ -6,6 +6,7 @@ using MvvX.Plugins.OpenXMLSDK.Platform.Word.Extensions;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models;
 using System.Globalization;
+using System;
 
 namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
 {
@@ -21,10 +22,11 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
         /// <param name="parent"></param>
         /// <param name="context"></param>
         /// <param name="documentPart"></param>
+        /// <param name="formatProvider"></param>
         /// <returns></returns>
-        public static TableCell Render(this Cell cell, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart)
+        public static TableCell Render(this Cell cell, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart, IFormatProvider formatProvider)
         {
-            context.ReplaceItem(cell);
+            context.ReplaceItem(cell, formatProvider);
 
             TableCell wordCell = new TableCell();
 
@@ -92,7 +94,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                         if (element is OpenXMLSDK.Word.ReportEngine.Models.Paragraph
                             || element is OpenXMLSDK.Word.ReportEngine.Models.ForEach)
                         {
-                            element.Render(wordCell, context, documentPart);
+                            element.Render(wordCell, context, documentPart, formatProvider);
                         }
                         else
                         {
@@ -106,7 +108,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                             wordCell.AppendChild(paragraph);
                             var r = new Run();
                             paragraph.AppendChild(r);
-                            element.Render(r, context, documentPart);
+                            element.Render(r, context, documentPart, formatProvider);
                         }
                     }
                 }
@@ -126,7 +128,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                     foreach (var element in cell.ChildElements)
                     {
                         element.InheritFromParent(cell);
-                        element.Render(r, context, documentPart);
+                        element.Render(r, context, documentPart, formatProvider);
                     }
                 }
             }          

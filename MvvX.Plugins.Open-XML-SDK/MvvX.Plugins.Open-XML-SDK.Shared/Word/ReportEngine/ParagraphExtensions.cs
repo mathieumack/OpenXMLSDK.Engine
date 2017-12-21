@@ -2,14 +2,16 @@
 using MvvX.Plugins.OpenXMLSDK.Platform.Word.Extensions;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models;
+using System;
 
 namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
 {
     public static class ParagraphExtensions
     {
-        public static OpenXmlElement Render(this Paragraph paragraph, OpenXmlElement parent, ContextModel context)
+        public static OpenXmlElement Render(this Paragraph paragraph, OpenXmlElement parent, ContextModel context, IFormatProvider formatProvider)
         {
-            context.ReplaceItem(paragraph);
+            context.ReplaceItem(paragraph, formatProvider);
+
             var openXmlPar = new DocumentFormat.OpenXml.Wordprocessing.Paragraph();
             openXmlPar.ParagraphProperties = new DocumentFormat.OpenXml.Wordprocessing.ParagraphProperties()
             {

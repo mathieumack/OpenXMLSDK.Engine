@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Globalization;
+﻿using System;
+using System.Collections.Generic;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml.Wordprocessing;
-using MvvX.Plugins.OpenXMLSDK.Platform.Word.Extensions;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models;
 
@@ -18,9 +16,9 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
         /// <param name="parent"></param>
         /// <param name="context"></param>
         /// <returns></returns>
-        public static DocumentFormat.OpenXml.Wordprocessing.Table Render(this OpenXMLSDK.Word.ReportEngine.Models.UniformGrid uniformGrid, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart)
+        public static DocumentFormat.OpenXml.Wordprocessing.Table Render(this OpenXMLSDK.Word.ReportEngine.Models.UniformGrid uniformGrid, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart, IFormatProvider formatProvider)
         {
-            context.ReplaceItem(uniformGrid);
+            context.ReplaceItem(uniformGrid, formatProvider);
 
             if (!string.IsNullOrEmpty(uniformGrid.DataSourceKey) && context.ExistItem<DataSourceModel>(uniformGrid.DataSourceKey))
             {
@@ -28,12 +26,12 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
 
                 if (datasource != null && datasource.Items.Count > 0)
                 {
-                    var createdTable = TableExtensions.CreateTable(uniformGrid, context, documentPart);
+                    var createdTable = TableExtensions.CreateTable(uniformGrid, context, documentPart, formatProvider);
                     var wordTable = createdTable.Item1;
                     var tableLook = createdTable.Item2;
 
                     // Before rows :
-                    TableExtensions.ManageBeforeAfterRows(uniformGrid, uniformGrid.BeforeRows, wordTable, context, documentPart);
+                    TableExtensions.ManageBeforeAfterRows(uniformGrid, uniformGrid.BeforeRows, wordTable, context, documentPart, formatProvider);
 
                     // Table of cells :
                     List<List<ContextModel>> rowsContentContexts = new List<List<ContextModel>>();
@@ -75,15 +73,15 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                         var row = new Row();
                         row.InheritFromParent(uniformGrid);
 
-                        wordTable.AppendChild(row.Render(wordTable, context, rowContentContext, uniformGrid.CellModel, documentPart, false));
+                        wordTable.AppendChild(row.Render(wordTable, context, rowContentContext, uniformGrid.CellModel, documentPart, false, formatProvider));
 
                         i++;
                     }
 
                     // After rows :
-                    TableExtensions.ManageBeforeAfterRows(uniformGrid, uniformGrid.AfterRows, wordTable, context, documentPart);
+                    TableExtensions.ManageBeforeAfterRows(uniformGrid, uniformGrid.AfterRows, wordTable, context, documentPart, formatProvider);
 
-                    TableExtensions.ManageFooterRow(uniformGrid, wordTable, tableLook, context, documentPart);
+                    TableExtensions.ManageFooterRow(uniformGrid, wordTable, tableLook, context, documentPart, formatProvider);
 
                     parent.AppendChild(wordTable);
                     return wordTable;

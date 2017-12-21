@@ -11,6 +11,7 @@
         public string Value { get; set; }
 
         #region Constructor
+
         /// <summary>
         /// Default constructor
         /// </summary>
@@ -27,6 +28,7 @@
         {
             Value = value;
         }
+
         #endregion
     }
 }
