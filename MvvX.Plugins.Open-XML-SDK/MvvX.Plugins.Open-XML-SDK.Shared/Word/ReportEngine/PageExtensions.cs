@@ -4,18 +4,19 @@ using DocumentFormat.OpenXml.Wordprocessing;
 using MvvX.Plugins.OpenXMLSDK.Platform.Word.Extensions;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models;
+using System;
 
 namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
 {
     public static class PageExtensions
     {
-        public static void Render(this Page page, OpenXmlElement wdDoc, ContextModel context, MainDocumentPart mainDocumentPart)
+        public static void Render(this Page page, OpenXmlElement wdDoc, ContextModel context, MainDocumentPart mainDocumentPart, IFormatProvider formatProvider)
         {
             if (!string.IsNullOrWhiteSpace(page.ShowKey) && context.ExistItem<BooleanModel>(page.ShowKey) && !context.GetItem<BooleanModel>(page.ShowKey).Value)
                 return;
 
             // add page content
-            ((BaseElement)page).Render(wdDoc, context, mainDocumentPart);
+            ((BaseElement)page).Render(wdDoc, context, mainDocumentPart, formatProvider);
 
             // add section to manage orientation. Last section is at the end of document
             var pageSize = new PageSize()

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using MvvX.Plugins.OpenXMLSDK.Platform.Validation;
 using MvvX.Plugins.OpenXMLSDK.Platform.Word;
@@ -82,7 +83,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                     var contextJson = JsonConvert.SerializeObject(context);
                     var contextUnserialized = JsonConvert.DeserializeObject<ContextModel>(contextJson, new JsonSerializerSettings() { Converters = converters });
 
-                    var res = word.GenerateReport(templateUnserialized, contextUnserialized);
+                    var res = word.GenerateReport(templateUnserialized, contextUnserialized, new CultureInfo("en-US"));
 
                     // test ecriture fichier
                     File.WriteAllBytes(documentName, res);
@@ -99,7 +100,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                     var stream = File.ReadAllText(filePath);
                     var report = JsonConvert.DeserializeObject<Report>(stream, new JsonSerializerSettings() { Converters = converters });
 
-                    var res = word.GenerateReport(report.Document, report.ContextModel);
+                    var res = word.GenerateReport(report.Document, report.ContextModel, new CultureInfo("en-US"));
 
                     // test ecriture fichier
                     File.WriteAllBytes(documentName, res);
@@ -128,6 +129,13 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             paragraph.ChildElements.Add(new Label() { Text = "Ceci est un texte avec accents (éèàù)", FontSize = "30", FontName = "Arial" });
             paragraph.ChildElements.Add(new Label() { Text = "#KeyTest1#", FontSize = "40", FontColor = "#FontColorTestRed#", Shading = "9999FF", BoldKey = "#BoldKey#", Bold = false });
             paragraph.ChildElements.Add(new Label() { Text = "#KeyTest2#", Show = false });
+
+            paragraph.ChildElements.Add(new Label() { Text = "Double value : #KeyTestDouble1#" });
+            paragraph.ChildElements.Add(new Label() { Text = "Double value 2 : #KeyTestDouble2#" });
+
+            paragraph.ChildElements.Add(new Label() { Text = "DateTime value : #KeyTestDatetime1#" });
+            paragraph.ChildElements.Add(new Label() { Text = "Double value 2 : #KeyTestDatetime2#" });            
+                
             paragraph.Borders = new Word.ReportEngine.Models.Attributes.BorderModel()
             {
                 BorderPositions = Word.ReportEngine.Models.Attributes.BorderPositions.BOTTOM | 
@@ -714,6 +722,13 @@ RowModel = new Row()
             context.AddItem("#BorderColor#", new StringModel("00FF00"));
             context.AddItem("#KeyTest1#", new StringModel("Key 1"));
             context.AddItem("#KeyTest2#", new StringModel("Key 2"));
+
+            context.AddItem("#KeyTestDouble1#", new DoubleModel(125.2345, "{0:0.##} kV"));
+            context.AddItem("#KeyTestDouble2#", new DoubleModel(1025.2345, "Before - {0:0.###} - After"));
+
+            context.AddItem("#KeyTestDatetime1#", new DateTimeModel(DateTime.Now, null));
+            context.AddItem("#KeyTestDatetime2#", new DateTimeModel(DateTime.Now, "d"));
+
             context.AddItem("#BoldKey#", new BooleanModel(true));
 
             context.AddItem("#FontColorTestRed#", new StringModel("993333"));

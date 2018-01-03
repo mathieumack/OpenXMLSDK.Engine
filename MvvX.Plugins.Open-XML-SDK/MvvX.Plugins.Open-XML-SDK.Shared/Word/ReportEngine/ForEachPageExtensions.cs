@@ -4,14 +4,15 @@ using DocumentFormat.OpenXml.Wordprocessing;
 using MvvX.Plugins.OpenXMLSDK.Platform.Word.Extensions;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models;
+using System;
 
 namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
 {
     public static class ForEachPageExtensions
     {
-        public static void Render(this ForEachPage forEach, OpenXmlElement wdDoc, ContextModel context, MainDocumentPart mainDocumentPart, OpenXMLSDK.Word.ReportEngine.Models.Document document)
+        public static void Render(this ForEachPage forEach, OpenXmlElement wdDoc, ContextModel context, MainDocumentPart mainDocumentPart, OpenXMLSDK.Word.ReportEngine.Models.Document document, IFormatProvider formatProvider)
         {
-            context.ReplaceItem(forEach);
+            context.ReplaceItem(forEach, formatProvider);
 
             if (!string.IsNullOrEmpty(forEach.DataSourceKey))
             {
@@ -45,7 +46,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                                 item.AddItem("#" + forEach.AutoContextAddItemsPrefix + "_ForEachPage_IndexBaseOne#", new StringModel((i + 1).ToString()));
                             }
 
-                            newPage.Clone().Render(wdDoc, item, mainDocumentPart);
+                            newPage.Clone().Render(wdDoc, item, mainDocumentPart, formatProvider);
 
                             i++;
                         }

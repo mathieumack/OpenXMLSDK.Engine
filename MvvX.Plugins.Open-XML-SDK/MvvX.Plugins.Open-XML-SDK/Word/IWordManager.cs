@@ -276,21 +276,24 @@ namespace MvvX.Plugins.OpenXMLSDK.Word
         #endregion
 
         #region Report Engine
+
         /// <summary>
         /// Generate a word document
         /// </summary>
         /// <param name="template">document template</param>
         /// <param name="context">data used to fill document</param>
+        /// <param name="formatProvider">Culture to be used for generate Double or dates values</param>
         /// <returns></returns>
-        byte[] GenerateReport(Document template, ContextModel context);
+        byte[] GenerateReport(Document template, ContextModel context, IFormatProvider formatProvider);
 
         /// <summary>
         /// Generate a word document 
         /// </summary>
         /// <param name="reportList">A list of Reports</param>
         /// <param name="mergeStyles">Indicates whether or not styles are merged</param>
+        /// <param name="formatProvider">Culture to be used for generate Double or dates values</param>
         /// <returns></returns>
-        byte[] GenerateReport(IList<Report> reportList, bool mergeStyles);
+        byte[] GenerateReport(IList<Report> reportList, bool mergeStyles, IFormatProvider formatProvider);
 
         #endregion
     }

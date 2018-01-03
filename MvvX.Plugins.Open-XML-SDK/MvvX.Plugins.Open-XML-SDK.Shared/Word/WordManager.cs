@@ -1144,7 +1144,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
 
         #region Report Engine
 
-        public byte[] GenerateReport(OpenXMLSDK.Word.ReportEngine.Models.Document document, ContextModel context)
+        public byte[] GenerateReport(OpenXMLSDK.Word.ReportEngine.Models.Document document, ContextModel context, IFormatProvider formatProvider)
         {
             using (MemoryStream stream = new MemoryStream())
             {
@@ -1152,7 +1152,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
                 wdDoc.AddMainDocumentPart();
                 wdDoc.MainDocumentPart.Document = new DocumentFormat.OpenXml.Wordprocessing.Document(new Body());
 
-                document.Render(wdDoc, context);
+                document.Render(wdDoc, context, formatProvider);
 
                 wdDoc.MainDocumentPart.Document.Save();
                 wdDoc.Close();
@@ -1165,8 +1165,9 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
         /// </summary>
         /// <param name="reportList">A list of Reports</param>
         /// <param name="mergeStyles">Indicates whether or not styles are merged</param>
+        /// <param name="formatProvider"></param>
         /// <returns></returns>
-        public byte[] GenerateReport(IList<Report> reportList, bool mergeStyles)
+        public byte[] GenerateReport(IList<Report> reportList, bool mergeStyles, IFormatProvider formatProvider)
         {
             using (MemoryStream stream = new MemoryStream())
             {
@@ -1200,17 +1201,17 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
                         }
                     }
                     // Document render
-                    report.Document.Render(wdDoc, report.ContextModel, report.AddPageBreak);
+                    report.Document.Render(wdDoc, report.ContextModel, report.AddPageBreak, formatProvider);
 
                     // footers
                     foreach (var footer in report.Document.Footers)
                     {
-                        footer.Render(wdDoc.MainDocumentPart, report.ContextModel);
+                        footer.Render(wdDoc.MainDocumentPart, report.ContextModel, formatProvider);
                     }
                     // headers
                     foreach (var header in report.Document.Headers)
                     {
-                        header.Render(wdDoc.MainDocumentPart, report.ContextModel);
+                        header.Render(wdDoc.MainDocumentPart, report.ContextModel, formatProvider);
                     }
                 }
 
