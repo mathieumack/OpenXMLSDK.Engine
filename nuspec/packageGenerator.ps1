@@ -8,6 +8,9 @@ Set-Location -Path $locationNuspec
 "Packaging to nuget..."
 "Build folder : " + $location
 
+write-host "Update the nuget.exe file" -foreground "DarkGray"
+.\NuGet update -self
+
 $strPath = $location + '\MvvX.Plugins.Open-XML-SDK\MvvX.Plugins.Open-XML-SDK\bin\Release\MvvX.Plugins.OpenXMLSDK.dll'
 
 $VersionInfos = [System.Diagnostics.FileVersionInfo]::GetVersionInfo($strPath)
