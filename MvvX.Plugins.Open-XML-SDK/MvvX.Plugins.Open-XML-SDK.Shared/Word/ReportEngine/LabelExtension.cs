@@ -98,7 +98,6 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                     Space = (SpaceProcessingModeValues)(int)label.SpaceProcessingModeValue
                 });
             }
-
             else
             {
                 var lines = label.Text.Split('\n');
