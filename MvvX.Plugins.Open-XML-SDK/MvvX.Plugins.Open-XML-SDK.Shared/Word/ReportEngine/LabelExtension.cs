@@ -89,19 +89,30 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
         /// <returns></returns>
         private static Run SetTextContent(Label label, OpenXmlElement parent)
         {
-            Run run = run = new Run();
+            Run run = new Run();
 
-            var lines = label.Text.Split('\n');
-
-            for (int i = 0; i < lines.Length; i++)
+            if (label.Text == null)
             {
-                run.AppendChild(new Text(lines[i])
+                run.AppendChild(new Text(label.Text)
                 {
                     Space = (SpaceProcessingModeValues)(int)label.SpaceProcessingModeValue
                 });
-                if (i < lines.Length - 1)
+            }
+
+            else
+            {
+                var lines = label.Text.Split('\n');
+
+                for (int i = 0; i < lines.Length; i++)
                 {
-                    run.AppendChild(new Break());
+                    run.AppendChild(new Text(lines[i])
+                    {
+                        Space = (SpaceProcessingModeValues)(int)label.SpaceProcessingModeValue
+                    });
+                    if (i < lines.Length - 1)
+                    {
+                        run.AppendChild(new Break());
+                    }
                 }
             }
 
