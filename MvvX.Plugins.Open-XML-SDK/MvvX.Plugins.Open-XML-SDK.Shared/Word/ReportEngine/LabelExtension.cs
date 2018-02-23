@@ -1,12 +1,12 @@
-﻿using DocumentFormat.OpenXml;
+﻿using System;
+using System.IO;
+using System.Linq;
+using System.Text;
+using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System;
 
 namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
 {
@@ -91,20 +91,17 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
         {
             Run run = run = new Run();
 
-            if (!string.IsNullOrWhiteSpace(label.Text))
+            var lines = label.Text.Split('\n');
+
+            for (int i = 0; i < lines.Length; i++)
             {
-                var lines = label.Text.Split('\n');
-                
-                for(int i = 0; i < lines.Length; i++)
+                run.AppendChild(new Text(lines[i])
                 {
-                    run.AppendChild(new Text(lines[i])
-                    {
-                        Space = (SpaceProcessingModeValues)(int)label.SpaceProcessingModeValue
-                    });
-                    if (i < lines.Length - 1)
-                    {
-                        run.AppendChild(new Break());
-                    }
+                    Space = (SpaceProcessingModeValues)(int)label.SpaceProcessingModeValue
+                });
+                if (i < lines.Length - 1)
+                {
+                    run.AppendChild(new Break());
                 }
             }
 
