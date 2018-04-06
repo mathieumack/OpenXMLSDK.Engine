@@ -44,7 +44,6 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                 //French
                 tocParametersFr.Append(@"TOC \h \z \t ");
 
-
                 foreach (Tuple<string, string> styleAndLevel in tableOfContents.StylesAndLevels)
                 {
                     //English

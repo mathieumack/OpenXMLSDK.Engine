@@ -765,7 +765,6 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             page.ChildElements.Add(paragraph);
 
             doc.Pages.Add(page);
-
         }
 
         /// <summary>
