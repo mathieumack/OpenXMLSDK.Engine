@@ -121,8 +121,26 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             GenerateStyles(doc);
             GenerateHeaderAndFooter(doc);
 
-            #region Page 1
+            GenerateLotsOfThings(doc);
+            GenerateParagraphsWithStyle(doc);
+            GenerateForeachPage(doc);
+            GenerateTextWithHeritage(doc);
+            GenerateTableOfContent(doc);
+            GenerateUniformGrid(doc);
+            GenerateTable(doc);
+            GenerateGraph(doc);
+            GenerateTableWithFusionedCells(doc);
+            GenerateTextWithEmptyLine(doc);
 
+            return doc;
+        }
+
+        /// <summary>
+        /// Generate lots of things
+        /// </summary>
+        /// <param name="doc"></param>
+        private static void GenerateLotsOfThings(Document doc)
+        {
             var page1 = new Page();
             page1.Margin = new Word.ReportEngine.Models.Attributes.SpacingModel() { Top = 845, Bottom = 1418, Left = 567, Right = 567, Header = 709, Footer = 709 };
 
@@ -334,27 +352,27 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                 RowModel = new Row()
                 {
                     Cells = new List<Cell>()
-    {
-        new Cell()
-        {
-            Shading = "FFA0FF",
-            ChildElements = new List<BaseElement>()
-            {
-                new Label() { Text = "Item Datasource (0 index) #DataSourcePrefix_TableRow_IndexBaseZero# - ",
-                                ShowKey = "#DataSourcePrefix_TableRow_IsFirstItem#" },
-                new Label() { Text = "#Cell1#" }
-            }
-        },
-        new Cell()
-        {
-            ChildElements = new List<BaseElement>()
-            {
-                new Label() { Text = "Item Datasource (1 index) #DataSourcePrefix_TableRow_IndexBaseOne# - ",
-                                ShowKey = "#DataSourcePrefix_TableRow_IsLastItem#" },
-                new Label() { Text = "#Cell2#" }
-            }
-        }
-    }
+                    {
+                        new Cell()
+                        {
+                            Shading = "FFA0FF",
+                            ChildElements = new List<BaseElement>()
+                            {
+                                new Label() { Text = "Item Datasource (0 index) #DataSourcePrefix_TableRow_IndexBaseZero# - ",
+                                                ShowKey = "#DataSourcePrefix_TableRow_IsFirstItem#" },
+                                new Label() { Text = "#Cell1#" }
+                            }
+                        },
+                        new Cell()
+                        {
+                            ChildElements = new List<BaseElement>()
+                            {
+                                new Label() { Text = "Item Datasource (1 index) #DataSourcePrefix_TableRow_IndexBaseOne# - ",
+                                                ShowKey = "#DataSourcePrefix_TableRow_IsLastItem#" },
+                                new Label() { Text = "#Cell2#" }
+                            }
+                        }
+                    }
                 }
             };
 
@@ -362,45 +380,61 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
 
             page1.ChildElements.Add(tableDataSourceWithPrefix);
 
-            #endregion Page 1
+            doc.Pages.Add(page1);
+        }
 
-            #region Page 2
+        /// <summary>
+        /// Generate paragraph with styles
+        /// </summary>
+        /// <param name="doc"></param>
+        private static void GenerateParagraphsWithStyle(Document doc)
+        {
+            var page = new Page
+            {
+                Margin = new Word.ReportEngine.Models.Attributes.SpacingModel() { Top = 1418, Left = 845, Header = 709, Footer = 709 }
+            };
 
-            var page2 = new Page();
-            page2.Margin = new Word.ReportEngine.Models.Attributes.SpacingModel() { Top = 1418, Left = 845, Header = 709, Footer = 709 };
+            // Red Style
+            var redParagrahp = new Paragraph
+            {
+                Justification = JustificationValues.Center,
+                ParagraphStyleId = "Red"
+            };
+            redParagrahp.ChildElements.Add(new Label() { Text = "texte page2", FontName = "Arial" });
+            page.ChildElements.Add(redParagrahp);
 
-            // page 2
-            var p21 = new Paragraph();
-            p21.Justification = JustificationValues.Center;
-            p21.ParagraphStyleId = "Red";
-            p21.ChildElements.Add(new Label() { Text = "texte page2", FontName = "Arial" });
-            page2.ChildElements.Add(p21);
+            // Yellow Style
+            var yellowParagraph = new Paragraph
+            {
+                SpacingBefore = 800,
+                SpacingAfter = 800,
+                Justification = JustificationValues.Both,
+                ParagraphStyleId = "Yellow"
+            };
+            yellowParagraph.ChildElements.Add(new Label() { Text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse urna augue, convallis eu enim vitae, maximus ultrices nulla. Sed egestas volutpat luctus. Maecenas sodales erat eu elit auctor, eu mattis neque maximus. Duis ac risus quis sem bibendum efficitur. Vivamus justo augue, molestie quis orci non, maximus imperdiet justo. Donec condimentum rhoncus est, ut varius lorem efficitur sed. Donec accumsan sit amet nisl vel ornare. Duis aliquet urna eu mauris porttitor facilisis. " });
+            page.ChildElements.Add(yellowParagraph);
 
-            var p22 = new Paragraph();
-            p22.SpacingBefore = 800;
-            p22.SpacingAfter = 800;
-            p22.Justification = JustificationValues.Both;
-            p22.ParagraphStyleId = "Yellow";
-            p22.ChildElements.Add(new Label() { Text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse urna augue, convallis eu enim vitae, maximus ultrices nulla. Sed egestas volutpat luctus. Maecenas sodales erat eu elit auctor, eu mattis neque maximus. Duis ac risus quis sem bibendum efficitur. Vivamus justo augue, molestie quis orci non, maximus imperdiet justo. Donec condimentum rhoncus est, ut varius lorem efficitur sed. Donec accumsan sit amet nisl vel ornare. Duis aliquet urna eu mauris porttitor facilisis. " });
-            page2.ChildElements.Add(p22);
-
-            var p23 = new Paragraph();
-            p23.Borders = new Word.ReportEngine.Models.Attributes.BorderModel()
+            // Parahraph with border
+            var borderParagraph = new Paragraph();
+            borderParagraph.Borders = new Word.ReportEngine.Models.Attributes.BorderModel()
             {
                 BorderPositions = (Word.ReportEngine.Models.Attributes.BorderPositions)13,
                 BorderWidth = 20,
                 BorderColor = "#ParagraphBorderColor#"
             };
-            p23.SpacingBetweenLines = 360;
-            p23.ChildElements.Add(new Label() { Text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse urna augue, convallis eu enim vitae, maximus ultrices nulla. Sed egestas volutpat luctus. Maecenas sodales erat eu elit auctor, eu mattis neque maximus. Duis ac risus quis sem bibendum efficitur. Vivamus justo augue, molestie quis orci non, maximus imperdiet justo. Donec condimentum rhoncus est, ut varius lorem efficitur sed. Donec accumsan sit amet nisl vel ornare. Duis aliquet urna eu mauris porttitor facilisis. " });
-            page2.ChildElements.Add(p23);
+            borderParagraph.SpacingBetweenLines = 360;
+            borderParagraph.ChildElements.Add(new Label() { Text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse urna augue, convallis eu enim vitae, maximus ultrices nulla. Sed egestas volutpat luctus. Maecenas sodales erat eu elit auctor, eu mattis neque maximus. Duis ac risus quis sem bibendum efficitur. Vivamus justo augue, molestie quis orci non, maximus imperdiet justo. Donec condimentum rhoncus est, ut varius lorem efficitur sed. Donec accumsan sit amet nisl vel ornare. Duis aliquet urna eu mauris porttitor facilisis. " });
+            page.ChildElements.Add(borderParagraph);
 
-            doc.Pages.Add(page2);
+            doc.Pages.Add(page);
+        }
 
-            #endregion Page 2
-
-            #region Foreach
-
+        /// <summary>
+        /// Generate a foreach page
+        /// </summary>
+        /// <param name="doc"></param>
+        private static void GenerateForeachPage(Document doc)
+        {
             // Adding a foreach page :
             var foreachPage = new ForEachPage();
             foreachPage.DataSourceKey = "#DatasourceTableFusion#";
@@ -414,19 +448,33 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             p223.ChildElements.Add(new Label() { Text = "Texte paragraph2 avec espace avant", FontSize = "20", SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve });
             foreachPage.ChildElements.Add(p223);
             doc.Pages.Add(foreachPage);
+        }
 
-            #endregion
+        /// <summary>
+        /// Generate text with different styles
+        /// </summary>
+        /// <param name="doc"></param>
+        private static void GenerateTextWithHeritage(Document doc)
+        {
+            var page = new Page();
 
-            #region Page 3 Table of content
-
-            // page 3
-            var page3 = new Page();
             var p31 = new Paragraph() { FontColor = "FF0000", FontSize = "26" };
             p31.ChildElements.Add(new Label() { Text = "Test the HeritFromParent" });
             var p311 = new Paragraph() { FontSize = "16" };
             p311.ChildElements.Add(new Label() { Text = " Success (not the same size)" });
             p31.ChildElements.Add(p311);
-            page3.ChildElements.Add(p31);
+            page.ChildElements.Add(p31);
+
+            doc.Pages.Add(page);
+        }
+
+        /// <summary>
+        /// Generate a table of content
+        /// </summary>
+        /// <param name="doc"></param>
+        private static void GenerateTableOfContent(Document doc)
+        {
+            var page = new Page();
 
             TableOfContents tableOfContents = new TableOfContents()
             {
@@ -440,22 +488,18 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                 ToCStylesId = new List<string>() { "Red" },
                 LeaderCharValue = TabStopLeaderCharValues.underscore
             };
-            page3.ChildElements.Add(tableOfContents);
+            page.ChildElements.Add(tableOfContents);
 
-            paragraph = new Paragraph()
-            {
-                ParagraphStyleId = "#ParagraphStyleIdTestYellow#"
-            };
-            paragraph.ChildElements.Add(new Label() { Text = "Ceci est un test de paragraph avec Style", FontSize = "30", FontName = "Arial" });
-            page3.ChildElements.Add(paragraph);
+            doc.Pages.Add(page);
+        }
 
-            doc.Pages.Add(page3);
-
-            #endregion Page 3
-
-            #region Page 4 UniformGrid
-
-            var page4 = new Page();
+        /// <summary>
+        /// Generate an UniformGrid
+        /// </summary>
+        /// <param name="doc"></param>
+        private static void GenerateUniformGrid(Document doc)
+        {
+            var page = new Page();
             //New page to manage UniformGrid:
             var uniformGrid = new UniformGrid()
             {
@@ -502,15 +546,18 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                 }
             };
 
-            page4.ChildElements.Add(uniformGrid);
+            page.ChildElements.Add(uniformGrid);
 
-            doc.Pages.Add(page4);
+            doc.Pages.Add(page);
+        }
 
-            #endregion Page 4 UniformGrid
-
-            #region Page 5 Table
-
-            var page5 = new Page();
+        /// <summary>
+        /// Generate a table
+        /// </summary>
+        /// <param name="doc"></param>
+        private static void GenerateTable(Document doc)
+        {
+            var page = new Page();
             var tableDataSourceWithBeforeAfter = new Table()
             {
                 TableWidth = new TableWidthModel() { Width = "5000", Type = TableWidthUnitValues.Pct },
@@ -614,17 +661,20 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                 DataSourceKey = "#Datasource#"
             };
 
-            page5.ChildElements.Add(tableDataSourceWithBeforeAfter);
+            page.ChildElements.Add(tableDataSourceWithBeforeAfter);
 
-            doc.Pages.Add(page5);
+            doc.Pages.Add(page);
+        }
 
-            #endregion Page 5 Table
+        /// <summary>
+        /// Generate a graph
+        /// </summary>
+        /// <param name="doc"></param>
+        private static void GenerateGraph(Document doc)
+        {
+            var page = new Page();
 
-            #region Page 6 Graph
-
-            var page6 = new Page();
-
-            var pr = new Paragraph()
+            var paragraph = new Paragraph()
             {
                 ChildElements = new List<BaseElement>() {
                     new Word.ReportEngine.Models.Charts.BarModel()
@@ -642,17 +692,9 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                 }
             };
 
-            page6.ChildElements.Add(pr);
+            page.ChildElements.Add(paragraph);
 
-            doc.Pages.Add(page6);
-
-            #endregion Page 6 Graph
-
-            GenerateTableWithFusionedCells(doc);
-
-            GenerateTextWithEmptyLine(doc);
-
-            return doc;
+            doc.Pages.Add(page);
         }
 
         /// <summary>

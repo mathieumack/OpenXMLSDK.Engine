@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Text;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels;
@@ -32,16 +33,35 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
         /// <param name="tableOfContents"></param>
         public static void AddToC(MainDocumentPart documentPart, TableOfContents tableOfContents)
         {
-            //default switches
-            string switches = @"TOC \o '1-3' \h \z \u";
+            StringBuilder tocParameters = new StringBuilder();
+
             if (tableOfContents.StylesAndLevels.Any())
             {
-                switches = @"TOC \h \z \t ";
+                StringBuilder tocParametersFr = new StringBuilder();
+
+                //English
+                tocParameters.Append(@"TOC \h \z \t ");
+                //French
+                tocParametersFr.Append(@"TOC \h \z \t ");
+
+
                 foreach (Tuple<string, string> styleAndLevel in tableOfContents.StylesAndLevels)
                 {
-                    switches += styleAndLevel.Item1 + ";" + styleAndLevel.Item2 + ";";
+                    //English
+                    tocParameters.Append(string.Join(",", styleAndLevel.Item1, styleAndLevel.Item2));
+                    tocParameters.Append(",");
+
+                    //French
+                    tocParametersFr.Append(string.Join(";", styleAndLevel.Item1, styleAndLevel.Item2));
+                    tocParametersFr.Append(";");
                 }
+
+                tocParameters.Append(" ");
+                tocParameters.Append(tocParametersFr);
             }
+            else
+                //default switches
+                tocParameters.Append(@"TOC \o '1-3' \h \z \u");
 
             string xmlString =
             @"<w:sdt xmlns:w='http://schemas.openxmlformats.org/wordprocessingml/2006/main'>
@@ -94,7 +114,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                     <w:fldChar w:fldCharType='begin' w:dirty='true'/>
                   </w:r>
                   <w:r>
-                    <w:instrText xml:space='preserve'> " + switches + @" </w:instrText>
+                    <w:instrText xml:space='preserve'> " + tocParameters + @" </w:instrText>
                   </w:r>
                   <w:r>
                     <w:fldChar w:fldCharType='separate'/>
