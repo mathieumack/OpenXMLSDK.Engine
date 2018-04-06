@@ -69,6 +69,14 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Data\Results\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\Desert.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\MvvX.Plugins.Open-XML-SDK.Wpf\MvvX.Plugins.Open-XML-SDK.Wpf.csproj">
       <Project>{10897e7b-b4a3-4d09-a97d-4a1ab3dd68a7}</Project>
       <Name>MvvX.Plugins.Open-XML-SDK.Wpf</Name>
@@ -77,14 +85,6 @@
       <Project>{d516410f-1af5-49b1-98cf-00e08487ebba}</Project>
       <Name>MvvX.Plugins.Open-XML-SDK</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\Results\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Resources\Desert.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
