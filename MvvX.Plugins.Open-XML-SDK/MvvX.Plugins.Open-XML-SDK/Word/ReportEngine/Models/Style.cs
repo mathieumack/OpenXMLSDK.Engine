@@ -26,6 +26,11 @@
         public bool CustomStyle { get; set; }
 
         /// <summary>
+        /// Indicate if the style must appear in the Style gallery 
+        /// </summary>
+        public bool PrimaryStyle { get; set; }
+
+        /// <summary>
         /// Constructor
         /// </summary>
         public Style()
