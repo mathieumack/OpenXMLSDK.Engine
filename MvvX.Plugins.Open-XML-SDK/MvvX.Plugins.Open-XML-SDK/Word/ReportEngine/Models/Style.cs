@@ -30,7 +30,6 @@
         /// </summary>
         public bool PrimaryStyle { get; set; }
 
-
         /// <summary>
         /// Constructor
         /// </summary>
