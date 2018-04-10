@@ -773,7 +773,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
         /// <param name="doc"></param>
         private static void GenerateStyles(Document doc)
         {
-            doc.Styles.Add(new Style() { StyleId = "Red", FontColor = "FF0050", FontSize = "42" });
+            doc.Styles.Add(new Style() { StyleId = "Red", FontColor = "FF0050", FontSize = "42", PrimaryStyle = true });
             doc.Styles.Add(new Style() { StyleId = "Yellow", FontColor = "FFFF00", FontSize = "40" });
         }
 
