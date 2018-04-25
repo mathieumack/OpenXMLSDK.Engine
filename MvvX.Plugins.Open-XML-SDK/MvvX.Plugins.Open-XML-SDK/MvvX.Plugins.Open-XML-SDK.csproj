@@ -108,6 +108,8 @@
     <Compile Include="Word\ReportEngine\Models\Attributes\MarginModel.cs" />
     <Compile Include="Word\ReportEngine\Models\Attributes\SpacingModel.cs" />
     <Compile Include="Word\ReportEngine\Models\BaseElement.cs" />
+    <Compile Include="Word\ReportEngine\Models\BookmarkEnd.cs" />
+    <Compile Include="Word\ReportEngine\Models\BookmarkStart.cs" />
     <Compile Include="Word\ReportEngine\Models\Cell.cs" />
     <Compile Include="Word\ReportEngine\Models\Charts\BarCategory.cs" />
     <Compile Include="Word\ReportEngine\Models\Charts\BarChartType.cs" />
@@ -120,6 +122,7 @@
     <Compile Include="Word\ReportEngine\Models\ForEach.cs" />
     <Compile Include="Word\ReportEngine\Models\ForEachPage.cs" />
     <Compile Include="Word\ReportEngine\Models\Header.cs" />
+    <Compile Include="Word\ReportEngine\Models\Hyperlink.cs" />
     <Compile Include="Word\ReportEngine\Models\Image.cs" />
     <Compile Include="Word\ReportEngine\Models\Label.cs" />
     <Compile Include="Word\ReportEngine\Models\Page.cs" />
