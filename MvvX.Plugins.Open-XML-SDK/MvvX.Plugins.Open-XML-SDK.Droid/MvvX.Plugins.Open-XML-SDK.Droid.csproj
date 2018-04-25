@@ -163,6 +163,9 @@
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\BaseElementExtensions.cs">
       <Link>Word\ReportEngine\BaseElementExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\BookmarksExtensions.cs">
+      <Link>Word\ReportEngine\BookmarksExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\BorderExtensions.cs">
       <Link>Word\ReportEngine\BorderExtensions.cs</Link>
     </Compile>
@@ -183,6 +186,9 @@
     </Compile>
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\HeaderExtensions.cs">
       <Link>Word\ReportEngine\HeaderExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\HyperlinkExtensions.cs">
+      <Link>Word\ReportEngine\HyperlinkExtensions.cs</Link>
     </Compile>
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\ReportEngine\ImageExtensions.cs">
       <Link>Word\ReportEngine\ImageExtensions.cs</Link>

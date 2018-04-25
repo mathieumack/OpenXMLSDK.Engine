@@ -33,6 +33,18 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                 {
                     createdElement = (element as Label).Render(parent, context, documentPart, formatProvider);
                 }
+                else if (element is BookmarkStart)
+                {
+                    createdElement = (element as BookmarkStart).Render(parent, context, formatProvider);
+                }
+                else if (element is BookmarkEnd)
+                {
+                    createdElement = (element as BookmarkEnd).Render(parent, context, formatProvider);
+                }
+                else if (element is Hyperlink)
+                {
+                    createdElement = (element as Hyperlink).Render(parent, context, formatProvider);
+                }
                 else if (element is Paragraph)
                 {
                     createdElement = (element as Paragraph).Render(parent, context, formatProvider);

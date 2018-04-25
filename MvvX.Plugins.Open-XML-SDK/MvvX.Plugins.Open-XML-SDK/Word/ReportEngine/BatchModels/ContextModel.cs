@@ -174,6 +174,61 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels
         /// </summary>
         /// <param name="element"></param>
         /// <param name="formatProvider"></param>
+        public void ReplaceItem(BookmarkStart element, IFormatProvider formatProvider)
+        {
+            if (!string.IsNullOrEmpty(element.Id))
+                element.Id = ReplaceText(element.Id, formatProvider);
+            if (!string.IsNullOrEmpty(element.Name))
+                element.Name = ReplaceText(element.Name, formatProvider);
+            if (!string.IsNullOrEmpty(element.BoldKey) && ExistItem<BooleanModel>(element.BoldKey))
+            {
+                var item = GetItem<BooleanModel>(element.BoldKey);
+                element.Bold = item.Value;
+            }
+            SetVisibilityFromContext(element);
+        }
+
+        /// <summary>
+        /// Replace text, FontColor and visibility of element
+        /// </summary>
+        /// <param name="element"></param>
+        /// <param name="formatProvider"></param>
+        public void ReplaceItem(BookmarkEnd element, IFormatProvider formatProvider)
+        {
+            if (!string.IsNullOrEmpty(element.Id))
+                element.Id = ReplaceText(element.Id, formatProvider);
+            if (!string.IsNullOrEmpty(element.BoldKey) && ExistItem<BooleanModel>(element.BoldKey))
+            {
+                var item = GetItem<BooleanModel>(element.BoldKey);
+                element.Bold = item.Value;
+            }
+            SetVisibilityFromContext(element);
+        }
+
+        /// <summary>
+        /// Replace anchor and doclocation and visibility of element
+        /// </summary>
+        /// <param name="element"></param>
+        /// <param name="formatProvider"></param>
+        public void ReplaceItem(Hyperlink element, IFormatProvider formatProvider)
+        {
+            if (!string.IsNullOrEmpty(element.Anchor))
+                element.Anchor = ReplaceText(element.Anchor, formatProvider);
+            if (!string.IsNullOrEmpty(element.Text))
+                element.Text = ReplaceText(element.Text, formatProvider);
+            if (!string.IsNullOrEmpty(element.BoldKey) && ExistItem<BooleanModel>(element.BoldKey))
+            {
+                var item = GetItem<BooleanModel>(element.BoldKey);
+                element.Bold = item.Value;
+            }
+            SetVisibilityFromContext(element);
+        }
+
+        /// <summary>
+        /// Replace text, FontColor and visibility of element
+        /// </summary>
+        /// <param name="element"></param>
+        /// <param name="formatProvider"></param>
         public void ReplaceItem(Paragraph element, IFormatProvider formatProvider)
         {
             if (!string.IsNullOrEmpty(element.ParagraphStyleId))

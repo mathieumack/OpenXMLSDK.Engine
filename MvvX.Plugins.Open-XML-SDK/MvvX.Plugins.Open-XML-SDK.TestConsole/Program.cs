@@ -145,6 +145,9 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             page1.Margin = new Word.ReportEngine.Models.Attributes.SpacingModel() { Top = 845, Bottom = 1418, Left = 567, Right = 567, Header = 709, Footer = 709 };
 
             var paragraph = new Paragraph();
+
+            paragraph.ChildElements.Add(new Hyperlink() { Text = "It's a link to an other page !", Anchor = "IdToBookmarkStart" });
+            paragraph.ChildElements.Add(new Hyperlink() { Text = "It's a link to a bookmark on a table !", Anchor = "bookmark2" });
             paragraph.ChildElements.Add(new Label() { Text = "Ceci est un texte avec accents (éèàù)", FontSize = "30", FontName = "Arial" });
             paragraph.ChildElements.Add(new Label() { Text = "#KeyTest1#", FontSize = "40", FontColor = "#FontColorTestRed#", Shading = "9999FF", BoldKey = "#BoldKey#", Bold = false });
             paragraph.ChildElements.Add(new Label() { Text = "#KeyTest2#", Show = false });
@@ -358,6 +361,8 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                             Shading = "FFA0FF",
                             ChildElements = new List<BaseElement>()
                             {
+                                new BookmarkStart() { Id = "bookmark#DataSourcePrefix_TableRow_IndexBaseZero#", Name = "bookmark#DataSourcePrefix_TableRow_IndexBaseZero#" },
+                                new BookmarkEnd() { Id = "bookmark#DataSourcePrefix_TableRow_IndexBaseZero#" },
                                 new Label() { Text = "Item Datasource (0 index) #DataSourcePrefix_TableRow_IndexBaseZero# - ",
                                                 ShowKey = "#DataSourcePrefix_TableRow_IsFirstItem#" },
                                 new Label() { Text = "#Cell1#" }
@@ -763,6 +768,16 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             var paragraph = new Paragraph() { FontColor = "FF0000", FontSize = "26" };
             paragraph.ChildElements.Add(new Label() { Text = "Label with" + Environment.NewLine + Environment.NewLine + "A new line" });
             page.ChildElements.Add(paragraph);
+
+            page.ChildElements.Add(new Paragraph()
+            {
+                ChildElements = new List<BaseElement>()
+                {
+                    new Label() { Text = "Anchor destination" },
+                    new BookmarkStart() { Id = "IdToBookmarkStart", Name = "IdToBookmarkStart" },
+                    new BookmarkEnd() { Id = "IdToBookmarkStart" }
+                }
+            });
 
             doc.Pages.Add(page);
         }
