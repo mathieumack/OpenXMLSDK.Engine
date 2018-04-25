@@ -21,7 +21,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models
         /// Constructor
         /// </summary>
         public Hyperlink()
-            :base(typeof(Hyperlink).Name)
+            : base(typeof(Hyperlink).Name)
         {
             Anchor = string.Empty;
         }

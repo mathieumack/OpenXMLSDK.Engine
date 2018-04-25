@@ -21,7 +21,6 @@
         public BookmarkStart()
             : base(typeof(BookmarkStart).Name)
         {
-
         }
     }
 }

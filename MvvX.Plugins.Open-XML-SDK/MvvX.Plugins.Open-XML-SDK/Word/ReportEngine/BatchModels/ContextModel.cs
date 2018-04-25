@@ -214,8 +214,6 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels
         {
             if (!string.IsNullOrEmpty(element.Anchor))
                 element.Anchor = ReplaceText(element.Anchor, formatProvider);
-            if (!string.IsNullOrEmpty(element.Text))
-                element.Text = ReplaceText(element.Text, formatProvider);
             if (!string.IsNullOrEmpty(element.BoldKey) && ExistItem<BooleanModel>(element.BoldKey))
             {
                 var item = GetItem<BooleanModel>(element.BoldKey);

@@ -43,7 +43,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                 }
                 else if (element is Hyperlink)
                 {
-                    createdElement = (element as Hyperlink).Render(parent, context, formatProvider);
+                    createdElement = (element as Hyperlink).Render(parent, context, documentPart, formatProvider);
                 }
                 else if (element is Paragraph)
                 {

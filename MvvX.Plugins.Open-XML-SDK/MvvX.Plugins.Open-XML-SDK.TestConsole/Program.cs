@@ -146,8 +146,8 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
 
             var paragraph = new Paragraph();
 
-            paragraph.ChildElements.Add(new Hyperlink() { Text = "It's a link to an other page !", Anchor = "IdToBookmarkStart" });
-            paragraph.ChildElements.Add(new Hyperlink() { Text = "It's a link to a bookmark on a table !", Anchor = "bookmark2" });
+            paragraph.ChildElements.Add(new Hyperlink() { Text = new Label() { Text = "It's a link to an other page !" }, Anchor = "IdToBookmarkStart" });
+            paragraph.ChildElements.Add(new Hyperlink() { Text = new Label() { Text = "It's a link to a bookmark on a table !" }, Anchor = "bookmark2" });
             paragraph.ChildElements.Add(new Label() { Text = "Ceci est un texte avec accents (éèàù)", FontSize = "30", FontName = "Arial" });
             paragraph.ChildElements.Add(new Label() { Text = "#KeyTest1#", FontSize = "40", FontColor = "#FontColorTestRed#", Shading = "9999FF", BoldKey = "#BoldKey#", Bold = false });
             paragraph.ChildElements.Add(new Label() { Text = "#KeyTest2#", Show = false });

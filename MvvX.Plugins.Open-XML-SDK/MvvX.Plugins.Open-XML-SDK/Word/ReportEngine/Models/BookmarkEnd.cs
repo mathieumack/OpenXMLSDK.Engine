@@ -14,9 +14,8 @@
         /// Bookmark end
         /// </summary>
         public BookmarkEnd()
-            :base(typeof(BookmarkEnd).Name)
+            : base(typeof(BookmarkEnd).Name)
         {
-
         }
     }
 }
