@@ -131,6 +131,15 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
             if (label.IsPageNumber)
                 run.AppendChild(new PageNumber());
 
+            if (label.Underline != null)
+            {
+                var underline = new Underline();
+                underline.Val = (UnderlineValues)(int)label.Underline.Val;
+                if (!string.IsNullOrWhiteSpace(label.Underline.Color))
+                    underline.Color = label.Underline.Color;
+                runProperty.Underline = underline;
+            }
+
             run.RunProperties = runProperty;
             parent.Append(run);
 

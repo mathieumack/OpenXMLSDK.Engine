@@ -107,6 +107,8 @@
     <Compile Include="Word\ReportEngine\Models\Attributes\BorderPositions.cs" />
     <Compile Include="Word\ReportEngine\Models\Attributes\MarginModel.cs" />
     <Compile Include="Word\ReportEngine\Models\Attributes\SpacingModel.cs" />
+    <Compile Include="Word\ReportEngine\Models\Attributes\UnderlineModel.cs" />
+    <Compile Include="Word\ReportEngine\Models\Attributes\UnderlineValues.cs" />
     <Compile Include="Word\ReportEngine\Models\BaseElement.cs" />
     <Compile Include="Word\ReportEngine\Models\BookmarkEnd.cs" />
     <Compile Include="Word\ReportEngine\Models\BookmarkStart.cs" />
