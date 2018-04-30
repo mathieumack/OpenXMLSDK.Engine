@@ -13,6 +13,7 @@ using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels.Charts;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models;
+using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models.Attributes;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models.Charts;
 using MvvX.Plugins.OpenXMLSDK.Word.Tables;
 using MvvX.Plugins.OpenXMLSDK.Word.Tables.Models;
@@ -146,7 +147,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
 
             var paragraph = new Paragraph();
 
-            paragraph.ChildElements.Add(new Hyperlink() { Text = new Label() { Text = "It's a link to an other page !" }, Anchor = "IdToBookmarkStart" });
+            paragraph.ChildElements.Add(new Hyperlink() { Text = new Label() { Text = "It's a link to an other page !", Underline = new UnderlineModel() { Val = UnderlineValues.Single, Color = "DDDDDD" } }, Anchor = "IdToBookmarkStart" });
             paragraph.ChildElements.Add(new Hyperlink() { Text = new Label() { Text = "It's a link to a bookmark on a table !" }, Anchor = "bookmark2" });
             paragraph.ChildElements.Add(new Label() { Text = "Ceci est un texte avec accents (éèàù)", FontSize = "30", FontName = "Arial" });
             paragraph.ChildElements.Add(new Label() { Text = "#KeyTest1#", FontSize = "40", FontColor = "#FontColorTestRed#", Shading = "9999FF", BoldKey = "#BoldKey#", Bold = false });

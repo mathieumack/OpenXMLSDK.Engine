@@ -1,4 +1,6 @@
-﻿namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models
+﻿using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models.Attributes;
+
+namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models
 {
     /// <summary>
     /// Model for a label
@@ -24,6 +26,12 @@
         /// Indicate if the engine must preserve empty space or space before or after text in generation
         /// </summary>
         public SpaceProcessingModeValues SpaceProcessingModeValue { get; set; }
+
+        /// <summary>
+        /// Definition of the underline
+        /// Can be null if not defined
+        /// </summary>
+        public UnderlineModel Underline { get; set; }
 
         /// <summary>
         /// Constructor
