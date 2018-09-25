@@ -14,8 +14,7 @@
     <FileAlignment>512</FileAlignment>
     <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
-    <AndroidUseLatestPlatformSdk>True</AndroidUseLatestPlatformSdk>
-    <TargetFrameworkVersion>v7.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v8.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -75,6 +74,18 @@
     </Compile>
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Plugin.cs">
       <Link>Plugin.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\PowerPoint\AutoMapperInitializer.cs">
+      <Link>PowerPoint\AutoMapperInitializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\PowerPoint\PowerPointManager.cs">
+      <Link>PowerPoint\PowerPointManager.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\PowerPoint\ReportEngine\DocumentExtensions.cs">
+      <Link>PowerPoint\ReportEngine\DocumentExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\PowerPoint\ReportEngine\SlideExtensions.cs">
+      <Link>PowerPoint\ReportEngine\SlideExtensions.cs</Link>
     </Compile>
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Validation\OpenXMLValidator.cs">
       <Link>Validation\OpenXMLValidator.cs</Link>
@@ -141,6 +152,12 @@
     </Compile>
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\PlatformGridSpan.cs">
       <Link>Word\PlatformGridSpan.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\PlatformKeepLines.cs">
+      <Link>Word\PlatformKeepLines.cs</Link>
+    </Compile>
+    <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\PlatformKeepNext.cs">
+      <Link>Word\PlatformKeepNext.cs</Link>
     </Compile>
     <Compile Include="..\MvvX.Plugins.Open-XML-SDK.Shared\Word\PlatformRun.cs">
       <Link>Word\PlatformRun.cs</Link>

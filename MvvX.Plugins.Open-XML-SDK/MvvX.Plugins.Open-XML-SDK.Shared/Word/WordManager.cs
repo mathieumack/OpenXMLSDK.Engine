@@ -146,7 +146,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
         public bool OpenDoc(string filePath, bool isEditable)
         {
             if (string.IsNullOrWhiteSpace(filePath))
-                throw new ArgumentNullException("filePath must be not null or white spaces");
+                throw new ArgumentNullException(nameof(filePath));
             if (!File.Exists(filePath))
                 throw new FileNotFoundException("file not found");
 
@@ -174,7 +174,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
         public bool OpenDoc(Stream streamFile, bool isEditable)
         {
             if (streamFile == null)
-                throw new ArgumentNullException("streamFile must be not null");
+                throw new ArgumentNullException(nameof(streamFile));
 
             this.isEditable = isEditable;
 
@@ -201,7 +201,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
         public bool OpenDocFromTemplate(string templateFilePath)
         {
             if (string.IsNullOrWhiteSpace(templateFilePath))
-                throw new ArgumentNullException("templateFilePath must be not null or white spaces");
+                throw new ArgumentNullException(nameof(templateFilePath));
             if (!File.Exists(templateFilePath))
                 throw new FileNotFoundException("file not found");
 
@@ -211,7 +211,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
             try
             {
                 byte[] byteArray = File.ReadAllBytes(templateFilePath);
-                streamFile.Write(byteArray, 0, (int)byteArray.Length);
+                streamFile.Write(byteArray, 0, byteArray.Length);
 
                 wdDoc = WordprocessingDocument.Open(streamFile, isEditable);
 
@@ -239,7 +239,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
         public bool OpenDocFromTemplate(string templateFilePath, string newFilePath, bool isEditable)
         {
             if (string.IsNullOrWhiteSpace(templateFilePath))
-                throw new ArgumentNullException("templateFilePath must be not null or white spaces");
+                throw new ArgumentNullException(nameof(templateFilePath));
             if (!File.Exists(templateFilePath))
                 throw new FileNotFoundException("file not found");
 

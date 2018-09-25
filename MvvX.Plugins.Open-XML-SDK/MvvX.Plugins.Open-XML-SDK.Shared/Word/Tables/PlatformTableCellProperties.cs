@@ -20,7 +20,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.Tables
             this.xmlElement = tableCell;
         }
 
-        #region Interface :
+        #region Interface
 
         private ITableCellBorders tableCellBorders;
         public ITableCellBorders TableCellBorders

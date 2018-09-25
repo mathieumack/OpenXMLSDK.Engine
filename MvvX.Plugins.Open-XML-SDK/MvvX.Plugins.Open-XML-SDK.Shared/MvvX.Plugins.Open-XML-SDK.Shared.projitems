@@ -11,6 +11,10 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)PlatformOpenXmlElement.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Plugin.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PowerPoint\AutoMapperInitializer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PowerPoint\PowerPointManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PowerPoint\ReportEngine\DocumentExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PowerPoint\ReportEngine\SlideExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Validation\OpenXMLValidator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\AutoMapperInitializer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\Bookmarks\PlatformBookmarkEnd.cs" />
@@ -33,6 +37,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Word\PlatformBorder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\PlatformDecimalNumberType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\PlatformGridSpan.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Word\PlatformKeepLines.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Word\PlatformKeepNext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\PlatformRun.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\PlatformRunFonts.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Word\PlatformRunProperties.cs" />
