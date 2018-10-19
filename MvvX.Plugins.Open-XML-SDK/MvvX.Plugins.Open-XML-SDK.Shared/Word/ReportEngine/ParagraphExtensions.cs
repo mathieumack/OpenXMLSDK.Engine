@@ -31,6 +31,10 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
             {
                 openXmlPar.ParagraphProperties.AppendChild(paragraph.Borders.RenderParagraphBorder());
             }
+            if (paragraph.Keeplines)
+                openXmlPar.ParagraphProperties.KeepLines = new DocumentFormat.OpenXml.Wordprocessing.KeepLines();
+            if (paragraph.KeepNext)
+                openXmlPar.ParagraphProperties.KeepNext = new DocumentFormat.OpenXml.Wordprocessing.KeepNext();
             parent.Append(openXmlPar);
             return openXmlPar;
         }
