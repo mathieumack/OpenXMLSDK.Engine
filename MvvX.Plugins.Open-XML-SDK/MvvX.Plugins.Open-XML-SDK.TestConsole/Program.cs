@@ -288,7 +288,6 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             };
 
             page1.ChildElements.Add(table);
-            page1.ChildElements.Add(new Paragraph());
 
             if (File.Exists(@"..\..\Resources\Desert.jpg"))
                 page1.ChildElements.Add(
@@ -385,6 +384,23 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             page1.ChildElements.Add(tableDataSource);
 
             page1.ChildElements.Add(tableDataSourceWithPrefix);
+
+            page1.ChildElements.Add(new Paragraph());
+            Label Label_Example = new Label() { Text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse urna augue, convallis eu enim vitae, maximus ultrices nulla. Sed egestas volutpat luctus. Maecenas sodales erat eu elit auctor, eu mattis neque maximus. Duis ac risus quis sem bibendum efficitur. Vivamus justo augue, molestie quis orci non, maximus imperdiet justo. Donec condimentum rhoncus est, ut varius lorem efficitur sed." };
+
+            //KeepNext paragraph test
+            Paragraph paragraph_KeepNext = new Paragraph { KeepNext = true };
+            paragraph_KeepNext.ChildElements.Add(Label_Example);
+            page1.ChildElements.Add(paragraph_KeepNext);
+
+            page1.ChildElements.Add(new Paragraph());
+
+            //KeepLines paragraph test
+            Paragraph paragraph_KeepLine = new Paragraph { Keeplines = true };
+            paragraph_KeepLine.ChildElements.Add(Label_Example);
+            page1.ChildElements.Add(paragraph_KeepLine);
+
+            page1.ChildElements.Add(new Paragraph());
 
             doc.Pages.Add(page1);
         }
