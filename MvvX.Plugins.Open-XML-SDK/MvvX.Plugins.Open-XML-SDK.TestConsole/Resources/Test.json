@@ -383,22 +383,24 @@
                         ],
                         "TypeName": "Paragraph"
                     },
-                    {
-                        "Justification": 5,
-                        "SpacingBefore": 800,
-                        "SpacingAfter": 800,
-                        "ParagraphStyleId": "toto",
+                  {
+                    "KeepLines": true,
+                    "KeepNext":  true,
+                    "Justification": 5,
+                    "SpacingBefore": 800,
+                    "SpacingAfter": 800,
+                    "ParagraphStyleId": "toto",
+                    "Show": true,
+                    "ChildElements": [
+                      {
+                        "Text": "(Paragraph KeepNext and KeepLines) Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse urna augue, convallis eu enim vitae, maximus ultrices nulla. Sed egestas volutpat luctus. Maecenas sodales erat eu elit auctor, eu mattis neque maximus. Duis ac risus quis sem bibendum efficitur. Vivamus justo augue, molestie quis orci non, maximus imperdiet justo. Donec condimentum rhoncus est, ut varius lorem efficitur sed. Donec accumsan sit amet nisl vel ornare. Duis aliquet urna eu mauris porttitor facilisis. ",
                         "Show": true,
-                        "ChildElements": [
-                            {
-                                "Text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse urna augue, convallis eu enim vitae, maximus ultrices nulla. Sed egestas volutpat luctus. Maecenas sodales erat eu elit auctor, eu mattis neque maximus. Duis ac risus quis sem bibendum efficitur. Vivamus justo augue, molestie quis orci non, maximus imperdiet justo. Donec condimentum rhoncus est, ut varius lorem efficitur sed. Donec accumsan sit amet nisl vel ornare. Duis aliquet urna eu mauris porttitor facilisis. ",
-                                "Show": true,
-                                "ChildElements": [],
-                                "TypeName": "Label"
-                            }
-                        ],
-                        "TypeName": "Paragraph"
-                    },
+                        "ChildElements": [],
+                        "TypeName": "Label"
+                      }
+                    ],
+                    "TypeName": "Paragraph"
+                  },
                     {
                         "Justification": 0,
                         "SpacingBetweenLines": 360,
