@@ -132,6 +132,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             GenerateGraph(doc);
             GenerateTableWithFusionedCells(doc);
             GenerateTextWithEmptyLine(doc);
+            GenerateLabelsWithColor(doc);
 
             return doc;
         }
@@ -151,6 +152,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             paragraph.ChildElements.Add(new Hyperlink() { Text = new Label() { Text = "It's a link to a bookmark on a table !" }, Anchor = "bookmark2" });
             paragraph.ChildElements.Add(new Label() { Text = "Ceci est un texte avec accents (éèàù)", FontSize = "30", FontName = "Arial" });
             paragraph.ChildElements.Add(new Label() { Text = "#KeyTest1#", FontSize = "40", FontColor = "#FontColorTestRed#", Shading = "9999FF", BoldKey = "#BoldKey#", Bold = false });
+            paragraph.ChildElements.Add(new Label() { Text = "#KeyTest2#", Show = false });
             paragraph.ChildElements.Add(new Label() { Text = "#KeyTest2#", Show = false });
 
             paragraph.ChildElements.Add(new Label() { Text = "Double value : #KeyTestDouble1#" });
@@ -847,6 +849,35 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             pf.ChildElements.Add(new Label() { IsPageNumber = true });
             footer.ChildElements.Add(pf);
             doc.Footers.Add(footer);
+        }
+
+        /// <summary>
+        /// Generate labels with color and style in paragraph
+        /// </summary>
+        /// <param name="doc"></param>
+        private static void GenerateLabelsWithColor(Document doc)
+        {
+            var page = new Page();
+
+            var paragraph = new Paragraph()
+            {
+                ChildElements = new List<BaseElement>() {
+                    new Label
+                    {
+                        Text = "Text colored by paragraph",
+                    },
+                    new Label
+                    {
+                        FontColor = "FF00FF",
+                        Text = "Text colored by label",
+                    },
+                },
+                ParagraphStyleId = "Red",
+            };
+
+            page.ChildElements.Add(paragraph);
+
+            doc.Pages.Add(page);
         }
 
         /// <summary>
