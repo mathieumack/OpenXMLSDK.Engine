@@ -120,7 +120,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                 runProperty.RunFonts = new RunFonts() { Ascii = label.FontName, HighAnsi = label.FontName, EastAsia = label.FontName, ComplexScript = label.FontName };
             if (!string.IsNullOrWhiteSpace(label.FontSize))
                 runProperty.FontSize = new FontSize() { Val = label.FontSize };
-            if (!string.IsNullOrWhiteSpace(label.FontSize))
+            if (!string.IsNullOrWhiteSpace(label.FontColor))
                 runProperty.Color = new Color() { Val = label.FontColor };
             if (!string.IsNullOrWhiteSpace(label.Shading))
                 runProperty.Shading = new Shading() { Fill = label.Shading };
