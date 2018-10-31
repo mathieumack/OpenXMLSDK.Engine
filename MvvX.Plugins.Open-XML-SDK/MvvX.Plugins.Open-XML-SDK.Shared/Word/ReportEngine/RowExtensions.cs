@@ -28,6 +28,11 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                 wordRowProperties.AppendChild(new TableRowHeight() { Val = UInt32Value.FromUInt32((uint)row.RowHeight.Value) });
             }
 
+            if (row.CantSplit)
+            {
+                wordRowProperties.AppendChild(new CantSplit());
+            }
+
             foreach (var cellContext in cellsContext)
             {
                 var cell = cellModel.Clone();
@@ -57,6 +62,11 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
             if (row.RowHeight.HasValue)
             {
                 wordRowProperties.AppendChild(new TableRowHeight() { Val = UInt32Value.FromUInt32((uint)row.RowHeight.Value)});
+            }
+
+            if (row.CantSplit)
+            {
+                wordRowProperties.AppendChild(new CantSplit());
             }
 
             foreach (var cell in row.Cells)

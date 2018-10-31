@@ -320,6 +320,8 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                 },
                 RowModel = new Row()
                 {
+                    //CantSplit row test
+                    CantSplit = true,
                     Cells = new List<Cell>()
                     {
                         new Cell()
@@ -356,6 +358,8 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                 AutoContextAddItemsPrefix = "DataSourcePrefix",
                 RowModel = new Row()
                 {
+                    //CantSplit row test
+                    CantSplit = true,
                     Cells = new List<Cell>()
                     {
                         new Cell()
@@ -384,6 +388,8 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             };
 
             page1.ChildElements.Add(tableDataSource);
+
+            page1.ChildElements.Add(new Paragraph());
 
             page1.ChildElements.Add(tableDataSourceWithPrefix);
 
