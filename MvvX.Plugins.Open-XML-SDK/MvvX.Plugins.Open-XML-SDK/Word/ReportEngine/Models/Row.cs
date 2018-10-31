@@ -17,6 +17,11 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models
         public int? RowHeight { get; set; }
 
         /// <summary>
+        /// CantSplit
+        /// </summary>
+        public bool CantSplit { get; set; }
+
+        /// <summary>
         /// Constructor
         /// </summary>
         public Row()

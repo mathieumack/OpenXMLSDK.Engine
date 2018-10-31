@@ -367,67 +367,193 @@
             },
             {
                 "Show": true,
-                "ChildElements": [
+              "ChildElements": [
+                {
+                  "Justification": 2,
+                  "ParagraphStyleId": "OnSiteTitle",
+                  "Show": true,
+                  "ChildElements": [
                     {
-                        "Justification": 2,
-                        "ParagraphStyleId": "OnSiteTitle",
-                        "Show": true,
-                        "ChildElements": [
+                      "Text": "texte page2",
+                      "Show": true,
+                      "ChildElements": [],
+                      "FontName": "Arial",
+                      "TypeName": "Label"
+                    }
+                  ],
+                  "TypeName": "Paragraph"
+                },
+                {
+                  "KeepLines": true,
+                  "KeepNext": true,
+                  "Justification": 5,
+                  "SpacingBefore": 800,
+                  "SpacingAfter": 800,
+                  "ParagraphStyleId": "toto",
+                  "Show": true,
+                  "ChildElements": [
+                    {
+                      "Text": "(Paragraph KeepNext and KeepLines) Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse urna augue, convallis eu enim vitae, maximus ultrices nulla. Sed egestas volutpat luctus. Maecenas sodales erat eu elit auctor, eu mattis neque maximus. Duis ac risus quis sem bibendum efficitur. Vivamus justo augue, molestie quis orci non, maximus imperdiet justo. Donec condimentum rhoncus est, ut varius lorem efficitur sed. Donec accumsan sit amet nisl vel ornare. Duis aliquet urna eu mauris porttitor facilisis. ",
+                      "Show": true,
+                      "ChildElements": [],
+                      "TypeName": "Label"
+                    }
+                  ],
+                  "TypeName": "Paragraph"
+                },
+                {                 
+                  "TypeName": "Paragraph"
+                },
+                {
+                  "Rows": [
+                    {
+                      "Cells": [
+                        {
+                          "ColSpan": 0,
+                          "Fusion": true,
+                          "FusionChild": false,
+                          "VerticalAlignment": 1,
+                          "Show": true,
+                          "ChildElements": [
                             {
-                                "Text": "texte page2",
-                                "Show": true,
-                                "ChildElements": [],
-                                "FontName": "Arial",
-                                "TypeName": "Label"
+                              "Text": "cellule1",
+                              "Show": true,
+                              "ChildElements": [],
+                              "TypeName": "Label"
                             }
-                        ],
-                        "TypeName": "Paragraph"
-                    },
-                  {
-                    "KeepLines": true,
-                    "KeepNext":  true,
-                    "Justification": 5,
-                    "SpacingBefore": 800,
-                    "SpacingAfter": 800,
-                    "ParagraphStyleId": "toto",
-                    "Show": true,
-                    "ChildElements": [
-                      {
-                        "Text": "(Paragraph KeepNext and KeepLines) Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse urna augue, convallis eu enim vitae, maximus ultrices nulla. Sed egestas volutpat luctus. Maecenas sodales erat eu elit auctor, eu mattis neque maximus. Duis ac risus quis sem bibendum efficitur. Vivamus justo augue, molestie quis orci non, maximus imperdiet justo. Donec condimentum rhoncus est, ut varius lorem efficitur sed. Donec accumsan sit amet nisl vel ornare. Duis aliquet urna eu mauris porttitor facilisis. ",
-                        "Show": true,
-                        "ChildElements": [],
-                        "TypeName": "Label"
-                      }
-                    ],
-                    "TypeName": "Paragraph"
-                  },
-                    {
-                        "Justification": 0,
-                        "SpacingBetweenLines": 360,
-                        "Borders": {
-                            "BorderPositions": 15,
-                            "BorderWidth": 8,
+                          ],
+                          "TypeName": "Cell"
+                        },
+                        {
+                          "Borders": {
+                            "BorderPositions": 63,
+                            "BorderWidth": 1,
                             "UseVariableBorders": false,
                             "BorderWidthLeft": 1,
                             "BorderWidthRight": 1,
                             "BorderWidthTop": 1,
                             "BorderWidthBottom": 1,
-                            "BorderWidthInsideHorizontal": 0,
-                            "BorderWidthInsideVertical": 0,
+                            "BorderWidthInsideHorizontal": 1,
+                            "BorderWidthInsideVertical": 1,
                             "BorderColor": "000000"
+                          },
+                          "ColSpan": 0,
+                          "Fusion": false,
+                          "FusionChild": false,
+                          "Show": true,
+                          "ChildElements": [
+                            {
+                              "Text": "cellule2",
+                              "Show": true,
+                              "ChildElements": [],
+                              "TypeName": "Label"
+                            }
+                          ],
+                          "TypeName": "Cell"
+                        }
+                      ],
+                      "Show": true,
+                      "CantSplit" :  true,
+                      "ChildElements": [],
+                      "TypeName": "Row"
+                    },
+                    {
+                      "Cells": [
+                        {
+                          "ColSpan": 0,
+                          "Fusion": true,
+                          "FusionChild": true,
+                          "Show": true,
+                          "ChildElements": [],
+                          "TypeName": "Cell"
                         },
+                        {
+                          "ColSpan": 0,
+                          "Fusion": false,
+                          "FusionChild": false,
+                          "Show": true,
+                          "ChildElements": [
+                            {
+                              "Text": "cellule4",
+                              "Show": true,
+                              "ChildElements": [],
+                              "TypeName": "Label"
+                            }
+                          ],
+                          "TypeName": "Cell"
+                        }
+                      ],
+                      "Show": true,
+                      "CantSplit": true,
+                      "ChildElements": [],
+                      "TypeName": "Row"
+                    }
+                  ],
+                  "HeaderRow": {
+                    "Cells": [
+                      {
+                        "ColSpan": 0,
+                        "Fusion": false,
+                        "FusionChild": false,
                         "Show": true,
                         "ChildElements": [
-                            {
-                                "Text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse urna augue, convallis eu enim vitae, maximus ultrices nulla. Sed egestas volutpat luctus. Maecenas sodales erat eu elit auctor, eu mattis neque maximus. Duis ac risus quis sem bibendum efficitur. Vivamus justo augue, molestie quis orci non, maximus imperdiet justo. Donec condimentum rhoncus est, ut varius lorem efficitur sed. Donec accumsan sit amet nisl vel ornare. Duis aliquet urna eu mauris porttitor facilisis. ",
-                                "Show": true,
-                                "ChildElements": [],
-                                "TypeName": "Label"
-                            }
+                          {
+                            "Text": "header1",
+                            "Show": true,
+                            "ChildElements": [],
+                            "TypeName": "Label"
+                          }
                         ],
-                        "TypeName": "Paragraph"
-                    }
-                ],
+                        "TypeName": "Cell"
+                      },
+                      {
+                        "ColSpan": 0,
+                        "Fusion": false,
+                        "FusionChild": false,
+                        "Justification": 2,
+                        "VerticalAlignment": 1,
+                        "Show": true,
+                        "ChildElements": [
+                          {
+                            "Text": "header2 (Table CantSplit)",
+                            "Show": true,
+                            "ChildElements": [],
+                            "TypeName": "Label"
+                          }
+                        ],
+                        "TypeName": "Cell"
+                      }
+                    ],
+                    "Show": true,
+                    "CantSplit": true,
+                    "ChildElements": [],
+                    "TypeName": "Row"
+                  },
+                  "Borders": {
+                    "BorderPositions": 63,
+                    "BorderWidth": 1,
+                    "UseVariableBorders": false,
+                    "BorderWidthLeft": 1,
+                    "BorderWidthRight": 1,
+                    "BorderWidthTop": 1,
+                    "BorderWidthBottom": 1,
+                    "BorderWidthInsideHorizontal": 1,
+                    "BorderWidthInsideVertical": 1,
+                    "BorderColor": "000000"
+                  },
+                  "ColsWidth": [
+                    1000,
+                    6000
+                  ],
+                  "TableWidth": {
+                    "Width": "2500",
+                    "Type": 1
+                  },
+                  "Show": true,
+                  "ChildElements": [],
+                  "TypeName": "Table"
+                }
+              ],
                 "TypeName": "Page"
             },
             {
