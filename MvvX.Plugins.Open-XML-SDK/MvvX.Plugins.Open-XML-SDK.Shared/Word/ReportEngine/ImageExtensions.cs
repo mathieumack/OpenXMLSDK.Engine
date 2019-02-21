@@ -47,7 +47,6 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
         [DllImport("gdi32.dll", CharSet = CharSet.Auto, SetLastError = true, ExactSpelling = true)]
         static extern int GetDeviceCaps(IntPtr hDC, int nIndex);
 
-
         /// <summary>
         /// Create the image
         /// </summary>
