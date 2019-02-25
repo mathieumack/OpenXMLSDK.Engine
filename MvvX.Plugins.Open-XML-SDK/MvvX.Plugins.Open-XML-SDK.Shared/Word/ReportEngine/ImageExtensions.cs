@@ -1,4 +1,8 @@
 ﻿using System.IO;
+#if __WPF__ || __IOS__
+using System;
+using System.Runtime.InteropServices;
+#endif
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
@@ -15,6 +19,38 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
     /// </summary>
     public static class ImageExtensions
     {
+#if __WPF__ || __IOS__
+        /// <summary>
+        /// Horizontal screen zoom level in dpi
+        /// </summary>
+        static readonly int Xdpi;
+
+        /// <summary>
+        /// Vertical screen zoom level in dpi
+        /// </summary>
+        static readonly int Ydpi;
+
+        /// <summary>
+        /// At first call, set Xdpi and Ydpi based on the screen zoom level
+        /// </summary>
+        static ImageExtensions()
+        {
+            System.Drawing.Graphics g = System.Drawing.Graphics.FromHwnd(IntPtr.Zero);
+            IntPtr desktop = g.GetHdc();
+            Xdpi = GetDeviceCaps(desktop, 88); // 88 for X axis
+            Ydpi = GetDeviceCaps(desktop, 90); // 90 for Y axis
+        }
+
+        /// <summary>
+        /// Retrieve device-specific information for the specified device
+        /// </summary>
+        /// <param name="hDC">Device context handle</param>
+        /// <param name="nIndex">Index of the item to be returned</param>
+        /// <returns></returns>
+        [DllImport("gdi32.dll", CharSet = CharSet.Auto, SetLastError = true, ExactSpelling = true)]
+        static extern int GetDeviceCaps(IntPtr hDC, int nIndex);
+#endif
+
         /// <summary>
         /// Create the image
         /// </summary>
@@ -126,8 +162,19 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                 }
 
 #if __WPF__ || __IOS__
-                imageWidth = bmWidth * (long)(914400 / bm.HorizontalResolution);
-                imageHeight = bmHeight * (long)(914400 / bm.VerticalResolution);
+                // In case the image dpi is changed based on the screen zoom level when creating the bitmap
+                // Revert the bitmap dpi to the default one (96), which represents the 100% zoom level (no zoom) on Windows
+                // As the dpi is not always 96 even if not altered by the zoom level, don't touch (=> if not equal to the current zoom level)
+                var horizontalResolution = bm.HorizontalResolution;
+                if (Xdpi != 96 && Xdpi == bm.HorizontalResolution)
+                    horizontalResolution = 96;
+
+                var verticalResolution = bm.VerticalResolution;
+                if (Ydpi != 96 && Ydpi == bm.VerticalResolution)
+                    verticalResolution = 96;
+
+                imageWidth = bmWidth * (long)(914400 / horizontalResolution);
+                imageHeight = bmHeight * (long)(914400 / verticalResolution);
 #endif
 #if __ANDROID__
                 // TODO : Check this method
