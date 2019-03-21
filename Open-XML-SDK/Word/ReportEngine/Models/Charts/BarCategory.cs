@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpenXMLSDK.Word.ReportEngine.Models.Charts
+namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models.Charts
 {
     public class BarCategory : BaseElement
     {

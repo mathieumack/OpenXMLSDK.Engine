@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OpenXMLSDK.Word.ReportEngine.Models.Attributes
+namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models.Attributes
 {
     /// <summary>
     /// Borders position

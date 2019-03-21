@@ -1,8 +1,8 @@
 ﻿using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
-using OpenXMLSDK.Word.ReportEngine.BatchModels;
-using OpenXMLSDK.Word.ReportEngine.Models;
+using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels;
+using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models;
 using System.IO;
 using System.Linq;
 using System.Text;

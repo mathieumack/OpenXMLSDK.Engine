@@ -1,11 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Globalization;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml.Wordprocessing;
-using OpenXMLSDK.Platform.Word.Extensions;
-using OpenXMLSDK.Word.ReportEngine.BatchModels;
-using OpenXMLSDK.Word.ReportEngine.Models;
+using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels;
+using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models;
 
 namespace OpenXMLSDK.Platform.Word.ReportEngine
 {
@@ -18,7 +15,7 @@ namespace OpenXMLSDK.Platform.Word.ReportEngine
         /// <param name="parent"></param>
         /// <param name="context"></param>
         /// <returns></returns>
-        public static DocumentFormat.OpenXml.Wordprocessing.Table Render(this OpenXMLSDK.Word.ReportEngine.Models.UniformGrid uniformGrid, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart)
+        public static DocumentFormat.OpenXml.Wordprocessing.Table Render(this MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models.UniformGrid uniformGrid, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart)
         {
             context.ReplaceItem(uniformGrid);
 

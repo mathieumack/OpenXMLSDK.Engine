@@ -9,25 +9,20 @@ using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels;
 using OpenXMLSDK.Platform.Word.ReportEngine;
-using OpenXMLSDK.Word.ReportEngine;
+using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine;
 using A = DocumentFormat.OpenXml.Drawing;
 using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
 using PIC = DocumentFormat.OpenXml.Drawing.Pictures;
 
 namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
 {
-    public class WordManager
+    public class WordManager : IDisposable
     {
         #region Fields
 
         private MemoryStream streamFile;
 
         private string filePath;
-
-        /// <summary>
-        /// Indique si le document en cours l'est en mode d'édition
-        /// </summary>
-        private bool isEditable = false;
 
         /// <summary>
         /// Objet Word courant
@@ -49,13 +44,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
         public WordManager()
         {
             filePath = string.Empty;
-
-            AutoMapperInitializer.Init();
         }
-
-        #endregion
-
-        #region Automapper
 
         #endregion
 
@@ -134,11 +123,9 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
         public bool OpenDoc(string filePath, bool isEditable)
         {
             if (string.IsNullOrWhiteSpace(filePath))
-                throw new ArgumentNullException("filePath must be not null or white spaces");
+                throw new ArgumentNullException(nameof(filePath), "filePath must be not null or white spaces");
             if (!File.Exists(filePath))
-                throw new FileNotFoundException("file not found");
-
-            this.isEditable = isEditable;
+                throw new FileNotFoundException("file not found", filePath);
 
             try
             {
@@ -162,9 +149,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
         public bool OpenDoc(Stream streamFile, bool isEditable)
         {
             if (streamFile == null)
-                throw new ArgumentNullException("streamFile must be not null");
-
-            this.isEditable = isEditable;
+                throw new ArgumentNullException(nameof(streamFile), "streamFile must be not null");
 
             try
             {
@@ -189,19 +174,17 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
         public bool OpenDocFromTemplate(string templateFilePath)
         {
             if (string.IsNullOrWhiteSpace(templateFilePath))
-                throw new ArgumentNullException("templateFilePath must be not null or white spaces");
+                throw new ArgumentNullException(nameof(templateFilePath), "templateFilePath must be not null or white spaces");
             if (!File.Exists(templateFilePath))
                 throw new FileNotFoundException("file not found");
-
-            this.isEditable = true;
 
             streamFile = new MemoryStream();
             try
             {
                 byte[] byteArray = File.ReadAllBytes(templateFilePath);
-                streamFile.Write(byteArray, 0, (int)byteArray.Length);
+                streamFile.Write(byteArray, 0, byteArray.Length);
 
-                wdDoc = WordprocessingDocument.Open(streamFile, isEditable);
+                wdDoc = WordprocessingDocument.Open(streamFile, true);
 
                 // Change the document type to Document
                 wdDoc.ChangeDocumentType(DocumentFormat.OpenXml.WordprocessingDocumentType.Document);
@@ -227,11 +210,9 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
         public bool OpenDocFromTemplate(string templateFilePath, string newFilePath, bool isEditable)
         {
             if (string.IsNullOrWhiteSpace(templateFilePath))
-                throw new ArgumentNullException("templateFilePath must be not null or white spaces");
+                throw new ArgumentNullException(nameof(templateFilePath), "templateFilePath must be not null or white spaces");
             if (!File.Exists(templateFilePath))
                 throw new FileNotFoundException("file not found");
-
-            this.isEditable = isEditable;
 
             filePath = newFilePath;
             try
@@ -272,7 +253,6 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
                 foreach (var header in wdMainDocumentPart.HeaderParts)
                 {
                     var result = header.RootElement.Descendants<BookmarkStart>().FirstOrDefault(e => e.Name == bookmark);
-                    var resultBE = header.RootElement.Descendants<BookmarkEnd>().Select(e => e.Id).ToList();
                     if (result != default(BookmarkStart))
                         return header.RootElement.Descendants<BookmarkEnd>().FirstOrDefault(e => e.Id.Value == result.Id);
                 }
@@ -314,7 +294,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
         public void SetOnBookmark(string bookmark, OpenXmlElement element)
         {
             if (string.IsNullOrWhiteSpace(bookmark))
-                throw new ArgumentNullException("bookmark must be not null or white spaces");
+                throw new ArgumentNullException(nameof(bookmark), "bookmark must be not null or white spaces");
             if (wdDoc == null)
                 throw new InvalidOperationException("Document not loaded");
 
@@ -326,7 +306,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
         public void SetParagraphsOnBookmark(string bookmark, IList<Paragraph> paragraphs)
         {
             if (string.IsNullOrWhiteSpace(bookmark))
-                throw new ArgumentNullException("bookmark must be not null or white spaces");
+                throw new ArgumentNullException(nameof(bookmark), "bookmark must be not null or white spaces");
             if (wdDoc == null)
                 throw new InvalidOperationException("Document not loaded");
 
@@ -349,7 +329,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
         public void SetTextOnBookmark(string bookmark, string text)
         {
             if (string.IsNullOrWhiteSpace(bookmark))
-                throw new ArgumentNullException("bookmark must be not null or white spaces");
+                throw new ArgumentNullException(nameof(filePath), "bookmark must be not null or white spaces");
             if (wdDoc == null)
                 throw new InvalidOperationException("Document not loaded");
 
@@ -360,7 +340,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
         public void SetTextsOnBookmark(string bookmark, List<string> texts, bool formated = true)
         {
             if (string.IsNullOrWhiteSpace(bookmark))
-                throw new ArgumentNullException("bookmark must be not null or white spaces");
+                throw new ArgumentNullException(nameof(bookmark), "bookmark must be not null or white spaces");
             if (wdDoc == null)
                 throw new InvalidOperationException("Document not loaded");
 
@@ -387,7 +367,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
         public void SetHtmlOnBookmark(string bookmark, string html)
         {
             if (string.IsNullOrWhiteSpace(bookmark))
-                throw new ArgumentNullException("bookmark must be not null or white spaces");
+                throw new ArgumentNullException(nameof(bookmark), "bookmark must be not null or white spaces");
             if (wdDoc == null)
                 throw new InvalidOperationException("Document not loaded");
 
@@ -405,7 +385,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
         public void SetSubDocumentOnBookmark(string bookmark, Stream content)
         {
             if (string.IsNullOrWhiteSpace(bookmark))
-                throw new ArgumentNullException("bookmark must be not null or white spaces");
+                throw new ArgumentNullException(nameof(bookmark), "bookmark must be not null or white spaces");
             if (wdDoc == null)
                 throw new InvalidOperationException("Document not loaded");
 
@@ -528,7 +508,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
                 openXmlCompositeElement = altChunk;
 
                 if (wdDoc == null)
-                    throw new Exception("Document not loaded");
+                    throw new InvalidOperationException("Document not loaded");
             }
         }
 
@@ -567,10 +547,9 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
         public void InsertDocsToBookmark(string bookmark, IList<MemoryStream> filesToInsert, bool insertPageBreaks)
         {
             if (string.IsNullOrWhiteSpace(bookmark))
-                throw new Exception("Bookmark must not be null or white space");
-
+                throw new ArgumentNullException(nameof(bookmark), "Bookmark must not be null or white space");
             if (filesToInsert == null)
-                throw new Exception("FilesToInsert must not be null");
+                throw new ArgumentNullException(nameof(filesToInsert), "FilesToInsert must not be null");
 
             var bookmarkElement = FindBookmark(bookmark);
             if (bookmarkElement != default(BookmarkEnd))
@@ -610,7 +589,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word
                         
         #region Report Engine
 
-        public byte[] GenerateReport(OpenXMLSDK.Word.ReportEngine.Document document, ContextModel context)
+        public byte[] GenerateReport(MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models.Document document, ContextModel context)
         {
             using (MemoryStream stream = new MemoryStream())
             {

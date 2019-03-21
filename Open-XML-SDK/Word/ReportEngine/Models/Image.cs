@@ -1,6 +1,6 @@
-﻿using OpenXMLSDK.Packaging;
+﻿using MvvX.Plugins.OpenXMLSDK.Packaging;
 
-namespace OpenXMLSDK.Word.ReportEngine.Models
+namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models
 {
     /// <summary>
     /// Image model

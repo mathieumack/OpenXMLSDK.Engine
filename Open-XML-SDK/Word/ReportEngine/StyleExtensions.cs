@@ -1,7 +1,7 @@
 ﻿using DocumentFormat.OpenXml.Packaging;
-using OpenXMLSDK.Platform.Word.Extensions;
-using OpenXMLSDK.Word.ReportEngine.BatchModels;
-using OpenXMLSDK.Word.ReportEngine.Models;
+using MvvX.Plugins.OpenXMLSDK.Platform.Word.Extensions;
+using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels;
+using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models;
 
 
 namespace OpenXMLSDK.Platform.Word.ReportEngine

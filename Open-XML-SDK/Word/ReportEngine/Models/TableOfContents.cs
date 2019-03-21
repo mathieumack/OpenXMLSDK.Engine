@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace OpenXMLSDK.Word.ReportEngine.Models
+namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models
 {
     /// <summary>
     /// Table of contents model

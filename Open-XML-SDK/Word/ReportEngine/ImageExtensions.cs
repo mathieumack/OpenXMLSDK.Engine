@@ -2,8 +2,8 @@
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
-using OpenXMLSDK.Word.ReportEngine.BatchModels;
-using OpenXMLSDK.Word.ReportEngine.Models;
+using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels;
+using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models;
 using A = DocumentFormat.OpenXml.Drawing;
 using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
 using PIC = DocumentFormat.OpenXml.Drawing.Pictures;
@@ -79,12 +79,7 @@ namespace OpenXMLSDK.Platform.Word.ReportEngine
             long imageWidth;
             long imageHeight;
 
-#if __WPF__ || __IOS__
             using (var bm = new System.Drawing.Bitmap(imagePart.GetStream()))
-#endif
-#if __ANDROID__
-            using (var bm = Android.Graphics.BitmapFactory.DecodeStream(imagePart.GetStream()))
-#endif
             {
                 long bmWidth = bm.Width;
                 long bmHeight = bm.Height;
@@ -124,16 +119,9 @@ namespace OpenXMLSDK.Platform.Word.ReportEngine
                     bmWidth = (long)(bmWidth * (ratio / 100D));
                     bmHeight = (long)(bmHeight * (ratio / 100D));
                 }
-
-#if __WPF__ || __IOS__
+                
                 imageWidth = bmWidth * (long)(914400 / bm.HorizontalResolution);
                 imageHeight = bmHeight * (long)(914400 / bm.VerticalResolution);
-#endif
-#if __ANDROID__
-                // TODO : Check this method
-                imageWidth = bmWidth * (long)((float)914400 / (long)bm.Density);
-                imageHeight = bmHeight * (long)((float)914400 / (long)bm.Density);
-#endif
             }
 
             var result = new Run();

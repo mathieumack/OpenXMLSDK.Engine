@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
-using OpenXMLSDK.Word.ReportEngine.BatchModels;
+using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels;
 
 namespace OpenXMLSDK.Platform.Word.ReportEngine
 {
@@ -16,7 +16,7 @@ namespace OpenXMLSDK.Platform.Word.ReportEngine
         /// <param name="header"></param>
         /// <param name="mainDocumentPart"></param>
         /// <param name="context"></param>
-        public static void Render(this OpenXMLSDK.Word.ReportEngine.Models.Footer footer, MainDocumentPart mainDocumentPart, ContextModel context)
+        public static void Render(this MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models.Footer footer, MainDocumentPart mainDocumentPart, ContextModel context)
         {
             var footerPart = mainDocumentPart.AddNewPart<FooterPart>();
 
@@ -38,7 +38,7 @@ namespace OpenXMLSDK.Platform.Word.ReportEngine
                 section.PrependChild(new FooterReference() { Id = footerPartId, Type = (HeaderFooterValues)(int)footer.Type });
             }
 
-            if (footer.Type == OpenXMLSDK.Word.HeaderFooterValues.First)
+            if (footer.Type == MvvX.Plugins.OpenXMLSDK.Word.HeaderFooterValues.First)
             {
                 mainDocumentPart.Document.Body.Descendants<SectionProperties>().First().PrependChild(new TitlePage());
             }

@@ -1,7 +1,7 @@
-﻿using OpenXMLSDK.Word.ReportEngine.BatchModels;
-using OpenXMLSDK.Word.ReportEngine.Models;
+﻿using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels;
+using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models;
 
-namespace OpenXMLSDK.Word.ReportEngine
+namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine
 {
     /// <summary>
     /// Report serialization class

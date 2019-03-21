@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using MvvmCross.Platform;
-using OpenXMLSDK.Word.ReportEngine.Models;
+using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace OpenXMLSDK.Word.ReportEngine
+namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine
 {
     /// <summary>
     /// Json converter

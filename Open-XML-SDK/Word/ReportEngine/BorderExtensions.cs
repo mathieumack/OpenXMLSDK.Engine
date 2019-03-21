@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using DocumentFormat.OpenXml;
+﻿using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Wordprocessing;
-using OpenXMLSDK.Word.ReportEngine.Models.Attributes;
+using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models.Attributes;
 
 namespace OpenXMLSDK.Platform.Word.ReportEngine
 {

@@ -1,7 +1,7 @@
-﻿using OpenXMLSDK.Word.ReportEngine.Models.Attributes;
-using OpenXMLSDK.Word.Tables.Models;
+﻿using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models.Attributes;
+using MvvX.Plugins.OpenXMLSDK.Word.Tables.Models;
 
-namespace OpenXMLSDK.Word.ReportEngine.Models
+namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models
 {
     public class UniformGrid : Table
     {

@@ -1,9 +1,9 @@
 ﻿using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
-using OpenXMLSDK.Platform.Word.Extensions;
-using OpenXMLSDK.Word.ReportEngine.BatchModels;
-using OpenXMLSDK.Word.ReportEngine.Models;
+using MvvX.Plugins.OpenXMLSDK.Platform.Word.Extensions;
+using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels;
+using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models;
 
 namespace OpenXMLSDK.Platform.Word.ReportEngine
 {
@@ -21,8 +21,8 @@ namespace OpenXMLSDK.Platform.Word.ReportEngine
             var pageSize = new PageSize()
             {
                 Orient = page.PageOrientation.ToOOxml(),
-                Width = UInt32Value.FromUInt32(page.PageOrientation == OpenXMLSDK.Word.PageOrientationValues.Landscape ? (uint)16839 : 11907),
-                Height = UInt32Value.FromUInt32(page.PageOrientation == OpenXMLSDK.Word.PageOrientationValues.Landscape ? (uint)11907 : 16839)
+                Width = UInt32Value.FromUInt32(page.PageOrientation == MvvX.Plugins.OpenXMLSDK.Word.PageOrientationValues.Landscape ? (uint)16839 : 11907),
+                Height = UInt32Value.FromUInt32(page.PageOrientation == MvvX.Plugins.OpenXMLSDK.Word.PageOrientationValues.Landscape ? (uint)11907 : 16839)
             };
             var sectionProps = new SectionProperties(pageSize);
             // document margins

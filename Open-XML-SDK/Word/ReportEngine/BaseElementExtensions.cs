@@ -1,10 +1,10 @@
 ﻿using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
-using OpenXMLSDK.Word.ReportEngine;
-using OpenXMLSDK.Word.ReportEngine.BatchModels;
-using OpenXMLSDK.Word.ReportEngine.Models;
-using OpenXMLSDK.Word.ReportEngine.Models.Charts;
 using Newtonsoft.Json;
+using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models;
+using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels;
+using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine;
+using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models.Charts;
 
 namespace OpenXMLSDK.Platform.Word.ReportEngine
 {

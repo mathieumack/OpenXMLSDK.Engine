@@ -2,10 +2,10 @@
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
-using OpenXMLSDK.Platform.Word.Extensions;
-using OpenXMLSDK.Word.ReportEngine.BatchModels;
-using OpenXMLSDK.Word.ReportEngine.Models;
+using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels;
+using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models;
 using System.Globalization;
+using MvvX.Plugins.OpenXMLSDK.Platform.Word.Extensions;
 
 namespace OpenXMLSDK.Platform.Word.ReportEngine
 {
@@ -83,14 +83,14 @@ namespace OpenXMLSDK.Platform.Word.ReportEngine
 
             if (cell.Show)
             {
-                if (cell.ChildElements.Any(x => x is OpenXMLSDK.Word.ReportEngine.Models.Paragraph)
-              || cell.ChildElements.Any(x => x is OpenXMLSDK.Word.ReportEngine.Models.ForEach))
+                if (cell.ChildElements.Any(x => x is MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models.Paragraph)
+              || cell.ChildElements.Any(x => x is MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models.ForEach))
                 {
                     foreach (var element in cell.ChildElements)
                     {
                         element.InheritFromParent(cell);
-                        if (element is OpenXMLSDK.Word.ReportEngine.Models.Paragraph
-                            || element is OpenXMLSDK.Word.ReportEngine.Models.ForEach)
+                        if (element is MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models.Paragraph
+                            || element is MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models.ForEach)
                         {
                             element.Render(wordCell, context, documentPart);
                         }

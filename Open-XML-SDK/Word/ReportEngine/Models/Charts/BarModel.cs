@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace OpenXMLSDK.Word.ReportEngine.Models.Charts
+namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models.Charts
 {
     public class BarModel : BaseElement
     {
@@ -65,12 +65,6 @@ namespace OpenXMLSDK.Word.ReportEngine.Models.Charts
         /// Categories
         /// </summary>
         public List<BarCategory> Categories { get; set; }
-
-        /// <summary>
-        /// Taille par défaut des textes dans le graphique
-        /// Null par défaut
-        /// </summary>
-        public double? FontSize { get; set; } = null;
 
         /// <summary>
         /// Indicate if labels data will be showed

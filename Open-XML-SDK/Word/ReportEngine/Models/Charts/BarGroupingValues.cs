@@ -1,4 +1,4 @@
-﻿namespace OpenXMLSDK.Word.ReportEngine.Models.Charts
+﻿namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models.Charts
 {
     public enum BarGroupingValues
     {

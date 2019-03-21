@@ -4,12 +4,12 @@ using DocumentFormat.OpenXml.Wordprocessing;
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
-using OpenXMLSDK.Word.Charts;
-using OpenXMLSDK.Word.ReportEngine.Models.Charts;
-using OpenXMLSDK.Word.ReportEngine.BatchModels;
 using A = DocumentFormat.OpenXml.Drawing;
 using dc = DocumentFormat.OpenXml.Drawing.Charts;
 using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
+using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels;
+using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models.Charts;
+using MvvX.Plugins.OpenXMLSDK.Word.Charts;
 
 namespace OpenXMLSDK.Platform.Word.ReportEngine
 {

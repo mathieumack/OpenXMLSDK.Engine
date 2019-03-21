@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace OpenXMLSDK.Word.ReportEngine.Models
+namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models
 {
     /// <summary>
     /// Base Element for word template

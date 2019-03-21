@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpenXMLSDK.Word.ReportEngine.Models.Attributes
+namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models.Attributes
 {
     /// <summary>
     /// Margins for a single table cell 

@@ -1,4 +1,4 @@
-﻿namespace OpenXMLSDK.Word.ReportEngine.Models
+﻿namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models
 {
     /// <summary>
     /// Model for a label

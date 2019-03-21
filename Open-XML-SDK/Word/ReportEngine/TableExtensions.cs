@@ -4,8 +4,8 @@ using System.Globalization;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
-using OpenXMLSDK.Platform.Word.Extensions;
-using OpenXMLSDK.Word.ReportEngine.BatchModels;
+using MvvX.Plugins.OpenXMLSDK.Platform.Word.Extensions;
+using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels;
 
 namespace OpenXMLSDK.Platform.Word.ReportEngine
 {
@@ -18,7 +18,7 @@ namespace OpenXMLSDK.Platform.Word.ReportEngine
         /// <param name="parent"></param>
         /// <param name="context"></param>
         /// <returns></returns>
-        public static Table Render(this OpenXMLSDK.Word.ReportEngine.Models.Table table, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart)
+        public static Table Render(this MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models.Table table, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart)
         {
             context.ReplaceItem(table);
 
@@ -38,7 +38,7 @@ namespace OpenXMLSDK.Platform.Word.ReportEngine
 
                     int i = 0;
 
-                    foreach (ContextModel item in datasource.Items)
+                    foreach (var item in datasource.Items)
                     {
                         var row = table.RowModel.Clone();
                         row.InheritFromParent(table);
@@ -80,7 +80,7 @@ namespace OpenXMLSDK.Platform.Word.ReportEngine
             return wordTable;
         }
 
-        internal static Tuple<Table, TableLook> CreateTable(OpenXMLSDK.Word.ReportEngine.Models.Table table, ContextModel context, OpenXmlPart documentPart)
+        internal static Tuple<Table, TableLook> CreateTable(MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models.Table table, ContextModel context, OpenXmlPart documentPart)
         {
             Table wordTable = new Table();
 
@@ -135,7 +135,7 @@ namespace OpenXMLSDK.Platform.Word.ReportEngine
             return new Tuple<Table, TableLook>(wordTable, tableLook);
         }
 
-        internal static void ManageFooterRow(OpenXMLSDK.Word.ReportEngine.Models.Table table, Table wordTable, TableLook tableLook, ContextModel context, OpenXmlPart documentPart)
+        internal static void ManageFooterRow(MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models.Table table, Table wordTable, TableLook tableLook, ContextModel context, OpenXmlPart documentPart)
         {
             // add footer row
             if (table.FooterRow != null)
@@ -146,7 +146,7 @@ namespace OpenXMLSDK.Platform.Word.ReportEngine
             }
         }
 
-        internal static void ManageBeforeAfterRows(OpenXMLSDK.Word.ReportEngine.Models.Table table, IList<OpenXMLSDK.Word.ReportEngine.Models.Row> rows, Table wordTable, ContextModel context, OpenXmlPart documentPart)
+        internal static void ManageBeforeAfterRows(MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models.Table table, IList<MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models.Row> rows, Table wordTable, ContextModel context, OpenXmlPart documentPart)
         {
             // After rows :
             if (rows != null && rows.Count > 0)

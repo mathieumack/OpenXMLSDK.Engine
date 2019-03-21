@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using OpenXMLSDK.Word.ReportEngine.Models.Attributes;
+using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models.Attributes;
 
-namespace OpenXMLSDK.Word.ReportEngine.Models
+namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models
 {
     /// <summary>
     /// Model class for a document

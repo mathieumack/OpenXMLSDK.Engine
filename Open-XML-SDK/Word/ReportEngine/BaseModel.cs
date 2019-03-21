@@ -1,4 +1,4 @@
-﻿namespace OpenXMLSDK.Word.ReportEngine
+﻿namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine
 {
     /// <summary>
     /// base class for context element

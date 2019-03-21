@@ -1,4 +1,4 @@
-﻿namespace OpenXMLSDK.Word.ReportEngine.Models.Attributes
+﻿namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models.Attributes
 {
     /// <summary>
     /// Model class for margin

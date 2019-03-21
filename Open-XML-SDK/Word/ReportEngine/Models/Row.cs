@@ -1,7 +1,7 @@
-﻿using OpenXMLSDK.Word.Tables.Models;
+﻿using MvvX.Plugins.OpenXMLSDK.Word.Tables.Models;
 using System.Collections.Generic;
 
-namespace OpenXMLSDK.Word.ReportEngine.Models
+namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models
 {
     public class Row : BaseElement
     {
