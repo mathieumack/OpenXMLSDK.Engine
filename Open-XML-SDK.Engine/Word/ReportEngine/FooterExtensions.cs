@@ -18,7 +18,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine
         /// <param name="mainDocumentPart"></param>
         /// <param name="context"></param>
         /// <param name="formatProvider"></param>
-        public static void Render(this OpenXMLSDK.Word.ReportEngine.Models.Footer footer, MainDocumentPart mainDocumentPart, ContextModel context, IFormatProvider formatProvider)
+        public static void Render(this Models.Footer footer, MainDocumentPart mainDocumentPart, ContextModel context, IFormatProvider formatProvider)
         {
             var footerPart = mainDocumentPart.AddNewPart<FooterPart>();
 

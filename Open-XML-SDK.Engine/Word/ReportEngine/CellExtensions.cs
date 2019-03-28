@@ -6,6 +6,7 @@ using OpenXMLSDK.Engine.Word.ReportEngine.BatchModels;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models;
 using System.Globalization;
 using OpenXMLSDK.Engine.Platform.Word.Extensions;
+using System;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine
 {

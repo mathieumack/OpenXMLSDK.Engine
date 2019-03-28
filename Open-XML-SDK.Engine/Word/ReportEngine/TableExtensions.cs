@@ -19,7 +19,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine
         /// <param name="context"></param>
         /// <param name="formatProvider"></param>
         /// <returns></returns>
-        public static Table Render(this OpenXMLSDK.Word.ReportEngine.Models.Table table, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart, IFormatProvider formatProvider)
+        public static Table Render(this Models.Table table, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart, IFormatProvider formatProvider)
         {
             context.ReplaceItem(table, formatProvider);
 
@@ -81,7 +81,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine
             return wordTable;
         }
 
-        internal static Tuple<Table, TableLook> CreateTable(OpenXMLSDK.Word.ReportEngine.Models.Table table, ContextModel context, OpenXmlPart documentPart, IFormatProvider formatProvider)
+        internal static Tuple<Table, TableLook> CreateTable(Models.Table table, ContextModel context, OpenXmlPart documentPart, IFormatProvider formatProvider)
         {
             Table wordTable = new Table();
 
@@ -136,7 +136,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine
             return new Tuple<Table, TableLook>(wordTable, tableLook);
         }
 
-        internal static void ManageFooterRow(OpenXMLSDK.Word.ReportEngine.Models.Table table, Table wordTable, TableLook tableLook, ContextModel context, OpenXmlPart documentPart, IFormatProvider formatProvider)
+        internal static void ManageFooterRow(Models.Table table, Table wordTable, TableLook tableLook, ContextModel context, OpenXmlPart documentPart, IFormatProvider formatProvider)
         {
             // add footer row
             if (table.FooterRow != null)
@@ -147,7 +147,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine
             }
         }
 
-        internal static void ManageBeforeAfterRows(OpenXMLSDK.Word.ReportEngine.Models.Table table, IList<OpenXMLSDK.Word.ReportEngine.Models.Row> rows, Table wordTable, ContextModel context, OpenXmlPart documentPart, IFormatProvider formatProvider)
+        internal static void ManageBeforeAfterRows(Models.Table table, IList<Models.Row> rows, Table wordTable, ContextModel context, OpenXmlPart documentPart, IFormatProvider formatProvider)
         {
             // After rows :
             if (rows != null && rows.Count > 0)

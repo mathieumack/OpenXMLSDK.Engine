@@ -2,12 +2,13 @@
 using DocumentFormat.OpenXml.Packaging;
 using OpenXMLSDK.Engine.Word.ReportEngine.BatchModels;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models;
+using System;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine
 {
     public static class ForEachPageExtensions
     {
-        public static void Render(this ForEachPage forEach, OpenXmlElement wdDoc, ContextModel context, MainDocumentPart mainDocumentPart, OpenXMLSDK.Word.ReportEngine.Models.Document document, IFormatProvider formatProvider)
+        public static void Render(this ForEachPage forEach, OpenXmlElement wdDoc, ContextModel context, MainDocumentPart mainDocumentPart, Models.Document document, IFormatProvider formatProvider)
         {
             context.ReplaceItem(forEach, formatProvider);
 

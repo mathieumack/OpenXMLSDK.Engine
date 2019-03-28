@@ -1,4 +1,4 @@
-﻿namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models
+﻿namespace OpenXMLSDK.Engine.Word.ReportEngine.Models
 {
     /// <summary>
     /// End of the bookmark

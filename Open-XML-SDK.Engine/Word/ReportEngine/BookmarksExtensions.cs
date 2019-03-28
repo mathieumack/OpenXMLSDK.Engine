@@ -1,9 +1,9 @@
 ﻿using DocumentFormat.OpenXml;
-using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels;
-using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models;
+using OpenXMLSDK.Engine.Word.ReportEngine.BatchModels;
+using OpenXMLSDK.Engine.Word.ReportEngine.Models;
 using System;
 
-namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
+namespace OpenXMLSDK.Engine.Word.ReportEngine
 {
     public static class BookmarksExtensions
     {

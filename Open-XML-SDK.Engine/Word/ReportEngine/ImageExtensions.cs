@@ -1,8 +1,6 @@
 ﻿using System.IO;
-#if __WPF__ || __IOS__
 using System;
 using System.Runtime.InteropServices;
-#endif
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
@@ -19,7 +17,6 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine
     /// </summary>
     public static class ImageExtensions
     {
-#if __WPF__ || __IOS__
         /// <summary>
         /// Horizontal screen zoom level in dpi
         /// </summary>
@@ -49,7 +46,6 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine
         /// <returns></returns>
         [DllImport("gdi32.dll", CharSet = CharSet.Auto, SetLastError = true, ExactSpelling = true)]
         static extern int GetDeviceCaps(IntPtr hDC, int nIndex);
-#endif
 
         /// <summary>
         /// Create the image

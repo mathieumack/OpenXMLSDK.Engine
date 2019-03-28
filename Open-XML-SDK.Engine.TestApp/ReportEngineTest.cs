@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Globalization;
 
 namespace OpenXMLSDK.Engine.TestConsole
 {
@@ -37,7 +38,7 @@ namespace OpenXMLSDK.Engine.TestConsole
                     var contextJson = JsonConvert.SerializeObject(context);
                     var contextUnserialized = JsonConvert.DeserializeObject<ContextModel>(contextJson, new JsonSerializerSettings() { Converters = converters });
 
-                    var res = word.GenerateReport(templateUnserialized, contextUnserialized);
+                    var res = word.GenerateReport(templateUnserialized, contextUnserialized, new CultureInfo("en-US"));
 
                     // test ecriture fichier
                     File.WriteAllBytes(documentName, res);
@@ -54,7 +55,7 @@ namespace OpenXMLSDK.Engine.TestConsole
                     var stream = File.ReadAllText(filePath);
                     var report = JsonConvert.DeserializeObject<Report>(stream, new JsonSerializerSettings() { Converters = converters });
 
-                    var res = word.GenerateReport(report.Document, report.ContextModel);
+                    var res = word.GenerateReport(report.Document, report.ContextModel, new CultureInfo("en-US"));
 
                     // test ecriture fichier
                     File.WriteAllBytes(documentName, res);

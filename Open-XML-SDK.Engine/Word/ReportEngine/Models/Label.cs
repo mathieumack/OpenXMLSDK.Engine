@@ -1,4 +1,6 @@
-﻿namespace OpenXMLSDK.Engine.Word.ReportEngine.Models
+﻿using OpenXMLSDK.Engine.Word.ReportEngine.Models.Attributes;
+
+namespace OpenXMLSDK.Engine.Word.ReportEngine.Models
 {
     /// <summary>
     /// Model for a label

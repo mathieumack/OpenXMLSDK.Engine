@@ -5,6 +5,7 @@ using OpenXMLSDK.Engine.Word.ReportEngine.Models;
 using OpenXMLSDK.Engine.Word.ReportEngine.BatchModels;
 using OpenXMLSDK.Engine.Word.ReportEngine;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts;
+using System;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine
 {

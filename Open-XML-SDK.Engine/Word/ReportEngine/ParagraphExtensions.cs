@@ -2,6 +2,7 @@
 using OpenXMLSDK.Engine.Word.ReportEngine.BatchModels;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models;
 using OpenXMLSDK.Engine.Platform.Word.Extensions;
+using System;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine
 {

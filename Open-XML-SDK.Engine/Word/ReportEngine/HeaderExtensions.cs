@@ -18,7 +18,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine
         /// <param name="mainDocumentPart"></param>
         /// <param name="context"></param>
         /// <param name="formatProvider"></param>
-        public static void Render(this OpenXMLSDK.Word.ReportEngine.Models.Header header, MainDocumentPart mainDocumentPart, ContextModel context, IFormatProvider formatProvider)
+        public static void Render(this Models.Header header, MainDocumentPart mainDocumentPart, ContextModel context, IFormatProvider formatProvider)
         {
             var headerPart = mainDocumentPart.AddNewPart<HeaderPart>();
 

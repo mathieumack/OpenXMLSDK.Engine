@@ -1,17 +1,21 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels
+namespace OpenXMLSDK.Engine.Word.ReportEngine.BatchModels
 {
-    public class DoubleModel : BaseModel
+    public class DateTimeModel : BaseModel
     {
         /// <summary>
-        /// Value (0 by default)
+        /// Value (DateTime.MinValue by default)
         /// </summary>
-        public double Value { get; set; }
+        public DateTime Value { get; set; }
 
         /// <summary>
         /// Used to define the final rendering string You can set precision of other :
-        /// Ex : '{0:G2} kV' for the value 3.230 will generate '3.23 kV' string
+        /// More infos : https://msdn.microsoft.com/en-us/library/zdtaw1bw(v=vs.110).aspx
         /// </summary>
         public string RenderPattern { get; set; }
 
@@ -20,16 +24,16 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels
         /// <summary>
         /// Default Constructor
         /// </summary>
-        public DoubleModel()
-            : this(0, null)
+        public DateTimeModel()
+            : this(DateTime.MinValue, null)
         { }
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="value"></param>
-        public DoubleModel(double value, string renderPattern)
-            : base(typeof(DoubleModel).Name)
+        public DateTimeModel(DateTime value, string renderPattern)
+            : base(typeof(DateTimeModel).Name)
         {
             Value = value;
             RenderPattern = renderPattern;
@@ -56,7 +60,7 @@ namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels
         public string Render(IFormatProvider formatProvider)
         {
             if (!string.IsNullOrWhiteSpace(RenderPattern))
-                return string.Format(formatProvider, RenderPattern, Value);
+                return Value.ToString(RenderPattern, formatProvider);
             else
                 return Value.ToString(formatProvider);
         }

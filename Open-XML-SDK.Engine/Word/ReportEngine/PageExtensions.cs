@@ -4,6 +4,7 @@ using DocumentFormat.OpenXml.Wordprocessing;
 using OpenXMLSDK.Engine.Platform.Word.Extensions;
 using OpenXMLSDK.Engine.Word.ReportEngine.BatchModels;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models;
+using System;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine
 {

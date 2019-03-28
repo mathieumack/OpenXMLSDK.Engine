@@ -1,4 +1,4 @@
-﻿namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models.Attributes
+﻿namespace OpenXMLSDK.Engine.Word.ReportEngine.Models.Attributes
 {
     public class UnderlineModel
     {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models
+namespace OpenXMLSDK.Engine.Word.ReportEngine.Models
 {
     /// <summary>
     /// Model for an hyperlink

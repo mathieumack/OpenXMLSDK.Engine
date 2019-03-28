@@ -99,7 +99,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine
             {
                 run.AppendChild(new Text(label.Text)
                 {
-                    Space = (SpaceProcessingModeValues)(int)label.SpaceProcessingModeValue
+                    Space = (DocumentFormat.OpenXml.SpaceProcessingModeValues)(int)label.SpaceProcessingModeValue
                 });
             }
             else

@@ -1,10 +1,10 @@
 ﻿using System;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
-using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.BatchModels;
-using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models;
+using OpenXMLSDK.Engine.Word.ReportEngine.BatchModels;
+using OpenXMLSDK.Engine.Word.ReportEngine.Models;
 
-namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
+namespace OpenXMLSDK.Engine.Word.ReportEngine
 {
     public static class HyperlinkExtensions
     {
