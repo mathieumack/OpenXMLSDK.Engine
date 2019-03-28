@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using OpenXMLSDK.Engine.Word.ReportEngine.BatchModels;
@@ -16,7 +17,8 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine
         /// <param name="header"></param>
         /// <param name="mainDocumentPart"></param>
         /// <param name="context"></param>
-        public static void Render(this Models.Footer footer, MainDocumentPart mainDocumentPart, ContextModel context)
+        /// <param name="formatProvider"></param>
+        public static void Render(this OpenXMLSDK.Word.ReportEngine.Models.Footer footer, MainDocumentPart mainDocumentPart, ContextModel context, IFormatProvider formatProvider)
         {
             var footerPart = mainDocumentPart.AddNewPart<FooterPart>();
 
@@ -25,7 +27,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine
             foreach (var element in footer.ChildElements)
             {
                 element.InheritFromParent(footer);
-                element.Render(footerPart.Footer, context, footerPart);
+                element.Render(footerPart.Footer, context, footerPart, formatProvider);
             }
 
             string footerPartId = mainDocumentPart.GetIdOfPart(footerPart);

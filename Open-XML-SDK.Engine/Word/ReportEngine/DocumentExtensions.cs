@@ -12,7 +12,8 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine
         /// <param name="document"></param>
         /// <param name="wdDoc"></param>
         /// <param name="context"></param>
-        public static void Render(this Document document, WordprocessingDocument wdDoc, ContextModel context)
+        /// <param name="formatProvider"></param>
+        public static void Render(this Document document, WordprocessingDocument wdDoc, ContextModel context, IFormatProvider formatProvider)
         {
             // add styles in document
             var spart = wdDoc.MainDocumentPart.AddNewPart<StyleDefinitionsPart>();
@@ -27,7 +28,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine
                 if (pageItem is ForEachPage)
                 {
                     // render page
-                    ((ForEachPage)pageItem).Render(wdDoc.MainDocumentPart.Document.Body, context, wdDoc.MainDocumentPart, document);
+                    ((ForEachPage)pageItem).Render(wdDoc.MainDocumentPart.Document.Body, context, wdDoc.MainDocumentPart, document, formatProvider);
                 }
                 else if(pageItem is Page)
                 {
@@ -42,7 +43,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine
                         page.Margin = document.Margin;
 
                     // render page
-                    page.Render(wdDoc.MainDocumentPart.Document.Body, context, wdDoc.MainDocumentPart);
+                    page.Render(wdDoc.MainDocumentPart.Document.Body, context, wdDoc.MainDocumentPart, formatProvider);
                 }
             }
 
@@ -62,12 +63,12 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine
             // footers
             foreach (var footer in document.Footers)
             {
-                footer.Render(wdDoc.MainDocumentPart, context);
+                footer.Render(wdDoc.MainDocumentPart, context, formatProvider);
             }
             // headers
             foreach (var header in document.Headers)
             {
-                header.Render(wdDoc.MainDocumentPart, context);
+                header.Render(wdDoc.MainDocumentPart, context, formatProvider);
             }
         }
 
@@ -77,14 +78,15 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine
         /// <param name="document"></param>
         /// <param name="wdDoc"></param>
         /// <param name="context"></param>
-        public static void Render(this Document document, WordprocessingDocument wdDoc, ContextModel context, bool addPageBreak)
+        /// <param name="formatProvider"></param>
+        public static void Render(this Document document, WordprocessingDocument wdDoc, ContextModel context, bool addPageBreak, IFormatProvider formatProvider)
         {
             foreach (var pageItem in document.Pages)
             {
                 if (pageItem is ForEachPage)
                 {
                     // render page
-                    ((ForEachPage)pageItem).Render(wdDoc.MainDocumentPart.Document.Body, context, wdDoc.MainDocumentPart, document);
+                    ((ForEachPage)pageItem).Render(wdDoc.MainDocumentPart.Document.Body, context, wdDoc.MainDocumentPart, document, formatProvider);
                 }
                 else if (pageItem is Page)
                 {
@@ -98,7 +100,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine
                         page.Margin = document.Margin;
 
                     // render page
-                    page.Render(wdDoc.MainDocumentPart.Document.Body, context, wdDoc.MainDocumentPart);
+                    page.Render(wdDoc.MainDocumentPart.Document.Body, context, wdDoc.MainDocumentPart, formatProvider);
                 }
             }
             //Replace Last page break

@@ -26,6 +26,12 @@
         public SpaceProcessingModeValues SpaceProcessingModeValue { get; set; }
 
         /// <summary>
+        /// Definition of the underline
+        /// Can be null if not defined
+        /// </summary>
+        public UnderlineModel Underline { get; set; }
+
+        /// <summary>
         /// Constructor
         /// </summary>
         public Label()

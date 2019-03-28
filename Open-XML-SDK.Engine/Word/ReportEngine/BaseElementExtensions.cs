@@ -15,56 +15,78 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine
             return JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(element), new JsonSerializerSettings() { Converters = { new JsonContextConverter() } });
         }
 
-        public static OpenXmlElement Render(this BaseElement element, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart)
+        public static OpenXmlElement Render(this BaseElement element, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart, IFormatProvider formatProvider)
         {
-            context.ReplaceItem(element);
+            context.ReplaceItem(element, formatProvider);
+
             OpenXmlElement createdElement = null;
 
             if (element.Show)
             {
-                // Keep this statement order, because of the UniformGrid inherits from Table
-                if (element is ForEach)
-                {
-                    (element as ForEach).Render(parent, context, documentPart);
-                }
-                if (element is Label)
-                {
-                    createdElement = (element as Label).Render(parent, context, documentPart);
-                }
-                else if (element is Paragraph)
-                {
-                    createdElement = (element as Paragraph).Render(parent, context);
-                }
-                else if (element is Image)
-                {
-                    createdElement = (element as Image).Render(parent, context, documentPart);
-                }
-                else if (element is UniformGrid)
-                {
-                    createdElement = (element as UniformGrid).Render(parent, context, documentPart);
-                }
-                else if (element is Table)
-                {
-                    createdElement = (element as Table).Render(parent, context, documentPart);
-                }
-                else if (element is TableOfContents)
-                {
-                    (element as TableOfContents).Render(documentPart, context);
-                }
-                else if (element is BarModel)
-                {
-                    (element as BarModel).Render(parent, context, documentPart);
-                }
+                createdElement = element.RenderItem(parent, context, documentPart, formatProvider);
+            }
+            return createdElement;
+        }
 
-                if (element.ChildElements != null && element.ChildElements.Count > 0)
+        private static OpenXmlElement RenderItem(this BaseElement element, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart, IFormatProvider formatProvider)
+        {
+            OpenXmlElement createdElement = null;
+
+            // Keep this statement order, because of the UniformGrid inherits from Table
+            if (element is ForEach)
+            {
+                (element as ForEach).Render(parent, context, documentPart, formatProvider);
+            }
+            else if (element is Label)
+            {
+                createdElement = (element as Label).Render(parent, context, documentPart, formatProvider);
+            }
+            else if (element is BookmarkStart)
+            {
+                createdElement = (element as BookmarkStart).Render(parent, context, formatProvider);
+            }
+            else if (element is BookmarkEnd)
+            {
+                createdElement = (element as BookmarkEnd).Render(parent, context, formatProvider);
+            }
+            else if (element is Hyperlink)
+            {
+                createdElement = (element as Hyperlink).Render(parent, context, documentPart, formatProvider);
+            }
+            else if (element is Paragraph)
+            {
+                createdElement = (element as Paragraph).Render(parent, context, formatProvider);
+            }
+            else if (element is Image)
+            {
+                createdElement = (element as Image).Render(parent, context, documentPart);
+            }
+            else if (element is UniformGrid)
+            {
+                createdElement = (element as UniformGrid).Render(parent, context, documentPart, formatProvider);
+            }
+            else if (element is Table)
+            {
+                createdElement = (element as Table).Render(parent, context, documentPart, formatProvider);
+            }
+            else if (element is TableOfContents)
+            {
+                (element as TableOfContents).Render(documentPart, context);
+            }
+            else if (element is BarModel)
+            {
+                (element as BarModel).Render(parent, context, documentPart, formatProvider);
+            }
+
+            if (element.ChildElements != null && element.ChildElements.Count > 0)
+            {
+                foreach (var e in element.ChildElements)
                 {
-                    foreach (var e in element.ChildElements)
-                    {
-                        e.InheritFromParent(element);
-                        e.Render(createdElement ?? parent, context, documentPart);
-                    }
+                    e.InheritFromParent(element);
+                    e.Render(createdElement ?? parent, context, documentPart, formatProvider);
                 }
             }
+
             return createdElement;
         }
     }

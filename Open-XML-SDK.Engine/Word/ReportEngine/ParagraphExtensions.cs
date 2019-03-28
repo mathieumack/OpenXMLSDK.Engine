@@ -7,9 +7,10 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine
 {
     public static class ParagraphExtensions
     {
-        public static OpenXmlElement Render(this Paragraph paragraph, OpenXmlElement parent, ContextModel context)
+        public static OpenXmlElement Render(this Paragraph paragraph, OpenXmlElement parent, ContextModel context, IFormatProvider formatProvider)
         {
-            context.ReplaceItem(paragraph);
+            context.ReplaceItem(paragraph, formatProvider);
+
             var openXmlPar = new DocumentFormat.OpenXml.Wordprocessing.Paragraph();
             openXmlPar.ParagraphProperties = new DocumentFormat.OpenXml.Wordprocessing.ParagraphProperties()
             {
@@ -29,6 +30,11 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine
             {
                 openXmlPar.ParagraphProperties.AppendChild(paragraph.Borders.RenderParagraphBorder());
             }
+            if (paragraph.Keeplines)
+                openXmlPar.ParagraphProperties.KeepLines = new DocumentFormat.OpenXml.Wordprocessing.KeepLines();
+            if (paragraph.KeepNext)
+                openXmlPar.ParagraphProperties.KeepNext = new DocumentFormat.OpenXml.Wordprocessing.KeepNext();
+
             parent.Append(openXmlPar);
             return openXmlPar;
         }

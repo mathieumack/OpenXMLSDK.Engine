@@ -21,10 +21,12 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine
         /// <param name="table"></param>
         /// <param name="parent"></param>
         /// <param name="context"></param>
+        /// <param name="documentPart"></param>
+        /// <param name="formatProvider"></param>
         /// <returns></returns>
-        public static Run Render(this BarModel barChart, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart)
+        public static Run Render(this BarModel barChart, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart, IFormatProvider formatProvider)
         {
-            context.ReplaceItem(barChart);
+            context.ReplaceItem(barChart, formatProvider);
 
             Run runItem = null;
 

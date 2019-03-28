@@ -7,9 +7,9 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine
 {
     public static class ForEachPageExtensions
     {
-        public static void Render(this ForEachPage forEach, OpenXmlElement wdDoc, ContextModel context, MainDocumentPart mainDocumentPart, OpenXMLSDK.Engine.Word.ReportEngine.Models.Document document)
+        public static void Render(this ForEachPage forEach, OpenXmlElement wdDoc, ContextModel context, MainDocumentPart mainDocumentPart, OpenXMLSDK.Word.ReportEngine.Models.Document document, IFormatProvider formatProvider)
         {
-            context.ReplaceItem(forEach);
+            context.ReplaceItem(forEach, formatProvider);
 
             if (!string.IsNullOrEmpty(forEach.DataSourceKey))
             {
@@ -43,7 +43,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine
                                 item.AddItem("#" + forEach.AutoContextAddItemsPrefix + "_ForEachPage_IndexBaseOne#", new StringModel((i + 1).ToString()));
                             }
 
-                            newPage.Clone().Render(wdDoc, item, mainDocumentPart);
+                            newPage.Clone().Render(wdDoc, item, mainDocumentPart, formatProvider);
 
                             i++;
                         }

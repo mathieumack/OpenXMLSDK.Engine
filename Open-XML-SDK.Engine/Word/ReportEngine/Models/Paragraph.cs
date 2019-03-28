@@ -38,6 +38,16 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models
         public BorderModel Borders { get; set; }
 
         /// <summary>
+        /// Keeplines
+        /// </summary>
+        public bool Keeplines { get; set; }
+
+        /// <summary>
+        /// KeepNext
+        /// </summary>
+        public bool KeepNext { get; set; }
+
+        /// <summary>
         /// Constructor
         /// </summary>
         public Paragraph()

@@ -1,4 +1,8 @@
-﻿using DocumentFormat.OpenXml;
+﻿using System;
+using System.IO;
+using System.Linq;
+using System.Text;
+using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using OpenXMLSDK.Engine.Word.ReportEngine.BatchModels;
@@ -12,9 +16,18 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine
 {
     public static class LabelExtension
     {
-        public static OpenXmlElement Render(this Label label, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart)
+        /// <summary>
+        /// Render a label
+        /// </summary>
+        /// <param name="label"></param>
+        /// <param name="parent"></param>
+        /// <param name="context"></param>
+        /// <param name="documentPart"></param>
+        /// <param name="formatProvider"></param>
+        /// <returns></returns>
+        public static OpenXmlElement Render(this Label label, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart, IFormatProvider formatProvider)
         {
-            context.ReplaceItem(label);
+            context.ReplaceItem(label, formatProvider);
 
             if (label.IsHtml)
             {
@@ -80,13 +93,20 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine
         /// <returns></returns>
         private static Run SetTextContent(Label label, OpenXmlElement parent)
         {
-            Run run = run = new Run();
+            Run run = new Run();
 
-            if (!string.IsNullOrWhiteSpace(label.Text))
+            if (label.Text == null)
+            {
+                run.AppendChild(new Text(label.Text)
+                {
+                    Space = (SpaceProcessingModeValues)(int)label.SpaceProcessingModeValue
+                });
+            }
+            else
             {
                 var lines = label.Text.Split('\n');
-                
-                for(int i = 0; i < lines.Length; i++)
+
+                for (int i = 0; i < lines.Length; i++)
                 {
                     run.AppendChild(new Text(lines[i])
                     {
@@ -104,7 +124,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine
                 runProperty.RunFonts = new RunFonts() { Ascii = label.FontName, HighAnsi = label.FontName, EastAsia = label.FontName, ComplexScript = label.FontName };
             if (!string.IsNullOrWhiteSpace(label.FontSize))
                 runProperty.FontSize = new FontSize() { Val = label.FontSize };
-            if (!string.IsNullOrWhiteSpace(label.FontSize))
+            if (!string.IsNullOrWhiteSpace(label.FontColor))
                 runProperty.Color = new Color() { Val = label.FontColor };
             if (!string.IsNullOrWhiteSpace(label.Shading))
                 runProperty.Shading = new Shading() { Fill = label.Shading };
@@ -114,6 +134,15 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine
                 runProperty.Italic = new Italic() { Val = OnOffValue.FromBoolean(label.Italic.Value) };
             if (label.IsPageNumber)
                 run.AppendChild(new PageNumber());
+
+            if (label.Underline != null)
+            {
+                var underline = new Underline();
+                underline.Val = (UnderlineValues)(int)label.Underline.Val;
+                if (!string.IsNullOrWhiteSpace(label.Underline.Color))
+                    underline.Color = label.Underline.Color;
+                runProperty.Underline = underline;
+            }
 
             run.RunProperties = runProperty;
             parent.Append(run);

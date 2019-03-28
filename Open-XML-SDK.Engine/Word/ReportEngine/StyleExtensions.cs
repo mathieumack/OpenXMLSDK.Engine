@@ -24,7 +24,11 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine
                 Type = style.Type.ToOOxml(),
                 CustomStyle = style.CustomStyle,
                 StyleId = style.StyleId,
-                StyleName = new DocumentFormat.OpenXml.Wordprocessing.StyleName() { Val = style.StyleId }
+                StyleName = new DocumentFormat.OpenXml.Wordprocessing.StyleName() { Val = style.StyleId },
+                PrimaryStyle = new DocumentFormat.OpenXml.Wordprocessing.PrimaryStyle()
+                {
+                    Val = style.PrimaryStyle ? DocumentFormat.OpenXml.Wordprocessing.OnOffOnlyValues.On : DocumentFormat.OpenXml.Wordprocessing.OnOffOnlyValues.Off
+                }
             };
             DocumentFormat.OpenXml.Wordprocessing.StyleRunProperties srp = new DocumentFormat.OpenXml.Wordprocessing.StyleRunProperties();
             if (style.Bold.HasValue && style.Bold.Value)

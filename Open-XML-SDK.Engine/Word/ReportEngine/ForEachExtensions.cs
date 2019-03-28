@@ -7,9 +7,9 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine
 {
     public static class ForEachExtensions
     {
-        public static void Render(this ForEach forEach, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart)
+        public static void Render(this ForEach forEach, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart, IFormatProvider formatProvider)
         {
-            context.ReplaceItem(forEach);
+            context.ReplaceItem(forEach, formatProvider);
 
             if (!string.IsNullOrEmpty(forEach.DataSourceKey))
             {
@@ -36,7 +36,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine
 
                             foreach (var template in forEach.ItemTemplate)
                             {
-                                template.Clone().Render(parent, item, documentPart);
+                                template.Clone().Render(parent, item, documentPart, formatProvider);
                             }
 
                             i++;
