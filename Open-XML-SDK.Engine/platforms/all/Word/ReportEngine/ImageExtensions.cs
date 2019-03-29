@@ -1,6 +1,8 @@
 ﻿using System.IO;
+#if NET_461 || IOS
 using System;
 using System.Runtime.InteropServices;
+#endif
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
@@ -17,6 +19,8 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine
     /// </summary>
     public static class ImageExtensions
     {
+
+#if NET_461 || IOS
         /// <summary>
         /// Horizontal screen zoom level in dpi
         /// </summary>
@@ -46,6 +50,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine
         /// <returns></returns>
         [DllImport("gdi32.dll", CharSet = CharSet.Auto, SetLastError = true, ExactSpelling = true)]
         static extern int GetDeviceCaps(IntPtr hDC, int nIndex);
+#endif
 
         /// <summary>
         /// Create the image
@@ -152,9 +157,11 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine
                     bmHeight = (long)(bmHeight * (ratio / 100D));
                 }
 
+#if NET_461 || IOS
                 // In case the image dpi is changed based on the screen zoom level when creating the bitmap
                 // Revert the bitmap dpi to the default one (96), which represents the 100% zoom level (no zoom) on Windows
                 // As the dpi is not always 96 even if not altered by the zoom level, don't touch (=> if not equal to the current zoom level)
+
                 var horizontalResolution = bm.HorizontalResolution;
                 if (Xdpi != 96 && Xdpi == bm.HorizontalResolution)
                     horizontalResolution = 96;
@@ -165,6 +172,13 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine
 
                 imageWidth = bmWidth * (long)(914400 / horizontalResolution);
                 imageHeight = bmHeight * (long)(914400 / verticalResolution);
+
+#endif
+#if ANDROID
+                // TODO : Check this 96 value
+                imageWidth = bmWidth * (long)((float)914400 / 96);
+                imageHeight = bmHeight * (long)((float)914400 / 96);
+#endif
             }
 
             var result = new Run();

@@ -1,7 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="MSBuild.Sdk.Extras">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;Xamarin.iOS10;MonoAndroid81;net461</TargetFrameworks>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageId>OpenXMLSDK.Engine</PackageId>
     <Authors>MACK Mathieu</Authors>
@@ -16,17 +16,47 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CoreCompat.System.Drawing" Version="1.0.0-beta006" />
-    <PackageReference Include="DocumentFormat.OpenXml" Version="2.9.1" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
-    <PackageReference Include="System.Drawing.Primitives" Version="4.3.0" />
+    <Compile Remove="platforms\**\*.cs" />
+    <None Include="platforms\**\*.cs" />
+    <None Include="Resources\*.cs" />
+    <Compile Remove="Resources\*.cs" />
+  </ItemGroup>
+
+
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('net4')) ">
+    <Compile Include="platforms\all\**\*.cs" />
+    <Compile Include="platforms\wpf\**\*.cs" />
     <PackageReference Include="System.Runtime.InteropServices" Version="4.3.0" />
   </ItemGroup>
 
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('Xamarin.iOS')) ">
+    <Compile Include="platforms\all\**\*.cs" />
+    <Compile Include="platforms\ios\**\*.cs" />
+    <PackageReference Include="System.Drawing.Primitives" Version="4.3.0" />
+    <PackageReference Include="CoreCompat.System.Drawing" Version="1.0.0-beta006" />
+    <PackageReference Include="System.Runtime.InteropServices" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('MonoAndroid')) ">
+    <Compile Include="platforms\all\**\*.cs" />
+    <Compile Include="platforms\android\**\*.cs" />
+    <PackageReference Include="System.Drawing.Primitives" Version="4.3.0" />
+    <PackageReference Include="CoreCompat.System.Drawing" Version="1.0.0-beta006" />
+    <AndroidResource Include="Resources\**\*.xml" SubType="Designer" Generator="MSBuild:UpdateAndroidResources" />
+  </ItemGroup>
+
   <ItemGroup>
-    <Folder Include="Excel\" />
-    <Folder Include="PowerPoint\" />
-    <Folder Include="Word\Images\" />
+    <None Include="interfaces\Word\ReportEngine\BaseModel.cs" />
+    <None Include="interfaces\Word\ReportEngine\Report.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MvvmCross" Version="6.2.3" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="DocumentFormat.OpenXml" Version="2.9.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
   </ItemGroup>
 
 </Project>

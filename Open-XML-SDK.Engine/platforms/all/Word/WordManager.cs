@@ -11,7 +11,7 @@ using OpenXMLSDK.Engine.Word.ReportEngine;
 
 namespace OpenXMLSDK.Engine.Word
 {
-    public class WordManager : IDisposable
+    public class WordManager : IDisposable, IWordManager
     {
         #region Fields
 
