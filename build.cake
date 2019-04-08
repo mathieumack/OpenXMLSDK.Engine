@@ -3,7 +3,7 @@
 
 #addin "nuget:?package=Cake.Figlet"
 
-var sln = new FilePath("./OpenXMLSDK.Engine.sln");
+var sln = new FilePath("./MvvX.Plugins.Open-XML-SDK.sln");
 var outputDir = new DirectoryPath("./artifacts");
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
@@ -18,7 +18,7 @@ Setup(context => {
 
     var cakeVersion = typeof(ICakeContext).Assembly.GetName().Version.ToString();
 
-    Information(Figlet("OpenXML Engine"));
+    Information(Figlet("MvvmCross OpenXML"));
     Information("Building version {0}, ({1}, {2}) using version {3} of Cake.",
         version,
         configuration,

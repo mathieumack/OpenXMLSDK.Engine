@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;Xamarin.iOS10;MonoAndroid81;net461</TargetFrameworks>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageId>OpenXMLSDK.Engine</PackageId>
+    <PackageId>MvvX.Plugins.Open-XML-SDK</PackageId>
     <Authors>MACK Mathieu</Authors>
     <Copyright>Copyright (c) MACK Mathieu</Copyright>
     <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
@@ -43,11 +43,6 @@
     <PackageReference Include="System.Drawing.Primitives" Version="4.3.0" />
     <PackageReference Include="CoreCompat.System.Drawing" Version="1.0.0-beta006" />
     <AndroidResource Include="Resources\**\*.xml" SubType="Designer" Generator="MSBuild:UpdateAndroidResources" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="interfaces\Word\ReportEngine\BaseModel.cs" />
-    <None Include="interfaces\Word\ReportEngine\Report.cs" />
   </ItemGroup>
 
   <ItemGroup>

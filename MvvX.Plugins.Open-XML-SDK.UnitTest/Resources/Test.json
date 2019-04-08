@@ -1,0 +1,656 @@
+{
+    "Document": {
+        "Header": {
+            "Show": true,
+            "ChildElements": [
+                {
+                    "Justification": 0,
+                    "Show": true,
+                    "ChildElements": [
+                        {
+                            "Text": "test dans header",
+                            "Show": true,
+                            "ChildElements": [],
+                            "TypeName": "Label"
+                        }
+                    ],
+                    "TypeName": "Paragraph"
+                }
+            ],
+            "TypeName": "Header"
+        },
+        "Footer": {
+            "Show": true,
+            "ChildElements": [
+                {
+                    "Justification": 0,
+                    "Show": true,
+                    "ChildElements": [
+                        {
+                            "Text": "ceci est un footer",
+                            "Show": true,
+                            "ChildElements": [],
+                            "TypeName": "Label"
+                        }
+                    ],
+                    "TypeName": "Paragraph"
+                }
+            ],
+            "TypeName": "Footer"
+        },
+        "Pages": [
+            {
+                "Show": true,
+                "ChildElements": [
+                    {
+                        "Justification": 0,
+                        "Show": true,
+                        "ChildElements": [
+                            {
+                                "Text": "Ceci est un texte",
+                                "Show": true,
+                                "ChildElements": [],
+                                "FontName": "Arial",
+                                "FontSize": "30",
+                                "TypeName": "Label"
+                            },
+                            {
+                                "Text": "#KeyTest1#",
+                                "Show": true,
+                                "ChildElements": [],
+                                "FontSize": "40",
+                                "FontColor": "FF0000",
+                                "Shading": "0000FF",
+                                "TypeName": "Label"
+                            },
+                            {
+                                "Text": "#KeyTest2#",
+                                "Show": false,
+                                "ChildElements": [],
+                                "TypeName": "Label"
+                            }
+                        ],
+                        "TypeName": "Paragraph"
+                    },
+                    {
+                        "Justification": 0,
+                        "Show": true,
+                        "ChildElements": [
+                            {
+                                "Text": "texte paragraph2",
+                                "Show": true,
+                                "ChildElements": [],
+                                "FontSize": "20",
+                                "TypeName": "Label"
+                            },
+                            {
+                                "Text": "texte2 paragraph2",
+                                "Show": true,
+                                "ChildElements": [],
+                                "TypeName": "Label"
+                            }
+                        ],
+                        "Shading": "FF0000",
+                        "TypeName": "Paragraph"
+                    },
+                    {
+                        "Rows": [
+                            {
+                                "Cells": [
+                                    {
+                                        "ColSpan": 0,
+                                        "Fusion": true,
+                                        "FusionChild": false,
+                                        "VerticalAlignment": 1,
+                                        "Show": true,
+                                        "ChildElements": [
+                                            {
+                                                "Text": "cellule1",
+                                                "Show": true,
+                                                "ChildElements": [],
+                                                "TypeName": "Label"
+                                            }
+                                        ],
+                                        "TypeName": "Cell"
+                                    },
+                                    {
+                                        "Borders": {
+                                            "BorderPositions": 5,
+                                            "BorderWidth": 20,
+                                            "UseVariableBorders": false,
+                                            "BorderWidthLeft": 1,
+                                            "BorderWidthRight": 1,
+                                            "BorderWidthTop": 1,
+                                            "BorderWidthBottom": 1,
+                                            "BorderWidthInsideHorizontal": 0,
+                                            "BorderWidthInsideVertical": 0,
+                                            "BorderColor": "00FF00"
+                                        },
+                                        "ColSpan": 0,
+                                        "Fusion": false,
+                                        "FusionChild": false,
+                                        "Show": true,
+                                        "ChildElements": [
+                                            {
+                                                "Text": "cellule2",
+                                                "Show": true,
+                                                "ChildElements": [],
+                                                "TypeName": "Label"
+                                            }
+                                        ],
+                                        "TypeName": "Cell"
+                                    }
+                                ],
+                                "Show": true,
+                                "ChildElements": [],
+                                "TypeName": "Row"
+                            },
+                            {
+                                "Cells": [
+                                    {
+                                        "ColSpan": 0,
+                                        "Fusion": true,
+                                        "FusionChild": true,
+                                        "Show": true,
+                                        "ChildElements": [],
+                                        "TypeName": "Cell"
+                                    },
+                                    {
+                                        "ColSpan": 0,
+                                        "Fusion": false,
+                                        "FusionChild": false,
+                                        "Show": true,
+                                        "ChildElements": [
+                                            {
+                                                "Text": "cellule4",
+                                                "Show": true,
+                                                "ChildElements": [],
+                                                "TypeName": "Label"
+                                            }
+                                        ],
+                                        "TypeName": "Cell"
+                                    }
+                                ],
+                                "Show": true,
+                                "ChildElements": [],
+                                "TypeName": "Row"
+                            }
+                        ],
+                        "HeaderRow": {
+                            "Cells": [
+                                {
+                                    "ColSpan": 0,
+                                    "Fusion": false,
+                                    "FusionChild": false,
+                                    "Show": true,
+                                    "ChildElements": [
+                                        {
+                                            "Text": "header1",
+                                            "Show": true,
+                                            "ChildElements": [],
+                                            "TypeName": "Label"
+                                        }
+                                    ],
+                                    "Shading": "00FFFF",
+                                    "TypeName": "Cell"
+                                },
+                                {
+                                    "ColSpan": 0,
+                                    "Fusion": false,
+                                    "FusionChild": false,
+                                    "Justification": 2,
+                                    "VerticalAlignment": 1,
+                                    "Show": true,
+                                    "ChildElements": [
+                                        {
+                                            "Text": "header2",
+                                            "Show": true,
+                                            "ChildElements": [],
+                                            "TypeName": "Label"
+                                        }
+                                    ],
+                                    "TypeName": "Cell"
+                                }
+                            ],
+                            "Show": true,
+                            "ChildElements": [],
+                            "TypeName": "Row"
+                        },
+                        "Borders": {
+                            "BorderPositions": 34,
+                            "BorderWidth": 1,
+                            "UseVariableBorders": true,
+                            "BorderWidthLeft": 1,
+                            "BorderWidthRight": 1,
+                            "BorderWidthTop": 1,
+                            "BorderWidthBottom": 50,
+                            "BorderWidthInsideHorizontal": 0,
+                            "BorderWidthInsideVertical": 1,
+                            "BorderColor": "FF0000"
+                        },
+                        "ColsWidth": [
+                            1000,
+                            6000
+                        ],
+                        "TableWidth": {
+                            "Width": "2500",
+                            "Type": 1
+                        },
+                        "Show": true,
+                        "ChildElements": [],
+                        "TypeName": "Table"
+                    },
+                    {
+                        "Justification": 0,
+                        "Show": true,
+                        "ChildElements": [],
+                        "TypeName": "Paragraph"
+                    },
+                    {
+                        "Rows": [
+                            {
+                                "Cells": [
+                                    {
+                                        "ColSpan": 0,
+                                        "Fusion": false,
+                                        "FusionChild": false,
+                                        "Justification": 3,
+                                        "Show": true,
+                                        "ChildElements": [
+                                            {
+                                                "Text": "Blop",
+                                                "Show": true,
+                                                "ChildElements": [],
+                                                "TypeName": "Label"
+                                            }
+                                        ],
+                                        "TypeName": "Cell"
+                                    },
+                                    {
+                                        "ColSpan": 0,
+                                        "Fusion": false,
+                                        "FusionChild": false,
+                                        "Show": true,
+                                        "ChildElements": [
+                                            {
+                                                "Rows": [],
+                                                "RowModel": {
+                                                    "Cells": [
+                                                        {
+                                                            "ColSpan": 0,
+                                                            "Fusion": false,
+                                                            "FusionChild": false,
+                                                            "Justification": 3,
+                                                            "Show": true,
+                                                            "ChildElements": [
+                                                                {
+                                                                    "Text": "#Text#",
+                                                                    "Show": true,
+                                                                    "ChildElements": [],
+                                                                    "TypeName": "Label"
+                                                                }
+                                                            ],
+                                                            "TypeName": "Cell"
+                                                        },
+                                                        {
+                                                            "ColSpan": 0,
+                                                            "Fusion": false,
+                                                            "FusionChild": false,
+                                                            "TextDirection": 2,
+                                                            "Show": true,
+                                                            "ChildElements": [
+                                                                {
+                                                                    "Text": "#Text2#",
+                                                                    "Show": true,
+                                                                    "ChildElements": [],
+                                                                    "TypeName": "Label"
+                                                                }
+                                                            ],
+                                                            "TypeName": "Cell"
+                                                        }
+                                                    ],
+                                                    "Show": true,
+                                                    "ChildElements": [],
+                                                    "Shading": "333333",
+                                                    "TypeName": "Row"
+                                                },
+                                                "DataSourceKey": "#Datasource#",
+                                                "TableWidth": {
+                                                    "Width": "5000",
+                                                    "Type": 1
+                                                },
+                                                "Show": true,
+                                                "ChildElements": [],
+                                                "TypeName": "Table"
+                                            }
+                                        ],
+                                        "TypeName": "Cell"
+                                    }
+                                ],
+                                "Show": true,
+                                "ChildElements": [],
+                                "TypeName": "Row"
+                            },
+                            {
+                                "Cells": [
+                                    {
+                                        "ColSpan": 2,
+                                        "Fusion": false,
+                                        "FusionChild": false,
+                                        "Show": true,
+                                        "ChildElements": [
+                                            {
+                                                "Text": "toto",
+                                                "Show": true,
+                                                "ChildElements": [],
+                                                "TypeName": "Label"
+                                            }
+                                        ],
+                                        "TypeName": "Cell"
+                                    }
+                                ],
+                                "Show": true,
+                                "ChildElements": [],
+                                "TypeName": "Row"
+                            }
+                        ],
+                        "TableWidth": {
+                            "Width": "5000",
+                            "Type": 1
+                        },
+                        "Show": true,
+                        "ChildElements": [],
+                        "TypeName": "Table"
+                    }
+                ],
+                "TypeName": "Page"
+            },
+            {
+                "Show": true,
+              "ChildElements": [
+                {
+                  "Justification": 2,
+                  "ParagraphStyleId": "OnSiteTitle",
+                  "Show": true,
+                  "ChildElements": [
+                    {
+                      "Text": "texte page2",
+                      "Show": true,
+                      "ChildElements": [],
+                      "FontName": "Arial",
+                      "TypeName": "Label"
+                    }
+                  ],
+                  "TypeName": "Paragraph"
+                },
+                {
+                  "KeepLines": true,
+                  "KeepNext": true,
+                  "Justification": 5,
+                  "SpacingBefore": 800,
+                  "SpacingAfter": 800,
+                  "ParagraphStyleId": "toto",
+                  "Show": true,
+                  "ChildElements": [
+                    {
+                      "Text": "(Paragraph KeepNext and KeepLines) Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse urna augue, convallis eu enim vitae, maximus ultrices nulla. Sed egestas volutpat luctus. Maecenas sodales erat eu elit auctor, eu mattis neque maximus. Duis ac risus quis sem bibendum efficitur. Vivamus justo augue, molestie quis orci non, maximus imperdiet justo. Donec condimentum rhoncus est, ut varius lorem efficitur sed. Donec accumsan sit amet nisl vel ornare. Duis aliquet urna eu mauris porttitor facilisis. ",
+                      "Show": true,
+                      "ChildElements": [],
+                      "TypeName": "Label"
+                    }
+                  ],
+                  "TypeName": "Paragraph"
+                },
+                {                 
+                  "TypeName": "Paragraph"
+                },
+                {
+                  "Rows": [
+                    {
+                      "Cells": [
+                        {
+                          "ColSpan": 0,
+                          "Fusion": true,
+                          "FusionChild": false,
+                          "VerticalAlignment": 1,
+                          "Show": true,
+                          "ChildElements": [
+                            {
+                              "Text": "cellule1",
+                              "Show": true,
+                              "ChildElements": [],
+                              "TypeName": "Label"
+                            }
+                          ],
+                          "TypeName": "Cell"
+                        },
+                        {
+                          "Borders": {
+                            "BorderPositions": 63,
+                            "BorderWidth": 1,
+                            "UseVariableBorders": false,
+                            "BorderWidthLeft": 1,
+                            "BorderWidthRight": 1,
+                            "BorderWidthTop": 1,
+                            "BorderWidthBottom": 1,
+                            "BorderWidthInsideHorizontal": 1,
+                            "BorderWidthInsideVertical": 1,
+                            "BorderColor": "000000"
+                          },
+                          "ColSpan": 0,
+                          "Fusion": false,
+                          "FusionChild": false,
+                          "Show": true,
+                          "ChildElements": [
+                            {
+                              "Text": "cellule2",
+                              "Show": true,
+                              "ChildElements": [],
+                              "TypeName": "Label"
+                            }
+                          ],
+                          "TypeName": "Cell"
+                        }
+                      ],
+                      "Show": true,
+                      "CantSplit" :  true,
+                      "ChildElements": [],
+                      "TypeName": "Row"
+                    },
+                    {
+                      "Cells": [
+                        {
+                          "ColSpan": 0,
+                          "Fusion": true,
+                          "FusionChild": true,
+                          "Show": true,
+                          "ChildElements": [],
+                          "TypeName": "Cell"
+                        },
+                        {
+                          "ColSpan": 0,
+                          "Fusion": false,
+                          "FusionChild": false,
+                          "Show": true,
+                          "ChildElements": [
+                            {
+                              "Text": "cellule4",
+                              "Show": true,
+                              "ChildElements": [],
+                              "TypeName": "Label"
+                            }
+                          ],
+                          "TypeName": "Cell"
+                        }
+                      ],
+                      "Show": true,
+                      "CantSplit": true,
+                      "ChildElements": [],
+                      "TypeName": "Row"
+                    }
+                  ],
+                  "HeaderRow": {
+                    "Cells": [
+                      {
+                        "ColSpan": 0,
+                        "Fusion": false,
+                        "FusionChild": false,
+                        "Show": true,
+                        "ChildElements": [
+                          {
+                            "Text": "header1",
+                            "Show": true,
+                            "ChildElements": [],
+                            "TypeName": "Label"
+                          }
+                        ],
+                        "TypeName": "Cell"
+                      },
+                      {
+                        "ColSpan": 0,
+                        "Fusion": false,
+                        "FusionChild": false,
+                        "Justification": 2,
+                        "VerticalAlignment": 1,
+                        "Show": true,
+                        "ChildElements": [
+                          {
+                            "Text": "header2 (Table CantSplit)",
+                            "Show": true,
+                            "ChildElements": [],
+                            "TypeName": "Label"
+                          }
+                        ],
+                        "TypeName": "Cell"
+                      }
+                    ],
+                    "Show": true,
+                    "CantSplit": true,
+                    "ChildElements": [],
+                    "TypeName": "Row"
+                  },
+                  "Borders": {
+                    "BorderPositions": 63,
+                    "BorderWidth": 1,
+                    "UseVariableBorders": false,
+                    "BorderWidthLeft": 1,
+                    "BorderWidthRight": 1,
+                    "BorderWidthTop": 1,
+                    "BorderWidthBottom": 1,
+                    "BorderWidthInsideHorizontal": 1,
+                    "BorderWidthInsideVertical": 1,
+                    "BorderColor": "000000"
+                  },
+                  "ColsWidth": [
+                    1000,
+                    6000
+                  ],
+                  "TableWidth": {
+                    "Width": "2500",
+                    "Type": 1
+                  },
+                  "Show": true,
+                  "ChildElements": [],
+                  "TypeName": "Table"
+                }
+              ],
+                "TypeName": "Page"
+            },
+            {
+                "Show": true,
+                "ChildElements": [
+                    {
+                        "Justification": 0,
+                        "Show": true,
+                        "ChildElements": [
+                            {
+                                "Text": "test héritage",
+                                "Show": true,
+                                "ChildElements": [],
+                                "TypeName": "Label"
+                            },
+                            {
+                                "Justification": 0,
+                                "Show": true,
+                                "ChildElements": [
+                                    {
+                                        "Text": "blabla",
+                                        "Show": true,
+                                        "ChildElements": [],
+                                        "TypeName": "Label"
+                                    }
+                                ],
+                                "FontSize": "16",
+                                "TypeName": "Paragraph"
+                            }
+                        ],
+                        "FontSize": "26",
+                        "FontColor": "FF0000",
+                        "TypeName": "Paragraph"
+                    }
+                ],
+                "TypeName": "Page"
+            }
+        ],
+        "Styles": [
+            {
+                "StyleId": "OnSiteTitle",
+                "Type": 0,
+                "Show": true,
+                "ChildElements": []
+            },
+            {
+                "StyleId": "toto",
+                "Type": 0,
+                "Show": true,
+                "ChildElements": [],
+                "FontSize": "40",
+                "FontColor": "FFFF00"
+            }
+        ],
+        "Show": true,
+        "ChildElements": [],
+        "TypeName": "Document"
+    },
+    "ContextModel":{
+        "Data": {
+            "#KeyTest1#": {
+                "Value": "la la la",
+                "TypeName": "StringModel"
+            },
+            "#KeyTest2#": {
+                "Value": "toto",
+                "TypeName": "StringModel"
+            },
+            "#Datasource#": {
+                "Items": [
+                    {
+                        "Data": {
+                            "#Text#": {
+                                "Value": "ligne 1 ddddddddddddddddddddd",
+                                "TypeName": "StringModel"
+                            },
+                            "#Text2#": {
+                                "Value": "ligne 1 xxx",
+                                "TypeName": "StringModel"
+                            }
+                        }
+                    },
+                    {
+                        "Data": {
+                            "#Text#": {
+                                "Value": "ligne 2",
+                                "TypeName": "StringModel"
+                            },
+                            "#Text2#": {
+                                "Value": "ligne 2 xxx",
+                                "TypeName": "StringModel"
+                            }
+                        }
+                    }
+                ],
+                "TypeName": "DataSourceModel"
+            }
+        }
+    }
+}

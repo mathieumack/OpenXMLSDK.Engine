@@ -5,11 +5,11 @@ VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{17464895-F42D-47EE-AC67-7C3947E1A69C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Open-XML-SDK.Engine.TestApp", "Open-XML-SDK.Engine.TestApp\Open-XML-SDK.Engine.TestApp.csproj", "{7B189D1B-0AD2-4EB4-96E4-5CB0781F3592}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvvX.Plugins.Open-XML-SDK.TestApp", "MvvX.Plugins.Open-XML-SDK.TestApp\MvvX.Plugins.Open-XML-SDK.TestApp.csproj", "{7B189D1B-0AD2-4EB4-96E4-5CB0781F3592}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{DF3FA5BB-6544-4719-BA72-5AB3986A9C3F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Open-XML-SDK.Engine", "Open-XML-SDK.Engine\Open-XML-SDK.Engine.csproj", "{4645CFFE-628A-4FAD-8B43-63D3C16F16D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MvvX.Plugins.Open-XML-SDK", "MvvX.Plugins.Open-XML-SDK\MvvX.Plugins.Open-XML-SDK.csproj", "{4645CFFE-628A-4FAD-8B43-63D3C16F16D0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
