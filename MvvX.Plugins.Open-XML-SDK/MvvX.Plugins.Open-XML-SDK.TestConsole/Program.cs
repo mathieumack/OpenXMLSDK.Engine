@@ -173,7 +173,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
                 UseVariableBorders = true,
                 BorderColor = "FF0000",
                 BorderLeftColor = "CCCCCC",
-                BorderTopColor = "123456",
+                BorderTopColor = "#BorderTop#",
                 BorderRightColor = "FFEEDD",
                 BorderBottomColor = "FF1234"
             };
@@ -893,6 +893,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
         private static ContextModel GetContext()
         {
             ContextModel context = new ContextModel();
+            context.AddItem("#BorderTop#", new StringModel("FF00FF"));
             context.AddItem("#NoRow#", new BooleanModel(false));
             context.AddItem("#ParagraphShading#", new StringModel("00FF00"));
             context.AddItem("#ParagraphBorderColor#", new StringModel("105296"));
