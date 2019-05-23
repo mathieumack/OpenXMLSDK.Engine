@@ -70,7 +70,10 @@ namespace MvvX.Plugins.OpenXMLSDK.Platform.Word.ReportEngine
                     // Now we create all row :
                     foreach (var rowContentContext in rowsContentContexts)
                     {
-                        var row = new Row();
+                        var row = new Row
+                        {
+                            CantSplit = uniformGrid.CantSplitRows,
+                        };
                         row.InheritFromParent(uniformGrid);
 
                         wordTable.AppendChild(row.Render(wordTable, context, rowContentContext, uniformGrid.CellModel, documentPart, false, formatProvider));

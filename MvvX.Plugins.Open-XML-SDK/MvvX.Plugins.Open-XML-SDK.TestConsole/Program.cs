@@ -533,6 +533,7 @@ namespace MvvX.Plugins.OpenXMLSDK.TestConsole
             //New page to manage UniformGrid:
             var uniformGrid = new UniformGrid()
             {
+                CantSplitRows = true,
                 DataSourceKey = "#UniformGridSample#",
                 ColsWidth = new int[2] { 2500, 2500 },
                 TableWidth = new TableWidthModel() { Width = "5000", Type = TableWidthUnitValues.Pct },
