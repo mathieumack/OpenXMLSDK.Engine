@@ -235,8 +235,8 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.BatchModels
                 element.FontColor = ReplaceText(element.FontColor, formatProvider);
             if (!string.IsNullOrEmpty(element.Shading))
                 element.Shading = ReplaceText(element.Shading, formatProvider);
-            if (element.Borders != null && !string.IsNullOrEmpty(element.Borders.BorderColor))
-                element.Borders.BorderColor = ReplaceText(element.Borders.BorderColor, formatProvider);
+            if (element.Borders != null)
+                ReplaceBorders(element.Borders, formatProvider);
             if (!string.IsNullOrEmpty(element.BoldKey) && ExistItem<BooleanModel>(element.BoldKey))
             {
                 var item = GetItem<BooleanModel>(element.BoldKey);
@@ -256,8 +256,8 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.BatchModels
                 element.FontColor = ReplaceText(element.FontColor, formatProvider);
             if (!string.IsNullOrEmpty(element.Shading))
                 element.Shading = ReplaceText(element.Shading, formatProvider);
-            if (element.Borders != null && !string.IsNullOrEmpty(element.Borders.BorderColor))
-                element.Borders.BorderColor = ReplaceText(element.Borders.BorderColor, formatProvider);
+            if (element.Borders != null)
+                ReplaceBorders(element.Borders, formatProvider);
             if (!string.IsNullOrEmpty(element.FusionKey) && ExistItem<BooleanModel>(element.FusionKey))
             {
                 var item = GetItem<BooleanModel>(element.FusionKey);
@@ -282,8 +282,8 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.BatchModels
                 element.FontColor = ReplaceText(element.FontColor, formatProvider);
             if (!string.IsNullOrEmpty(element.Shading))
                 element.Shading = ReplaceText(element.Shading, formatProvider);
-            if (element.Borders != null && !string.IsNullOrEmpty(element.Borders.BorderColor))
-                element.Borders.BorderColor = ReplaceText(element.Borders.BorderColor, formatProvider);
+            if (element.Borders != null)
+                ReplaceBorders(element.Borders, formatProvider);
             SetVisibilityFromContext(element);
         }
 
@@ -296,6 +296,22 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.BatchModels
             }
             element.ShowKey = string.Empty;
         }
+
+        private void ReplaceBorders(Models.Attributes.BorderModel borders, IFormatProvider formatProvider)
+        {
+            if (!string.IsNullOrEmpty(borders.BorderColor))
+                borders.BorderColor = ReplaceText(borders.BorderColor, formatProvider);
+
+            if (!string.IsNullOrEmpty(borders.BorderLeftColor))
+                borders.BorderLeftColor = ReplaceText(borders.BorderLeftColor, formatProvider);
+            if (!string.IsNullOrEmpty(borders.BorderTopColor))
+                borders.BorderTopColor = ReplaceText(borders.BorderTopColor, formatProvider);
+            if (!string.IsNullOrEmpty(borders.BorderRightColor))
+                borders.BorderRightColor = ReplaceText(borders.BorderRightColor, formatProvider);
+            if (!string.IsNullOrEmpty(borders.BorderBottomColor))
+                borders.BorderBottomColor = ReplaceText(borders.BorderBottomColor, formatProvider);
+        }
+
         #endregion
     }
 }
