@@ -1,10 +1,16 @@
-[![Stories in Ready](https://badge.waffle.io/mathieumack/MvvX.Plugins.Open-XML-SDK.png?label=ready&title=Ready)](https://waffle.io/mathieumack/MvvX.Plugins.Open-XML-SDK?utm_source=badge)
-[![Build status](https://ci.appveyor.com/api/projects/status/n159uhltbd90i3rh?svg=true)](https://ci.appveyor.com/project/mathieumack/mvvx-plugins-open-xml-sdk)
-
 # MvvX.Plugins.Open-XML-SDK
 
 Using the Open-XML-SDK-Plugin for MvvmCross is quite simple. The plugin injects the IWordManager interface into the IoC container.
 Each resolve to IWordManager from the Mvx.Resolve<IWordManager>() will create a new instance of the service.
+
+
+## Quality and packaging
+
+[![Build status](https://dev.azure.com/mackmathieu/Github/_apis/build/status/MvvX.Plugins.OpenXML)](https://dev.azure.com/mackmathieu/Github/_build/latest?definitionId=4)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=github-MvvX.Plugins.OpenXML&metric=alert_status)](https://sonarcloud.io/dashboard?id=github-nosqlrepository)
+
+![Nuget](https://img.shields.io/nuget/dt/NoSqlRepositories.Core.svg?label=MvvX.Plugins.Open-XML-SDK&logo=nuget)
+
 
 ### API
 
