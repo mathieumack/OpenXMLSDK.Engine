@@ -7,10 +7,6 @@ using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using OpenXMLSDK.Engine.Word.ReportEngine.BatchModels;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine
 {

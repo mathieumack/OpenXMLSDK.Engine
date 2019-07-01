@@ -1,4 +1,6 @@
-﻿namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models
+﻿using OpenXMLSDK.Engine.Word.ReportEngine.Models;
+
+namespace MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models
 {
     /// <summary>
     /// Uniform Grid
