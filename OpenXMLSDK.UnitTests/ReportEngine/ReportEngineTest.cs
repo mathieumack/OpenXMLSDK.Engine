@@ -15,11 +15,11 @@ using System.IO;
 using System.Globalization;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models;
 
-namespace OpenXMLSDK.Engine.TestConsole
+namespace OpenXMLSDK.UnitTests.ReportEngine
 {
     public static class ReportEngineTest
     {
-        private static void ReportEngine(string filePath, string documentName)
+        public static void ReportEngine(string filePath, string documentName)
         {
             // Debut test report engine
             using (var word = new WordManager())
@@ -43,8 +43,6 @@ namespace OpenXMLSDK.Engine.TestConsole
 
                     // test ecriture fichier
                     File.WriteAllBytes(documentName, res);
-
-                    Process.Start(documentName);
                 }
                 else
                 {
@@ -60,7 +58,6 @@ namespace OpenXMLSDK.Engine.TestConsole
 
                     // test ecriture fichier
                     File.WriteAllBytes(documentName, res);
-                    Process.Start(documentName);
                 }
             }
         }
@@ -316,7 +313,7 @@ namespace OpenXMLSDK.Engine.TestConsole
                                     new Image()
                                     {
                                         Width = 50,
-                                        Path = @"..\..\Resources\Desert.jpg",
+                                        Path = @"Resources\Desert.jpg",
                                         ImagePartType = OpenXMLSDK.Engine.Packaging.ImagePartType.Jpeg
                                     },
                                     new Label() { Text = "Cell 1 - Label in a cell" },
@@ -332,7 +329,7 @@ namespace OpenXMLSDK.Engine.TestConsole
                                     new Image()
                                     {
                                         Height = 10,
-                                        Path = @"..\..\Resources\Desert.jpg",
+                                        Path = @"Resources\Desert.jpg",
                                         ImagePartType = OpenXMLSDK.Engine.Packaging.ImagePartType.Jpeg
                                     },
                                     new Label() { Text = "Cell 2 - Second label" }
@@ -403,7 +400,7 @@ namespace OpenXMLSDK.Engine.TestConsole
             page1.ChildElements.Add(table);
             page1.ChildElements.Add(new Paragraph());
 
-            if (File.Exists(@"..\..\Resources\Desert.jpg"))
+            if (File.Exists(@"Resources\Desert.jpg"))
                 page1.ChildElements.Add(
                     new Paragraph()
                     {
@@ -413,7 +410,7 @@ namespace OpenXMLSDK.Engine.TestConsole
                         {
                             MaxHeight = 100,
                             MaxWidth = 100,
-                            Path = @"..\..\Resources\Desert.jpg",
+                            Path = @"Resources\Desert.jpg",
                             ImagePartType = OpenXMLSDK.Engine.Packaging.ImagePartType.Jpeg
                         }
                         }
@@ -648,7 +645,7 @@ namespace OpenXMLSDK.Engine.TestConsole
                                     {
                                         MaxHeight = 100,
                                         MaxWidth = 100,
-                                        Path = @"..\..\Resources\Desert.jpg",
+                                        Path = @"Resources\Desert.jpg",
                                         ImagePartType = OpenXMLSDK.Engine.Packaging.ImagePartType.Jpeg
                                     },
                                     new Label() { Text = "Custom header" },
@@ -665,7 +662,7 @@ namespace OpenXMLSDK.Engine.TestConsole
                                     {
                                         MaxHeight = 100,
                                         MaxWidth = 100,
-                                        Path = @"..\..\Resources\Desert.jpg",
+                                        Path = @"Resources\Desert.jpg",
                                         ImagePartType = OpenXMLSDK.Engine.Packaging.ImagePartType.Jpeg
                                     },
                                     new Label() { Text = "Cell 2 - an other other label" }
@@ -814,12 +811,12 @@ namespace OpenXMLSDK.Engine.TestConsole
             header.Type = HeaderFooterValues.Default;
             var ph = new Paragraph();
             ph.ChildElements.Add(new Label() { Text = "Header Text" });
-            if (File.Exists(@"..\..\Resources\Desert.jpg"))
+            if (File.Exists(@"Resources\Desert.jpg"))
                 ph.ChildElements.Add(new Image()
                 {
                     MaxHeight = 100,
                     MaxWidth = 100,
-                    Path = @"..\..\Resources\Desert.jpg",
+                    Path = @"Resources\Desert.jpg",
                     ImagePartType = OpenXMLSDK.Engine.Packaging.ImagePartType.Jpeg
                 });
             header.ChildElements.Add(ph);

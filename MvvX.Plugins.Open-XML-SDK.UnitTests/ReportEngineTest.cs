@@ -15,11 +15,11 @@ using System.IO;
 using System.Globalization;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models;
 
-namespace OpenXMLSDK.Engine.TestConsole
+namespace MvvX.Plugins.Open_XML_SDK.UnitTests
 {
     public static class ReportEngineTest
     {
-        private static void ReportEngine(string filePath, string documentName)
+        public static void ReportEngine(string filePath, string documentName)
         {
             // Debut test report engine
             using (var word = new WordManager())

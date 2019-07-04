@@ -45,65 +45,12 @@
     <PackageReference Include="CoreCompat.System.Drawing" Version="1.0.0-beta006" />
     <AndroidResource Include="Resources\**\*.xml" SubType="Designer" Generator="MSBuild:UpdateAndroidResources" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="interfaces\Word\ReportEngine\BarChartExtensions.cs" />
-    <Compile Remove="interfaces\Word\ReportEngine\BaseElementExtensions.cs" />
-    <Compile Remove="interfaces\Word\ReportEngine\BookmarksExtensions.cs" />
-    <Compile Remove="interfaces\Word\ReportEngine\BorderExtensions.cs" />
-    <Compile Remove="interfaces\Word\ReportEngine\CellExtensions.cs" />
-    <Compile Remove="interfaces\Word\ReportEngine\DocumentExtensions.cs" />
-    <Compile Remove="interfaces\Word\ReportEngine\FooterExtensions.cs" />
-    <Compile Remove="interfaces\Word\ReportEngine\ForEachExtensions.cs" />
-    <Compile Remove="interfaces\Word\ReportEngine\ForEachPageExtensions.cs" />
-    <Compile Remove="interfaces\Word\ReportEngine\HeaderExtensions.cs" />
-    <Compile Remove="interfaces\Word\ReportEngine\HyperlinkExtensions.cs" />
-    <Compile Remove="interfaces\Word\ReportEngine\ImageExtensions.cs" />
-    <Compile Remove="interfaces\Word\ReportEngine\JsonContextConverter.cs" />
-    <Compile Remove="interfaces\Word\ReportEngine\LabelExtension.cs" />
-    <Compile Remove="interfaces\Word\ReportEngine\PageExtensions.cs" />
-    <Compile Remove="interfaces\Word\ReportEngine\ParagraphExtensions.cs" />
-    <Compile Remove="interfaces\Word\ReportEngine\RowExtensions.cs" />
-    <Compile Remove="interfaces\Word\ReportEngine\StyleExtensions.cs" />
-    <Compile Remove="interfaces\Word\ReportEngine\TableExtensions.cs" />
-    <Compile Remove="interfaces\Word\ReportEngine\TableOfContentsExtensions.cs" />
-    <Compile Remove="interfaces\Word\ReportEngine\UniformGridExtensions.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="interfaces\Word\ReportEngine\Renders\BarChartExtensions.cs" />
-    <None Include="interfaces\Word\ReportEngine\Renders\BaseElementExtensions.cs" />
-    <None Include="interfaces\Word\ReportEngine\Renders\BookmarksExtensions.cs" />
-    <None Include="interfaces\Word\ReportEngine\Renders\BorderExtensions.cs" />
-    <None Include="interfaces\Word\ReportEngine\Renders\CellExtensions.cs" />
-    <None Include="interfaces\Word\ReportEngine\Renders\DocumentExtensions.cs" />
-    <None Include="interfaces\Word\ReportEngine\Renders\FooterExtensions.cs" />
-    <None Include="interfaces\Word\ReportEngine\Renders\ForEachExtensions.cs" />
-    <None Include="interfaces\Word\ReportEngine\Renders\ForEachPageExtensions.cs" />
-    <None Include="interfaces\Word\ReportEngine\Renders\HeaderExtensions.cs" />
-    <None Include="interfaces\Word\ReportEngine\Renders\HyperlinkExtensions.cs" />
-    <None Include="interfaces\Word\ReportEngine\Renders\ImageExtensions.cs" />
-    <None Include="interfaces\Word\ReportEngine\JsonContextConverter.cs" />
-    <None Include="interfaces\Word\ReportEngine\Renders\LabelExtension.cs" />
-    <None Include="interfaces\Word\ReportEngine\Renders\PageExtensions.cs" />
-    <None Include="interfaces\Word\ReportEngine\Renders\ParagraphExtensions.cs" />
-    <None Include="interfaces\Word\ReportEngine\Renders\RowExtensions.cs" />
-    <None Include="interfaces\Word\ReportEngine\Renders\StyleExtensions.cs" />
-    <None Include="interfaces\Word\ReportEngine\Renders\TableExtensions.cs" />
-    <None Include="interfaces\Word\ReportEngine\Renders\TableOfContentsExtensions.cs" />
-    <None Include="interfaces\Word\ReportEngine\Renders\UniformGridExtensions.cs" />
-    <None Include="interfaces\Word\WordManager.cs" />
-  </ItemGroup>
   
   <ItemGroup>
     <PackageReference Include="MvvmCross" Version="6.2.3" />
     <PackageReference Include="DocumentFormat.OpenXml" Version="2.9.1" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
     <PackageReference Include="SixLabors.ImageSharp" Version="1.0.0-beta0006" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <Folder Include="platforms\all\Word\" />
   </ItemGroup>
 
 </Project>

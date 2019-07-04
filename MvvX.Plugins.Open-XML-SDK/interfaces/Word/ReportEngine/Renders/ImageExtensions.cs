@@ -118,7 +118,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             long imageWidth;
             long imageHeight;
 
-            using (var image = SixLabors.ImageSharp.Image.Load(model.Content))
+            using (var image = SixLabors.ImageSharp.Image.Load(imagePart.GetStream()))
             {
                 long bmWidth = image.Width;
                 long bmHeight = image.Height;
@@ -162,8 +162,8 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 image.Mutate(x => x
                     .Resize((int)bmWidth, (int)bmHeight));
 
-                imageWidth = image.Width;
-                imageHeight = image.Height;
+                imageWidth = bmWidth * (long)(914400 / image.MetaData.HorizontalResolution);
+                imageHeight = bmHeight * (long)(914400 / image.MetaData.VerticalResolution);
             }
 
             var result = new Run();

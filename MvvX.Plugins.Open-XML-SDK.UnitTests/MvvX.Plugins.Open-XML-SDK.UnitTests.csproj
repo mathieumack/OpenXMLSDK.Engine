@@ -1,11 +1,21 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <RootNamespace>MvvX.Plugins.Open_XML_SDK.UnitTest</RootNamespace>
+    <RootNamespace>MvvX.Plugins.Open_XML_SDK.UnitTests</RootNamespace>
 
     <IsPackable>false</IsPackable>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\Desert.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\Desert.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
@@ -15,6 +25,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MvvX.Plugins.Open-XML-SDK\MvvX.Plugins.Open-XML-SDK.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Resources\Test.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
