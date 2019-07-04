@@ -325,7 +325,7 @@ namespace OpenXMLSDK.Engine.Word
         public void SetTextOnBookmark(string bookmark, string text)
         {
             if (string.IsNullOrWhiteSpace(bookmark))
-                throw new ArgumentNullException(nameof(filePath), "bookmark must be not null or white spaces");
+                throw new ArgumentNullException(nameof(bookmark), "bookmark must be not null or white spaces");
             if (wdDoc == null)
                 throw new InvalidOperationException("Document not loaded");
 
