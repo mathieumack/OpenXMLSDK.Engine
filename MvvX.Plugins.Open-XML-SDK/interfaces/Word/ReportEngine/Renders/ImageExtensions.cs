@@ -1,8 +1,4 @@
 ﻿using System.IO;
-#if NET_461 || IOS
-using System;
-using System.Runtime.InteropServices;
-#endif
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
@@ -21,39 +17,6 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
     /// </summary>
     public static class ImageExtensions
     {
-
-#if NET_461 || IOS
-        /// <summary>
-        /// Horizontal screen zoom level in dpi
-        /// </summary>
-        static readonly int Xdpi;
-
-        /// <summary>
-        /// Vertical screen zoom level in dpi
-        /// </summary>
-        static readonly int Ydpi;
-
-        /// <summary>
-        /// At first call, set Xdpi and Ydpi based on the screen zoom level
-        /// </summary>
-        static ImageExtensions()
-        {
-            System.Drawing.Graphics g = System.Drawing.Graphics.FromHwnd(IntPtr.Zero);
-            IntPtr desktop = g.GetHdc();
-            Xdpi = GetDeviceCaps(desktop, 88); // 88 for X axis
-            Ydpi = GetDeviceCaps(desktop, 90); // 90 for Y axis
-        }
-
-        /// <summary>
-        /// Retrieve device-specific information for the specified device
-        /// </summary>
-        /// <param name="hDC">Device context handle</param>
-        /// <param name="nIndex">Index of the item to be returned</param>
-        /// <returns></returns>
-        [DllImport("gdi32.dll", CharSet = CharSet.Auto, SetLastError = true, ExactSpelling = true)]
-        static extern int GetDeviceCaps(IntPtr hDC, int nIndex);
-#endif
-
         /// <summary>
         /// Create the image
         /// </summary>
