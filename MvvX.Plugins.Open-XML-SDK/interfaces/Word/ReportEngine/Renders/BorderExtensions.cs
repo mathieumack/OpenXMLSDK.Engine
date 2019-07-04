@@ -2,7 +2,7 @@
 using DocumentFormat.OpenXml.Wordprocessing;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models.Attributes;
 
-namespace OpenXMLSDK.Engine.Word.ReportEngine
+namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 {
     public static class BorderExtensions
     {

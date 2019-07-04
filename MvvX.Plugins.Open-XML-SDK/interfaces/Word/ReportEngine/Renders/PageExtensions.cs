@@ -6,7 +6,7 @@ using OpenXMLSDK.Engine.Word.ReportEngine.BatchModels;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models;
 using System;
 
-namespace OpenXMLSDK.Engine.Word.ReportEngine
+namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 {
     public static class PageExtensions
     {

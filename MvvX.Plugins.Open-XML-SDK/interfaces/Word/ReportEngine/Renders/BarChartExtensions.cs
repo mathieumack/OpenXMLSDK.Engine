@@ -11,7 +11,7 @@ using OpenXMLSDK.Engine.Word.ReportEngine.BatchModels;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts;
 using OpenXMLSDK.Engine.Word.Charts;
 
-namespace OpenXMLSDK.Engine.Word.ReportEngine
+namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 {
     public static class BarChartExtensions
     {

@@ -8,7 +8,7 @@ using OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts;
 using System;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models;
 
-namespace OpenXMLSDK.Engine.Word.ReportEngine
+namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 {
     public static class BaseElementExtensions
     {

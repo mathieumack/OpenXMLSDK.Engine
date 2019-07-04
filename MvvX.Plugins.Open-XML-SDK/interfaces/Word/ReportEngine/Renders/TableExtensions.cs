@@ -7,7 +7,7 @@ using DocumentFormat.OpenXml.Wordprocessing;
 using OpenXMLSDK.Engine.Platform.Word.Extensions;
 using OpenXMLSDK.Engine.Word.ReportEngine.BatchModels;
 
-namespace OpenXMLSDK.Engine.Word.ReportEngine
+namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 {
     public static class TableExtensions
     {

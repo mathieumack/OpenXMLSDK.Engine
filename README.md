@@ -14,15 +14,8 @@ Each resolve to IWordManager from the Mvx.Resolve<IWordManager>() will create a 
 
 ### API
 
-The API of IWordManager is very easy to understand and to use.
+The API of WordManager is very easy to understand and to use.
 
-```c#
-public interface IWordManager : IDisposable
-{
-	IDatabase Database { get; }
-	bool CreateConnection(string workingFolderPath, string databaseName);
-}
-```
 #### WordManager Open existing template
 
 In order to open a template, call the OpenDocFromTemplate method
@@ -31,7 +24,7 @@ In order to open a template, call the OpenDocFromTemplate method
     var resourceName = "<Set full template file path here>"; // ex : C:\temp\template.dotx
     var finalFilePath = "<Set saved new document file path here>"; // ex : C:\temp\createdDoc.docx
 	
-    using (IWordManager word = Mvx.Resolve<IWordManager>())
+    using (var word = Mvx.Resolve<WordManager>())
     {
         word.OpenDocFromTemplate(resourceName, finalFilePath, true);
 
@@ -49,7 +42,7 @@ Using the name of the database and the folder on the client device where to stor
     var resourceName = "<Set full template file path here>"; // ex : C:\temp\template.dotx
     var finalFilePath = "<Set saved new document file path here>"; // ex : C:\temp\createdDoc.docx
 	
-    using (IWordManager word = Mvx.Resolve<IWordManager>())
+    using (var word = Mvx.Resolve<WordManager>())
     {
         word.OpenDocFromTemplate(resourceName, finalFilePath, true);
 

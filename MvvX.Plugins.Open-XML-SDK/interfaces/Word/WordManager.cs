@@ -8,10 +8,11 @@ using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using OpenXMLSDK.Engine.Word.ReportEngine.BatchModels;
 using OpenXMLSDK.Engine.Word.ReportEngine;
+using OpenXMLSDK.Engine.Word.ReportEngine.Renders;
 
 namespace OpenXMLSDK.Engine.Word
 {
-    public class WordManager : IDisposable, IWordManager
+    public class WordManager : IDisposable
     {
         #region Fields
 

@@ -8,7 +8,7 @@ using System.Globalization;
 using OpenXMLSDK.Engine.Platform.Word.Extensions;
 using System;
 
-namespace OpenXMLSDK.Engine.Word.ReportEngine
+namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 {
     /// <summary>
     /// Extension class for Table Cell rendering

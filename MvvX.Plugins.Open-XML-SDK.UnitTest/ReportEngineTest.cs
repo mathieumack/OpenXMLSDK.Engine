@@ -15,7 +15,7 @@
 //using System.Globalization;
 //using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models;
 
-//namespace OpenXMLSDK.Engine.TestConsole
+//namespace MvvX.Plugins.OpenXMLSDK.UnitTest
 //{
 //    public static class ReportEngineTest
 //    {

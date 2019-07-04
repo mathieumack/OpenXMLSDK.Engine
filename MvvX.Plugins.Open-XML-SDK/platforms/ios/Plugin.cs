@@ -10,7 +10,7 @@ namespace OpenXMLSDK.Engine
     {
         public void Load()
         {
-            Mvx.IoCProvider.RegisterType<IWordManager>(() => new WordManager());
+            Mvx.IoCProvider.RegisterType(() => new WordManager());
         }
     }
 }

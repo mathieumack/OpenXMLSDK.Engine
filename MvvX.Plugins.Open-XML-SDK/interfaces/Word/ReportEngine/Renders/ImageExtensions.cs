@@ -11,8 +11,10 @@ using OpenXMLSDK.Engine.Word.ReportEngine.Models;
 using A = DocumentFormat.OpenXml.Drawing;
 using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
 using PIC = DocumentFormat.OpenXml.Drawing.Pictures;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
 
-namespace OpenXMLSDK.Engine.Word.ReportEngine
+namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 {
     /// <summary>
     /// Image extention
@@ -60,7 +62,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine
         /// <param name="context">Context</param>
         /// <param name="documentPart">MainDocumentPart</param>
         /// <returns></returns>
-        public static OpenXmlElement Render(this Image image, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart)
+        public static OpenXmlElement Render(this Models.Image image, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart)
         {
             context.ReplaceItem(image);
             ImagePart imagePart;
@@ -109,17 +111,17 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine
         /// <param name="model"></param>
         /// <param name="mainDocumentPart"></param>
         /// <returns></returns>
-        private static OpenXmlElement CreateImage(ImagePart imagePart, Image model, OpenXmlPart mainDocumentPart)
+        private static OpenXmlElement CreateImage(ImagePart imagePart, Models.Image model, OpenXmlPart mainDocumentPart)
         {
             string relationshipId = mainDocumentPart.GetIdOfPart(imagePart);
 
             long imageWidth;
             long imageHeight;
 
-            using (var bm = new System.Drawing.Bitmap(imagePart.GetStream()))
+            using (var image = SixLabors.ImageSharp.Image.Load(model.Content))
             {
-                long bmWidth = bm.Width;
-                long bmHeight = bm.Height;
+                long bmWidth = image.Width;
+                long bmHeight = image.Height;
 
                 // Resize width
                 if (model.Width.HasValue)
@@ -157,28 +159,11 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine
                     bmHeight = (long)(bmHeight * (ratio / 100D));
                 }
 
-#if NET_461 || IOS
-                // In case the image dpi is changed based on the screen zoom level when creating the bitmap
-                // Revert the bitmap dpi to the default one (96), which represents the 100% zoom level (no zoom) on Windows
-                // As the dpi is not always 96 even if not altered by the zoom level, don't touch (=> if not equal to the current zoom level)
+                image.Mutate(x => x
+                    .Resize((int)bmWidth, (int)bmHeight));
 
-                var horizontalResolution = bm.HorizontalResolution;
-                if (Xdpi != 96 && Xdpi == bm.HorizontalResolution)
-                    horizontalResolution = 96;
-
-                var verticalResolution = bm.VerticalResolution;
-                if (Ydpi != 96 && Ydpi == bm.VerticalResolution)
-                    verticalResolution = 96;
-
-                imageWidth = bmWidth * (long)(914400 / horizontalResolution);
-                imageHeight = bmHeight * (long)(914400 / verticalResolution);
-
-#endif
-#if ANDROID
-                // TODO : Check this 96 value
-                imageWidth = bmWidth * (long)((float)914400 / 96);
-                imageHeight = bmHeight * (long)((float)914400 / 96);
-#endif
+                imageWidth = image.Width;
+                imageHeight = image.Height;
             }
 
             var result = new Run();
