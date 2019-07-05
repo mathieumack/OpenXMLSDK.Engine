@@ -15,7 +15,7 @@ using System.IO;
 using System.Globalization;
 using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models;
 
-namespace OpenXMLSDK.UnitTests.ReportEngine
+namespace OpenXMLSDK.UnitTest.ReportEngine
 {
     public static class ReportEngineTest
     {

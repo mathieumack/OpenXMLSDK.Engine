@@ -1,8 +1,8 @@
 ﻿<Project Sdk="MSBuild.Sdk.Extras">
 
   <PropertyGroup>
-    <ProjectGuid>{E2CEBBAF-7EF7-41E9-816D-9AD4CF87C844}</ProjectGuid>
-    <TargetFrameworks>netstandard2.0;Xamarin.iOS10;MonoAndroid81;net461</TargetFrameworks>
+    <ProjectGuid>{5D8107A4-0B23-48B0-921C-1EACCDCD70AD}</ProjectGuid>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageId>MvvX.Plugins.Open-XML-SDK</PackageId>
     <Authors>MACK Mathieu</Authors>
@@ -18,36 +18,8 @@
     <PackageTags>mvvmcross,plugin,openxml</PackageTags>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="platforms\**\*.cs" />
-    <None Include="platforms\**\*.cs" />
-    <None Include="Resources\*.cs" />
-    <Compile Remove="Resources\*.cs" />
-  </ItemGroup>
-
-
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('net4')) ">
-    <Compile Include="platforms\wpf\**\*.cs" />
-    <PackageReference Include="System.Runtime.InteropServices" Version="4.3.0" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('Xamarin.iOS')) ">
-    <Compile Include="platforms\ios\**\*.cs" />
-    <PackageReference Include="System.Drawing.Primitives" Version="4.3.0" />
-    <PackageReference Include="CoreCompat.System.Drawing" Version="1.0.0-beta006" />
-    <PackageReference Include="System.Runtime.InteropServices" Version="4.3.0" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('MonoAndroid')) ">
-    <Compile Include="platforms\android\**\*.cs" />
-    <PackageReference Include="System.Drawing.Primitives" Version="4.3.0" />
-    <PackageReference Include="CoreCompat.System.Drawing" Version="1.0.0-beta006" />
-    <AndroidResource Include="Resources\**\*.xml" SubType="Designer" Generator="MSBuild:UpdateAndroidResources" />
-  </ItemGroup>
   
   <ItemGroup>
-    <PackageReference Include="MvvmCross" Version="6.2.3" />
     <PackageReference Include="DocumentFormat.OpenXml" Version="2.9.1" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
     <PackageReference Include="SixLabors.ImageSharp" Version="1.0.0-beta0006" />
