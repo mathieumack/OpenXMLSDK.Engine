@@ -3,10 +3,8 @@ using DocumentFormat.OpenXml.Packaging;
 using Newtonsoft.Json;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models;
 using OpenXMLSDK.Engine.Word.ReportEngine.BatchModels;
-using OpenXMLSDK.Engine.Word.ReportEngine;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts;
 using System;
-using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 {

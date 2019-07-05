@@ -4,17 +4,17 @@
     <ProjectGuid>{5D8107A4-0B23-48B0-921C-1EACCDCD70AD}</ProjectGuid>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageId>MvvX.Plugins.Open-XML-SDK</PackageId>
+    <PackageId>OpenXMLSDK.Engine</PackageId>
     <Authors>MACK Mathieu</Authors>
     <Copyright>Copyright (c) MACK Mathieu</Copyright>
     <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
-    <PackageProjectUrl>https://github.com/mathieumack/MvvX.Open-XML-SDK</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/mathieumack/MvvX.Open-XML-SDK</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/mathieumack/OpenXMLSDK.Engine</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/mathieumack/OpenXMLSDK.Engine</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <Description>This package contains the 'Open-XML-SDK' plugin for MvvmCross.</Description>
     <RootNamespace>OpenXMLSDK.Engine</RootNamespace>
     <AssemblyName>OpenXMLSDK.Engine</AssemblyName>
-    <Product>MvvmCross plugin for OpenXML SDK</Product>
+    <Product>engine report and helpers for the OpenXML SDK</Product>
     <PackageTags>mvvmcross,plugin,openxml</PackageTags>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <Version>1.0.1</Version>
