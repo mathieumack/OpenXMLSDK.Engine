@@ -1,6 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace OpenXMLSDK.UnitTests.ReportEngine
+namespace OpenXMLSDK.UnitTest.ReportEngine
 {
     [TestClass]
     public class ReportEngineUnitTests

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="MSBuild.Sdk.Extras">
 
   <PropertyGroup>
-    <ProjectGuid>{E2CEBBAF-7EF7-41E9-816D-9AD4CF87C844}</ProjectGuid>
+    <ProjectGuid>{5D8107A4-0B23-48B0-921C-1EACCDCD70AD}</ProjectGuid>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageId>MvvX.Plugins.Open-XML-SDK</PackageId>

@@ -9,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MvvX.Plugins.Open-XML-SDK", "MvvX.Plugins.Open-XML-SDK\MvvX.Plugins.Open-XML-SDK.csproj", "{E2CEBBAF-7EF7-41E9-816D-9AD4CF87C844}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenXMLSDK.UnitTests", "OpenXMLSDK.UnitTests\OpenXMLSDK.UnitTests.csproj", "{FB5BF6B2-FDBB-4255-8280-1992A6B75AB6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenXMLSDK.UnitTest", "OpenXMLSDK.UnitTest\OpenXMLSDK.UnitTest.csproj", "{FB5BF6B2-FDBB-4255-8280-1992A6B75AB6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
