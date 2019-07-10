@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
-using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models;
 using OpenXMLSDK.Engine.Word.ReportEngine.BatchModels;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models;
 

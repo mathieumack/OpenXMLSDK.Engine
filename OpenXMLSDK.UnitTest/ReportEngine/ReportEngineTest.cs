@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Globalization;
-using MvvX.Plugins.OpenXMLSDK.Word.ReportEngine.Models;
 
 namespace OpenXMLSDK.UnitTest.ReportEngine
 {
