@@ -33,6 +33,8 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                                 // Index of the element (Based on 0, and based on 1)
                                 item.AddItem("#" + forEach.AutoContextAddItemsPrefix + "_ForEach_IndexBaseZero#", new StringModel(i.ToString()));
                                 item.AddItem("#" + forEach.AutoContextAddItemsPrefix + "_ForEach_IndexBaseOne#", new StringModel((i+1).ToString()));
+                                item.AddItem("#" + forEach.AutoContextAddItemsPrefix + "_ForEach_IsOdd#", new BooleanModel(i%2 == 1));
+                                item.AddItem("#" + forEach.AutoContextAddItemsPrefix + "_ForEach_IsEven#", new BooleanModel(i % 2 == 0));
                             }
 
                             foreach (var template in forEach.ItemTemplate)

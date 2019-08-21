@@ -42,6 +42,8 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                                 // Index of the element (Based on 0, and based on 1)
                                 item.AddItem("#" + forEach.AutoContextAddItemsPrefix + "_ForEachPage_IndexBaseZero#", new StringModel(i.ToString()));
                                 item.AddItem("#" + forEach.AutoContextAddItemsPrefix + "_ForEachPage_IndexBaseOne#", new StringModel((i + 1).ToString()));
+                                item.AddItem("#" + forEach.AutoContextAddItemsPrefix + "_ForEachPage_IsOdd#", new BooleanModel(i % 2 == 1));
+                                item.AddItem("#" + forEach.AutoContextAddItemsPrefix + "_ForEachPage_IsEven#", new BooleanModel(i % 2 == 0));
                             }
 
                             newPage.Clone().Render(wdDoc, item, mainDocumentPart, formatProvider);

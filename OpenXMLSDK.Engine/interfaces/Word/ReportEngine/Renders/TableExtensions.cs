@@ -54,6 +54,8 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                             // Index of the element (Based on 0, and based on 1)
                             item.AddItem("#" + table.AutoContextAddItemsPrefix + "_TableRow_IndexBaseZero#", new StringModel(i.ToString()));
                             item.AddItem("#" + table.AutoContextAddItemsPrefix + "_TableRow_IndexBaseOne#", new StringModel((i + 1).ToString()));
+                            item.AddItem("#" + table.AutoContextAddItemsPrefix + "_TableRow_IsOdd#", new BooleanModel(i % 2 == 1));
+                            item.AddItem("#" + table.AutoContextAddItemsPrefix + "_TableRow_IsEven#", new BooleanModel(i % 2 == 0));
                         }
 
                         wordTable.AppendChild(row.Render(wordTable, item, documentPart, false, formatProvider));
