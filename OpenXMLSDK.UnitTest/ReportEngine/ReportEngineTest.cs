@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Globalization;
+using OpenXMLSDK.Engine.interfaces.Word.ReportEngine.Models;
 
 namespace OpenXMLSDK.UnitTest.ReportEngine
 {
@@ -268,8 +269,19 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             doc.Pages.Add(page2);
             var paragraph = new Paragraph();
             paragraph.ChildElements.Add(new Label() { Text = "Ceci est un texte avec accents (éèàù)", FontSize = "30", FontName = "Arial" });
-            paragraph.ChildElements.Add(new Label() { Text = "#KeyTest1#", FontSize = "40", FontColor = "#FontColorTestRed#", Shading = "9999FF", BoldKey = "#BoldKey#", Bold = false });
-            paragraph.ChildElements.Add(new Label() { Text = "#KeyTest2#", Show = false });
+            paragraph.ChildElements.Add(new Label() { Text = "#KeyTest1#", FontSize = "40",
+                TransformOperations = new List<LabelTransformOperation>()
+                {
+                    new LabelTransformOperation()
+                    {
+                        TransformOperationType = LabelTransformOperationType.ToUpper
+                    }
+                }, FontColor = "#FontColorTestRed#", Shading = "9999FF", BoldKey = "#BoldKey#", Bold = false });
+            paragraph.ChildElements.Add(new Label()
+            {
+                Text = "#KeyTest2#",
+                Show = false
+            });
             paragraph.Borders = new BorderModel()
             {
                 BorderPositions = BorderPositions.BOTTOM | BorderPositions.TOP | BorderPositions.LEFT,
