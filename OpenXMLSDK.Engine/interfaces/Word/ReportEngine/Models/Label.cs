@@ -37,6 +37,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models
 
         /// <summary>
         /// Define transform operation on text before rendering
+        /// You can combine multiple operation
         /// Works only for non Html content
         /// </summary>
         public List<LabelTransformOperation> TransformOperations { get; set; }
