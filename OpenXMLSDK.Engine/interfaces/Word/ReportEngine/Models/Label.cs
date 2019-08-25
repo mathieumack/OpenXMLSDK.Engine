@@ -1,4 +1,6 @@
-﻿using OpenXMLSDK.Engine.Word.ReportEngine.Models.Attributes;
+﻿using System.Collections.Generic;
+using OpenXMLSDK.Engine.interfaces.Word.ReportEngine.Models;
+using OpenXMLSDK.Engine.Word.ReportEngine.Models.Attributes;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Models
 {
@@ -32,6 +34,13 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models
         /// Can be null if not defined
         /// </summary>
         public UnderlineModel Underline { get; set; }
+
+        /// <summary>
+        /// Define transform operation on text before rendering
+        /// You can combine multiple operation
+        /// Works only for non Html content
+        /// </summary>
+        public List<LabelTransformOperation> TransformOperations { get; set; }
 
         /// <summary>
         /// Constructor
