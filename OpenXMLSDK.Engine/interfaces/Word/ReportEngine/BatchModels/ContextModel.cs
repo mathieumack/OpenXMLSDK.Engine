@@ -242,6 +242,11 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.BatchModels
                 var item = GetItem<BooleanModel>(element.BoldKey);
                 element.Bold = item.Value;
             }
+            if (!string.IsNullOrEmpty(element.PageBreakBeforeKey) && ExistItem<BooleanModel>(element.PageBreakBeforeKey))
+            {
+                var item = GetItem<BooleanModel>(element.PageBreakBeforeKey);
+                element.PageBreakBefore = item.Value;
+            }
             SetVisibilityFromContext(element);
         }
 
