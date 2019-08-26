@@ -48,6 +48,17 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models
         public bool KeepNext { get; set; }
 
         /// <summary>
+        /// Indicate if a page break must be include before the Paragraph
+        /// https://docs.microsoft.com/fr-fr/dotnet/api/documentformat.openxml.wordprocessing.pagebreakbefore?view=openxml-2.8.1
+        /// </summary>
+        public bool PageBreakBefore { get; set; }
+
+        /// <summary>
+        /// Change the PageBreakBefore value from a ContextModel key
+        /// </summary>
+        public string PageBreakBeforeKey { get; set; }
+
+        /// <summary>
         /// Constructor
         /// </summary>
         public Paragraph()

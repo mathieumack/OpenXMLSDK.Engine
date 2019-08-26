@@ -35,6 +35,8 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 openXmlPar.ParagraphProperties.KeepLines = new DocumentFormat.OpenXml.Wordprocessing.KeepLines();
             if (paragraph.KeepNext)
                 openXmlPar.ParagraphProperties.KeepNext = new DocumentFormat.OpenXml.Wordprocessing.KeepNext();
+            if (paragraph.PageBreakBefore)
+                openXmlPar.ParagraphProperties.PageBreakBefore = new DocumentFormat.OpenXml.Wordprocessing.PageBreakBefore();
 
             parent.Append(openXmlPar);
             return openXmlPar;
