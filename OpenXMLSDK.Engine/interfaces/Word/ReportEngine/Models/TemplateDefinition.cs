@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using OpenXMLSDK.Engine.Word.ReportEngine.Models;
 
-namespace OpenXMLSDK.Engine.interfaces.Word.ReportEngine.Models
+namespace OpenXMLSDK.Engine.Word.ReportEngine.Models
 {
     /// <summary>
     /// Define a template definition (List of BaseElements)

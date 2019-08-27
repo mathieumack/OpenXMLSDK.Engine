@@ -16,7 +16,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// <param name="parent"></param>
         /// <param name="context"></param>
         /// <returns></returns>
-        public static DocumentFormat.OpenXml.Wordprocessing.Table Render(this UniformGrid uniformGrid, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart, IFormatProvider formatProvider)
+        public static DocumentFormat.OpenXml.Wordprocessing.Table Render(this UniformGrid uniformGrid, Document document, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart, IFormatProvider formatProvider)
         {
             context.ReplaceItem(uniformGrid, formatProvider);
 
@@ -26,12 +26,12 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 
                 if (datasource != null && datasource.Items.Count > 0)
                 {
-                    var createdTable = TableExtensions.CreateTable(uniformGrid, context, documentPart, formatProvider);
+                    var createdTable = TableExtensions.CreateTable(document, uniformGrid, context, documentPart, formatProvider);
                     var wordTable = createdTable.Item1;
                     var tableLook = createdTable.Item2;
 
                     // Before rows :
-                    TableExtensions.ManageBeforeAfterRows(uniformGrid, uniformGrid.BeforeRows, wordTable, context, documentPart, formatProvider);
+                    TableExtensions.ManageBeforeAfterRows(document, uniformGrid, uniformGrid.BeforeRows, wordTable, context, documentPart, formatProvider);
 
                     // Table of cells :
                     List<List<ContextModel>> rowsContentContexts = new List<List<ContextModel>>();
@@ -76,15 +76,15 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                         };
                         row.InheritFromParent(uniformGrid);
 
-                        wordTable.AppendChild(row.Render(wordTable, context, rowContentContext, uniformGrid.CellModel, documentPart, false, formatProvider));
+                        wordTable.AppendChild(row.Render(document, wordTable, context, rowContentContext, uniformGrid.CellModel, documentPart, false, formatProvider));
 
                         i++;
                     }
 
                     // After rows :
-                    TableExtensions.ManageBeforeAfterRows(uniformGrid, uniformGrid.AfterRows, wordTable, context, documentPart, formatProvider);
+                    TableExtensions.ManageBeforeAfterRows(document, uniformGrid, uniformGrid.AfterRows, wordTable, context, documentPart, formatProvider);
 
-                    TableExtensions.ManageFooterRow(uniformGrid, wordTable, tableLook, context, documentPart, formatProvider);
+                    TableExtensions.ManageFooterRow(document, uniformGrid, wordTable, tableLook, context, documentPart, formatProvider);
 
                     parent.AppendChild(wordTable);
                     return wordTable;

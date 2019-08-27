@@ -29,7 +29,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 if (pageItem is ForEachPage)
                 {
                     // render page
-                    ((ForEachPage)pageItem).Render(wdDoc.MainDocumentPart.Document.Body, context, wdDoc.MainDocumentPart, document, formatProvider);
+                    ((ForEachPage)pageItem).Render(document, wdDoc.MainDocumentPart.Document.Body, context, wdDoc.MainDocumentPart, formatProvider);
                 }
                 else if(pageItem is Page)
                 {
@@ -44,7 +44,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                         page.Margin = document.Margin;
 
                     // render page
-                    page.Render(wdDoc.MainDocumentPart.Document.Body, context, wdDoc.MainDocumentPart, formatProvider);
+                    page.Render(document, wdDoc.MainDocumentPart.Document.Body, context, wdDoc.MainDocumentPart, formatProvider);
                 }
             }
 
@@ -64,12 +64,12 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             // footers
             foreach (var footer in document.Footers)
             {
-                footer.Render(wdDoc.MainDocumentPart, context, formatProvider);
+                footer.Render(document, wdDoc.MainDocumentPart, context, formatProvider);
             }
             // headers
             foreach (var header in document.Headers)
             {
-                header.Render(wdDoc.MainDocumentPart, context, formatProvider);
+                header.Render(document, wdDoc.MainDocumentPart, context, formatProvider);
             }
         }
 
@@ -87,7 +87,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 if (pageItem is ForEachPage)
                 {
                     // render page
-                    ((ForEachPage)pageItem).Render(wdDoc.MainDocumentPart.Document.Body, context, wdDoc.MainDocumentPart, document, formatProvider);
+                    ((ForEachPage)pageItem).Render(document, wdDoc.MainDocumentPart.Document.Body, context, wdDoc.MainDocumentPart, formatProvider);
                 }
                 else if (pageItem is Page)
                 {
@@ -101,7 +101,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                         page.Margin = document.Margin;
 
                     // render page
-                    page.Render(wdDoc.MainDocumentPart.Document.Body, context, wdDoc.MainDocumentPart, formatProvider);
+                    page.Render(document, wdDoc.MainDocumentPart.Document.Body, context, wdDoc.MainDocumentPart, formatProvider);
                 }
             }
             //Replace Last page break
