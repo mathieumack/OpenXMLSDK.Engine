@@ -65,6 +65,11 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models
         public TableCellWidthModel CellWidth { get; set; }
 
         /// <summary>
+        /// Alternate configuration is the cell in an alternate row
+        /// </summary>
+        public AlternateRowCellConfiguration AlternateRowCellConfiguration { get; set; }
+
+        /// <summary>
         /// Constructor
         /// </summary>
         public Cell()
