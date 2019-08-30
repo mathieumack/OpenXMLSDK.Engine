@@ -126,12 +126,12 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         {
             if (isInAlternateRow && cell.AlternateRowCellConfiguration != null && cell.AlternateRowCellConfiguration.VerticalAlignment.HasValue)
                 cellProp.AppendChild(new TableCellVerticalAlignment { Val = cell.AlternateRowCellConfiguration.VerticalAlignment.Value.ToOOxml() });
-            else if (cell.Borders != null)
+            else if (cell.VerticalAlignment.HasValue)
                 cellProp.AppendChild(new TableCellVerticalAlignment { Val = cell.VerticalAlignment.Value.ToOOxml() });
 
             if (isInAlternateRow && cell.AlternateRowCellConfiguration != null && cell.AlternateRowCellConfiguration.TextDirection.HasValue)
                 cellProp.AppendChild(new TextDirection { Val = cell.AlternateRowCellConfiguration.TextDirection.ToOOxml() });
-            else if (cell.TextDirection != null)
+            else if (cell.TextDirection.HasValue)
                 cellProp.AppendChild(new TextDirection { Val = cell.TextDirection.ToOOxml() });
 
             if (isInAlternateRow && cell.AlternateRowCellConfiguration != null && cell.AlternateRowCellConfiguration.CellWidth != null)

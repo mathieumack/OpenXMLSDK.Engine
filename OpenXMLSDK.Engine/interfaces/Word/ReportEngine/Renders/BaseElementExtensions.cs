@@ -5,6 +5,7 @@ using OpenXMLSDK.Engine.Word.ReportEngine.Models;
 using OpenXMLSDK.Engine.Word.ReportEngine.BatchModels;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts;
 using System;
+using OpenXMLSDK.Engine.interfaces.Word.ReportEngine.Models;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 {
@@ -80,6 +81,10 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             else if (element is TemplateModel)
             {
                 (element as TemplateModel).Render(document, parent, context, documentPart, formatProvider);
+            }
+            else if (element is HtmlContent)
+            {
+                (element as HtmlContent).Render(document, parent, context, documentPart, formatProvider);
             }
 
             if (element.ChildElements != null && element.ChildElements.Count > 0)

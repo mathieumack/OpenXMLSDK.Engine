@@ -1,7 +1,5 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
-using System.Text;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
@@ -26,60 +24,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         {
             context.ReplaceItem(label, formatProvider);
 
-            if (label.IsHtml)
-            {
-                AlternativeFormatImportPart formatImportPart;
-                if (documentPart is MainDocumentPart)
-                    formatImportPart = (documentPart as MainDocumentPart).AddAlternativeFormatImportPart(AlternativeFormatImportPartType.Xhtml);
-                else if (documentPart is HeaderPart)
-                    formatImportPart = (documentPart as HeaderPart).AddAlternativeFormatImportPart(AlternativeFormatImportPartType.Xhtml);
-                else if (documentPart is FooterPart)
-                    formatImportPart = (documentPart as FooterPart).AddAlternativeFormatImportPart(AlternativeFormatImportPartType.Xhtml);
-                else
-                    return null;
-
-                return SetHtmlContent(label, parent, documentPart, formatImportPart);
-            }
-            else
-            {
-                return SetTextContent(label, parent, formatProvider);
-            }
-        }
-
-        /// <summary>
-        /// Set html content.
-        /// </summary>
-        /// <param name="label"></param>
-        /// <param name="parent"></param>
-        /// <param name="documentPart"></param>
-        /// <param name="formatImportPart"></param>
-        /// <returns></returns>
-        private static AltChunk SetHtmlContent(Label label, OpenXmlElement parent, OpenXmlPart documentPart, AlternativeFormatImportPart formatImportPart)
-        {
-            AltChunk altChunk = new AltChunk();
-            altChunk.Id = documentPart.GetIdOfPart(formatImportPart);
-
-            using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(label.Text)))
-            {
-                formatImportPart.FeedData(ms);
-            }
-
-            OpenXmlElement paragraph = null;
-            if (parent is DocumentFormat.OpenXml.Wordprocessing.Paragraph)
-            {
-                paragraph = parent;
-            }
-            else
-            {
-                paragraph = parent.Ancestors<DocumentFormat.OpenXml.Wordprocessing.Paragraph>().FirstOrDefault();
-            }
-
-            if (paragraph != null)
-            {
-                paragraph.InsertAfterSelf(altChunk);
-            }
-
-            return altChunk;
+            return SetTextContent(label, parent, formatProvider);
         }
 
         /// <summary>
