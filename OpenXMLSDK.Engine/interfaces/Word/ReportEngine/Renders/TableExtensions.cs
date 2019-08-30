@@ -19,16 +19,16 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// <param name="context"></param>
         /// <param name="formatProvider"></param>
         /// <returns></returns>
-        public static Table Render(this Models.Table table, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart, IFormatProvider formatProvider)
+        public static Table Render(this Models.Table table, Models.Document document, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart, IFormatProvider formatProvider)
         {
             context.ReplaceItem(table, formatProvider);
 
-            var createdTable = CreateTable(table, context, documentPart, formatProvider);
+            var createdTable = CreateTable(document, table, context, documentPart, formatProvider);
             var wordTable = createdTable.Item1;
             var tableLook = createdTable.Item2;
 
             // Before rows :
-            ManageBeforeAfterRows(table, table.BeforeRows, wordTable, context, documentPart, formatProvider);
+            ManageBeforeAfterRows(document, table, table.BeforeRows, wordTable, context, documentPart, formatProvider);
 
             // add content rows
             if (!string.IsNullOrEmpty(table.DataSourceKey))
@@ -59,7 +59,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                             item.AddItem("#" + table.AutoContextAddItemsPrefix + "_TableRow_IsEven#", new BooleanModel(i % 2 == 0));
                         }
 
-                        wordTable.AppendChild(row.Render(wordTable, item, documentPart, false, formatProvider));
+                        wordTable.AppendChild(row.Render(document, wordTable, item, documentPart, false, formatProvider));
 
                         i++;
                     }
@@ -70,21 +70,21 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 foreach (var row in table.Rows)
                 {
                     row.InheritFromParent(table);
-                    wordTable.AppendChild(row.Render(wordTable, context, documentPart, false, formatProvider));
+                    wordTable.AppendChild(row.Render(document, wordTable, context, documentPart, false, formatProvider));
                 }
             }
 
             // After rows :
-            ManageBeforeAfterRows(table, table.AfterRows, wordTable, context, documentPart, formatProvider);
+            ManageBeforeAfterRows(document, table, table.AfterRows, wordTable, context, documentPart, formatProvider);
 
             // Footer
-            ManageFooterRow(table, wordTable, tableLook, context, documentPart, formatProvider);
+            ManageFooterRow(document, table, wordTable, tableLook, context, documentPart, formatProvider);
 
             parent.AppendChild(wordTable);
             return wordTable;
         }
 
-        internal static Tuple<Table, TableLook> CreateTable(Models.Table table, ContextModel context, OpenXmlPart documentPart, IFormatProvider formatProvider)
+        internal static Tuple<Table, TableLook> CreateTable(Models.Document document, Models.Table table, ContextModel context, OpenXmlPart documentPart, IFormatProvider formatProvider)
         {
             Table wordTable = new Table();
 
@@ -131,7 +131,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             // add header row
             if (table.HeaderRow != null)
             {
-                wordTable.AppendChild(table.HeaderRow.Render(wordTable, context, documentPart, true, formatProvider));
+                wordTable.AppendChild(table.HeaderRow.Render(document, wordTable, context, documentPart, true, formatProvider));
 
                 tableLook.FirstRow = OnOffValue.FromBoolean(true);
             }
@@ -139,18 +139,18 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             return new Tuple<Table, TableLook>(wordTable, tableLook);
         }
 
-        internal static void ManageFooterRow(Models.Table table, Table wordTable, TableLook tableLook, ContextModel context, OpenXmlPart documentPart, IFormatProvider formatProvider)
+        internal static void ManageFooterRow(Models.Document document, Models.Table table, Table wordTable, TableLook tableLook, ContextModel context, OpenXmlPart documentPart, IFormatProvider formatProvider)
         {
             // add footer row
             if (table.FooterRow != null)
             {
-                wordTable.AppendChild(table.FooterRow.Render(wordTable, context, documentPart, false, formatProvider));
+                wordTable.AppendChild(table.FooterRow.Render(document, wordTable, context, documentPart, false, formatProvider));
 
                 tableLook.LastRow = OnOffValue.FromBoolean(true);
             }
         }
 
-        internal static void ManageBeforeAfterRows(Models.Table table, IList<Models.Row> rows, Table wordTable, ContextModel context, OpenXmlPart documentPart, IFormatProvider formatProvider)
+        internal static void ManageBeforeAfterRows(Models.Document document, Models.Table table, IList<Models.Row> rows, Table wordTable, ContextModel context, OpenXmlPart documentPart, IFormatProvider formatProvider)
         {
             // After rows :
             if (rows != null && rows.Count > 0)
@@ -158,7 +158,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 foreach (var row in rows)
                 {
                     row.InheritFromParent(table);
-                    wordTable.AppendChild(row.Render(wordTable, context, documentPart, false, formatProvider));
+                    wordTable.AppendChild(row.Render(document, wordTable, context, documentPart, false, formatProvider));
                 }
             }
         }

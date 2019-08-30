@@ -19,12 +19,13 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// Render a cell in a word document
         /// </summary>
         /// <param name="cell"></param>
+        /// <param name="document"></param>
         /// <param name="parent"></param>
         /// <param name="context"></param>
         /// <param name="documentPart"></param>
         /// <param name="formatProvider"></param>
         /// <returns></returns>
-        public static TableCell Render(this Cell cell, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart, IFormatProvider formatProvider)
+        public static TableCell Render(this Cell cell, Models.Document document, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart, IFormatProvider formatProvider)
         {
             context.ReplaceItem(cell, formatProvider);
 
@@ -85,16 +86,16 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 
             if (cell.Show)
             {
-                if (cell.ChildElements.Any(x => x is OpenXMLSDK.Engine.Word.ReportEngine.Models.Paragraph)
-              || cell.ChildElements.Any(x => x is OpenXMLSDK.Engine.Word.ReportEngine.Models.ForEach))
+                if (cell.ChildElements.Any(x => x is Models.Paragraph)
+              || cell.ChildElements.Any(x => x is ForEach))
                 {
                     foreach (var element in cell.ChildElements)
                     {
                         element.InheritFromParent(cell);
-                        if (element is OpenXMLSDK.Engine.Word.ReportEngine.Models.Paragraph
-                            || element is OpenXMLSDK.Engine.Word.ReportEngine.Models.ForEach)
+                        if (element is Models.Paragraph
+                            || element is ForEach)
                         {
-                            element.Render(wordCell, context, documentPart, formatProvider);
+                            element.Render(document, wordCell, context, documentPart, formatProvider);
                         }
                         else
                         {
@@ -108,7 +109,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                             wordCell.AppendChild(paragraph);
                             var r = new Run();
                             paragraph.AppendChild(r);
-                            element.Render(r, context, documentPart, formatProvider);
+                            element.Render(document, r, context, documentPart, formatProvider);
                         }
                     }
                 }
@@ -128,7 +129,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     foreach (var element in cell.ChildElements)
                     {
                         element.InheritFromParent(cell);
-                        element.Render(r, context, documentPart, formatProvider);
+                        element.Render(document, r, context, documentPart, formatProvider);
                     }
                 }
             }          

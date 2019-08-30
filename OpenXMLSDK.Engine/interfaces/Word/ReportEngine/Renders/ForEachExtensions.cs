@@ -8,7 +8,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 {
     public static class ForEachExtensions
     {
-        public static void Render(this ForEach forEach, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart, IFormatProvider formatProvider)
+        public static void Render(this ForEach forEach, Document document, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart, IFormatProvider formatProvider)
         {
             context.ReplaceItem(forEach, formatProvider);
 
@@ -40,7 +40,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 
                             foreach (var template in forEach.ItemTemplate)
                             {
-                                template.Clone().Render(parent, item, documentPart, formatProvider);
+                                template.Clone().Render(document, parent, item, documentPart, formatProvider);
                             }
 
                             i++;

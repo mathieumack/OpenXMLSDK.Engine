@@ -10,7 +10,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 {
     public static class RowExtensions
     {
-        public static TableRow Render(this Row row, OpenXmlElement parent, ContextModel context, IList<ContextModel> cellsContext, Cell cellModel, OpenXmlPart documentPart, bool isHeader, IFormatProvider formatProvider)
+        public static TableRow Render(this Row row, Models.Document document, OpenXmlElement parent, ContextModel context, IList<ContextModel> cellsContext, Cell cellModel, OpenXmlPart documentPart, bool isHeader, IFormatProvider formatProvider)
         {
             context.ReplaceItem(row, formatProvider);
 
@@ -37,13 +37,13 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             {
                 var cell = cellModel.Clone();
                 cell.InheritFromParent(row);
-                wordRow.AppendChild(cell.Render(wordRow, cellContext, documentPart, formatProvider));
+                wordRow.AppendChild(cell.Render(document, wordRow, cellContext, documentPart, formatProvider));
             }
 
             return wordRow;
         }
 
-        public static TableRow Render(this Row row, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart, bool isHeader, IFormatProvider formatProvider)
+        public static TableRow Render(this Row row, Models.Document document, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart, bool isHeader, IFormatProvider formatProvider)
         {
             if (!string.IsNullOrWhiteSpace(row.ShowKey) && context.ExistItem<BooleanModel>(row.ShowKey) && !context.GetItem<BooleanModel>(row.ShowKey).Value)
                 return null;
@@ -72,7 +72,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             foreach (var cell in row.Cells)
             {
                 cell.InheritFromParent(row);
-                wordRow.AppendChild(cell.Render(wordRow, context, documentPart, formatProvider));
+                wordRow.AppendChild(cell.Render(document, wordRow, context, documentPart, formatProvider));
             }
 
             return wordRow;
