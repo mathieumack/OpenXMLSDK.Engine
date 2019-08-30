@@ -1,6 +1,6 @@
 ﻿using OpenXMLSDK.Engine.Word.ReportEngine.Models;
 
-namespace OpenXMLSDK.Engine.interfaces.Word.ReportEngine.Models
+namespace OpenXMLSDK.Engine.Word.ReportEngine.Models
 {
     public class HtmlContent : BaseElement
     {

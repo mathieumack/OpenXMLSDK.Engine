@@ -174,6 +174,19 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.BatchModels
         /// </summary>
         /// <param name="element"></param>
         /// <param name="formatProvider"></param>
+        public void ReplaceItem(HtmlContent element, IFormatProvider formatProvider)
+        {
+            if (!string.IsNullOrEmpty(element.Text))
+                element.Text = ReplaceText(element.Text, formatProvider);
+
+            SetVisibilityFromContext(element);
+        }
+
+        /// <summary>
+        /// Replace text, FontColor and visibility of element
+        /// </summary>
+        /// <param name="element"></param>
+        /// <param name="formatProvider"></param>
         public void ReplaceItem(BookmarkStart element, IFormatProvider formatProvider)
         {
             if (!string.IsNullOrEmpty(element.Id))
