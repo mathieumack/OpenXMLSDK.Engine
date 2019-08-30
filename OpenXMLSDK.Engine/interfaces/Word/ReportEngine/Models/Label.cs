@@ -8,12 +8,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models
     /// Model for a label
     /// </summary>
     public class Label : BaseElement
-    {
-        /// <summary>
-        /// Flag html content
-        /// </summary>
-        public bool IsHtml { get; set; }
-        
+    {        
         /// <summary>
         /// Label content (can contains #key# from context)
         /// </summary>

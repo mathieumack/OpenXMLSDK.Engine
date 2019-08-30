@@ -41,10 +41,16 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             TableCellProperties cellProp = new TableCellProperties();
             wordCell.AppendChild(cellProp);
 
-            cellProp.AddBorders(cell, isInAlternateRow);
-            cellProp.AddShading(cell, isInAlternateRow);
-            cellProp.AddMargin(cell, isInAlternateRow);
-            cellProp.AddJustifications(cell, isInAlternateRow);
+            if (isInAlternateRow)
+                cell.ReplaceAlternateConfiguration();
+
+            cellProp.AddBorders(cell);
+            cellProp.AddShading(cell);
+            cellProp.AddMargin(cell);
+            cellProp.AddJustifications(cell);
+
+            if (cell.CellWidth != null)
+                cellProp.AppendChild(new TableCellWidth() { Width = cell.CellWidth.Width, Type = cell.CellWidth.Type.ToOOxml() });
 
             // manage cell column and row span
             if (cell.ColSpan > 1)
@@ -116,28 +122,32 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             return wordCell;
         }
 
+        private static void ReplaceAlternateConfiguration(this Cell cell)
+        {
+            if (cell.AlternateRowCellConfiguration is null)
+                return;
+
+            cell.Shading = cell.AlternateRowCellConfiguration.Shading;
+            cell.Borders = cell.AlternateRowCellConfiguration.Borders;
+            cell.Margin = cell.AlternateRowCellConfiguration.Margin;
+
+            cell.VerticalAlignment = cell.AlternateRowCellConfiguration.VerticalAlignment;
+            cell.TextDirection = cell.AlternateRowCellConfiguration.TextDirection;
+            cell.CellWidth = cell.AlternateRowCellConfiguration.CellWidth;
+        }
+
         /// <summary>
         /// Add border values to the cell properties
         /// </summary>
         /// <param name="cellProp"></param>
         /// <param name="cell"></param>
-        /// <param name="isInAlternateRow"></param>
-        private static void AddJustifications(this TableCellProperties cellProp, Cell cell, bool isInAlternateRow)
+        private static void AddJustifications(this TableCellProperties cellProp, Cell cell)
         {
-            if (isInAlternateRow && cell.AlternateRowCellConfiguration != null && cell.AlternateRowCellConfiguration.VerticalAlignment.HasValue)
-                cellProp.AppendChild(new TableCellVerticalAlignment { Val = cell.AlternateRowCellConfiguration.VerticalAlignment.Value.ToOOxml() });
-            else if (cell.Borders != null)
+            if (cell.VerticalAlignment.HasValue)
                 cellProp.AppendChild(new TableCellVerticalAlignment { Val = cell.VerticalAlignment.Value.ToOOxml() });
 
-            if (isInAlternateRow && cell.AlternateRowCellConfiguration != null && cell.AlternateRowCellConfiguration.TextDirection.HasValue)
-                cellProp.AppendChild(new TextDirection { Val = cell.AlternateRowCellConfiguration.TextDirection.ToOOxml() });
-            else if (cell.TextDirection != null)
+            if (cell.TextDirection.HasValue)
                 cellProp.AppendChild(new TextDirection { Val = cell.TextDirection.ToOOxml() });
-
-            if (isInAlternateRow && cell.AlternateRowCellConfiguration != null && cell.AlternateRowCellConfiguration.CellWidth != null)
-                cellProp.AppendChild(new TableCellWidth() { Width = cell.AlternateRowCellConfiguration.CellWidth.Width, Type = cell.AlternateRowCellConfiguration.CellWidth.Type.ToOOxml() });
-            else if (cell.CellWidth != null)
-                cellProp.AppendChild(new TableCellWidth() { Width = cell.CellWidth.Width, Type = cell.CellWidth.Type.ToOOxml() });
         }
 
         /// <summary>
@@ -146,11 +156,9 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// <param name="cellProp"></param>
         /// <param name="cell"></param>
         /// <param name="isInAlternateRow"></param>
-        private static void AddShading(this TableCellProperties cellProp, Cell cell, bool isInAlternateRow)
+        private static void AddShading(this TableCellProperties cellProp, Cell cell)
         {
-            if(isInAlternateRow && cell.AlternateRowCellConfiguration != null && !string.IsNullOrWhiteSpace(cell.AlternateRowCellConfiguration.Shading))
-                cellProp.Shading = new Shading() { Fill = cell.Shading };
-            else if (!string.IsNullOrEmpty(cell.Shading))
+            if (!string.IsNullOrEmpty(cell.Shading))
                 cellProp.Shading = new Shading() { Fill = cell.Shading };
         }
 
@@ -160,14 +168,9 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// <param name="cellProp"></param>
         /// <param name="cell"></param>
         /// <param name="isInAlternateRow"></param>
-        private static void AddBorders(this TableCellProperties cellProp, Cell cell, bool isInAlternateRow)
+        private static void AddBorders(this TableCellProperties cellProp, Cell cell)
         {
-            if (isInAlternateRow && cell.AlternateRowCellConfiguration != null && cell.AlternateRowCellConfiguration.Borders != null)
-            {
-                TableCellBorders borders = cell.AlternateRowCellConfiguration.Borders.RenderCellBorder();
-                cellProp.AppendChild(borders);
-            }
-            else if (cell.Borders != null)
+            if (cell.Borders != null)
             {
                 TableCellBorders borders = cell.Borders.RenderCellBorder();
                 cellProp.AppendChild(borders);
@@ -180,19 +183,9 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// <param name="cellProp"></param>
         /// <param name="cell"></param>
         /// <param name="isInAlternateRow"></param>
-        private static void AddMargin(this TableCellProperties cellProp, Cell cell, bool isInAlternateRow)
+        private static void AddMargin(this TableCellProperties cellProp, Cell cell)
         {
-            if (isInAlternateRow && cell.AlternateRowCellConfiguration != null && cell.AlternateRowCellConfiguration.Margin != null)
-            {
-                cellProp.AppendChild(new TableCellMargin()
-                {
-                    LeftMargin = new LeftMargin() { Width = cell.AlternateRowCellConfiguration.Margin.Left.ToString(CultureInfo.InvariantCulture), Type = TableWidthUnitValues.Dxa },
-                    TopMargin = new TopMargin() { Width = cell.AlternateRowCellConfiguration.Margin.Top.ToString(CultureInfo.InvariantCulture), Type = TableWidthUnitValues.Dxa },
-                    RightMargin = new RightMargin() { Width = cell.AlternateRowCellConfiguration.Margin.Right.ToString(CultureInfo.InvariantCulture), Type = TableWidthUnitValues.Dxa },
-                    BottomMargin = new BottomMargin() { Width = cell.AlternateRowCellConfiguration.Margin.Bottom.ToString(CultureInfo.InvariantCulture), Type = TableWidthUnitValues.Dxa }
-                });
-            }
-            else if (cell.Margin != null)
+            if (cell.Margin != null)
             {
                 cellProp.AppendChild(new TableCellMargin()
                 {
