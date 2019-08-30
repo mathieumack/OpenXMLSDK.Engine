@@ -28,6 +28,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                                 // We add automatic keys :
                                 // Is first item
                                 item.AddItem("#" + forEach.AutoContextAddItemsPrefix + "_ForEach_IsFirstItem#", new BooleanModel(i == 0));
+                                item.AddItem("#" + forEach.AutoContextAddItemsPrefix + "_ForEach_IsNotFirstItem#", new BooleanModel(i > 0));
                                 // Is last item
                                 item.AddItem("#" + forEach.AutoContextAddItemsPrefix + "_ForEach_IsLastItem#", new BooleanModel(i == datasource.Items.Count - 1));
                                 // Index of the element (Based on 0, and based on 1)
