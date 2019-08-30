@@ -10,7 +10,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 {
     public static class RowExtensions
     {
-        public static TableRow Render(this Row row, Models.Document document, OpenXmlElement parent, ContextModel context, IList<ContextModel> cellsContext, Cell cellModel, OpenXmlPart documentPart, bool isHeader, IFormatProvider formatProvider)
+        public static TableRow Render(this Row row, Models.Document document, OpenXmlElement parent, ContextModel context, IList<ContextModel> cellsContext, Cell cellModel, OpenXmlPart documentPart, bool isHeader, bool isAlternateRow, IFormatProvider formatProvider)
         {
             context.ReplaceItem(row, formatProvider);
 
@@ -37,7 +37,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             {
                 var cell = cellModel.Clone();
                 cell.InheritFromParent(row);
-                wordRow.AppendChild(cell.Render(document, wordRow, cellContext, documentPart, formatProvider));
+                wordRow.AppendChild(cell.Render(document, wordRow, cellContext, documentPart, isAlternateRow, formatProvider));
             }
 
             return wordRow;
