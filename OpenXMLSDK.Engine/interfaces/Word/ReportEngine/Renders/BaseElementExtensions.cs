@@ -15,7 +15,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             return JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(element), new JsonSerializerSettings() { Converters = { new JsonContextConverter() } });
         }
 
-        public static OpenXmlElement Render(this BaseElement element, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart, IFormatProvider formatProvider)
+        public static OpenXmlElement Render(this BaseElement element, Document document, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart, IFormatProvider formatProvider)
         {
             context.ReplaceItem(element, formatProvider);
 
@@ -23,19 +23,19 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 
             if (element.Show)
             {
-                createdElement = element.RenderItem(parent, context, documentPart, formatProvider);
+                createdElement = element.RenderItem(document, parent, context, documentPart, formatProvider);
             }
             return createdElement;
         }
 
-        private static OpenXmlElement RenderItem(this BaseElement element, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart, IFormatProvider formatProvider)
+        private static OpenXmlElement RenderItem(this BaseElement element, Document document, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart, IFormatProvider formatProvider)
         {
             OpenXmlElement createdElement = null;
 
             // Keep this statement order, because of the UniformGrid inherits from Table
             if (element is ForEach)
             {
-                (element as ForEach).Render(parent, context, documentPart, formatProvider);
+                (element as ForEach).Render(document, parent, context, documentPart, formatProvider);
             }
             else if (element is Label)
             {
@@ -63,11 +63,11 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             }
             else if (element is UniformGrid)
             {
-                createdElement = (element as UniformGrid).Render(parent, context, documentPart, formatProvider);
+                createdElement = (element as UniformGrid).Render(document, parent, context, documentPart, formatProvider);
             }
             else if (element is Table)
             {
-                createdElement = (element as Table).Render(parent, context, documentPart, formatProvider);
+                createdElement = (element as Table).Render(document, parent, context, documentPart, formatProvider);
             }
             else if (element is TableOfContents)
             {
@@ -77,13 +77,17 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             {
                 (element as BarModel).Render(parent, context, documentPart, formatProvider);
             }
+            else if (element is TemplateModel)
+            {
+                (element as TemplateModel).Render(document, parent, context, documentPart, formatProvider);
+            }
 
             if (element.ChildElements != null && element.ChildElements.Count > 0)
             {
                 foreach (var e in element.ChildElements)
                 {
                     e.InheritFromParent(element);
-                    e.Render(createdElement ?? parent, context, documentPart, formatProvider);
+                    e.Render(document, createdElement ?? parent, context, documentPart, formatProvider);
                 }
             }
 

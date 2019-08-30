@@ -267,6 +267,9 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             page2.Margin = new SpacingModel() { Top = 1418, Left = 845, Header = 709, Footer = 709 };
             doc.Pages.Add(page1);
             doc.Pages.Add(page2);
+
+            // Template 1 :
+
             var paragraph = new Paragraph();
             paragraph.ChildElements.Add(new Label() { Text = "Ceci est un texte avec accents (éèàù)", FontSize = "30", FontName = "Arial" });
             paragraph.ChildElements.Add(new Label() { Text = "#KeyTest1#", FontSize = "40",
@@ -296,7 +299,20 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                 BorderRightColor = "FFEEDD",
                 BorderBottomColor = "FF1234"
             };
+
+            var templateDefinition = new TemplateDefinition()
+            {
+                TemplateId = "Template 1",
+                Note = "Sample paragraph",
+                ChildElements = new List<BaseElement>() { paragraph }
+            };
+            doc.TemplateDefinitions.Add(templateDefinition);
+
+            page1.ChildElements.Add(new TemplateModel() { TemplateId = "Template 1" });
             page1.ChildElements.Add(paragraph);
+            page1.ChildElements.Add(new TemplateModel() { TemplateId = "Template 1" });
+            page1.ChildElements.Add(new TemplateModel() { TemplateId = "Template 1" });
+
             var p2 = new Paragraph();
             p2.Shading = "#ParagraphShading#";
             p2.ChildElements.Add(new Label() { Text = "   texte paragraph2 avec espace avant", FontSize = "20", SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve });

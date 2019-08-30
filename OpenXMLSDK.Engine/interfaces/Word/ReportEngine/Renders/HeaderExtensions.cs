@@ -15,10 +15,11 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// Render the header of document
         /// </summary>
         /// <param name="header"></param>
+        /// <param name="document"></param>
         /// <param name="mainDocumentPart"></param>
         /// <param name="context"></param>
         /// <param name="formatProvider"></param>
-        public static void Render(this Models.Header header, MainDocumentPart mainDocumentPart, ContextModel context, IFormatProvider formatProvider)
+        public static void Render(this Models.Header header, Models.Document document, MainDocumentPart mainDocumentPart, ContextModel context, IFormatProvider formatProvider)
         {
             var headerPart = mainDocumentPart.AddNewPart<HeaderPart>();
 
@@ -27,7 +28,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             foreach (var element in header.ChildElements)
             {
                 element.InheritFromParent(header);
-                element.Render(headerPart.Header, context, headerPart, formatProvider);
+                element.Render(document, headerPart.Header, context, headerPart, formatProvider);
             }
 
             string headerPartId = mainDocumentPart.GetIdOfPart(headerPart);
@@ -40,7 +41,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 section.PrependChild(new HeaderReference() { Id = headerPartId, Type = (DocumentFormat.OpenXml.Wordprocessing.HeaderFooterValues)(int)header.Type });
             }
 
-            if (header.Type == OpenXMLSDK.Engine.Word.HeaderFooterValues.First)
+            if (header.Type == HeaderFooterValues.First)
             {
                 mainDocumentPart.Document.Body.Descendants<SectionProperties>().First().PrependChild(new TitlePage());
             }

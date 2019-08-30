@@ -14,11 +14,12 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// <summary>
         /// Render the header of document
         /// </summary>
-        /// <param name="header"></param>
+        /// <param name="footer"></param>
+        /// <param name="document"></param>
         /// <param name="mainDocumentPart"></param>
         /// <param name="context"></param>
         /// <param name="formatProvider"></param>
-        public static void Render(this Models.Footer footer, MainDocumentPart mainDocumentPart, ContextModel context, IFormatProvider formatProvider)
+        public static void Render(this Models.Footer footer, Models.Document document, MainDocumentPart mainDocumentPart, ContextModel context, IFormatProvider formatProvider)
         {
             var footerPart = mainDocumentPart.AddNewPart<FooterPart>();
 
@@ -27,7 +28,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             foreach (var element in footer.ChildElements)
             {
                 element.InheritFromParent(footer);
-                element.Render(footerPart.Footer, context, footerPart, formatProvider);
+                element.Render(document, footerPart.Footer, context, footerPart, formatProvider);
             }
 
             string footerPartId = mainDocumentPart.GetIdOfPart(footerPart);

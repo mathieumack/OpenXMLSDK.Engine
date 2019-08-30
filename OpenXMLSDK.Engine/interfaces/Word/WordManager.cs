@@ -646,12 +646,12 @@ namespace OpenXMLSDK.Engine.Word
                     // footers
                     foreach (var footer in report.Document.Footers)
                     {
-                        footer.Render(wdDoc.MainDocumentPart, report.ContextModel, formatProvider);
+                        footer.Render(report.Document, wdDoc.MainDocumentPart, report.ContextModel, formatProvider);
                     }
                     // headers
                     foreach (var header in report.Document.Headers)
                     {
-                        header.Render(wdDoc.MainDocumentPart, report.ContextModel, formatProvider);
+                        header.Render(report.Document, wdDoc.MainDocumentPart, report.ContextModel, formatProvider);
                     }
                 }
 

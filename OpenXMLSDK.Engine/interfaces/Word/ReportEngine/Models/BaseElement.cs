@@ -20,7 +20,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models
         /// <summary>
         /// Childrens
         /// </summary>
-        public IList<BaseElement> ChildElements { get; set; } = new List<BaseElement>();
+        public List<BaseElement> ChildElements { get; set; } = new List<BaseElement>();
 
         /// <summary>
         /// Font
