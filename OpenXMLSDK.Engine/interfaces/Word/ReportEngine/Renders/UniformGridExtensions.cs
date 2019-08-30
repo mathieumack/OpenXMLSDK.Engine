@@ -68,6 +68,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     }
 
                     // Now we create all row :
+                    i = 0;
                     foreach (var rowContentContext in rowsContentContexts)
                     {
                         var row = new Row
@@ -76,7 +77,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                         };
                         row.InheritFromParent(uniformGrid);
 
-                        wordTable.AppendChild(row.Render(document, wordTable, context, rowContentContext, uniformGrid.CellModel, documentPart, false, formatProvider));
+                        wordTable.AppendChild(row.Render(document, wordTable, context, rowContentContext, uniformGrid.CellModel, documentPart, false, (i % 2 == 1), formatProvider));
 
                         i++;
                     }
