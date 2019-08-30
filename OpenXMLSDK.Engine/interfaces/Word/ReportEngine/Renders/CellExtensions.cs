@@ -149,7 +149,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         private static void AddShading(this TableCellProperties cellProp, Cell cell, bool isInAlternateRow)
         {
             if(isInAlternateRow && cell.AlternateRowCellConfiguration != null && !string.IsNullOrWhiteSpace(cell.AlternateRowCellConfiguration.Shading))
-                cellProp.Shading = new Shading() { Fill = cell.Shading };
+                cellProp.Shading = new Shading() { Fill = cell.AlternateRowCellConfiguration.Shading };
             else if (!string.IsNullOrEmpty(cell.Shading))
                 cellProp.Shading = new Shading() { Fill = cell.Shading };
         }
