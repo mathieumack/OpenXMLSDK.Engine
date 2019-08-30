@@ -59,7 +59,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                             item.AddItem("#" + table.AutoContextAddItemsPrefix + "_TableRow_IsEven#", new BooleanModel(i % 2 == 0));
                         }
 
-                        wordTable.AppendChild(row.Render(document, wordTable, item, documentPart, false, formatProvider));
+                        wordTable.AppendChild(row.Render(document, wordTable, item, documentPart, false, (i % 2 == 1), formatProvider));
 
                         i++;
                     }
@@ -67,10 +67,12 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             }
             else
             {
+                int i = 0;
                 foreach (var row in table.Rows)
                 {
                     row.InheritFromParent(table);
-                    wordTable.AppendChild(row.Render(document, wordTable, context, documentPart, false, formatProvider));
+                    wordTable.AppendChild(row.Render(document, wordTable, context, documentPart, false, (i % 2 == 1), formatProvider));
+                    i++;
                 }
             }
 
@@ -131,7 +133,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             // add header row
             if (table.HeaderRow != null)
             {
-                wordTable.AppendChild(table.HeaderRow.Render(document, wordTable, context, documentPart, true, formatProvider));
+                wordTable.AppendChild(table.HeaderRow.Render(document, wordTable, context, documentPart, true, false, formatProvider));
 
                 tableLook.FirstRow = OnOffValue.FromBoolean(true);
             }
@@ -144,7 +146,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             // add footer row
             if (table.FooterRow != null)
             {
-                wordTable.AppendChild(table.FooterRow.Render(document, wordTable, context, documentPart, false, formatProvider));
+                wordTable.AppendChild(table.FooterRow.Render(document, wordTable, context, documentPart, false, false, formatProvider));
 
                 tableLook.LastRow = OnOffValue.FromBoolean(true);
             }
@@ -158,7 +160,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 foreach (var row in rows)
                 {
                     row.InheritFromParent(table);
-                    wordTable.AppendChild(row.Render(document, wordTable, context, documentPart, false, formatProvider));
+                    wordTable.AppendChild(row.Render(document, wordTable, context, documentPart, false, false, formatProvider));
                 }
             }
         }
