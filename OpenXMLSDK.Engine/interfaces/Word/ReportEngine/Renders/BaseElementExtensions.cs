@@ -77,10 +77,6 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             {
                 (element as BarModel).Render(parent, context, documentPart, formatProvider);
             }
-            else if (element is TemplateModel)
-            {
-                (element as TemplateModel).Render(document, parent, context, documentPart, formatProvider);
-            }
             else if (element is HtmlContent)
             {
                 (element as HtmlContent).Render(parent, context, documentPart, formatProvider);
@@ -88,10 +84,20 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 
             if (element.ChildElements != null && element.ChildElements.Count > 0)
             {
-                foreach (var e in element.ChildElements)
+                for(int i = 0; i < element.ChildElements.Count; i++)
                 {
-                    e.InheritFromParent(element);
-                    e.Render(document, createdElement ?? parent, context, documentPart, formatProvider);
+                    var e = element.ChildElements[i];
+
+                    if (element is TemplateModel)
+                    {
+                        var elements = (element as TemplateModel).ExtractTemplateItems(document);
+                        element.ChildElements.InsertRange(i, elements);
+                    }
+                    else
+                    {
+                        e.InheritFromParent(element);
+                        e.Render(document, createdElement ?? parent, context, documentPart, formatProvider);
+                    }
                 }
             }
 
