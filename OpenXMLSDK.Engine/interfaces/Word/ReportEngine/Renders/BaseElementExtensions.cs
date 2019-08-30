@@ -84,7 +84,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             }
             else if (element is HtmlContent)
             {
-                (element as HtmlContent).Render(document, parent, context, documentPart, formatProvider);
+                (element as HtmlContent).Render(parent, context, documentPart, formatProvider);
             }
 
             if (element.ChildElements != null && element.ChildElements.Count > 0)
