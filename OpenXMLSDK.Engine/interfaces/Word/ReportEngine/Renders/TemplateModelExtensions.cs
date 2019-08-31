@@ -1,8 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using DocumentFormat.OpenXml;
-using DocumentFormat.OpenXml.Packaging;
-using OpenXMLSDK.Engine.Word.ReportEngine.BatchModels;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
@@ -21,12 +20,8 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// <param name="documentPart"></param>
         /// <param name="formatProvider"></param>
         /// <returns></returns>
-        public static void Render(this TemplateModel templateModel, 
-                                        Document document, 
-                                        OpenXmlElement parent, 
-                                        ContextModel context, 
-                                        OpenXmlPart documentPart, 
-                                        IFormatProvider formatProvider)
+        public static List<BaseElement> ExtractTemplateItems(this TemplateModel templateModel, 
+                                                                    Document document)
         {
             if (document.TemplateDefinitions == null)
                 throw new ArgumentNullException(nameof(document), "There is no template definitions defined in the document");
@@ -36,10 +31,9 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             var templateDefinition = document.TemplateDefinitions.FirstOrDefault(e => e.TemplateId == templateModel.TemplateId);
 
             if (templateDefinition.ChildElements == null)
-                return ;
+                return new List<BaseElement>();
 
-            foreach (var child in templateDefinition.ChildElements)
-                child.Render(document, parent, context, documentPart, formatProvider);
+            return templateDefinition.ChildElements;
         }
     }
 }
