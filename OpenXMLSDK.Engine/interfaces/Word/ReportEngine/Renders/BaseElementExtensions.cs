@@ -88,10 +88,13 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 {
                     var e = element.ChildElements[i];
 
-                    if (element is TemplateModel)
+                    if (e is TemplateModel)
                     {
-                        var elements = (element as TemplateModel).ExtractTemplateItems(document);
-                        element.ChildElements.InsertRange(i, elements);
+                        var elements = (e as TemplateModel).ExtractTemplateItems(document);
+                        if (i == element.ChildElements.Count - 1)
+                            element.ChildElements.AddRange(elements);
+                        else
+                            element.ChildElements.InsertRange(i + 1, elements);
                     }
                     else
                     {
