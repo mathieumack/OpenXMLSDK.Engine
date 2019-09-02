@@ -17,23 +17,32 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// <param name="documentPart"></param>
         /// <param name="formatProvider"></param>
         /// <returns></returns>
-        public static OpenXmlElement Render(this Hyperlink hyperlink, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart, IFormatProvider formatProvider)
+        public static OpenXmlElement Render(this Hyperlink hyperlink,
+                                                    OpenXmlElement parent,
+                                                    ContextModel context,
+                                                    OpenXmlPart documentPart,
+                                                    IFormatProvider formatProvider)
         {
             context.ReplaceItem(hyperlink, formatProvider);
 
-            if (hyperlink.Show)
-            {
-                DocumentFormat.OpenXml.Wordprocessing.Hyperlink fieldCodeXmlelement = new DocumentFormat.OpenXml.Wordprocessing.Hyperlink();
+            if (!hyperlink.Show)
+                return null;
+
+            var fieldCodeXmlelement = new DocumentFormat.OpenXml.Wordprocessing.Hyperlink();
+
+            if(!string.IsNullOrWhiteSpace(hyperlink.Anchor))
                 fieldCodeXmlelement.Anchor = hyperlink.Anchor;
-
-                parent.AppendChild(fieldCodeXmlelement);
-
-                hyperlink.Text.Render(fieldCodeXmlelement, context, documentPart, formatProvider);
-
-                return fieldCodeXmlelement;
+            else if(!string.IsNullOrWhiteSpace(hyperlink.WebSiteUri))
+            {
+                HyperlinkRelationship hyperlinkPart = documentPart.AddHyperlinkRelationship(new Uri(hyperlink.WebSiteUri), true);
+                fieldCodeXmlelement.Id = hyperlinkPart.Id;
             }
 
-            return null;
+            parent.AppendChild(fieldCodeXmlelement);
+
+            hyperlink.Text.Render(fieldCodeXmlelement, context, documentPart, formatProvider);
+
+            return fieldCodeXmlelement;
         }
     }
 }
