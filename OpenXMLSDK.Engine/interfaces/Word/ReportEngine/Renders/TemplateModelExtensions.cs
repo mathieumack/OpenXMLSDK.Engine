@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DocumentFormat.OpenXml;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models;
+using OpenXMLSDK.Engine.Word.ReportEngine.Renders;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 {
@@ -33,7 +34,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             if (templateDefinition.ChildElements == null)
                 return new List<BaseElement>();
 
-            return templateDefinition.ChildElements;
+            return templateDefinition.Clone().ChildElements;
         }
     }
 }

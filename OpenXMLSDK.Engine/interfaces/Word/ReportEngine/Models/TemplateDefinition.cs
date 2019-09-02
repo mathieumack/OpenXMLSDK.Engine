@@ -5,7 +5,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models
     /// <summary>
     /// Define a template definition (List of BaseElements)
     /// </summary>
-    public class TemplateDefinition
+    public class TemplateDefinition : BaseElement
     {
         /// <summary>
         /// Id of the template
@@ -17,9 +17,10 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models
         /// </summary>
         public string Note { get; set; }
 
-        /// <summary>
-        /// List of controls contained in the template
-        /// </summary>
-        public List<BaseElement> ChildElements { get; set; } = new List<BaseElement>();
+        public TemplateDefinition()
+            : base(typeof(TemplateDefinition).Name)
+        {
+
+        }
     }
 }

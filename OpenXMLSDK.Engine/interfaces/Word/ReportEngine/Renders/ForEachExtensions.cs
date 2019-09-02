@@ -38,9 +38,20 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                                 item.AddItem("#" + forEach.AutoContextAddItemsPrefix + "_ForEach_IsEven#", new BooleanModel(i % 2 == 0));
                             }
 
-                            foreach (var template in forEach.ItemTemplate)
+                            for(int j = 0; j < forEach.ItemTemplate.Count; j++)
                             {
-                                template.Clone().Render(document, parent, item, documentPart, formatProvider);
+                                var template = forEach.ItemTemplate[j];
+                                var clone = template.Clone();
+
+                                // Specific rule for TemplateModels in childs :
+                                if (clone is TemplateModel)
+                                {
+                                    var templateElements = (clone as TemplateModel).ExtractTemplateItems(document);
+                                    foreach(var templateEement in templateElements)
+                                        templateEement.Render(document, parent, item, documentPart, formatProvider);
+                                }
+                                else
+                                    clone.Render(document, parent, item, documentPart, formatProvider);
                             }
 
                             i++;
