@@ -9,7 +9,7 @@ using OpenXMLSDK.Engine.Word.ReportEngine.Models;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 {
-    public static class LabelExtension
+    internal static class LabelExtension
     {
         /// <summary>
         /// Render a label
@@ -20,11 +20,11 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// <param name="documentPart"></param>
         /// <param name="formatProvider"></param>
         /// <returns></returns>
-        public static OpenXmlElement Render(this Label label, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart, IFormatProvider formatProvider)
+        internal static OpenXmlElement Render(this Label label, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart, IFormatProvider formatProvider)
         {
             context.ReplaceItem(label, formatProvider);
 
-            return SetTextContent(label, parent, formatProvider);
+            return SetTextContent(label, parent);
         }
 
         /// <summary>
@@ -34,12 +34,12 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// <param name="parent"></param>
         /// <param name="formatProvider"></param>
         /// <returns></returns>
-        private static Run SetTextContent(Label label, OpenXmlElement parent, IFormatProvider formatProvider)
+        private static Run SetTextContent(Label label, OpenXmlElement parent)
         {
             Run run = new Run();
 
             // Transform label Text before rendering :
-            ApplyTransformOperations(label, formatProvider);
+            ApplyTransformOperations(label);
 
             if (label.Text == null)
             {
@@ -100,7 +100,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// Apply transforme operation on the label before rendering
         /// </summary>
         /// <param name="label"></param>
-        private static void ApplyTransformOperations(Label label, IFormatProvider formatProvider)
+        private static void ApplyTransformOperations(Label label)
         {
             if(!string.IsNullOrWhiteSpace(label.Text) && label.TransformOperations != null)
             {

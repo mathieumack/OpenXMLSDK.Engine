@@ -1,0 +1,15 @@
+{
+  "ServerUri": "https://sonarcloud.io/",
+  "Organization": {
+    "Key": "mathieumack-github",
+    "Name": "MACK Mathieu"
+  },
+  "ProjectKey": "github-OpenXMLSDK.Engine",
+  "ProjectName": "OpenXMLSDK.Engine",
+  "Profiles": {
+    "CSharp": {
+      "ProfileKey": "AVz1qq70IFNNGQWIvQNH",
+      "ProfileTimestamp": "2019-05-07T17:01:40+02:00"
+    }
+  }
+}

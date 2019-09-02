@@ -617,10 +617,12 @@ namespace OpenXMLSDK.Engine.Word
                 // add styles in document
                 var spart = wdDoc.MainDocumentPart.AddNewPart<StyleDefinitionsPart>();
                 spart.Styles = new Styles();
-                IList<string> stylesId= null;
+                IList<string> stylesId = null;
                 if (mergeStyles)
                 {
-                    stylesId = reportList.Where(report => report.Document.Styles != null).SelectMany(r => r.Document.Styles).Select(style => style.StyleId)?.Distinct()?.ToList();                    
+                    stylesId = reportList.Where(report => report.Document.Styles != null)
+                                            .SelectMany(r => r.Document.Styles)
+                                            .Select(style => style.StyleId)?.Distinct()?.ToList();                    
                 }
 
                 foreach (Report report in reportList)
@@ -633,13 +635,14 @@ namespace OpenXMLSDK.Engine.Word
                             {
                                 style.Render(spart, report.ContextModel);
                             }
-                            else if (stylesId.Count > 0 && stylesId.Contains(style.StyleId))
+                            else if (stylesId != null && stylesId.Count > 0 && stylesId.Contains(style.StyleId))
                             {
                                 stylesId.Remove(style.StyleId);
                                 style.Render(spart, report.ContextModel);
                             }
                         }
                     }
+
                     // Document render
                     report.Document.Render(wdDoc, report.ContextModel, report.AddPageBreak, formatProvider);
 

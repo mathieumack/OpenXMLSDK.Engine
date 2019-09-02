@@ -8,14 +8,14 @@ using System;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 {
-    public static class BaseElementExtensions
+    internal static class BaseElementExtensions
     {
-        public static T Clone<T>(this T element) where T : BaseElement
+        internal static T Clone<T>(this T element) where T : BaseElement
         {
             return JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(element), new JsonSerializerSettings() { Converters = { new JsonContextConverter() } });
         }
 
-        public static OpenXmlElement Render(this BaseElement element, Document document, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart, IFormatProvider formatProvider)
+        internal static OpenXmlElement Render(this BaseElement element, Document document, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart, IFormatProvider formatProvider)
         {
             context.ReplaceItem(element, formatProvider);
 

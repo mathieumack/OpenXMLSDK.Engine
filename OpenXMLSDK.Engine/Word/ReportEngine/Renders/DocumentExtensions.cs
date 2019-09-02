@@ -34,7 +34,6 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 else if(pageItem is Page)
                 {
                     var page = (Page)pageItem;
-                    bool addPageBreak = (document.Pages.IndexOf(page) < document.Pages.Count - 1);
 
                     // doc inherit margin from page
                     if (document.Margin == null && page.Margin != null)
