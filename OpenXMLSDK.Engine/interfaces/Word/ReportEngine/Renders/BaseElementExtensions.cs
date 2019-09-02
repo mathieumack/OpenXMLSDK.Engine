@@ -84,7 +84,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 
             if (element.ChildElements != null && element.ChildElements.Count > 0)
             {
-                for(int i = 0; i < element.ChildElements.Count; i++)
+                for (int i = 0; i < element.ChildElements.Count; i++)
                 {
                     var e = element.ChildElements[i];
 
