@@ -271,7 +271,17 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             // Template 1 :
 
             var paragraph = new Paragraph();
-            paragraph.ChildElements.Add(new Label() { Text = "Ceci est un texte avec accents (éèàù)", FontSize = "30", FontName = "Arial" });
+            paragraph.ChildElements.Add(new Label() { Text = "Label wihtou special character (éèàù).", FontSize = "30", FontName = "Arial" });
+            paragraph.ChildElements.Add(new Hyperlink()
+            {
+                Text = new Label()
+                {
+                    Text = "Go to github.",
+                    FontSize = "20",
+                    FontName = "Arial"
+                },
+                WebSiteUri = "https://www.github.com/"
+            });
             paragraph.ChildElements.Add(new Label() { Text = "#KeyTest1#", FontSize = "40",
                 TransformOperations = new List<LabelTransformOperation>()
                 {

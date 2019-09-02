@@ -130,7 +130,7 @@ namespace OpenXMLSDK.Engine.Word
 
                 return true;
             }
-            catch (Exception ex)
+            catch
             {
                 wdDoc = null;
                 return false;
@@ -154,7 +154,7 @@ namespace OpenXMLSDK.Engine.Word
 
                 return true;
             }
-            catch (Exception ex)
+            catch
             {
                 wdDoc = null;
                 return false;
@@ -189,7 +189,7 @@ namespace OpenXMLSDK.Engine.Word
 
                 return true;
             }
-            catch (Exception ex)
+            catch
             {
                 wdDoc = null;
                 return false;
@@ -227,7 +227,7 @@ namespace OpenXMLSDK.Engine.Word
 
                 return OpenDoc(newFilePath, isEditable);
             }
-            catch (Exception ex)
+            catch
             {
                 wdDoc = null;
                 return false;
