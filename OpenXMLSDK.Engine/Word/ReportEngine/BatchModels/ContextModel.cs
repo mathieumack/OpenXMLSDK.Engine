@@ -315,7 +315,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.BatchModels
             element.ShowKey = string.Empty;
         }
 
-        private void ReplaceBorders(Models.Attributes.BorderModel borders, IFormatProvider formatProvider)
+        private void ReplaceBorders(Models.ExtendedModels.BorderModel borders, IFormatProvider formatProvider)
         {
             if (!string.IsNullOrEmpty(borders.BorderColor))
                 borders.BorderColor = ReplaceText(borders.BorderColor, formatProvider);

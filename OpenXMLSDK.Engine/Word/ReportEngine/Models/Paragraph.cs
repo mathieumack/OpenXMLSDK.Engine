@@ -1,4 +1,4 @@
-﻿using OpenXMLSDK.Engine.Word.ReportEngine.Models.Attributes;
+﻿using OpenXMLSDK.Engine.Word.ReportEngine.Models.ExtendedModels;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Models
 {
@@ -57,6 +57,11 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models
         /// Change the PageBreakBefore value from a ContextModel key
         /// </summary>
         public string PageBreakBeforeKey { get; set; }
+
+        /// <summary>
+        /// Identation properties
+        /// </summary>
+        public ParagraphIndentationModel Indentation { get; set; }
 
         /// <summary>
         /// Constructor

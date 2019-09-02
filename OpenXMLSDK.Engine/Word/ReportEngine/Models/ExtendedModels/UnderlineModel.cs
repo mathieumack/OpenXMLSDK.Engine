@@ -1,4 +1,4 @@
-﻿namespace OpenXMLSDK.Engine.Word.ReportEngine.Models.Attributes
+﻿namespace OpenXMLSDK.Engine.Word.ReportEngine.Models.ExtendedModels
 {
     public class UnderlineModel
     {

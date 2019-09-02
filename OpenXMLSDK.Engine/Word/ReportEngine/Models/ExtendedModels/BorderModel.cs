@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpenXMLSDK.Engine.Word.ReportEngine.Models.Attributes
+namespace OpenXMLSDK.Engine.Word.ReportEngine.Models.ExtendedModels
 {
     /// <summary>
     /// Model class for a border

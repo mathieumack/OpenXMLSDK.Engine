@@ -3,7 +3,7 @@ using OpenXMLSDK.Engine.Word.ReportEngine;
 using OpenXMLSDK.Engine.Word.ReportEngine.BatchModels;
 using OpenXMLSDK.Engine.Word.ReportEngine.BatchModels.Charts;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models;
-using OpenXMLSDK.Engine.Word.ReportEngine.Models.Attributes;
+using OpenXMLSDK.Engine.Word.ReportEngine.Models.ExtendedModels;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts;
 using OpenXMLSDK.Engine.Word.Tables;
 using OpenXMLSDK.Engine.Word.Tables.Models;
@@ -271,6 +271,11 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             // Template 1 :
 
             var paragraph = new Paragraph();
+            paragraph.Indentation = new ParagraphIndentationModel()
+            {
+                Left = "300",
+                Right = "6000"
+            };
             paragraph.ChildElements.Add(new Label() { Text = "Ceci est un texte avec accents (éèàù)", FontSize = "30", FontName = "Arial" });
             paragraph.ChildElements.Add(new Label() { Text = "#KeyTest1#", FontSize = "40",
                 TransformOperations = new List<LabelTransformOperation>()

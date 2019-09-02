@@ -3,6 +3,7 @@ using OpenXMLSDK.Engine.Word.ReportEngine.BatchModels;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models;
 using OpenXMLSDK.Engine.Platform.Word.Extensions;
 using System;
+using OpenXMLSDK.Engine.Word.ReportEngine.Models.ExtendedModels;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 {
@@ -38,8 +39,35 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             if (paragraph.PageBreakBefore)
                 openXmlPar.ParagraphProperties.PageBreakBefore = new DocumentFormat.OpenXml.Wordprocessing.PageBreakBefore();
 
+            // Indents :
+            if (paragraph.Indentation != null)
+                openXmlPar.ParagraphProperties.Indentation = paragraph.Indentation.ToOpenXmlElement();
+
             parent.Append(openXmlPar);
             return openXmlPar;
+        }
+
+        /// <summary>
+        /// Transform an indentation model to an OpenXml element
+        /// </summary>
+        /// <param name="indentation"></param>
+        /// <returns></returns>
+        private static DocumentFormat.OpenXml.Wordprocessing.Indentation ToOpenXmlElement(this ParagraphIndentationModel indentation)
+        {
+            var result = new DocumentFormat.OpenXml.Wordprocessing.Indentation();
+
+            if (!string.IsNullOrWhiteSpace(indentation.Left))
+                result.Left = indentation.Left;
+            if (indentation.LeftChars.HasValue)
+                result.LeftChars = indentation.LeftChars.Value;
+            if (!string.IsNullOrWhiteSpace(indentation.Right))
+                result.Right = indentation.Right;
+            if (!string.IsNullOrWhiteSpace(indentation.Right))
+                result.Right = indentation.Right;
+            if (indentation.RightChars.HasValue)
+                result.RightChars = indentation.RightChars.Value;
+
+            return result;
         }
     }
 }
