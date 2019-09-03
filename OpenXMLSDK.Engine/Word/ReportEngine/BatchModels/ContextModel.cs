@@ -227,6 +227,10 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.BatchModels
         {
             if (!string.IsNullOrEmpty(element.Anchor))
                 element.Anchor = ReplaceText(element.Anchor, formatProvider);
+
+            if (!string.IsNullOrEmpty(element.WebSiteUri))
+                element.WebSiteUri = ReplaceText(element.WebSiteUri, formatProvider);
+
             if (!string.IsNullOrEmpty(element.BoldKey) && ExistItem<BooleanModel>(element.BoldKey))
             {
                 var item = GetItem<BooleanModel>(element.BoldKey);
