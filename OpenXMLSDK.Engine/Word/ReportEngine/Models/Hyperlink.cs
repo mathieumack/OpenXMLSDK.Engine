@@ -4,9 +4,16 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models
 {
     /// <summary>
     /// Model for an hyperlink
+    /// Anchor > internal link to a bookmark
+    /// WebSiteUri > external web site uri
     /// </summary>
     public class Hyperlink : BaseElement
     {
+        /// <summary>
+        /// Web site uri
+        /// </summary>
+        public string WebSiteUri { get; set; }
+
         /// <summary>
         /// Anchor label, can be contextualized
         /// </summary>

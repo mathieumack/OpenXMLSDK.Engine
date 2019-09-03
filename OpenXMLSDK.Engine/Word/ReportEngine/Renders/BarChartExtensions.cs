@@ -93,7 +93,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 
             int countCategories = chartModel.Categories.Count;
 
-            // Vérification que le nombre d'élément de la liste catégorie = le nombre d'élément de la liste value dans la liste série
+            // Check that number of categories equals number of items in series
             var ok = chartModel.Series.Count(e => e.Values.Count != countCategories) == 0;
 
             if (!ok)

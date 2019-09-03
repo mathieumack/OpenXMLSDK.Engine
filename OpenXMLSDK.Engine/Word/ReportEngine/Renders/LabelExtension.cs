@@ -83,10 +83,14 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 
             if (label.Underline != null)
             {
-                var underline = new Underline();
-                underline.Val = (UnderlineValues)(int)label.Underline.Val;
+                var underline = new Underline()
+                {
+                    Val = (UnderlineValues)(int)label.Underline.Val
+                };
+
                 if (!string.IsNullOrWhiteSpace(label.Underline.Color))
                     underline.Color = label.Underline.Color;
+
                 runProperty.Underline = underline;
             }
 
