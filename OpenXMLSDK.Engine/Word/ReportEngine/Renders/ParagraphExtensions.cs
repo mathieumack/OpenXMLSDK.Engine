@@ -1,8 +1,8 @@
-﻿using DocumentFormat.OpenXml;
+﻿using System;
+using DocumentFormat.OpenXml;
 using OpenXMLSDK.Engine.Word.ReportEngine.BatchModels;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models;
 using OpenXMLSDK.Engine.Platform.Word.Extensions;
-using System;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models.ExtendedModels;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
@@ -56,12 +56,13 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         {
             var result = new DocumentFormat.OpenXml.Wordprocessing.Indentation();
 
+            // Left :
             if (!string.IsNullOrWhiteSpace(indentation.Left))
                 result.Left = indentation.Left;
             if (indentation.LeftChars.HasValue)
                 result.LeftChars = indentation.LeftChars.Value;
-            if (!string.IsNullOrWhiteSpace(indentation.Right))
-                result.Right = indentation.Right;
+
+            // Right :
             if (!string.IsNullOrWhiteSpace(indentation.Right))
                 result.Right = indentation.Right;
             if (indentation.RightChars.HasValue)
