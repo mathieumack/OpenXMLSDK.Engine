@@ -1,4 +1,4 @@
-﻿using OpenXMLSDK.Engine.Word.ReportEngine.Models.Attributes;
+﻿using OpenXMLSDK.Engine.Word.ReportEngine.Models.ExtendedModels;
 using OpenXMLSDK.Engine.Word.Tables;
 using OpenXMLSDK.Engine.Word.Tables.Models;
 
