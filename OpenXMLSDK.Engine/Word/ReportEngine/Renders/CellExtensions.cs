@@ -26,11 +26,11 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// <param name="isInAlternateRow"></param>
         /// <param name="formatProvider"></param>
         /// <returns></returns>
-        public static TableCell Render(this Cell cell, 
-                                        Models.Document document, 
-                                        OpenXmlElement parent, 
-                                        ContextModel context, 
-                                        OpenXmlPart documentPart, 
+        public static TableCell Render(this Cell cell,
+                                        Models.Document document,
+                                        OpenXmlElement parent,
+                                        ContextModel context,
+                                        OpenXmlPart documentPart,
                                         bool isInAlternateRow,
                                         IFormatProvider formatProvider)
         {
@@ -69,55 +69,72 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 }
             }
 
-            if (cell.Show)
+            if (!cell.Show)
+                return wordCell;
+
+            if (cell.ChildElements.Any(x => x is Models.TemplateModel))
             {
-                if (cell.ChildElements.Any(x => x is Models.Paragraph)
-              || cell.ChildElements.Any(x => x is ForEach))
+                // Need to replace elements :
+                for (int i = 0; i < cell.ChildElements.Count; i++)
                 {
-                    foreach (var element in cell.ChildElements)
+                    var e = cell.ChildElements[i];
+
+                    if (e is TemplateModel)
                     {
-                        element.InheritFromParent(cell);
-                        if (element is Models.Paragraph
-                            || element is ForEach)
-                        {
-                            element.Render(document, wordCell, context, documentPart, formatProvider);
-                        }
+                        var elements = (e as TemplateModel).ExtractTemplateItems(document);
+                        if (i == cell.ChildElements.Count - 1)
+                            cell.ChildElements.AddRange(elements);
                         else
-                        {
-                            var paragraph = new DocumentFormat.OpenXml.Wordprocessing.Paragraph();
-                            if (cell.Justification.HasValue)
-                            {
-                                var ppr = new ParagraphProperties();
-                                ppr.AppendChild(new Justification() { Val = cell.Justification.Value.ToOOxml() });
-                                paragraph.AppendChild(ppr);
-                            }
-                            wordCell.AppendChild(paragraph);
-                            var r = new Run();
-                            paragraph.AppendChild(r);
-                            element.Render(document, r, context, documentPart, formatProvider);
-                        }
+                            cell.ChildElements.InsertRange(i + 1, elements);
                     }
                 }
-                else
+            }
+
+            if (cell.ChildElements.Any(x => x is Models.Paragraph) || cell.ChildElements.Any(x => x is ForEach))
+            {
+                foreach (var element in cell.ChildElements)
                 {
-                    // fill cell content (need at least an empty paragraph)
-                    var paragraph = new DocumentFormat.OpenXml.Wordprocessing.Paragraph();
-                    if (cell.Justification.HasValue)
+                    element.InheritFromParent(cell);
+                    if (element is Models.Paragraph
+                        || element is ForEach)
                     {
-                        var ppr = new ParagraphProperties();
-                        ppr.AppendChild(new Justification() { Val = cell.Justification.Value.ToOOxml() });
-                        paragraph.AppendChild(ppr);
+                        element.Render(document, wordCell, context, documentPart, formatProvider);
                     }
-                    wordCell.AppendChild(paragraph);
-                    var r = new Run();
-                    paragraph.AppendChild(r);
-                    foreach (var element in cell.ChildElements)
+                    else
                     {
-                        element.InheritFromParent(cell);
+                        var paragraph = new DocumentFormat.OpenXml.Wordprocessing.Paragraph();
+                        if (cell.Justification.HasValue)
+                        {
+                            var ppr = new ParagraphProperties();
+                            ppr.AppendChild(new Justification() { Val = cell.Justification.Value.ToOOxml() });
+                            paragraph.AppendChild(ppr);
+                        }
+                        wordCell.AppendChild(paragraph);
+                        var r = new Run();
+                        paragraph.AppendChild(r);
                         element.Render(document, r, context, documentPart, formatProvider);
                     }
                 }
-            }          
+            }
+            else
+            {
+                // fill cell content (need at least an empty paragraph)
+                var paragraph = new DocumentFormat.OpenXml.Wordprocessing.Paragraph();
+                if (cell.Justification.HasValue)
+                {
+                    var ppr = new ParagraphProperties();
+                    ppr.AppendChild(new Justification() { Val = cell.Justification.Value.ToOOxml() });
+                    paragraph.AppendChild(ppr);
+                }
+                wordCell.AppendChild(paragraph);
+                var r = new Run();
+                paragraph.AppendChild(r);
+                foreach (var element in cell.ChildElements)
+                {
+                    element.InheritFromParent(cell);
+                    element.Render(document, r, context, documentPart, formatProvider);
+                }
+            }      
 
             return wordCell;
         }
