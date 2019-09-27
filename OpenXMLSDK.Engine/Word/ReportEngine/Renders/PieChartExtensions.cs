@@ -1,15 +1,15 @@
-﻿using DocumentFormat.OpenXml;
-using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml.Wordprocessing;
-using System;
+﻿using System;
 using System.Linq;
 using System.Text.RegularExpressions;
+using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Wordprocessing;
+using OpenXMLSDK.Engine.Word.Charts;
+using OpenXMLSDK.Engine.Word.ReportEngine.BatchModels;
+using OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts;
 using A = DocumentFormat.OpenXml.Drawing;
 using dc = DocumentFormat.OpenXml.Drawing.Charts;
 using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
-using OpenXMLSDK.Engine.Word.ReportEngine.BatchModels;
-using OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts;
-using OpenXMLSDK.Engine.Word.Charts;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 {
@@ -127,13 +127,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             dc.Layout layout = plotArea.AppendChild<dc.Layout>(new dc.Layout());
             dc.Pie3DChart pieChart = plotArea.AppendChild<dc.Pie3DChart>(new dc.Pie3DChart());
 
-
             uint i = 0;
-            uint p = 0;
-            // Iterate through each key in the Dictionary collection and add the key to the chart Series
-            // and add the corresponding value to the chart Values.
-            //foreach (var serie in chartModel.Series)
-            //{
             var serie = chartModel.Serie;
             // Gestion des séries
             dc.PieChartSeries pieChartSeries = pieChart.AppendChild<dc.PieChartSeries>
@@ -158,6 +152,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     (new dc.CategoryAxisData()).AppendChild<dc.StringReference>(new dc.StringReference());
             strLit.AppendChild(new dc.StringCache());
             strLit.StringCache.AppendChild(new dc.PointCount() { Val = (uint)countCategories });
+            uint p = 0;
             // Liste catégorie
             foreach (var categorie in chartModel.Categories)
             {
@@ -179,27 +174,6 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 p++;
             }
             i++;
-            //}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
             dc.DataLabels dLbls = new dc.DataLabels(
                 new dc.ShowLegendKey() { Val = false },
@@ -207,7 +181,10 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 new dc.ShowCategoryName() { Val = chartModel.DataLabel?.ShowCatName },
                 new dc.ShowSeriesName() { Val = false },
                 new dc.ShowPercent() { Val = chartModel.DataLabel?.ShowPercent },
-                new dc.ShowBubbleSize() { Val = false });
+                new dc.ShowBubbleSize() { Val = false },
+                new dc.DataLabelPosition() { Val = chartModel.DataLabel?.LabelPosition},
+                new dc.Separator() { Text = chartModel.DataLabel?.Separator}
+                );
 
             // Gestion de la couleur du ShowValue
             if (chartModel.DataLabel.ShowDataLabel && !string.IsNullOrWhiteSpace(chartModel.DataLabelColor))

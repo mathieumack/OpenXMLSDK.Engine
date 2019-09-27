@@ -1,19 +1,18 @@
-﻿using OpenXMLSDK.Engine.Word;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using Newtonsoft.Json;
+using OpenXMLSDK.Engine.interfaces.Word.ReportEngine.Models;
+using OpenXMLSDK.Engine.Word;
 using OpenXMLSDK.Engine.Word.ReportEngine;
 using OpenXMLSDK.Engine.Word.ReportEngine.BatchModels;
 using OpenXMLSDK.Engine.Word.ReportEngine.BatchModels.Charts;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models;
-using OpenXMLSDK.Engine.Word.ReportEngine.Models.ExtendedModels;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts;
+using OpenXMLSDK.Engine.Word.ReportEngine.Models.ExtendedModels;
 using OpenXMLSDK.Engine.Word.Tables;
 using OpenXMLSDK.Engine.Word.Tables.Models;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Globalization;
-using OpenXMLSDK.Engine.interfaces.Word.ReportEngine.Models;
 
 namespace OpenXMLSDK.UnitTest.ReportEngine
 {
@@ -256,27 +255,27 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                     {
                         new CategoryModel()
                         {
-                            Name = "Category 1"
+                            Name = "A Category"
                         },
                         new CategoryModel()
                         {
-                            Name = "Category 2"
+                            Name = "B Category"
                         },
                         new CategoryModel()
                         {
-                            Name = "Category 3"
+                            Name = "C Category"
                         },
                         new CategoryModel()
                         {
-                            Name = "Category 4"
+                            Name = "D Category"
                         },
                         new CategoryModel()
                         {
-                            Name = "Category 5"
+                            Name = "E Category"
                         },
                         new CategoryModel()
                         {
-                            Name = "Category 6"
+                            Name = "F Category"
                         }
                     },
                     Serie = new SerieModel()
@@ -920,15 +919,15 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                         FontSize = "23",
                         ShowChartBorder = true,
                         PieChartType = PieChartType.Pie3DChart,
-                        //BarDirectionValues = BarDirectionValues.Column,
-                        //BarGroupingValues = BarGroupingValues.PercentStacked,
                         DataSourceKey = "#PieGrahSampleData#",
                         ShowMajorGridlines = true,
                         DataLabel = new DataLabelModel() 
                         {
                             ShowDataLabel = true,
                             ShowCatName = true,
-                            ShowPercent = true
+                            ShowPercent = true,
+                            //LabelPosition = DocumentFormat.OpenXml.Drawing.Charts.DataLabelPositionValues.Center
+                            Separator = " "
                         },
                         //DataLabelColor = "#FFFFFF"//White
                         DataLabelColor = "#000000"//Black

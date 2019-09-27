@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using DocumentFormat.OpenXml.Drawing.Charts;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts
 {
@@ -20,6 +18,17 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts
         /// Indicate if percentage will be showed
         /// </summary>
         public bool ShowPercent { get; set; } = true;
+
+        /// <summary>
+        /// Indicate position of label
+        /// </summary>
+        public DataLabelPositionValues LabelPosition { get; set; } = DataLabelPositionValues.BestFit;
+
+
+        /// <summary>
+        /// Indicate separator of differents values (label, data, percent...)
+        /// </summary>
+        public string Separator { get; set; } = string.Empty;
 
         /// <summary>
         /// Ctor
