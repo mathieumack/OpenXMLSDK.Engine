@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.BatchModels.Charts
 {
-    [Obsolete("Please use SerieModel instead")]
-    public class BarSerieModel
+    public class SerieModel
     {
         /// <summary>
         /// Name of the serie

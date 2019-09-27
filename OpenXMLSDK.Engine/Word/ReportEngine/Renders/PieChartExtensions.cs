@@ -13,7 +13,7 @@ using OpenXMLSDK.Engine.Word.Charts;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 {
-    public static class BarChartExtensions
+    public static class PieChartExtensions
     {
         /// <summary>
         /// Render a table element
@@ -24,45 +24,45 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// <param name="documentPart"></param>
         /// <param name="formatProvider"></param>
         /// <returns></returns>
-        public static Run Render(this BarModel barChart, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart, IFormatProvider formatProvider)
+        public static Run Render(this PieModel pieChart, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart, IFormatProvider formatProvider)
         {
-            context.ReplaceItem(barChart, formatProvider);
+            context.ReplaceItem(pieChart, formatProvider);
 
             Run runItem = null;
 
-            if (!string.IsNullOrWhiteSpace(barChart.DataSourceKey) && context.ExistItem<BarChartModel>(barChart.DataSourceKey))
+            if (!string.IsNullOrWhiteSpace(pieChart.DataSourceKey) && context.ExistItem<SingleSerieChartModel>(pieChart.DataSourceKey))
             {
                 // We construct categories and series from the context object
-                var contextModel = context.GetItem<BarChartModel>(barChart.DataSourceKey);
+                var contextModel = context.GetItem<SingleSerieChartModel>(pieChart.DataSourceKey);
 
-                if (contextModel.BarChartContent != null && contextModel.BarChartContent.Categories != null
-                   && contextModel.BarChartContent.Series != null)
+                if (contextModel.ChartContent != null && contextModel.ChartContent.Categories != null
+                   && contextModel.ChartContent.Serie != null)
                 {
-                    // Update barChart object :
-                    barChart.Categories = contextModel.BarChartContent.Categories.Select(e => new BarCategory()
+                    // Update pieChart object :
+                    pieChart.Categories = contextModel.ChartContent.Categories.Select(e => new PieCategory()
                     {
                         Name = e.Name,
                         Color = e.Color
                     }).ToList();
 
                     // We update
-                    barChart.Series = contextModel.BarChartContent.Series.Select(e => new BarSerie()
+                    pieChart.Serie = new PieSerie()
                     {
-                        LabelFormatString = e.LabelFormatString,
-                        Color = e.Color,
-                        DataLabelColor = e.DataLabelColor,
-                        Values = e.Values,
-                        Name = e.Name
-                    }).ToList();
+                        LabelFormatString = contextModel.ChartContent.Serie.LabelFormatString,
+                        Color = contextModel.ChartContent.Serie.Color,
+                        DataLabelColor = contextModel.ChartContent.Serie.DataLabelColor,
+                        Values = contextModel.ChartContent.Serie.Values,
+                        Name = contextModel.ChartContent.Serie.Name,
+                    };
                 }
                 else
                     return runItem;
             }
 
-            switch (barChart.BarChartType)
+            switch (pieChart.PieChartType)
             {
-                case BarChartType.BarChart:
-                    runItem = CreateBarGraph(barChart, documentPart);
+                case PieChartType.Pie3DChart:
+                    runItem = CreatePieGraph(pieChart, documentPart);
                     break;
             }
 
@@ -75,26 +75,22 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         #region Internal methods
 
         /// <summary>
-        /// Create a bargraph inside a word document
+        /// Create a pieGraph inside a word document
         /// </summary>
         /// <param name="chartModel">Graph model</param>
-        /// <param name="showLegend"></param>
-        /// <param name="title"></param>
-        /// <param name="maxWidth"></param>
-        /// <param name="maxHeight"></param>
-        /// <exception cref="ChartModelException"></exception>
+        /// <param name="documentPart"></param>
         /// <returns></returns>
-        private static Run CreateBarGraph(BarModel chartModel, OpenXmlPart documentPart)
+        private static Run CreatePieGraph(PieModel chartModel, OpenXmlPart documentPart)
         {
             if (chartModel.Categories == null)
                 throw new ArgumentNullException("categories of chartModel must not be null");
-            if (chartModel.Series == null)
-                throw new ArgumentNullException("series of chartModel must be not null");
+            if (chartModel.Serie == null)
+                throw new ArgumentNullException("Serie of chartModel must be not null");
 
             int countCategories = chartModel.Categories.Count;
 
             // Check that number of categories equals number of items in series
-            var ok = chartModel.Series.Count(e => e.Values.Count != countCategories) == 0;
+            var ok = (chartModel.Serie.Values.Count() == countCategories);
 
             if (!ok)
                 throw new ChartModelException("Error in series. Serie values must have same count as categories.", "004-001");
@@ -121,68 +117,96 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 
             // Create a new clustered column chart.
             dc.PlotArea plotArea = chart.AppendChild<dc.PlotArea>(new dc.PlotArea());
+            dc.View3D view3D = chart.AppendChild<dc.View3D>(
+                new dc.View3D()
+                {
+                    RotateX = new dc.RotateX() { Val = 40 },
+                    RotateY = new dc.RotateY() { Val = 0 }
+                });
+
             dc.Layout layout = plotArea.AppendChild<dc.Layout>(new dc.Layout());
-            dc.BarChart barChart = plotArea.AppendChild<dc.BarChart>(new dc.BarChart(new dc.BarDirection() { Val = new DocumentFormat.OpenXml.EnumValue<dc.BarDirectionValues>((dc.BarDirectionValues)(int)chartModel.BarDirectionValues) },
-                new dc.BarGrouping() { Val = new DocumentFormat.OpenXml.EnumValue<dc.BarGroupingValues>((dc.BarGroupingValues)(int)chartModel.BarGroupingValues) }));
+            dc.Pie3DChart pieChart = plotArea.AppendChild<dc.Pie3DChart>(new dc.Pie3DChart());
+
 
             uint i = 0;
             uint p = 0;
             // Iterate through each key in the Dictionary collection and add the key to the chart Series
             // and add the corresponding value to the chart Values.
-            foreach (var serie in chartModel.Series)
+            //foreach (var serie in chartModel.Series)
+            //{
+            var serie = chartModel.Serie;
+            // Gestion des séries
+            dc.PieChartSeries pieChartSeries = pieChart.AppendChild<dc.PieChartSeries>
+                (new dc.PieChartSeries(new dc.Index() { Val = i },
+                new dc.Order() { Val = i }, new dc.SeriesText(new dc.StringReference(new dc.StringCache(
+                new dc.PointCount() { Val = new UInt32Value(1U) },
+                new dc.StringPoint() { Index = (uint)0, NumericValue = new dc.NumericValue() { Text = serie.Name } })))));
+
+            // Gestion de la couleur de la série
+            if (!string.IsNullOrWhiteSpace(serie.Color))
             {
-                // Gestion des séries
-                dc.BarChartSeries barChartSeries = barChart.AppendChild<dc.BarChartSeries>
-                    (new dc.BarChartSeries(new dc.Index() { Val = i },
-                    new dc.Order() { Val = i }, new dc.SeriesText(new dc.StringReference(new dc.StringCache(
-                    new dc.PointCount() { Val = new UInt32Value(1U) },
-                    new dc.StringPoint() { Index = (uint)0, NumericValue = new dc.NumericValue() { Text = serie.Name } })))));
+                string color = serie.Color;
+                color = color.Replace("#", "");
+                if (!Regex.IsMatch(color, "^[0-9-A-F]{6}$"))
+                    throw new Exception("Error in color of serie.");
 
-                // Gestion de la couleur de la série
-                if (!string.IsNullOrWhiteSpace(serie.Color))
-                {
-                    string color = serie.Color;
-                    color = color.Replace("#", "");
-                    if (!Regex.IsMatch(color, "^[0-9-A-F]{6}$"))
-                        throw new Exception("Error in color of serie.");
-
-                    barChartSeries.AppendChild<A.ShapeProperties>(new A.ShapeProperties(new A.SolidFill() { RgbColorModelHex = new A.RgbColorModelHex() { Val = color } }));
-                }
-
-                // Gestion des catégories
-                dc.StringReference strLit = barChartSeries.AppendChild<dc.CategoryAxisData>
-                        (new dc.CategoryAxisData()).AppendChild<dc.StringReference>(new dc.StringReference());
-                strLit.AppendChild(new dc.StringCache());
-                strLit.StringCache.AppendChild(new dc.PointCount() { Val = (uint)countCategories });
-                // Liste catégorie
-                foreach (var categorie in chartModel.Categories)
-                {
-                    strLit.StringCache.AppendChild(new dc.StringPoint() { Index = p, NumericValue = new dc.NumericValue(categorie.Name) }); // chartModel.Categories[k].Name
-                    p++;
-                }
-                p = 0;
-
-                // Gestion des valeurs
-                dc.NumberReference numLit = barChartSeries.AppendChild<DocumentFormat.OpenXml.Drawing.Charts.Values>
-                    (new dc.Values())
-                        .AppendChild<dc.NumberReference>(new dc.NumberReference());
-                numLit.AppendChild(new dc.NumberingCache());
-                numLit.NumberingCache.AppendChild(new dc.FormatCode("General"));
-                numLit.NumberingCache.AppendChild(new dc.PointCount() { Val = (uint)serie.Values.Count });
-                foreach (var value in serie.Values)
-                {
-                    numLit.NumberingCache.AppendChild<dc.NumericPoint>(new dc.NumericPoint() { Index = p, NumericValue = new dc.NumericValue(value != null ? value.ToString() : string.Empty) });
-                    p++;
-                }
-                i++;
+                pieChartSeries.AppendChild<A.ShapeProperties>(new A.ShapeProperties(new A.SolidFill() { RgbColorModelHex = new A.RgbColorModelHex() { Val = color } }));
             }
+
+            // Gestion des catégories
+            dc.StringReference strLit = pieChartSeries.AppendChild<dc.CategoryAxisData>
+                    (new dc.CategoryAxisData()).AppendChild<dc.StringReference>(new dc.StringReference());
+            strLit.AppendChild(new dc.StringCache());
+            strLit.StringCache.AppendChild(new dc.PointCount() { Val = (uint)countCategories });
+            // Liste catégorie
+            foreach (var categorie in chartModel.Categories)
+            {
+                strLit.StringCache.AppendChild(new dc.StringPoint() { Index = p, NumericValue = new dc.NumericValue(categorie.Name) }); // chartModel.Categories[k].Name
+                p++;
+            }
+            p = 0;
+
+            // Gestion des valeurs
+            dc.NumberReference numLit = pieChartSeries.AppendChild<DocumentFormat.OpenXml.Drawing.Charts.Values>
+                (new dc.Values())
+                    .AppendChild<dc.NumberReference>(new dc.NumberReference());
+            numLit.AppendChild(new dc.NumberingCache());
+            numLit.NumberingCache.AppendChild(new dc.FormatCode("General"));
+            numLit.NumberingCache.AppendChild(new dc.PointCount() { Val = (uint)serie.Values.Count });
+            foreach (var value in serie.Values)
+            {
+                numLit.NumberingCache.AppendChild<dc.NumericPoint>(new dc.NumericPoint() { Index = p, NumericValue = new dc.NumericValue(value != null ? value.ToString() : string.Empty) });
+                p++;
+            }
+            i++;
+            //}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             dc.DataLabels dLbls = new dc.DataLabels(
                 new dc.ShowLegendKey() { Val = false },
                 new dc.ShowValue() { Val = chartModel.DataLabel?.ShowDataLabel },
-                new dc.ShowCategoryName() { Val = false },
+                new dc.ShowCategoryName() { Val = chartModel.DataLabel?.ShowCatName },
                 new dc.ShowSeriesName() { Val = false },
-                new dc.ShowPercent() { Val = false },
+                new dc.ShowPercent() { Val = chartModel.DataLabel?.ShowPercent },
                 new dc.ShowBubbleSize() { Val = false });
 
             // Gestion de la couleur du ShowValue
@@ -202,17 +226,17 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 dLbls.Append(txtPr);
             }
 
-            barChart.Append(dLbls);
+            pieChart.Append(dLbls);
 
             if (chartModel.SpaceBetweenLineCategories.HasValue)
-                barChart.Append(new dc.GapWidth() { Val = (UInt16)chartModel.SpaceBetweenLineCategories.Value });
+                pieChart.Append(new dc.GapWidth() { Val = (UInt16)chartModel.SpaceBetweenLineCategories.Value });
             else
-                barChart.Append(new dc.GapWidth() { Val = 55 });
+                pieChart.Append(new dc.GapWidth() { Val = 55 });
 
-            barChart.Append(new dc.Overlap() { Val = 100 });
+            pieChart.Append(new dc.Overlap() { Val = 100 });
 
-            barChart.Append(new dc.AxisId() { Val = new UInt32Value(48650112u) });
-            barChart.Append(new dc.AxisId() { Val = new UInt32Value(48672768u) });
+            pieChart.Append(new dc.AxisId() { Val = new UInt32Value(48650112u) });
+            pieChart.Append(new dc.AxisId() { Val = new UInt32Value(48672768u) });
 
             // Set ShapeProperties
             dc.ShapeProperties dcSP = null;
@@ -234,63 +258,6 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             else
             {
                 dcSP = new dc.ShapeProperties(new A.Outline(new A.NoFill()));
-            }
-            // Add the Category Axis.
-            dc.CategoryAxis catAx = plotArea.AppendChild<dc.CategoryAxis>(new dc.CategoryAxis(new dc.AxisId() { Val = new UInt32Value(48650112u) }, new dc.Scaling(new dc.Orientation()
-            {
-                Val = new DocumentFormat.OpenXml.EnumValue<dc.OrientationValues>(dc.OrientationValues.MinMax)
-            }),
-                new dc.Delete() { Val = chartModel.DeleteAxeCategory },
-                new dc.AxisPosition() { Val = new DocumentFormat.OpenXml.EnumValue<dc.AxisPositionValues>(dc.AxisPositionValues.Left) },
-                new dc.MajorTickMark() { Val = dc.TickMarkValues.None },
-                new dc.MinorTickMark() { Val = dc.TickMarkValues.None },
-                new dc.TickLabelPosition() { Val = new DocumentFormat.OpenXml.EnumValue<dc.TickLabelPositionValues>(dc.TickLabelPositionValues.NextTo) },
-                new dc.CrossingAxis() { Val = new UInt32Value(48672768U) },
-                new dc.Crosses() { Val = new DocumentFormat.OpenXml.EnumValue<dc.CrossesValues>(dc.CrossesValues.AutoZero) },
-                new dc.AutoLabeled() { Val = new BooleanValue(true) },
-                new dc.LabelAlignment() { Val = new DocumentFormat.OpenXml.EnumValue<dc.LabelAlignmentValues>(dc.LabelAlignmentValues.Center) },
-                new dc.LabelOffset() { Val = new UInt16Value((ushort)100) },
-                new dc.NoMultiLevelLabels() { Val = false },
-                dcSP
-                ));
-
-            // Add the Value Axis.
-            dc.ValueAxis valAx = plotArea.AppendChild<dc.ValueAxis>(new dc.ValueAxis(new dc.AxisId() { Val = new UInt32Value(48672768u) },
-                new dc.Scaling(new dc.Orientation()
-                {
-                    Val = new DocumentFormat.OpenXml.EnumValue<dc.OrientationValues>(
-                        DocumentFormat.OpenXml.Drawing.Charts.OrientationValues.MinMax)
-                }),
-                new dc.Delete() { Val = chartModel.DeleteAxeValue },
-                new dc.AxisPosition() { Val = new DocumentFormat.OpenXml.EnumValue<dc.AxisPositionValues>(dc.AxisPositionValues.Bottom) },
-                new dc.NumberingFormat()
-                {
-                    FormatCode = new StringValue("General"),
-                    SourceLinked = new BooleanValue(true)
-                },
-                new dc.MajorTickMark() { Val = dc.TickMarkValues.None },
-                new dc.MinorTickMark() { Val = dc.TickMarkValues.None },
-                new dc.TickLabelPosition() { Val = new DocumentFormat.OpenXml.EnumValue<dc.TickLabelPositionValues>(dc.TickLabelPositionValues.NextTo) },
-                new dc.CrossingAxis() { Val = new UInt32Value(48650112U) }, new dc.Crosses()
-                {
-                    Val = new DocumentFormat.OpenXml.EnumValue<dc.CrossesValues>(dc.CrossesValues.AutoZero)
-                }, new dc.CrossBetween() { Val = new DocumentFormat.OpenXml.EnumValue<dc.CrossBetweenValues>(dc.CrossBetweenValues.Between) }));
-
-            if (chartModel.ShowMajorGridlines)
-            {
-                if (!string.IsNullOrWhiteSpace(chartModel.MajorGridlinesColor))
-                {
-                    string color = chartModel.MajorGridlinesColor;
-                    color = color.Replace("#", "");
-                    if (!Regex.IsMatch(color, "^[0-9-A-F]{6}$"))
-                        throw new Exception("Error in color of grid lines.");
-
-                    valAx.AppendChild(new dc.MajorGridlines(new dc.ShapeProperties(new A.Outline(new A.SolidFill() { RgbColorModelHex = new A.RgbColorModelHex() { Val = color } }))));
-                }
-                else
-                {
-                    valAx.AppendChild(new dc.MajorGridlines());
-                }
             }
 
             // Add the chart Legend.
@@ -380,6 +347,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 
             return element;
         }
+
         #endregion
     }
 }

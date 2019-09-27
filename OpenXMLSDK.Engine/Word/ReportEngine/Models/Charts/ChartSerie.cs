@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace OpenXMLSDK.Engine.Word.ReportEngine.BatchModels.Charts
+namespace OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts
 {
-    [Obsolete("Please use SerieModel instead")]
-    public class BarSerieModel
+    public class ChartSerie : BaseElement
     {
         /// <summary>
         /// Name of the serie
@@ -31,5 +29,10 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.BatchModels.Charts
         /// {0} par défaut
         /// </summary>
         public string LabelFormatString { get; set; } = "{0}";
+
+        public ChartSerie()
+            : base(typeof(ChartSerie).Name)
+        {
+        }
     }
 }

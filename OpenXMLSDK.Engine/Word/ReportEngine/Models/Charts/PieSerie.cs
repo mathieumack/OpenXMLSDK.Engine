@@ -2,9 +2,9 @@
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts
 {
-    public class BarSerie : ChartSerie
+    public class PieSerie : ChartSerie
     {
-        public BarSerie()
+        public PieSerie()
         {
         }
     }

@@ -179,7 +179,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                 Items = cellsContext
             });
 
-            context.AddItem("#GrahSampleData#", new BarChartModel()
+            context.AddItem("#BarGrahSampleData#", new BarChartModel()
             {
                 BarChartContent = new OpenXMLSDK.Engine.Word.ReportEngine.BatchModels.Charts.BarModel()
                 {
@@ -248,6 +248,48 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                 }
             });
 
+            context.AddItem("#PieGrahSampleData#", new SingleSerieChartModel()
+            {
+                ChartContent = new OpenXMLSDK.Engine.Word.ReportEngine.BatchModels.Charts.SingleSeriesModel()
+                {
+                    Categories = new List<CategoryModel>()
+                    {
+                        new CategoryModel()
+                        {
+                            Name = "Category 1"
+                        },
+                        new CategoryModel()
+                        {
+                            Name = "Category 2"
+                        },
+                        new CategoryModel()
+                        {
+                            Name = "Category 3"
+                        },
+                        new CategoryModel()
+                        {
+                            Name = "Category 4"
+                        },
+                        new CategoryModel()
+                        {
+                            Name = "Category 5"
+                        },
+                        new CategoryModel()
+                        {
+                            Name = "Category 6"
+                        }
+                    },
+                    Serie = new SerieModel()
+                    {
+                        Values = new List<double?>()
+                        {
+                            0, 1, 2, 3, 6, null
+                        },
+                        Name = "Serie 1"
+                    }
+                }
+            });
+
             return context;
         }
 
@@ -271,7 +313,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             // Template 1 :
 
             var paragraph = new Paragraph();
-            paragraph.ChildElements.Add(new Label() { Text = "Label wihtou special character (éèàù).", FontSize = "30", FontName = "Arial" });
+            paragraph.ChildElements.Add(new Label() { Text = "Label wihtout special character (éèàù).", FontSize = "30", FontName = "Arial" });
             paragraph.ChildElements.Add(new Hyperlink()
             {
                 Text = new Label()
@@ -288,14 +330,22 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                 Right = "6000"
             };
             paragraph.ChildElements.Add(new Label() { Text = "Ceci est un texte avec accents (éèàù)", FontSize = "30", FontName = "Arial" });
-            paragraph.ChildElements.Add(new Label() { Text = "#KeyTest1#", FontSize = "40",
+            paragraph.ChildElements.Add(new Label()
+            {
+                Text = "#KeyTest1#",
+                FontSize = "40",
                 TransformOperations = new List<LabelTransformOperation>()
                 {
                     new LabelTransformOperation()
                     {
                         TransformOperationType = LabelTransformOperationType.ToUpper
                     }
-                }, FontColor = "#FontColorTestRed#", Shading = "9999FF", BoldKey = "#BoldKey#", Bold = false });
+                },
+                FontColor = "#FontColorTestRed#",
+                Shading = "9999FF",
+                BoldKey = "#BoldKey#",
+                Bold = false
+            });
             paragraph.ChildElements.Add(new Label()
             {
                 Text = "#KeyTest2#",
@@ -609,6 +659,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
 
             doc.Pages.Add(page3);
 
+            // page 4
             var page4 = new Page();
             //New page to manage UniformGrid:
             var uniformGrid = new UniformGrid()
@@ -660,6 +711,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
 
             doc.Pages.Add(page4);
 
+            // page 5
             var page5 = new Page();
             var tableDataSourceWithBeforeAfter = new Table()
             {
@@ -768,6 +820,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
 
             doc.Pages.Add(page5);
 
+            // page 6
             var page6 = new Page();
 
             var pr = new Paragraph()
@@ -778,12 +831,16 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                         Title = "Graph test",
                         ShowTitle = true,
                         FontSize = "23",
-                        ShowBarBorder = true,
+                        ShowChartBorder = true,
                         BarChartType = BarChartType.BarChart,
                         BarDirectionValues = BarDirectionValues.Column,
                         BarGroupingValues = BarGroupingValues.PercentStacked,
-                        DataSourceKey = "#GrahSampleData#",
-                        ShowMajorGridlines = true
+                        DataSourceKey = "#BarGrahSampleData#",
+                        ShowMajorGridlines = true,
+                        DataLabel = new DataLabelModel()
+                        {
+                            ShowDataLabel = true
+                        }
                     }
                 }
             };
@@ -792,6 +849,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
 
             doc.Pages.Add(page6);
 
+            // page 7
             var page7 = new Page();
 
             var tableDataSourceWithCellFusion = new Table()
@@ -848,6 +906,39 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             page8.ChildElements.Add(p8);
 
             doc.Pages.Add(page8);
+
+            // page 9 
+            var page9 = new Page();
+
+            var pieChartPr = new Paragraph()
+            {
+                ChildElements = new List<BaseElement>() {
+                    new OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts.PieModel()
+                    {
+                        Title = "Pie Chart test",
+                        ShowTitle = true,
+                        FontSize = "23",
+                        ShowChartBorder = true,
+                        PieChartType = PieChartType.Pie3DChart,
+                        //BarDirectionValues = BarDirectionValues.Column,
+                        //BarGroupingValues = BarGroupingValues.PercentStacked,
+                        DataSourceKey = "#PieGrahSampleData#",
+                        ShowMajorGridlines = true,
+                        DataLabel = new DataLabelModel() 
+                        {
+                            ShowDataLabel = true,
+                            ShowCatName = true,
+                            ShowPercent = true
+                        },
+                        //DataLabelColor = "#FFFFFF"//White
+                        DataLabelColor = "#000000"//Black
+                    }
+                }
+            };
+
+            page9.ChildElements.Add(pieChartPr);
+
+            doc.Pages.Add(page9);
 
             // Header
             var header = new Header();

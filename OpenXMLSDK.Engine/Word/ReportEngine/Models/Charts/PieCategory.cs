@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts
 {
-    public class BarCategory : ChartCategory
+    public class PieCategory : ChartCategory
     {
-        public BarCategory() 
+        public PieCategory()
         {
         }
     }
