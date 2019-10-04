@@ -101,6 +101,24 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts
         /// </summary>
         public DataLabelModel DataLabel { get; set; }
 
+        [Obsolete("Please use DataLabel.ShowDataLabel instead")]
+        public bool ShowDataLabel
+        {
+            get
+            {
+                if (DataLabel == null)
+                    return false;
+                else
+                    return DataLabel.ShowDataLabel;
+            }
+            set
+            {
+                if (DataLabel == null)
+                    DataLabel = new DataLabelModel();
+                DataLabel.ShowDataLabel = value;
+            }
+        }
+
         /// <summary>
         /// Ctor
         /// </summary>

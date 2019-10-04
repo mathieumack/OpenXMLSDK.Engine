@@ -2,7 +2,7 @@
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts
 {
-    public class DataLabelModel : BaseElement
+    public class DataLabelModel
     {
         /// <summary>
         /// Indicate if labels data will be showed
@@ -23,25 +23,10 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts
         /// Indicate position of label
         /// </summary>
         public DataLabelPositionValues LabelPosition { get; set; } = DataLabelPositionValues.BestFit;
-
-
+        
         /// <summary>
         /// Indicate separator of differents values (label, data, percent...)
         /// </summary>
         public string Separator { get; set; } = string.Empty;
-
-        /// <summary>
-        /// Ctor
-        /// </summary>
-        public DataLabelModel() : this(null)
-        {
-        }
-
-        /// <summary>
-        /// Ctor
-        /// </summary>
-        public DataLabelModel(string type) : base(type)
-        {
-        }
     }
 }

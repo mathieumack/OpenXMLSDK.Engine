@@ -179,14 +179,14 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 
             dc.DataLabels dLbls = new dc.DataLabels(
                 new dc.ShowLegendKey() { Val = false },
-                new dc.ShowValue() { Val = chartModel.DataLabel?.ShowDataLabel },
+                new dc.ShowValue() { Val = chartModel.DataLabel == null ? false : chartModel.DataLabel.ShowDataLabel },
                 new dc.ShowCategoryName() { Val = false },
                 new dc.ShowSeriesName() { Val = false },
                 new dc.ShowPercent() { Val = false },
                 new dc.ShowBubbleSize() { Val = false });
 
             // Gestion de la couleur du ShowValue
-            if (chartModel.DataLabel.ShowDataLabel && !string.IsNullOrWhiteSpace(chartModel.DataLabelColor))
+            if (chartModel.DataLabel !=null && chartModel.DataLabel.ShowDataLabel && !string.IsNullOrWhiteSpace(chartModel.DataLabelColor))
             {
                 string color = chartModel.DataLabelColor;
                 color = color.Replace("#", "");
