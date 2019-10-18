@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OpenXMLSDK.Engine.Word.ReportEngine.BatchModels
+namespace OpenXMLSDK.Engine.ReportEngine.DataContext
 {
     public class DoubleModel : BaseModel
     {

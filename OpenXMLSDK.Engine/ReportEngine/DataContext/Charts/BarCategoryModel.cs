@@ -1,4 +1,4 @@
-﻿namespace OpenXMLSDK.Engine.Word.ReportEngine.BatchModels.Charts
+﻿namespace OpenXMLSDK.Engine.ReportEngine.DataContext.Charts
 {
     public class BarCategoryModel
     {
