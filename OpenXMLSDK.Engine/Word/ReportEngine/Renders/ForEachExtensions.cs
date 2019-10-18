@@ -3,6 +3,7 @@ using DocumentFormat.OpenXml.Packaging;
 using OpenXMLSDK.Engine.ReportEngine.DataContext;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models;
 using System;
+using System.Collections.Generic;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 {
@@ -37,20 +38,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             int i = 0;
             foreach (var item in datasource.Items)
             {
-                if (!string.IsNullOrWhiteSpace(forEach.AutoContextAddItemsPrefix))
-                {
-                    // We add automatic keys :
-                    // Is first item
-                    item.AddItem("#" + forEach.AutoContextAddItemsPrefix + "_ForEach_IsFirstItem#", new BooleanModel(i == 0));
-                    item.AddItem("#" + forEach.AutoContextAddItemsPrefix + "_ForEach_IsNotFirstItem#", new BooleanModel(i > 0));
-                    // Is last item
-                    item.AddItem("#" + forEach.AutoContextAddItemsPrefix + "_ForEach_IsLastItem#", new BooleanModel(i == datasource.Items.Count - 1));
-                    // Index of the element (Based on 0, and based on 1)
-                    item.AddItem("#" + forEach.AutoContextAddItemsPrefix + "_ForEach_IndexBaseZero#", new StringModel(i.ToString()));
-                    item.AddItem("#" + forEach.AutoContextAddItemsPrefix + "_ForEach_IndexBaseOne#", new StringModel((i + 1).ToString()));
-                    item.AddItem("#" + forEach.AutoContextAddItemsPrefix + "_ForEach_IsOdd#", new BooleanModel(i % 2 == 1));
-                    item.AddItem("#" + forEach.AutoContextAddItemsPrefix + "_ForEach_IsEven#", new BooleanModel(i % 2 == 0));
-                }
+                item.AddAutoContextAddItemsPrefix(forEach, i, datasource);
 
                 for (int j = 0; j < forEach.ItemTemplate.Count; j++)
                 {
@@ -69,6 +57,34 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 }
 
                 i++;
+            }
+        }
+
+        /// <summary>
+        /// Add automatic keys for the foreach item
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="forEach"></param>
+        /// <param name="i"></param>
+        /// <param name="datasource"></param>
+        private static void AddAutoContextAddItemsPrefix(this ContextModel item, ForEach forEach, int i, DataSourceModel datasource)
+        {
+            if (forEach == null)
+                return;
+
+            if (!string.IsNullOrWhiteSpace(forEach.AutoContextAddItemsPrefix))
+            {
+                // We add automatic keys :
+                // Is first item
+                item.AddItem("#" + forEach.AutoContextAddItemsPrefix + "_ForEach_IsFirstItem#", new BooleanModel(i == 0));
+                item.AddItem("#" + forEach.AutoContextAddItemsPrefix + "_ForEach_IsNotFirstItem#", new BooleanModel(i > 0));
+                // Is last item
+                item.AddItem("#" + forEach.AutoContextAddItemsPrefix + "_ForEach_IsLastItem#", new BooleanModel(i == datasource.Items.Count - 1));
+                // Index of the element (Based on 0, and based on 1)
+                item.AddItem("#" + forEach.AutoContextAddItemsPrefix + "_ForEach_IndexBaseZero#", new StringModel(i.ToString()));
+                item.AddItem("#" + forEach.AutoContextAddItemsPrefix + "_ForEach_IndexBaseOne#", new StringModel((i + 1).ToString()));
+                item.AddItem("#" + forEach.AutoContextAddItemsPrefix + "_ForEach_IsOdd#", new BooleanModel(i % 2 == 1));
+                item.AddItem("#" + forEach.AutoContextAddItemsPrefix + "_ForEach_IsEven#", new BooleanModel(i % 2 == 0));
             }
         }
     }
