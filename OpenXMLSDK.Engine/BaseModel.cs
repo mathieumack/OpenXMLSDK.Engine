@@ -1,4 +1,4 @@
-﻿namespace OpenXMLSDK.Engine.Word.ReportEngine
+﻿namespace OpenXMLSDK.Engine
 {
     /// <summary>
     /// base class for context element
@@ -14,7 +14,7 @@
         /// Constructor
         /// </summary>
         /// <param name="type"></param>
-        public BaseModel(string type)
+        protected BaseModel(string type)
         {
             TypeName = type;
         }

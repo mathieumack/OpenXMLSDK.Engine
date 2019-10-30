@@ -1,12 +1,11 @@
 ﻿using OpenXMLSDK.Engine.Word;
 using OpenXMLSDK.Engine.Word.ReportEngine;
-using OpenXMLSDK.Engine.Word.ReportEngine.BatchModels;
-using OpenXMLSDK.Engine.Word.ReportEngine.BatchModels.Charts;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models.ExtendedModels;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts;
 using OpenXMLSDK.Engine.Word.Tables;
 using OpenXMLSDK.Engine.Word.Tables.Models;
+using OpenXMLSDK.Engine.ReportEngine.DataContext.FluentExtensions;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -14,6 +13,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Globalization;
 using OpenXMLSDK.Engine.interfaces.Word.ReportEngine.Models;
+using OpenXMLSDK.Engine.ReportEngine.DataContext.Charts;
+using OpenXMLSDK.Engine.ReportEngine.DataContext;
 
 namespace OpenXMLSDK.UnitTest.ReportEngine
 {
@@ -83,22 +84,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
         /// <returns></returns>
         private static ContextModel GetContext()
         {
-            ContextModel context = new ContextModel();
-            context.AddItem("#NoRow#", new BooleanModel(false));
-            context.AddItem("#ParagraphShading#", new StringModel("00FF00"));
-            context.AddItem("#ParagraphBorderColor#", new StringModel("105296"));
-            context.AddItem("#BorderColor#", new StringModel("00FF00"));
-            context.AddItem("#KeyTest1#", new StringModel("Key 1"));
-            context.AddItem("#KeyTest2#", new StringModel("Key 2"));
-            context.AddItem("#BoldKey#", new BooleanModel(true));
-
-            context.AddItem("#FontColorTestRed#", new StringModel("993333"));
-            context.AddItem("#ParagraphStyleIdTestYellow#", new StringModel("Yellow"));
-
-            ContextModel row1 = new ContextModel();
-            row1.AddItem("#Cell1#", new StringModel("Col 1 Row 1"));
-            row1.AddItem("#Cell2#", new StringModel("Col 2 Row 1"));
-            row1.AddItem("#Label#", new StringModel("Label 1"));
+            // Classic generation
             ContextModel row2 = new ContextModel();
             row2.AddItem("#Cell1#", new StringModel("Col 2 Row 1"));
             row2.AddItem("#Cell2#", new StringModel("Col 2 Row 2"));
@@ -112,21 +98,24 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             row4.AddItem("#Cell2#", new StringModel("Col 2 Row 4"));
             row4.AddItem("#Label#", new StringModel("Label 2"));
 
-            context.AddItem("#Datasource#", new DataSourceModel()
-            {
-                Items = new List<ContextModel>()
-                    {
-                        row1, row2
-                    }
-            });
+            // Fluent samples
+            ContextModel row1 = new ContextModel()
+                        .AddString("#Cell1#", "Col 1 Row 1")
+                        .AddString("#Cell2#", "Col 2 Row 1")
+                        .AddString("#Label#", "Label 1");
 
-            context.AddItem("#DatasourcePrefix#", new DataSourceModel()
-            {
-                Items = new List<ContextModel>()
-                    {
-                        row1, row2, row3, row4
-                    }
-            });
+            ContextModel context = new ContextModel()
+                        .AddBoolean("#NoRow#", false)
+                        .AddString("#ParagraphShading#", "00FF00")
+                        .AddString("#ParagraphBorderColor#", "105296")
+                        .AddString("#BorderColor#", "00FF00")
+                        .AddString("#KeyTest1#", "Key 1")
+                        .AddString("#KeyTest2#", "Key 2")
+                        .AddBoolean("#BoldKey#", true)
+                        .AddString("#FontColorTestRed#", "993333")
+                        .AddString("#ParagraphStyleIdTestYellow#", "Yellow")
+                        .AddCollection("#Datasource#", row1, row2)
+                        .AddCollection("#DatasourcePrefix#", row1, row2, row3, row4);
 
             ContextModel row11 = new ContextModel();
             row11.AddItem("#IsInGroup#", new BooleanModel(true));
@@ -181,7 +170,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
 
             context.AddItem("#GrahSampleData#", new BarChartModel()
             {
-                BarChartContent = new OpenXMLSDK.Engine.Word.ReportEngine.BatchModels.Charts.BarModel()
+                BarChartContent = new OpenXMLSDK.Engine.ReportEngine.DataContext.Charts.BarModel()
                 {
                     Categories = new List<BarCategoryModel>()
                     {

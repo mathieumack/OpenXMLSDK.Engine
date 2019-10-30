@@ -1,6 +1,6 @@
 ﻿using System;
 using DocumentFormat.OpenXml;
-using OpenXMLSDK.Engine.Word.ReportEngine.BatchModels;
+using OpenXMLSDK.Engine.ReportEngine.DataContext;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models;
 using OpenXMLSDK.Engine.Platform.Word.Extensions;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models.ExtendedModels;
