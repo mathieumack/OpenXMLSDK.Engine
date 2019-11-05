@@ -1,15 +1,15 @@
-﻿using DocumentFormat.OpenXml;
-using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml.Wordprocessing;
-using System;
+﻿using System;
 using System.Linq;
 using System.Text.RegularExpressions;
+using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Wordprocessing;
+using OpenXMLSDK.Engine.ReportEngine.DataContext;
+using OpenXMLSDK.Engine.Word.Charts;
+using OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts;
 using A = DocumentFormat.OpenXml.Drawing;
 using dc = DocumentFormat.OpenXml.Drawing.Charts;
 using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
-using OpenXMLSDK.Engine.ReportEngine.DataContext;
-using OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts;
-using OpenXMLSDK.Engine.Word.Charts;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 {
@@ -321,7 +321,10 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 
                 if (!string.IsNullOrEmpty(chartModel.BorderColor))
                 {
-                    chartPart.ChartSpace.Append(new dc.ChartShapeProperties(new A.Outline(new A.SolidFill(new A.RgbColorModelHex() { Val = chartModel.BorderColor })) { Width = chartModel.BorderWidth.Value }));
+                    var color = chartModel.BorderColor.Replace("#", "");
+                    if (!Regex.IsMatch(color, "^[0-9-A-F]{6}$"))
+                        throw new Exception("Error in color of chart borders.");
+                    chartPart.ChartSpace.Append(new dc.ChartShapeProperties(new A.Outline(new A.SolidFill(new A.RgbColorModelHex() { Val = color })) { Width = chartModel.BorderWidth.Value }));
                 }
                 else
                 {
