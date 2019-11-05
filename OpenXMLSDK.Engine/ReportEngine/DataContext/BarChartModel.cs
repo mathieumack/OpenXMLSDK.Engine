@@ -1,5 +1,5 @@
 ﻿using System;
-using OpenXMLSDK.Engine.Word.ReportEngine.BatchModels.Charts;
+using OpenXMLSDK.Engine.ReportEngine.DataContext.Charts;
 
 namespace OpenXMLSDK.Engine.ReportEngine.DataContext
 {

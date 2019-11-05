@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
+using OpenXMLSDK.Engine.ReportEngine.DataContext;
 using OpenXMLSDK.Engine.Word.Charts;
 using OpenXMLSDK.Engine.Word.ReportEngine.BatchModels;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts;

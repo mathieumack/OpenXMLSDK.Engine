@@ -21,6 +21,8 @@ using System.Globalization;
 using OpenXMLSDK.Engine.interfaces.Word.ReportEngine.Models;
 using OpenXMLSDK.Engine.ReportEngine.DataContext.Charts;
 using OpenXMLSDK.Engine.ReportEngine.DataContext;
+using OpenXMLSDK.Engine.Word.ReportEngine.BatchModels.Charts;
+using OpenXMLSDK.Engine.Word.ReportEngine.BatchModels;
 
 namespace OpenXMLSDK.UnitTest.ReportEngine
 {
@@ -176,7 +178,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
 
             context.AddItem("#BarGrahSampleData#", new BarChartModel()
             {
-                BarChartContent = new OpenXMLSDK.Engine.ReportEngine.DataContext.Charts.BarModel()
+                BarChartContent = new Engine.ReportEngine.DataContext.Charts.BarModel()
                 {
                     Categories = new List<BarCategoryModel>()
                     {
