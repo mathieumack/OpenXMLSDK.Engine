@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using OpenXMLSDK.Engine.interfaces.Word.ReportEngine.Models;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models.ExtendedModels;
 
@@ -9,6 +10,12 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models
     /// </summary>
     public class Label : BaseElement
     {        
+        /// <summary>
+        /// Define if the content is an html content
+        /// </summary>
+        [Obsolete("Please use HtmlContent object")]
+        public bool IsHtml { get; set; }
+
         /// <summary>
         /// Label content (can contains #key# from context)
         /// </summary>

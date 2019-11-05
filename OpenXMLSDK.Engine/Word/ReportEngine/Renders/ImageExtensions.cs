@@ -2,11 +2,11 @@
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
-using OpenXMLSDK.Engine.Word.ReportEngine.BatchModels;
+using OpenXMLSDK.Engine.ReportEngine.DataContext;
 using A = DocumentFormat.OpenXml.Drawing;
 using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
 using PIC = DocumentFormat.OpenXml.Drawing.Pictures;
-using SixLabors.ImageSharp.Processing;
+using SixLabors.ImageSharp.MetaData;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 {
@@ -120,11 +120,23 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     bmHeight = (long)(bmHeight * (ratio / 100D));
                 }
 
-                image.Mutate(x => x
-                    .Resize((int)bmWidth, (int)bmHeight));
+                var xResolution = image.MetaData.HorizontalResolution;
+                var yResolution = image.MetaData.VerticalResolution;
 
-                imageWidth = bmWidth * (long)(914400 / image.MetaData.HorizontalResolution);
-                imageHeight = bmHeight * (long)(914400 / image.MetaData.VerticalResolution);
+                // The resolution may come in differents units, convert it to pixels per inch
+                if (image.MetaData.ResolutionUnits == PixelResolutionUnit.PixelsPerMeter)
+                {
+                    xResolution *= 0.0254;
+                    yResolution *= 0.0254;
+                }
+                else if (image.MetaData.ResolutionUnits == PixelResolutionUnit.PixelsPerCentimeter)
+                {
+                    xResolution *= 2.54;
+                    yResolution *= 2.54;
+                }
+
+                imageWidth = bmWidth * (long)(914400 / xResolution);
+                imageHeight = bmHeight * (long)(914400 / yResolution);
             }
 
             var result = new Run();

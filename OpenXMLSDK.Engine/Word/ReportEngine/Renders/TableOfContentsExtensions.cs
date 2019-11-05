@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
-using OpenXMLSDK.Engine.Word.ReportEngine.BatchModels;
+using OpenXMLSDK.Engine.ReportEngine.DataContext;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders

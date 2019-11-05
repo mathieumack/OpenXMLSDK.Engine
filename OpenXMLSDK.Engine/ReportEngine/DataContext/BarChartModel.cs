@@ -1,7 +1,7 @@
 ﻿using System;
 using OpenXMLSDK.Engine.Word.ReportEngine.BatchModels.Charts;
 
-namespace OpenXMLSDK.Engine.Word.ReportEngine.BatchModels
+namespace OpenXMLSDK.Engine.ReportEngine.DataContext
 {
     [Obsolete("Please use MultipleSeriesChartModel instead")]
     public class BarChartModel : BaseModel
