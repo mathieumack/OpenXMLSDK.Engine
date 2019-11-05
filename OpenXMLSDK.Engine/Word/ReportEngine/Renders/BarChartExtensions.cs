@@ -1,15 +1,15 @@
-﻿using DocumentFormat.OpenXml;
-using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml.Wordprocessing;
-using System;
+﻿using System;
 using System.Linq;
 using System.Text.RegularExpressions;
+using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Wordprocessing;
+using OpenXMLSDK.Engine.ReportEngine.DataContext;
+using OpenXMLSDK.Engine.Word.Charts;
+using OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts;
 using A = DocumentFormat.OpenXml.Drawing;
 using dc = DocumentFormat.OpenXml.Drawing.Charts;
 using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
-using OpenXMLSDK.Engine.ReportEngine.DataContext;
-using OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts;
-using OpenXMLSDK.Engine.Word.Charts;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 {
@@ -30,7 +30,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 
             Run runItem = null;
 
-            if(!string.IsNullOrWhiteSpace(barChart.DataSourceKey) && context.ExistItem<BarChartModel>(barChart.DataSourceKey))
+            if (!string.IsNullOrWhiteSpace(barChart.DataSourceKey) && context.ExistItem<BarChartModel>(barChart.DataSourceKey))
             {
                 // We construct categories and series from the context object
                 var contextModel = context.GetItem<BarChartModel>(barChart.DataSourceKey);
@@ -59,14 +59,14 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     return runItem;
             }
 
-            switch(barChart.BarChartType)
+            switch (barChart.BarChartType)
             {
                 case BarChartType.BarChart:
                     runItem = CreateBarGraph(barChart, documentPart);
                     break;
             }
-           
-            if(runItem != null)
+
+            if (runItem != null)
                 parent.AppendChild(runItem);
 
             return runItem;
@@ -213,7 +213,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 
             barChart.Append(new dc.AxisId() { Val = new UInt32Value(48650112u) });
             barChart.Append(new dc.AxisId() { Val = new UInt32Value(48672768u) });
-            
+
             // Set ShapeProperties
             dc.ShapeProperties dcSP = null;
             if (chartModel.ShowMajorGridlines)
@@ -224,12 +224,12 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     color = color.Replace("#", "");
                     if (!Regex.IsMatch(color, "^[0-9-A-F]{6}$"))
                         throw new Exception("Error in color of grid lines.");
-                    dcSP = new dc.ShapeProperties(new A.Outline(new A.SolidFill() { RgbColorModelHex = new A.RgbColorModelHex() { Val = color }}));                    
+                    dcSP = new dc.ShapeProperties(new A.Outline(new A.SolidFill() { RgbColorModelHex = new A.RgbColorModelHex() { Val = color } }));
                 }
                 else
                 {
                     dcSP = new dc.ShapeProperties();
-                }              
+                }
             }
             else
             {
@@ -321,7 +321,10 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 
                 if (!string.IsNullOrEmpty(chartModel.BorderColor))
                 {
-                    chartPart.ChartSpace.Append(new dc.ChartShapeProperties(new A.Outline(new A.SolidFill(new A.RgbColorModelHex() { Val = chartModel.BorderColor })) { Width = chartModel.BorderWidth.Value }));
+                    var color = chartModel.BorderColor.Replace("#", "");
+                    if (!Regex.IsMatch(color, "^[0-9-A-F]{6}$"))
+                        throw new Exception("Error in color of chart borders.");
+                    chartPart.ChartSpace.Append(new dc.ChartShapeProperties(new A.Outline(new A.SolidFill(new A.RgbColorModelHex() { Val = color })) { Width = chartModel.BorderWidth.Value }));
                 }
                 else
                 {
@@ -332,7 +335,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             {
                 chartPart.ChartSpace.Append(new dc.ChartShapeProperties(new A.Outline(new A.NoFill())));
             }
-            
+
             // Save the chart part.
             chartPart.ChartSpace.Save();
 
@@ -348,7 +351,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 imageWidth = (long)chartModel.MaxWidth * 9525;
             if (chartModel.MaxHeight.HasValue)
                 imageHeight = (long)chartModel.MaxHeight * 9525;
-            
+
             // Gestion de l'élément Drawing
             var element = new Run(
                 new DocumentFormat.OpenXml.Wordprocessing.Drawing(

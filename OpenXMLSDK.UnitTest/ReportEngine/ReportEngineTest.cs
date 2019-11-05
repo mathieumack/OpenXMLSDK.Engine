@@ -1,20 +1,19 @@
-﻿using OpenXMLSDK.Engine.Word;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using Newtonsoft.Json;
+using OpenXMLSDK.Engine.interfaces.Word.ReportEngine.Models;
+using OpenXMLSDK.Engine.ReportEngine.DataContext;
+using OpenXMLSDK.Engine.ReportEngine.DataContext.Charts;
+using OpenXMLSDK.Engine.ReportEngine.DataContext.FluentExtensions;
+using OpenXMLSDK.Engine.Word;
 using OpenXMLSDK.Engine.Word.ReportEngine;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models;
-using OpenXMLSDK.Engine.Word.ReportEngine.Models.ExtendedModels;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts;
+using OpenXMLSDK.Engine.Word.ReportEngine.Models.ExtendedModels;
 using OpenXMLSDK.Engine.Word.Tables;
 using OpenXMLSDK.Engine.Word.Tables.Models;
-using OpenXMLSDK.Engine.ReportEngine.DataContext.FluentExtensions;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Globalization;
-using OpenXMLSDK.Engine.interfaces.Word.ReportEngine.Models;
-using OpenXMLSDK.Engine.ReportEngine.DataContext.Charts;
-using OpenXMLSDK.Engine.ReportEngine.DataContext;
 
 namespace OpenXMLSDK.UnitTest.ReportEngine
 {
@@ -277,14 +276,22 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                 Right = "6000"
             };
             paragraph.ChildElements.Add(new Label() { Text = "Ceci est un texte avec accents (éèàù)", FontSize = "30", FontName = "Arial" });
-            paragraph.ChildElements.Add(new Label() { Text = "#KeyTest1#", FontSize = "40",
+            paragraph.ChildElements.Add(new Label()
+            {
+                Text = "#KeyTest1#",
+                FontSize = "40",
                 TransformOperations = new List<LabelTransformOperation>()
                 {
                     new LabelTransformOperation()
                     {
                         TransformOperationType = LabelTransformOperationType.ToUpper
                     }
-                }, FontColor = "#FontColorTestRed#", Shading = "9999FF", BoldKey = "#BoldKey#", Bold = false });
+                },
+                FontColor = "#FontColorTestRed#",
+                Shading = "9999FF",
+                BoldKey = "#BoldKey#",
+                Bold = false
+            });
             paragraph.ChildElements.Add(new Label()
             {
                 Text = "#KeyTest2#",
@@ -772,7 +779,9 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                         BarDirectionValues = BarDirectionValues.Column,
                         BarGroupingValues = BarGroupingValues.PercentStacked,
                         DataSourceKey = "#GrahSampleData#",
-                        ShowMajorGridlines = true
+                        ShowMajorGridlines = true,
+                        HasBorder = true,
+                        BorderColor = "#A80890"
                     }
                 }
             };
