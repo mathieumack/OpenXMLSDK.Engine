@@ -62,7 +62,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 
             switch (pieChart.PieChartType)
             {
-                case PieChartType.Pie3DChart:
+                case PieChartType.PieChart:
                     runItem = CreatePieGraph(pieChart, documentPart);
                     break;
             }
@@ -118,15 +118,15 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 
             // Create a new clustered column chart.
             dc.PlotArea plotArea = chart.AppendChild<dc.PlotArea>(new dc.PlotArea());
-            dc.View3D view3D = chart.AppendChild<dc.View3D>(
-                new dc.View3D()
-                {
-                    RotateX = new dc.RotateX() { Val = 40 },
-                    RotateY = new dc.RotateY() { Val = 0 }
-                });
+            //dc.View3D view3D = chart.AppendChild<dc.View3D>(
+            //    new dc.View3D()
+            //    {
+            //        RotateX = new dc.RotateX() { Val = 40 },
+            //        RotateY = new dc.RotateY() { Val = 0 }
+            //    });
 
             dc.Layout layout = plotArea.AppendChild<dc.Layout>(new dc.Layout());
-            dc.Pie3DChart pieChart = plotArea.AppendChild<dc.Pie3DChart>(new dc.Pie3DChart());
+            dc.PieChart pieChart = plotArea.AppendChild<dc.PieChart>(new dc.PieChart());
 
             uint i = 0;
             var serie = chartModel.Serie;
@@ -147,7 +147,11 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 
                 pieChartSeries.AppendChild<A.ShapeProperties>(new A.ShapeProperties(new A.SolidFill() { RgbColorModelHex = new A.RgbColorModelHex() { Val = color } }));
             }
-
+            /*
+            var outline = new A.Outline { Width = 63500 };
+            outline.AppendChild(new A.SolidFill() { RgbColorModelHex = new A.RgbColorModelHex() { Val = "FF00FF" } });
+            pieChartSeries.AppendChild(new A.ShapeProperties(outline));
+            */
             // Gestion des catégories
             dc.StringReference strLit = pieChartSeries.AppendChild<dc.CategoryAxisData>
                     (new dc.CategoryAxisData()).AppendChild<dc.StringReference>(new dc.StringReference());

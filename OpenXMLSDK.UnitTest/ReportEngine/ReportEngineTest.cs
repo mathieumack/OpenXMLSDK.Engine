@@ -909,7 +909,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                         ShowTitle = true,
                         FontSize = "23",
                         ShowChartBorder = true,
-                        PieChartType = PieChartType.Pie3DChart,
+                        PieChartType = PieChartType.PieChart,
                         DataSourceKey = "#PieGrahSampleData#",
                         ShowMajorGridlines = true,
                         DataLabel = new DataLabelModel() 
