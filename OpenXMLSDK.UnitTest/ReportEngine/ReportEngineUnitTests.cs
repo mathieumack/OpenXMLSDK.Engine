@@ -39,9 +39,10 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             RunFontsModel testRFM = new RunFontsModel();
             testRFM.Ascii = "toto";
             testRFM.ComplexScript = "toto";
+            Assert.AreEqual(testRFM.Ascii, testRFM.ComplexScript);
+
             testRFM.EastAsia = "toto";
             testRFM.HighAnsi = "toto";
-            Assert.AreEqual(testRFM.Ascii, testRFM.ComplexScript);
             Assert.AreEqual(testRFM.EastAsia, testRFM.HighAnsi);
         }
 
@@ -51,11 +52,13 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             RunPropertiesModel testRPM = new RunPropertiesModel();
             testRPM.Bold = true;
             testRPM.Italic = true;
+            Assert.AreEqual(testRPM.Bold, testRPM.Italic);
+
             testRPM.Color = "color";
             testRPM.FontSize = "color";
-            testRPM.RunFonts = new RunFontsModel();
-            Assert.AreEqual(testRPM.Bold, testRPM.Italic);
             Assert.AreEqual(testRPM.Color, testRPM.FontSize);
+
+            testRPM.RunFonts = new RunFontsModel();
             Assert.IsNotNull(testRPM.RunFonts);
         }
 
@@ -65,18 +68,22 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             ShadingModel testSM = new ShadingModel();
             testSM.ThemeFillShade = "toto";
             testSM.ThemeFillTint = "toto";
+            Assert.AreEqual(testSM.ThemeFillShade, testSM.ThemeFillTint);
+
             testSM.Color = "color";
             testSM.Fill = "color";
+            Assert.AreEqual(testSM.Color, testSM.Fill);
+
             testSM.ThemeShade = "toto";
             testSM.ThemeTint = "toto";
+            Assert.AreEqual(testSM.ThemeShade, testSM.ThemeTint);
+
             testSM.Val = (ShadingPatternValues)0;
+            Assert.AreEqual((ShadingPatternValues)0, testSM.Val);
+
             testSM.ThemeColor = (ThemeColorValues)0;
             testSM.ThemeFill = (ThemeColorValues)0;
-            Assert.AreEqual(testSM.ThemeFillShade, testSM.ThemeFillTint);
-            Assert.AreEqual(testSM.Color, testSM.Fill);
-            Assert.AreEqual(testSM.ThemeShade, testSM.ThemeTint);
-            Assert.AreEqual(testSM.ThemeColor, testSM.ThemeFill);
-            Assert.AreEqual((ShadingPatternValues)0, testSM.Val);
+            Assert.AreEqual(testSM.ThemeColor, testSM.ThemeFill);    
         }
 
         [TestMethod]
@@ -147,12 +154,41 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
         }
 
         [TestMethod]
-        public void Test_Table()
+        public void Test_Table_BM()
         {
             TableBorderModel testTBM = new TableBorderModel();
-            Assert.AreEqual(BorderValues.Single, testTBM.BorderValue);
-            Assert.AreEqual(1, testTBM.Size);
-            Assert.AreEqual("000000", testTBM.Color);
+            Test_Table_BM(testTBM);
+        }
+
+        [TestMethod]
+        public void Test_Table_BM(TableBorderModel tbm)
+        {
+            Assert.AreEqual(BorderValues.Single, tbm.BorderValue);
+            Assert.AreEqual(1, tbm.Size);
+            Assert.AreEqual("000000", tbm.Color);
+        }
+
+        [TestMethod]
+        public void Test_Table_BMs()
+        {
+            TableBordersModel testTBMs = new TableBordersModel();
+            testTBMs.BottomBorder = new TableBorderModel();
+            Test_Table_BM(testTBMs.BottomBorder);
+
+            testTBMs.InsideHorizontalBorder = new TableBorderModel();
+            Test_Table_BM(testTBMs.InsideHorizontalBorder);
+
+            testTBMs.LeftBorder = new TableBorderModel();
+            Test_Table_BM(testTBMs.LeftBorder);
+
+            testTBMs.RightBorder = new TableBorderModel();
+            Test_Table_BM(testTBMs.RightBorder);
+
+            testTBMs.TopBorder = new TableBorderModel();
+            Test_Table_BM(testTBMs.TopBorder);
+
+            testTBMs.InsideVerticalBorder = new TableBorderModel();
+            Test_Table_BM(testTBMs.InsideVerticalBorder);
         }
     }
 }

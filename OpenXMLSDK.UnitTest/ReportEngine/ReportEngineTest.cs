@@ -62,21 +62,6 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             }
         }
 
-        public static void Test()
-        {
-            Console.WriteLine("Enter the path of your Json file, press enter for an example");
-            var filePath = Console.ReadLine();
-            var documentName = string.Empty;
-            if (!string.IsNullOrWhiteSpace(filePath))
-            {
-                Console.WriteLine("Enter document name");
-                documentName = Console.ReadLine();
-            }
-
-            Console.WriteLine("Generation in progress");
-            ReportEngine(filePath, documentName);
-        }
-
         /// <summary>
         /// Generate the context for the generated template
         /// </summary>
