@@ -113,11 +113,8 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
         public void WordManagerOpenDocOpenningDocx()
         {
             WordManager manager = new WordManager();
-            string file_path = @"c:\temp\test_unit.docx";
-            StreamWriter file = File.CreateText(file_path);
-            file.Write("test");
-            file.Close();
-            Assert.IsFalse(manager.OpenDoc(file_path, true));
+            string file_path = @"Resources\test.docx";
+            Assert.IsTrue(manager.OpenDoc(file_path, true));
         }
 
         [TestMethod]

@@ -27,6 +27,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Resources\test.docx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\Test.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
