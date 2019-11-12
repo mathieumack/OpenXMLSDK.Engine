@@ -91,7 +91,9 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
         {
             WordManager manager = new WordManager();
             string file_path = @"c:\temp\test_unit.pdf";
-            File.Create(file_path);
+            StreamWriter file = File.CreateText(file_path);
+            file.Write("test");
+            file.Close();
             Assert.IsFalse(manager.OpenDoc(file_path, true));
         }
 
@@ -100,18 +102,15 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
         {
             WordManager manager = new WordManager();
             string file_path = @"c:\temp\test_unit.txt";
-            File.Create(file_path);
+            StreamWriter file = File.CreateText(file_path);
+            file.Write("test");
+            file.Close();
             Assert.IsFalse(manager.OpenDoc(file_path, true));
         }
 
-        [TestMethod]
-        public void WordManagerOpenDocOpenningZip()
-        {
-            WordManager manager = new WordManager();
-            string file_path = @"c:\temp\test_unit.zip";
-            File.Create(file_path);
-            Assert.IsTrue(manager.OpenDoc(file_path, true));
-        }
+        
+
+
     }
 }
 
