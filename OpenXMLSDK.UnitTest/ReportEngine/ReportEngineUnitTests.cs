@@ -110,7 +110,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             WordManager manager = new WordManager();
             string file_path = @"c:\temp\test_unit.zip";
             File.Create(file_path);
-            Assert.IsTrue(manager.OpenDoc(file_path, true));
+            Assert.IsFalse(manager.OpenDoc(file_path, true));
         }
     }
 }
