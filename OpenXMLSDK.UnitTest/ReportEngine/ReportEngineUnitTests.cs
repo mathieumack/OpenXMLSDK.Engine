@@ -1,4 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using OpenXMLSDK.Engine.Word;
 
 namespace OpenXMLSDK.UnitTest.ReportEngine
 {
@@ -9,6 +11,11 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
         public void Global_Generation()
         {
             ReportEngineTest.ReportEngine(string.Empty, string.Empty);
+        }
+
+        public void SaveDoc()
+        {
+            Assert.IsFalse(wdDoc != null);
         }
     }
 }
