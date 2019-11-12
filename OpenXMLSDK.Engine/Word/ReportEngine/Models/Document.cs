@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using OpenXMLSDK.Engine.interfaces.Word.ReportEngine.Models;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models.ExtendedModels;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Models

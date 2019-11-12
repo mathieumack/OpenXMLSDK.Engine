@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-
+﻿
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Models
 {
     /// <summary>
@@ -13,7 +12,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models
         /// Web site uri
         /// </summary>
         public string WebSiteUri { get; set; }
-
+            
         /// <summary>
         /// Anchor label, can be contextualized
         /// </summary>

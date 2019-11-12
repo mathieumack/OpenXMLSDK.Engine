@@ -11,7 +11,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models.ExtendedModels
         /// <summary>
         /// No border
         /// </summary>
-        NONE = 0,
+        none = 0,
         /// <summary>
         /// border on top
         /// </summary>
