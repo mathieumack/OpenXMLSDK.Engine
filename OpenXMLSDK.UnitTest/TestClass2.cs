@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using OpenXMLSDK.Engine.ReportEngine.DataContext;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models;
 using System;
 using System.Collections.Generic;
@@ -8,14 +9,14 @@ using System.Text;
 
 namespace OpenXMLSDK.UnitTest {
     [TestClass]
-    public class UnitTest1 {
+    public class UnitTest2 {
         [TestMethod]
         public void MyUnitTest () {
-            Mock<AlternateRowCellConfiguration> mockAlternate = new Mock<AlternateRowCellConfiguration> ();
+            Mock<DateTimeModel> mockDatou = new Mock<DateTimeModel> ();
 
-            AlternateRowCellConfiguration mockObject = mockAlternate.Object;
+            DateTimeModel mockObject = mockDatou.Object;
 
-            Assert.Fail ();
+            Assert.IsTrue (condition: mockObject.GetCurrentDate () == new DateTime (2019, 01, 01));
         }
     }
 }

@@ -9,6 +9,10 @@ namespace OpenXMLSDK.Engine.ReportEngine.DataContext
         /// </summary>
         public DateTime Value { get; set; }
 
+        public DateTime GetCurrentDate () {
+            throw new NotImplementedException ();
+        }
+
         /// <summary>
         /// Used to define the final rendering string You can set precision of other :
         /// More infos : https://msdn.microsoft.com/en-us/library/zdtaw1bw(v=vs.110).aspx
