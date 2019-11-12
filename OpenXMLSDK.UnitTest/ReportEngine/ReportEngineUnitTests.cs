@@ -140,6 +140,22 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             Assert.IsTrue(element.FontColor == "yellow" );
         }
 
+        [TestMethod]
+        public void BaseElementFontSize()
+        {
+            BaseElement element = new BaseElement("str");
+            element.FontSize = "8";
+            Assert.IsTrue(element.FontSize == "8");
+        }
+
+        [TestMethod]
+        public void BaseElementItalic()
+        {
+            BaseElement element = new BaseElement("str");
+            element.Italic = true;
+            Assert.IsTrue(element.Italic == true);
+        }
+
 
     }
 }
