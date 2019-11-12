@@ -1,7 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenXMLSDK.Engine.Word;
 using OpenXMLSDK.Engine;
-using Moq;
 using System.IO;
 using System;
 
