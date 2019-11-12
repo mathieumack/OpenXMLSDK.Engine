@@ -208,7 +208,8 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                             {
                                 0, 1, 2, 3, 6, null
                             },
-                            Name = "Bar serie 1"
+                            Name = "Bar serie 1",
+                            Color = "9FA0A4",
                         },
                         new BarSerieModel()
                         {
@@ -216,7 +217,8 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                             {
                                 5, null, 7, 8, 0, 10
                             },
-                            Name = "Bar serie 2"
+                            Name = "Bar serie 2",
+                            Color = "32AD3C",
                         },
                         new BarSerieModel()
                         {
@@ -224,7 +226,8 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                             {
                                 9, 10, 11, 12, 13, 14
                             },
-                            Name = "Bar serie 3"
+                            Name = "Bar serie 3",
+                            Color = "E47F00",
                         },
                         new BarSerieModel()
                         {
@@ -232,7 +235,8 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                             {
                                 9, 10, 11, 12, 15, 25
                             },
-                            Name = "Bar serie 4"
+                            Name = "Bar serie 4",
+                            Color = "DC0A0A",
                         }
                     }
                 }
@@ -246,19 +250,23 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                     {
                         new CategoryModel()
                         {
-                            Name = "A Category"
+                            Name = "A Category",
+                            Color = "9FA0A4"
                         },
                         new CategoryModel()
                         {
-                            Name = "B Category"
+                            Name = "B Category",
+                            Color = "32AD3C"
                         },
                         new CategoryModel()
                         {
-                            Name = "C Category"
+                            Name = "C Category",
+                            Color = "E47F00"
                         },
                         new CategoryModel()
                         {
-                            Name = "D Category"
+                            Name = "D Category",
+                            Color = "DC0A0A"
                         },
                         new CategoryModel()
                         {
@@ -273,9 +281,13 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                     {
                         Values = new List<double?>()
                         {
-                            0, 1, 2, 3, 6, null
+                            10, 20, 5, 50, 15, null
                         },
-                        Name = "Serie 1"
+                        Name = "Serie 1",
+                        HasBorder = true,
+                        BorderColor = "FFFFFF",
+                        Color = "000000",
+                        BorderWidth = 63500
                     }
                 }
             });
