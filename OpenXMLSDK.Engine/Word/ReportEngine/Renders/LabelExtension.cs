@@ -26,7 +26,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         {
             context.ReplaceItem(label, formatProvider);
 
-            if (label.IsHtml)
+            if (label.IsHtml)      
             {
                 AlternativeFormatImportPart formatImportPart;
                 if (documentPart is MainDocumentPart)
@@ -87,7 +87,6 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// </summary>
         /// <param name="label"></param>
         /// <param name="parent"></param>
-        /// <param name="formatProvider"></param>
         /// <returns></returns>
         private static Run SetTextContent(Label label, OpenXmlElement parent)
         {

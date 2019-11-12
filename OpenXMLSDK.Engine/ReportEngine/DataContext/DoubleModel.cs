@@ -28,11 +28,11 @@ namespace OpenXMLSDK.Engine.ReportEngine.DataContext
         /// Constructor
         /// </summary>
         /// <param name="value"></param>
-        public DoubleModel(double value, string renderPattern)
+        public DoubleModel(double value, string RenderPatterns)
             : base(typeof(DoubleModel).Name)
         {
             Value = value;
-            RenderPattern = renderPattern;
+            RenderPattern = RenderPatterns;
         }
 
         #endregion

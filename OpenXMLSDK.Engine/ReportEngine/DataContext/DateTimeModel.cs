@@ -28,11 +28,11 @@ namespace OpenXMLSDK.Engine.ReportEngine.DataContext
         /// Constructor
         /// </summary>
         /// <param name="value"></param>
-        public DateTimeModel(DateTime value, string renderPattern)
+        public DateTimeModel(DateTime value, string RenderPatterns)
             : base(typeof(DateTimeModel).Name)
         {
             Value = value;
-            RenderPattern = renderPattern;
+            RenderPattern = RenderPatterns;
         }
 
         #endregion
