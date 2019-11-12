@@ -56,6 +56,8 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
 
                     var res = word.GenerateReport(report.Document, report.ContextModel, new CultureInfo("en-US"));
 
+
+                    //
                     // test ecriture fichier
                     File.WriteAllBytes(documentName, res);
                 }
