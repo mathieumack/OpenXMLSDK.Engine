@@ -2,6 +2,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenXMLSDK.Engine.Word;
 using System;
 using System.IO;
+using OpenXMLSDK.Engine.Word.ReportEngine.Models;
 
 namespace OpenXMLSDK.UnitTest.ReportEngine
 {
@@ -108,7 +109,36 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             Assert.IsFalse(manager.OpenDoc(file_path, true));
         }
 
-        
+        [TestMethod]
+        public void WordManagerOpenDocOpenningDocx()
+        {
+            WordManager manager = new WordManager();
+            string file_path = @"c:\temp\test_unit.docx";
+            StreamWriter file = File.CreateText(file_path);
+            file.Write("test");
+            file.Close();
+            Assert.IsFalse(manager.OpenDoc(file_path, true));
+        }
+
+        [TestMethod]
+        public void WordManagerOpenDocOpenningZip()
+        {
+            WordManager manager = new WordManager();
+            string file_path = @"c:\temp\test_unit.zip";
+            StreamWriter file = File.CreateText(file_path);
+            file.Write("test");
+            file.Close();
+            Assert.IsFalse(manager.OpenDoc(file_path, true));
+        }
+
+
+        [TestMethod]
+        public void BaseElementFontColor()
+        {
+            BaseElement element = new BaseElement("str");
+            element.FontColor = "yellow";
+            Assert.IsTrue(element.FontColor == "yellow" );
+        }
 
 
     }
