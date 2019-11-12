@@ -122,6 +122,7 @@ namespace OpenXMLSDK.Engine.Word
                 throw new ArgumentNullException(nameof(filePath), "filePath must be not null or white spaces");
             if (!File.Exists(filePath))
                 throw new FileNotFoundException("file not found", filePath);
+            
 
             try
             {
