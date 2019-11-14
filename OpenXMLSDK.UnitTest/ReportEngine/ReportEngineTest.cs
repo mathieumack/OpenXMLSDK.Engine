@@ -922,11 +922,11 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                         ShowMajorGridlines = true,
                         DataLabel = new DataLabelModel() 
                         {
-                            ShowDataLabel = true,
+                            ShowDataLabel = false,
                             ShowCatName = true,
                             ShowPercent = true,
                             //LabelPosition = DocumentFormat.OpenXml.Drawing.Charts.DataLabelPositionValues.Center
-                            Separator = " "
+                            Separator = "\n"
                         },
                         //DataLabelColor = "#FFFFFF"//White
                         DataLabelColor = "#000000"//Black
