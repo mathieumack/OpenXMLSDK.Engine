@@ -285,8 +285,8 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                         },
                         Name = "Serie 1",
                         HasBorder = true,
-                        BorderColor = "FFFFFF",
-                        Color = "000000",
+                        BorderColor = "#FFFFFF",
+                        Color = "#000000",
                         BorderWidth = 63500
                     }
                 }

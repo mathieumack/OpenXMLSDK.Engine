@@ -160,6 +160,9 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 serie.BorderWidth = serie.BorderWidth.HasValue ? serie.BorderWidth.Value : 12700;
 
                 serie.BorderColor = !string.IsNullOrEmpty(serie.BorderColor) ? serie.BorderColor : "000000";
+                serie.BorderColor = serie.BorderColor.Replace("#", "");
+                if (!Regex.IsMatch(serie.BorderColor, "^[0-9-A-F]{6}$"))
+                    throw new Exception("Error in color of serie.");
 
                 shapeProperties.AppendChild(new A.Outline(new A.SolidFill(new A.RgbColorModelHex() { Val = serie.BorderColor })) { Width = serie.BorderWidth.Value });
             }
