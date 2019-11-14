@@ -60,7 +60,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     item.AddItem("#" + forEach.AutoContextAddItemsPrefix + "_ForEachPage_IsEven#", new BooleanModel(i % 2 == 0));
                 }
 
-                newPage.Clone().Render(document, wdDoc, item, mainDocumentPart, formatProvider);
+                ((Page)newPage.Clone()).Render(document, wdDoc, item, mainDocumentPart, formatProvider);
 
                 i++;
             }
