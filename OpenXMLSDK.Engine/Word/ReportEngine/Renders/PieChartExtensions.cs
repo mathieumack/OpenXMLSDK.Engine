@@ -54,6 +54,9 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                         DataLabelColor = contextModel.ChartContent.Serie.DataLabelColor,
                         Values = contextModel.ChartContent.Serie.Values,
                         Name = contextModel.ChartContent.Serie.Name,
+                        HasBorder = contextModel.ChartContent.Serie.HasBorder,
+                        BorderColor = contextModel.ChartContent.Serie.BorderColor,
+                        BorderWidth = contextModel.ChartContent.Serie.BorderWidth,
                     };
                 }
                 else
@@ -138,6 +141,8 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 new dc.StringPoint() { Index = (uint)0, NumericValue = new dc.NumericValue() { Text = serie.Name } })))));
 
             // Gestion de la couleur de la série
+            A.ShapeProperties shapeProperties = new A.ShapeProperties();
+
             if (!string.IsNullOrWhiteSpace(serie.Color))
             {
                 string color = serie.Color;
@@ -145,13 +150,30 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 if (!Regex.IsMatch(color, "^[0-9-A-F]{6}$"))
                     throw new Exception("Error in color of serie.");
 
-                pieChartSeries.AppendChild<A.ShapeProperties>(new A.ShapeProperties(new A.SolidFill() { RgbColorModelHex = new A.RgbColorModelHex() { Val = color } }));
+                shapeProperties.AppendChild(new A.SolidFill() { RgbColorModelHex = new A.RgbColorModelHex() { Val = color } });
+
             }
-            /*
-            var outline = new A.Outline { Width = 63500 };
-            outline.AppendChild(new A.SolidFill() { RgbColorModelHex = new A.RgbColorModelHex() { Val = "FF00FF" } });
-            pieChartSeries.AppendChild(new A.ShapeProperties(outline));
-            */
+
+            // Border of all categories
+            if (serie.HasBorder)
+            {
+                serie.BorderWidth = serie.BorderWidth.HasValue ? serie.BorderWidth.Value : 12700;
+
+                serie.BorderColor = !string.IsNullOrEmpty(serie.BorderColor) ? serie.BorderColor : "000000";
+                serie.BorderColor = serie.BorderColor.Replace("#", "");
+                if (!Regex.IsMatch(serie.BorderColor, "^[0-9-A-F]{6}$"))
+                    throw new Exception("Error in color of serie.");
+
+                shapeProperties.AppendChild(new A.Outline(new A.SolidFill(new A.RgbColorModelHex() { Val = serie.BorderColor })) { Width = serie.BorderWidth.Value });
+            }
+
+            if (shapeProperties.HasChildren)
+            {
+                pieChartSeries.AppendChild(shapeProperties);
+            }
+
+            
+
             // Gestion des catégories
             dc.StringReference strLit = pieChartSeries.AppendChild<dc.CategoryAxisData>
                     (new dc.CategoryAxisData()).AppendChild<dc.StringReference>(new dc.StringReference());
@@ -162,6 +184,28 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             foreach (var categorie in chartModel.Categories)
             {
                 strLit.StringCache.AppendChild(new dc.StringPoint() { Index = p, NumericValue = new dc.NumericValue(categorie.Name) }); // chartModel.Categories[k].Name
+                
+                if(!string.IsNullOrWhiteSpace(categorie.Color))
+                {
+                    string color = categorie.Color;
+                    color = color.Replace("#", "");
+                    if (!Regex.IsMatch(color, "^[0-9-A-F]{6}$"))
+                        throw new Exception("Error in color of serie.");
+
+                    A.ShapeProperties shapeProp = new A.ShapeProperties();
+
+                    dc.DataPoint dataPoint = new dc.DataPoint() { Index = new dc.Index() { Val = p }, Bubble3D = new dc.Bubble3D() { Val = false } };
+
+                    shapeProp.AppendChild(new A.SolidFill() { RgbColorModelHex = new A.RgbColorModelHex() { Val = color } });
+
+                    if (serie.HasBorder)
+                    {
+                        shapeProp.AppendChild(new A.Outline(new A.SolidFill(new A.RgbColorModelHex() { Val = serie.BorderColor })) { Width = serie.BorderWidth.Value });
+                    }
+
+                    dataPoint.AppendChild(shapeProp);
+                    pieChartSeries.AppendChild<dc.DataPoint>(dataPoint);
+                }
                 p++;
             }
             p = 0;

@@ -1,5 +1,4 @@
-﻿using System;
-using OpenXMLSDK.Engine.Word.ReportEngine.BatchModels.Charts;
+﻿using OpenXMLSDK.Engine.Word.ReportEngine.BatchModels.Charts;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.BatchModels
 {

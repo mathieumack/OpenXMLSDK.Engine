@@ -30,6 +30,21 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts
         /// </summary>
         public string LabelFormatString { get; set; } = "{0}";
 
+        /// <summary>
+        /// Define if the serie has a border
+        /// </summary>
+        public bool HasBorder { get; set; }
+
+        /// <summary>
+        /// Border color
+        /// </summary>
+        public string BorderColor { get; set; }
+
+        /// <summary>
+        /// Border width
+        /// </summary>
+        public int? BorderWidth { get; set; }
+
         public ChartSerie()
             : base(typeof(ChartSerie).Name)
         {
