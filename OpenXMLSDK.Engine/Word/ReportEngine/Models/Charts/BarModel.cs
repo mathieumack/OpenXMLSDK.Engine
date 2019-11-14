@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts
 {
@@ -30,6 +31,12 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts
         /// Values
         /// </summary>
         public List<BarSerie> Series { get; set; }
+
+        /// <summary>
+        /// Show / Hide Borders
+        /// </summary>
+        [Obsolete("Please use ShowChartBorder instead")]
+        public bool ShowBarBorder { get; set; }
 
         /// <summary>
         /// Ctor

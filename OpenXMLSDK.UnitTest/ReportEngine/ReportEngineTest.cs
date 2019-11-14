@@ -169,7 +169,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                 Items = cellsContext
             });
 
-            context.AddItem("#BarGrahSampleData#", new BarChartModel()
+            context.AddItem("#BarGraphSampleData#", new BarChartModel()
             {
                 BarChartContent = new Engine.ReportEngine.DataContext.Charts.BarModel()
                 {
@@ -209,7 +209,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                                 0, 1, 2, 3, 6, null
                             },
                             Name = "Bar serie 1",
-                            Color = "9FA0A4",
+                            Color = "9FA0A4"
                         },
                         new BarSerieModel()
                         {
@@ -218,7 +218,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                                 5, null, 7, 8, 0, 10
                             },
                             Name = "Bar serie 2",
-                            Color = "32AD3C",
+                            Color = "32AD3C"
                         },
                         new BarSerieModel()
                         {
@@ -227,7 +227,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                                 9, 10, 11, 12, 13, 14
                             },
                             Name = "Bar serie 3",
-                            Color = "E47F00",
+                            Color = "E47F00"
                         },
                         new BarSerieModel()
                         {
@@ -236,13 +236,13 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                                 9, 10, 11, 12, 15, 25
                             },
                             Name = "Bar serie 4",
-                            Color = "DC0A0A",
+                            Color = "DC0A0A"
                         }
                     }
                 }
             });
 
-            context.AddItem("#PieGrahSampleData#", new SingleSerieChartModel()
+            context.AddItem("#PieGraphSampleData#", new SingleSerieChartModel()
             {
                 ChartContent = new OpenXMLSDK.Engine.Word.ReportEngine.BatchModels.Charts.SingleSeriesModel()
                 {
@@ -822,7 +822,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
 
             doc.Pages.Add(page5);
 
-            // page 6
+            // page 6 -> BarChart
             var page6 = new Page();
 
             var pr = new Paragraph()
@@ -833,16 +833,12 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                         Title = "Graph test",
                         ShowTitle = true,
                         FontSize = "23",
-                        ShowChartBorder = true,
+                        ShowBarBorder = true,
                         BarChartType = BarChartType.BarChart,
                         BarDirectionValues = BarDirectionValues.Column,
                         BarGroupingValues = BarGroupingValues.PercentStacked,
-                        DataSourceKey = "#BarGrahSampleData#",
-                        ShowMajorGridlines = true,
-                        DataLabel = new DataLabelModel()
-                        {
-                            ShowDataLabel = true
-                        }
+                        DataSourceKey = "#BarGraphSampleData#",
+                        ShowMajorGridlines = true
                     }
                 }
             };
@@ -909,7 +905,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
 
             doc.Pages.Add(page8);
 
-            // page 9 
+            // page 9 -> PieChart
             var page9 = new Page();
 
             var pieChartPr = new Paragraph()
@@ -922,7 +918,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                         FontSize = "23",
                         ShowChartBorder = true,
                         PieChartType = PieChartType.PieChart,
-                        DataSourceKey = "#PieGrahSampleData#",
+                        DataSourceKey = "#PieGraphSampleData#",
                         ShowMajorGridlines = true,
                         DataLabel = new DataLabelModel() 
                         {

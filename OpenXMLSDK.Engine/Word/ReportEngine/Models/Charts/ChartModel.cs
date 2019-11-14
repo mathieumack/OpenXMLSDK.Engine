@@ -105,7 +105,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts
             get
             {
                 if (DataLabel == null)
-                    return false;
+                    return true;
                 else
                     return DataLabel.ShowDataLabel;
             }
