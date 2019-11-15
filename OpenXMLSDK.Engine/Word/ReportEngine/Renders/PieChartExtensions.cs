@@ -19,7 +19,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// <summary>
         /// Render a table element
         /// </summary>
-        /// <param name="table"></param>
+        /// <param name="pieChart"></param>
         /// <param name="parent"></param>
         /// <param name="context"></param>
         /// <param name="documentPart"></param>
@@ -151,7 +151,6 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     throw new Exception("Error in color of serie.");
 
                 shapeProperties.AppendChild(new A.SolidFill() { RgbColorModelHex = new A.RgbColorModelHex() { Val = color } });
-
             }
 
             // Border of all categories
@@ -168,11 +167,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             }
 
             if (shapeProperties.HasChildren)
-            {
                 pieChartSeries.AppendChild(shapeProperties);
-            }
-
-            
 
             // Gestion des catégories
             dc.StringReference strLit = pieChartSeries.AppendChild<dc.CategoryAxisData>

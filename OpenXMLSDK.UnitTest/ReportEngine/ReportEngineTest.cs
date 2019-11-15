@@ -169,7 +169,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                 Items = cellsContext
             });
 
-            context.AddItem("#BarGraphSampleData#", new BarChartModel()
+            context.AddItem("#OldBarGraphSampleData#", new BarChartModel()
             {
                 BarChartContent = new Engine.ReportEngine.DataContext.Charts.BarModel()
                 {
@@ -230,6 +230,85 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                             Color = "E47F00"
                         },
                         new BarSerieModel()
+                        {
+                            Values = new List<double?>()
+                            {
+                                9, 10, 11, 12, 15, 25
+                            },
+                            Name = "Bar serie 4",
+                            Color = "DC0A0A"
+                        }
+                    }
+                }
+            });
+
+            context.AddItem("#BarGraphSampleData#", new MultipleSeriesChartModel()
+            {
+                ChartContent = new MultipleSeriesModel()
+                {
+                    Categories = new List<CategoryModel>()
+                    {
+                        new CategoryModel()
+                        {
+                            Name = "Category 1"
+                        },
+                        new CategoryModel()
+                        {
+                            Name = "Category 2"
+                        },
+                        new CategoryModel()
+                        {
+                            Name = "Category 3"
+                        },
+                        new CategoryModel()
+                        {
+                            Name = "Category 4"
+                        },
+                        new CategoryModel()
+                        {
+                            Name = "Category 5"
+                        },
+                        new CategoryModel()
+                        {
+                            Name = "Category 6"
+                        }
+                    },
+                    Series = new List<SerieModel>()
+                    {
+                        new SerieModel()
+                        {
+                            Values = new List<double?>()
+                            {
+                                0, 1, 2, 3, 6, null
+                            },
+                            Name = "Bar serie 1",
+                            Color = "9FA0A4",
+                            HasBorder = true,
+                            BorderColor = "#FF00FF",
+                            BorderWidth = 63500
+                        },
+                        new SerieModel()
+                        {
+                            Values = new List<double?>()
+                            {
+                                5, null, 7, 8, 0, 10
+                            },
+                            Name = "Bar serie 2",
+                            Color = "32AD3C",
+                            HasBorder = true,
+                            BorderColor = "#0000FF",
+                            BorderWidth = 63500
+                        },
+                        new SerieModel()
+                        {
+                            Values = new List<double?>()
+                            {
+                                9, 10, 11, 12, 13, 14
+                            },
+                            Name = "Bar serie 3",
+                            Color = "E47F00"
+                        },
+                        new SerieModel()
                         {
                             Values = new List<double?>()
                             {
@@ -825,7 +904,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             // page 6 -> BarChart
             var page6 = new Page();
 
-            var pr = new Paragraph()
+            var oldpr = new Paragraph()
             {
                 ChildElements = new List<BaseElement>() {
                     new OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts.BarModel()
@@ -834,6 +913,25 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                         ShowTitle = true,
                         FontSize = "23",
                         ShowBarBorder = true,
+                        BarChartType = BarChartType.BarChart,
+                        BarDirectionValues = BarDirectionValues.Column,
+                        BarGroupingValues = BarGroupingValues.PercentStacked,
+                        DataSourceKey = "#OldBarGraphSampleData#",
+                        ShowMajorGridlines = true
+                    }
+                }
+            };
+
+            page6.ChildElements.Add(oldpr);
+
+            var pr = new Paragraph()
+            {
+                ChildElements = new List<BaseElement>() {
+                    new OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts.BarModel()
+                    {
+                        Title = "Graph test",
+                        ShowTitle = true,
+                        FontSize = "23",
                         BarChartType = BarChartType.BarChart,
                         BarDirectionValues = BarDirectionValues.Column,
                         BarGroupingValues = BarGroupingValues.PercentStacked,
