@@ -394,7 +394,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             // Template 1 :
 
             var paragraph = new Paragraph();
-            paragraph.ChildElements.Add(new Label() { Text = "Label wihtout special character (éèàù).", FontSize = "30", FontName = "Arial" });
+            paragraph.ChildElements.Add(new Label() { Text = "Label without special character (éèàù).", FontSize = "30", FontName = "Arial" });
             paragraph.ChildElements.Add(new Hyperlink()
             {
                 Text = new Label()
