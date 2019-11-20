@@ -1,7 +1,9 @@
-﻿using OpenXMLSDK.Engine.ReportEngine.DataContext.Charts;
+﻿using System;
+using OpenXMLSDK.Engine.ReportEngine.DataContext.Charts;
 
 namespace OpenXMLSDK.Engine.ReportEngine.DataContext
 {
+    [Obsolete("Please use MultipleSeriesChartModel instead")]
     public class BarChartModel : BaseModel
     {
         /// <summary>

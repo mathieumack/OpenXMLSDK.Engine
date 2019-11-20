@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace OpenXMLSDK.Engine.ReportEngine.DataContext.Charts
+namespace OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts
 {
-    [Obsolete("Please use SerieModel instead")]
-    public class BarSerieModel
+    public class ChartSerie : BaseElement
     {
         /// <summary>
         /// Name of the serie
@@ -31,5 +29,25 @@ namespace OpenXMLSDK.Engine.ReportEngine.DataContext.Charts
         /// {0} par défaut
         /// </summary>
         public string LabelFormatString { get; set; } = "{0}";
+
+        /// <summary>
+        /// Define if the serie has a border
+        /// </summary>
+        public bool HasBorder { get; set; }
+
+        /// <summary>
+        /// Border color
+        /// </summary>
+        public string BorderColor { get; set; }
+
+        /// <summary>
+        /// Border width
+        /// </summary>
+        public int? BorderWidth { get; set; }
+
+        public ChartSerie()
+            : base(typeof(ChartSerie).Name)
+        {
+        }
     }
 }
