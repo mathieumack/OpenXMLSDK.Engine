@@ -28,5 +28,10 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts
         /// Indicate separator of differents values (label, data, percent...)
         /// </summary>
         public string Separator { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Indicate font size of label
+        /// </summary>
+        public int FontSize { get; set; } = 10;
     }
 }

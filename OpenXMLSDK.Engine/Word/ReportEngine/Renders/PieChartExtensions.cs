@@ -238,11 +238,22 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 if (!Regex.IsMatch(color, "^[0-9-A-F]{6}$"))
                     throw new Exception("Error in color of serie.");
 
+                var fontSize = chartModel.DataLabel.FontSize * 100; // word size x 100 for XML FontSize
                 dc.TextProperties txtPr = new dc.TextProperties(
                 new A.BodyProperties(),
                 new A.ListStyle(),
-                new A.Paragraph(new A.ParagraphProperties(
-                    new A.DefaultRunProperties(new A.SolidFill() { RgbColorModelHex = new A.RgbColorModelHex() { Val = color } }) { Baseline = 0 })));
+                new A.Paragraph
+                    (
+                        new A.ParagraphProperties
+                        ( 
+                            new A.DefaultRunProperties
+                            (
+                                new A.SolidFill() { RgbColorModelHex = new A.RgbColorModelHex() { Val = color } }
+                            )
+                            { Baseline = 0 , FontSize = fontSize }
+                        )
+                    )
+                );
 
                 dLbls.Append(txtPr);
             }

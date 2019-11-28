@@ -1020,13 +1020,12 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                         ShowMajorGridlines = true,
                         DataLabel = new DataLabelModel() 
                         {
-                            ShowDataLabel = false,
+                            ShowDataLabel = true,
                             ShowCatName = true,
                             ShowPercent = true,
-                            //LabelPosition = DocumentFormat.OpenXml.Drawing.Charts.DataLabelPositionValues.Center
-                            Separator = "\n"
+                            Separator = "\n",
+                            FontSize = 9
                         },
-                        //DataLabelColor = "#FFFFFF"//White
                         DataLabelColor = "#000000"//Black
                     }
                 }
