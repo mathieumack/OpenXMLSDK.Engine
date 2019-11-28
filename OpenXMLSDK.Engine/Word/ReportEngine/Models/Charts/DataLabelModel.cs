@@ -30,7 +30,8 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts
         public string Separator { get; set; } = string.Empty;
 
         /// <summary>
-        /// Indicate font size of label
+        /// Indicate font size of label 
+        /// Instead of the string property, don't multiply by 2. This value is the real size ! 
         /// </summary>
         public int FontSize { get; set; } = 10;
     }

@@ -1013,7 +1013,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                     {
                         Title = "Pie Chart test",
                         ShowTitle = true,
-                        FontSize = "23",
+                        FontSize = "44",
                         ShowChartBorder = true,
                         PieChartType = PieChartType.PieChart,
                         DataSourceKey = "#PieGraphSampleData#",
@@ -1024,7 +1024,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                             ShowCatName = true,
                             ShowPercent = true,
                             Separator = "\n",
-                            FontSize = 9
+                            FontSize = 8
                         },
                         DataLabelColor = "#000000"//Black
                     }

@@ -230,7 +230,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 new dc.Separator() { Text = chartModel.DataLabel?.Separator}
                 );
 
-            // Gestion de la couleur du ShowValue
+            // Gestion des DataLabel
             if (chartModel.DataLabel.ShowDataLabel && !string.IsNullOrWhiteSpace(chartModel.DataLabelColor))
             {
                 string color = chartModel.DataLabelColor;
@@ -243,16 +243,16 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 new A.BodyProperties(),
                 new A.ListStyle(),
                 new A.Paragraph
-                    (
-                        new A.ParagraphProperties
-                        ( 
-                            new A.DefaultRunProperties
-                            (
-                                new A.SolidFill() { RgbColorModelHex = new A.RgbColorModelHex() { Val = color } }
-                            )
-                            { Baseline = 0 , FontSize = fontSize }
+                (
+                    new A.ParagraphProperties
+                    ( 
+                        new A.DefaultRunProperties
+                        (
+                            new A.SolidFill() { RgbColorModelHex = new A.RgbColorModelHex() { Val = color } }
                         )
+                        { Baseline = 0 , FontSize = fontSize }
                     )
+                )
                 );
 
                 dLbls.Append(txtPr);
