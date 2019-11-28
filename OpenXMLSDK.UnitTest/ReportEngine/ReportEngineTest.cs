@@ -911,7 +911,6 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                     {
                         Title = "Graph test",
                         ShowTitle = true,
-                        FontSize = "23",
                         ShowBarBorder = true,
                         BarChartType = BarChartType.BarChart,
                         BarDirectionValues = BarDirectionValues.Column,
@@ -1013,7 +1012,6 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                     {
                         Title = "Pie Chart test",
                         ShowTitle = true,
-                        FontSize = "44",
                         ShowChartBorder = true,
                         PieChartType = PieChartType.PieChart,
                         DataSourceKey = "#PieGraphSampleData#",
