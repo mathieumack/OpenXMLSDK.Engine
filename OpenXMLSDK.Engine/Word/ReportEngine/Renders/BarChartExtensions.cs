@@ -235,22 +235,31 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 new dc.ShowPercent() { Val = false },
                 new dc.ShowBubbleSize() { Val = false });
 
-            // Gestion de la couleur du ShowValue
-            if (chartModel.DataLabel != null && chartModel.DataLabel.ShowDataLabel && !string.IsNullOrWhiteSpace(chartModel.DataLabelColor))
-            {
-                string color = chartModel.DataLabelColor;
-                color = color.Replace("#", "");
-                if (!Regex.IsMatch(color, "^[0-9-A-F]{6}$"))
-                    throw new Exception("Error in color of serie.");
+            // Gestion des DataLabel
+            string dataLabelColor = "#000000"; //Black by default
+            if (!string.IsNullOrWhiteSpace(chartModel.DataLabelColor))
+                dataLabelColor = chartModel.DataLabelColor;
+            dataLabelColor = dataLabelColor.Replace("#", "");
+            if (!Regex.IsMatch(dataLabelColor, "^[0-9-A-F]{6}$"))
+                throw new Exception("Error in dataLabel color.");
 
-                dc.TextProperties txtPr = new dc.TextProperties(
-                new A.BodyProperties(),
-                new A.ListStyle(),
-                new A.Paragraph(new A.ParagraphProperties(
-                    new A.DefaultRunProperties(new A.SolidFill() { RgbColorModelHex = new A.RgbColorModelHex() { Val = color } }) { Baseline = 0 })));
-
-                dLbls.Append(txtPr);
-            }
+            var fontSize = chartModel.DataLabel.FontSize * 100; // word size x 100 for XML FontSize
+            dc.TextProperties txtPr = new dc.TextProperties(
+            new A.BodyProperties(),
+            new A.ListStyle(),
+            new A.Paragraph
+            (
+                new A.ParagraphProperties
+                (
+                    new A.DefaultRunProperties
+                    (
+                        new A.SolidFill() { RgbColorModelHex = new A.RgbColorModelHex() { Val = dataLabelColor } }
+                    )
+                    { Baseline = 0, FontSize = fontSize }
+                )
+            )
+            );
+            dLbls.Append(txtPr);
 
             barChart.Append(dLbls);
 

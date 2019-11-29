@@ -179,8 +179,8 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             foreach (var categorie in chartModel.Categories)
             {
                 strLit.StringCache.AppendChild(new dc.StringPoint() { Index = p, NumericValue = new dc.NumericValue(categorie.Name) }); // chartModel.Categories[k].Name
-                
-                if(!string.IsNullOrWhiteSpace(categorie.Color))
+
+                if (!string.IsNullOrWhiteSpace(categorie.Color))
                 {
                     string color = categorie.Color;
                     color = color.Replace("#", "");
@@ -226,26 +226,35 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 new dc.ShowSeriesName() { Val = false },
                 new dc.ShowPercent() { Val = chartModel.DataLabel?.ShowPercent },
                 new dc.ShowBubbleSize() { Val = false },
-                new dc.DataLabelPosition() { Val = chartModel.DataLabel?.LabelPosition},
-                new dc.Separator() { Text = chartModel.DataLabel?.Separator}
+                new dc.DataLabelPosition() { Val = chartModel.DataLabel?.LabelPosition },
+                new dc.Separator() { Text = chartModel.DataLabel?.Separator }
                 );
 
-            // Gestion de la couleur du ShowValue
-            if (chartModel.DataLabel.ShowDataLabel && !string.IsNullOrWhiteSpace(chartModel.DataLabelColor))
-            {
-                string color = chartModel.DataLabelColor;
-                color = color.Replace("#", "");
-                if (!Regex.IsMatch(color, "^[0-9-A-F]{6}$"))
-                    throw new Exception("Error in color of serie.");
+            // Gestion des DataLabel
+            string dataLabelColor = "#000000"; //Black by default
+            if (!string.IsNullOrWhiteSpace(chartModel.DataLabelColor))
+                dataLabelColor = chartModel.DataLabelColor;
+            dataLabelColor = dataLabelColor.Replace("#", "");
+            if (!Regex.IsMatch(dataLabelColor, "^[0-9-A-F]{6}$"))
+                throw new Exception("Error in dataLabel color.");
 
-                dc.TextProperties txtPr = new dc.TextProperties(
-                new A.BodyProperties(),
-                new A.ListStyle(),
-                new A.Paragraph(new A.ParagraphProperties(
-                    new A.DefaultRunProperties(new A.SolidFill() { RgbColorModelHex = new A.RgbColorModelHex() { Val = color } }) { Baseline = 0 })));
-
-                dLbls.Append(txtPr);
-            }
+            var fontSize = chartModel.DataLabel.FontSize * 100; // word size x 100 for XML FontSize
+            dc.TextProperties txtPr = new dc.TextProperties(
+            new A.BodyProperties(),
+            new A.ListStyle(),
+            new A.Paragraph
+            (
+                new A.ParagraphProperties
+                (
+                    new A.DefaultRunProperties
+                    (
+                        new A.SolidFill() { RgbColorModelHex = new A.RgbColorModelHex() { Val = dataLabelColor } }
+                    )
+                    { Baseline = 0, FontSize = fontSize }
+                )
+            )
+            );
+            dLbls.Append(txtPr);
 
             pieChart.Append(dLbls);
 
