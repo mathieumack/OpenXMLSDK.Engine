@@ -2,7 +2,7 @@
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.BatchModels.Charts
 {
-    public class BarSerieModel
+    public class SerieModel
     {
         /// <summary>
         /// Name of the serie
@@ -23,6 +23,21 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.BatchModels.Charts
         /// Color of labels
         /// </summary>
         public string DataLabelColor { get; set; }
+
+        /// <summary>
+        /// Define if the serie has a border
+        /// </summary>
+        public bool HasBorder { get; set; }
+
+        /// <summary>
+        /// Border color
+        /// </summary>
+        public string BorderColor { get; set; }
+
+        /// <summary>
+        /// Border width
+        /// </summary>
+        public int? BorderWidth { get; set; }
 
         /// <summary>
         /// Format de rendu des labels

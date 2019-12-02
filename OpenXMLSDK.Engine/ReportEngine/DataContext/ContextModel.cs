@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts;
+using OpenXMLSDK.Engine.Word.ReportEngine.Models.ExtendedModels;
 
-namespace OpenXMLSDK.Engine.Word.ReportEngine.BatchModels
+namespace OpenXMLSDK.Engine.ReportEngine.DataContext
 {
     /// <summary>
     /// Context 
@@ -319,7 +320,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.BatchModels
             element.ShowKey = string.Empty;
         }
 
-        private void ReplaceBorders(Models.ExtendedModels.BorderModel borders, IFormatProvider formatProvider)
+        private void ReplaceBorders(BorderModel borders, IFormatProvider formatProvider)
         {
             if (!string.IsNullOrEmpty(borders.BorderColor))
                 borders.BorderColor = ReplaceText(borders.BorderColor, formatProvider);

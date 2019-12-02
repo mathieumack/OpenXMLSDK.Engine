@@ -1,15 +1,15 @@
-﻿using DocumentFormat.OpenXml;
-using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml.Wordprocessing;
-using System;
+﻿using System;
 using System.Linq;
 using System.Text.RegularExpressions;
+using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Wordprocessing;
+using OpenXMLSDK.Engine.ReportEngine.DataContext;
+using OpenXMLSDK.Engine.Word.Charts;
+using OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts;
 using A = DocumentFormat.OpenXml.Drawing;
 using dc = DocumentFormat.OpenXml.Drawing.Charts;
 using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
-using OpenXMLSDK.Engine.Word.ReportEngine.BatchModels;
-using OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts;
-using OpenXMLSDK.Engine.Word.Charts;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 {
@@ -18,7 +18,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// <summary>
         /// Render a table element
         /// </summary>
-        /// <param name="table"></param>
+        /// <param name="barChart"></param>
         /// <param name="parent"></param>
         /// <param name="context"></param>
         /// <param name="documentPart"></param>
@@ -30,43 +30,75 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 
             Run runItem = null;
 
-            if(!string.IsNullOrWhiteSpace(barChart.DataSourceKey) && context.ExistItem<BarChartModel>(barChart.DataSourceKey))
+            if (!string.IsNullOrWhiteSpace(barChart.DataSourceKey))
             {
                 // We construct categories and series from the context object
-                var contextModel = context.GetItem<BarChartModel>(barChart.DataSourceKey);
-
-                if (contextModel.BarChartContent != null && contextModel.BarChartContent.Categories != null
-                   && contextModel.BarChartContent.Series != null)
+                if (context.ExistItem<BarChartModel>(barChart.DataSourceKey))
                 {
-                    // Update barChart object :
-                    barChart.Categories = contextModel.BarChartContent.Categories.Select(e => new BarCategory()
+                    var contextModel = context.GetItem<BarChartModel>(barChart.DataSourceKey);
+                    if (contextModel.BarChartContent != null && contextModel.BarChartContent.Categories != null
+                       && contextModel.BarChartContent.Series != null)
                     {
-                        Name = e.Name,
-                        Color = e.Color
-                    }).ToList();
+                        // Update barChart object :
+                        barChart.Categories = contextModel.BarChartContent.Categories.Select(e => new BarCategory()
+                        {
+                            Name = e.Name,
+                            Color = e.Color
+                        }).ToList();
 
-                    // We update
-                    barChart.Series = contextModel.BarChartContent.Series.Select(e => new BarSerie()
-                    {
-                        LabelFormatString = e.LabelFormatString,
-                        Color = e.Color,
-                        DataLabelColor = e.DataLabelColor,
-                        Values = e.Values,
-                        Name = e.Name
-                    }).ToList();
+                        // We update
+                        barChart.Series = contextModel.BarChartContent.Series.Select(e => new BarSerie()
+                        {
+                            LabelFormatString = e.LabelFormatString,
+                            Color = e.Color,
+                            DataLabelColor = e.DataLabelColor,
+                            Values = e.Values,
+                            Name = e.Name
+                        }).ToList();
+                    }
+                    else
+                        return runItem;
                 }
-                else
-                    return runItem;
+                else if (context.ExistItem<MultipleSeriesChartModel>(barChart.DataSourceKey)) //MultipleSeriesChartModel
+                {
+                    var multipleSeriesContextModel = context.GetItem<MultipleSeriesChartModel>(barChart.DataSourceKey);
+
+                    if (multipleSeriesContextModel.ChartContent != null && multipleSeriesContextModel.ChartContent.Categories != null
+                     && multipleSeriesContextModel.ChartContent.Series != null)
+                    {
+                        // Update barChart object :
+                        barChart.Categories = multipleSeriesContextModel.ChartContent.Categories.Select(e => new BarCategory()
+                        {
+                            Name = e.Name,
+                            Color = e.Color
+                        }).ToList();
+
+                        // We update
+                        barChart.Series = multipleSeriesContextModel.ChartContent.Series.Select(e => new BarSerie()
+                        {
+                            LabelFormatString = e.LabelFormatString,
+                            Color = e.Color,
+                            DataLabelColor = e.DataLabelColor,
+                            Values = e.Values,
+                            Name = e.Name,
+                            HasBorder = e.HasBorder,
+                            BorderColor = e.BorderColor,
+                            BorderWidth = e.BorderWidth
+                        }).ToList();
+                    }
+                    else
+                        return runItem;
+                }
             }
 
-            switch(barChart.BarChartType)
+            switch (barChart.BarChartType)
             {
                 case BarChartType.BarChart:
                     runItem = CreateBarGraph(barChart, documentPart);
                     break;
             }
-           
-            if(runItem != null)
+
+            if (runItem != null)
                 parent.AppendChild(runItem);
 
             return runItem;
@@ -139,6 +171,8 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     new dc.StringPoint() { Index = (uint)0, NumericValue = new dc.NumericValue() { Text = serie.Name } })))));
 
                 // Gestion de la couleur de la série
+                A.ShapeProperties shapeProperties = new A.ShapeProperties();
+
                 if (!string.IsNullOrWhiteSpace(serie.Color))
                 {
                     string color = serie.Color;
@@ -146,8 +180,24 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     if (!Regex.IsMatch(color, "^[0-9-A-F]{6}$"))
                         throw new Exception("Error in color of serie.");
 
-                    barChartSeries.AppendChild<A.ShapeProperties>(new A.ShapeProperties(new A.SolidFill() { RgbColorModelHex = new A.RgbColorModelHex() { Val = color } }));
+                    shapeProperties.AppendChild(new A.SolidFill() { RgbColorModelHex = new A.RgbColorModelHex() { Val = color } });
                 }
+
+                // Border of all categories
+                if (serie.HasBorder)
+                {
+                    serie.BorderWidth = serie.BorderWidth.HasValue ? serie.BorderWidth.Value : 12700;
+
+                    serie.BorderColor = !string.IsNullOrEmpty(serie.BorderColor) ? serie.BorderColor : "000000";
+                    serie.BorderColor = serie.BorderColor.Replace("#", "");
+                    if (!Regex.IsMatch(serie.BorderColor, "^[0-9-A-F]{6}$"))
+                        throw new Exception("Error in color of serie.");
+
+                    shapeProperties.AppendChild(new A.Outline(new A.SolidFill(new A.RgbColorModelHex() { Val = serie.BorderColor })) { Width = serie.BorderWidth.Value });
+                }
+
+                if (shapeProperties.HasChildren)
+                    barChartSeries.AppendChild(shapeProperties);
 
                 // Gestion des catégories
                 dc.StringReference strLit = barChartSeries.AppendChild<dc.CategoryAxisData>
@@ -179,28 +229,37 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 
             dc.DataLabels dLbls = new dc.DataLabels(
                 new dc.ShowLegendKey() { Val = false },
-                new dc.ShowValue() { Val = chartModel.ShowDataLabel },
+                new dc.ShowValue() { Val = chartModel.DataLabel == null ? false : chartModel.DataLabel.ShowDataLabel },
                 new dc.ShowCategoryName() { Val = false },
                 new dc.ShowSeriesName() { Val = false },
                 new dc.ShowPercent() { Val = false },
                 new dc.ShowBubbleSize() { Val = false });
 
-            // Gestion de la couleur du ShowValue
-            if (chartModel.ShowDataLabel && !string.IsNullOrWhiteSpace(chartModel.DataLabelColor))
-            {
-                string color = chartModel.DataLabelColor;
-                color = color.Replace("#", "");
-                if (!Regex.IsMatch(color, "^[0-9-A-F]{6}$"))
-                    throw new Exception("Error in color of serie.");
+            // Gestion des DataLabel
+            string dataLabelColor = "#000000"; //Black by default
+            if (!string.IsNullOrWhiteSpace(chartModel.DataLabelColor))
+                dataLabelColor = chartModel.DataLabelColor;
+            dataLabelColor = dataLabelColor.Replace("#", "");
+            if (!Regex.IsMatch(dataLabelColor, "^[0-9-A-F]{6}$"))
+                throw new Exception("Error in dataLabel color.");
 
-                dc.TextProperties txtPr = new dc.TextProperties(
-                new A.BodyProperties(),
-                new A.ListStyle(),
-                new A.Paragraph(new A.ParagraphProperties(
-                    new A.DefaultRunProperties(new A.SolidFill() { RgbColorModelHex = new A.RgbColorModelHex() { Val = color } }) { Baseline = 0 })));
-
-                dLbls.Append(txtPr);
-            }
+            var fontSize = chartModel.DataLabel.FontSize * 100; // word size x 100 for XML FontSize
+            dc.TextProperties txtPr = new dc.TextProperties(
+            new A.BodyProperties(),
+            new A.ListStyle(),
+            new A.Paragraph
+            (
+                new A.ParagraphProperties
+                (
+                    new A.DefaultRunProperties
+                    (
+                        new A.SolidFill() { RgbColorModelHex = new A.RgbColorModelHex() { Val = dataLabelColor } }
+                    )
+                    { Baseline = 0, FontSize = fontSize }
+                )
+            )
+            );
+            dLbls.Append(txtPr);
 
             barChart.Append(dLbls);
 
@@ -213,7 +272,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 
             barChart.Append(new dc.AxisId() { Val = new UInt32Value(48650112u) });
             barChart.Append(new dc.AxisId() { Val = new UInt32Value(48672768u) });
-            
+
             // Set ShapeProperties
             dc.ShapeProperties dcSP = null;
             if (chartModel.ShowMajorGridlines)
@@ -224,12 +283,12 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     color = color.Replace("#", "");
                     if (!Regex.IsMatch(color, "^[0-9-A-F]{6}$"))
                         throw new Exception("Error in color of grid lines.");
-                    dcSP = new dc.ShapeProperties(new A.Outline(new A.SolidFill() { RgbColorModelHex = new A.RgbColorModelHex() { Val = color }}));                    
+                    dcSP = new dc.ShapeProperties(new A.Outline(new A.SolidFill() { RgbColorModelHex = new A.RgbColorModelHex() { Val = color } }));
                 }
                 else
                 {
                     dcSP = new dc.ShapeProperties();
-                }              
+                }
             }
             else
             {
@@ -321,7 +380,10 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 
                 if (!string.IsNullOrEmpty(chartModel.BorderColor))
                 {
-                    chartPart.ChartSpace.Append(new dc.ChartShapeProperties(new A.Outline(new A.SolidFill(new A.RgbColorModelHex() { Val = chartModel.BorderColor })) { Width = chartModel.BorderWidth.Value }));
+                    var color = chartModel.BorderColor.Replace("#", "");
+                    if (!Regex.IsMatch(color, "^[0-9-A-F]{6}$"))
+                        throw new Exception("Error in color of chart borders.");
+                    chartPart.ChartSpace.Append(new dc.ChartShapeProperties(new A.Outline(new A.SolidFill(new A.RgbColorModelHex() { Val = color })) { Width = chartModel.BorderWidth.Value }));
                 }
                 else
                 {
@@ -332,7 +394,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             {
                 chartPart.ChartSpace.Append(new dc.ChartShapeProperties(new A.Outline(new A.NoFill())));
             }
-            
+
             // Save the chart part.
             chartPart.ChartSpace.Save();
 
@@ -348,7 +410,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 imageWidth = (long)chartModel.MaxWidth * 9525;
             if (chartModel.MaxHeight.HasValue)
                 imageHeight = (long)chartModel.MaxHeight * 9525;
-            
+
             // Gestion de l'élément Drawing
             var element = new Run(
                 new DocumentFormat.OpenXml.Wordprocessing.Drawing(
@@ -380,7 +442,6 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 
             return element;
         }
-
         #endregion
     }
 }

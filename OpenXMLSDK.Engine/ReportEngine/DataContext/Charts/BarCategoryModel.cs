@@ -1,5 +1,8 @@
-﻿namespace OpenXMLSDK.Engine.Word.ReportEngine.BatchModels.Charts
+﻿using System;
+
+namespace OpenXMLSDK.Engine.Word.ReportEngine.BatchModels.Charts
 {
+    [Obsolete("Please use CategoryModel instead")]
     public class BarCategoryModel
     {
         /// <summary>

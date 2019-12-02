@@ -1,6 +1,6 @@
 ﻿using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
-using OpenXMLSDK.Engine.Word.ReportEngine.BatchModels;
+using OpenXMLSDK.Engine.ReportEngine.DataContext;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models;
 using System;
 
@@ -17,11 +17,11 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// <param name="context"></param>
         /// <param name="mainDocumentPart"></param>
         /// <param name="formatProvider"></param>
-        public static void Render(this ForEachPage forEach, 
-                                        Document document, 
-                                        OpenXmlElement wdDoc, 
-                                        ContextModel context, 
-                                        MainDocumentPart mainDocumentPart, 
+        public static void Render(this ForEachPage forEach,
+                                        Document document,
+                                        OpenXmlElement wdDoc,
+                                        ContextModel context,
+                                        MainDocumentPart mainDocumentPart,
                                         IFormatProvider formatProvider)
         {
             context.ReplaceItem(forEach, formatProvider);
@@ -60,7 +60,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     item.AddItem("#" + forEach.AutoContextAddItemsPrefix + "_ForEachPage_IsEven#", new BooleanModel(i % 2 == 0));
                 }
 
-                newPage.Clone().Render(document, wdDoc, item, mainDocumentPart, formatProvider);
+                ((Page)newPage.Clone()).Render(document, wdDoc, item, mainDocumentPart, formatProvider);
 
                 i++;
             }

@@ -1,4 +1,4 @@
-﻿namespace OpenXMLSDK.Engine.Word.ReportEngine.BatchModels
+﻿namespace OpenXMLSDK.Engine.ReportEngine.DataContext
 {
     /// <summary>
     /// Model class for a string value in context

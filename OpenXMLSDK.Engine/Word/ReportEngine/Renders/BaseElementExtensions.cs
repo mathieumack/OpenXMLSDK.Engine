@@ -2,7 +2,7 @@
 using DocumentFormat.OpenXml.Packaging;
 using Newtonsoft.Json;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models;
-using OpenXMLSDK.Engine.Word.ReportEngine.BatchModels;
+using OpenXMLSDK.Engine.ReportEngine.DataContext;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts;
 using System;
 
@@ -76,6 +76,10 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             else if (element is BarModel)
             {
                 (element as BarModel).Render(parent, context, documentPart, formatProvider);
+            }
+            else if (element is PieModel)
+            {
+                (element as PieModel).Render(parent, context, documentPart, formatProvider);
             }
             else if (element is HtmlContent)
             {
