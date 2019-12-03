@@ -38,12 +38,16 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts
                 }
             };
 
-            if (MinAxisValue.HasValue && MaxAxisValue.HasValue)
+            if (MinAxisValue.HasValue)
             {
                 scalingParams.Add(new MinAxisValue()
                 {
                     Val = new DoubleValue(MinAxisValue.Value)
                 });
+            }
+
+            if (MaxAxisValue.HasValue)
+            {
                 scalingParams.Add(new MaxAxisValue()
                 {
                     Val = new DoubleValue(MaxAxisValue.Value)
