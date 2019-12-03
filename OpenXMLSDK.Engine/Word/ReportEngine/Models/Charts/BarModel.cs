@@ -35,7 +35,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts
         /// <summary>
         /// Scaling of the values axis
         /// </summary>
-        public BarChartScaling ValuesAxisScaling { get; set; }
+        public BarChartScalingModel ValuesAxisScaling { get; set; }
 
         /// <summary>
         /// Show / Hide Borders
@@ -50,7 +50,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts
             : base(typeof(BarModel).Name)
         {
             BarChartType = BarChartType.BarChart;
-            ValuesAxisScaling = new BarChartScaling();
+            ValuesAxisScaling = new BarChartScalingModel();
         }
     }
 }

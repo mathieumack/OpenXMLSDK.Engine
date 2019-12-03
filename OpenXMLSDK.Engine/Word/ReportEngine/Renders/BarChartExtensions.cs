@@ -313,9 +313,42 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 dcSP
                 ));
 
+            // Create the axis scaling parameters object
+            var valueAxisScalingParams = new System.Collections.Generic.List<OpenXmlElement>();
+            if(chartModel.ValuesAxisScaling is null)
+            {
+                valueAxisScalingParams.Add(new dc.Orientation()
+                {
+                    Val = new EnumValue<dc.OrientationValues>((dc.OrientationValues)(int)BarChartOrientationType.MinMax)
+                });
+            }
+            else
+            {
+                valueAxisScalingParams.Add(new dc.Orientation()
+                {
+                    Val = new EnumValue<dc.OrientationValues>((dc.OrientationValues)(int)chartModel.ValuesAxisScaling.Orientation)
+                });
+
+                if (chartModel.ValuesAxisScaling.MinAxisValue.HasValue)
+                {
+                    valueAxisScalingParams.Add(new dc.MinAxisValue()
+                    {
+                        Val = new DoubleValue(chartModel.ValuesAxisScaling.MinAxisValue.Value)
+                    });
+                }
+
+                if (chartModel.ValuesAxisScaling.MaxAxisValue.HasValue)
+                {
+                    valueAxisScalingParams.Add(new dc.MaxAxisValue()
+                    {
+                        Val = new DoubleValue(chartModel.ValuesAxisScaling.MaxAxisValue.Value)
+                    });
+                }
+            }
+
             // Add the Value Axis.
             dc.ValueAxis valAx = plotArea.AppendChild<dc.ValueAxis>(new dc.ValueAxis(new dc.AxisId() { Val = new UInt32Value(48672768u) },
-                chartModel.ValuesAxisScaling.GetScaling(),
+                new dc.Scaling(valueAxisScalingParams),
                 new dc.Delete() { Val = chartModel.DeleteAxeValue },
                 new dc.AxisPosition() { Val = new DocumentFormat.OpenXml.EnumValue<dc.AxisPositionValues>(dc.AxisPositionValues.Bottom) },
                 new dc.NumberingFormat()

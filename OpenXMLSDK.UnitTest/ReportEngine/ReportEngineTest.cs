@@ -1005,7 +1005,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                         ShowLegend = false,
                         HasBorder = false,
                         DataSourceKey = "#SingleStackedBarGraphSampleData#",
-                        ValuesAxisScaling = new BarChartScaling()
+                        ValuesAxisScaling = new BarChartScalingModel()
                         {
                             MinAxisValue = 0,
                             MaxAxisValue = 100
