@@ -12,7 +12,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts
         /// <summary>
         /// Orientation of the axis
         /// </summary>
-        public EnumValue<OrientationValues> Orientation { get; set; }
+        public EnumValue<OrientationValues> Orientation { get; set; } = new EnumValue<OrientationValues>(OrientationValues.MinMax);
 
         /// <summary>
         /// Minimum axis value
@@ -23,14 +23,6 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts
         /// Maximum axis value
         /// </summary>
         public double? MaxAxisValue { get; set; }
-
-        /// <summary>
-        /// Constructor, set the default orientation to Min-Max
-        /// </summary>
-        public BarChartScaling()
-        {
-            Orientation = new EnumValue<OrientationValues>(OrientationValues.MinMax);
-        }
 
         /// <summary>
         /// Construct a DocumentFormat.OpenXml.Drawing.Charts.Scaling object

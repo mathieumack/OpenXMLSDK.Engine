@@ -371,6 +371,35 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                 }
             });
 
+            context.AddItem("#SingleStackedBarGraphSampleData#", new MultipleSeriesChartModel()
+            {
+                ChartContent = new MultipleSeriesModel()
+                {
+                    Categories = new List<CategoryModel>()
+                    {
+                        new CategoryModel()
+                        {
+                            Name = "Cat name"
+                        }
+                    },
+                    Series = new List<SerieModel>()
+                    {
+                        new SerieModel()
+                        {
+                            Name = "Serie 1",
+                            Color = "9FA0A4",
+                            Values = new List<double?>{ 98 }
+                        },
+                        new SerieModel()
+                        {
+                            Name = "Serie 2",
+                            Color = "E47F00",
+                            Values = new List<double?>{ 2 }
+                        }
+                    }
+                }
+            });
+
             return context;
         }
 
@@ -916,7 +945,8 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                         BarDirectionValues = BarDirectionValues.Column,
                         BarGroupingValues = BarGroupingValues.PercentStacked,
                         DataSourceKey = "#OldBarGraphSampleData#",
-                        ShowMajorGridlines = true
+                        ShowMajorGridlines = true,
+                        MaxHeight = 320
                     }
                 }
             };
@@ -935,12 +965,56 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                         BarDirectionValues = BarDirectionValues.Column,
                         BarGroupingValues = BarGroupingValues.PercentStacked,
                         DataSourceKey = "#BarGraphSampleData#",
-                        ShowMajorGridlines = true
+                        ShowMajorGridlines = true,
+                        MaxHeight = 320
                     }
                 }
             };
 
             page6.ChildElements.Add(pr);
+
+            var singleStackedBarGraph = new Paragraph()
+            {
+                ChildElements = new List<BaseElement>() {
+                    new OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts.BarModel()
+                    {
+                        Title = "Single stacked Graph without min-max",
+                        ShowTitle = true,
+                        MaxHeight = 100,
+                        DeleteAxeCategory = true,
+                        DeleteAxeValue = true,
+                        ShowLegend = false,
+                        HasBorder = false,
+                        DataSourceKey = "#SingleStackedBarGraphSampleData#"
+                    }
+                }
+            };
+
+            page6.ChildElements.Add(singleStackedBarGraph);
+
+            var singleStackedBarGraphWithMinMax = new Paragraph()
+            {
+                ChildElements = new List<BaseElement>() {
+                    new OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts.BarModel()
+                    {
+                        Title = "Single stacked Graph with min-max",
+                        ShowTitle = true,
+                        MaxHeight = 100,
+                        DeleteAxeCategory = true,
+                        DeleteAxeValue = true,
+                        ShowLegend = false,
+                        HasBorder = false,
+                        DataSourceKey = "#SingleStackedBarGraphSampleData#",
+                        ValuesAxisScaling = new BarChartScaling()
+                        {
+                            MinAxisValue = 0,
+                            MaxAxisValue = 100
+                        }
+                    }
+                }
+            };
+
+            page6.ChildElements.Add(singleStackedBarGraphWithMinMax);
 
             doc.Pages.Add(page6);
 
