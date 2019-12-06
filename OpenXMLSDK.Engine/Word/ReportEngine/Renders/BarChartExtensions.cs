@@ -6,6 +6,7 @@ using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using OpenXMLSDK.Engine.ReportEngine.DataContext;
 using OpenXMLSDK.Engine.Word.Charts;
+using OpenXMLSDK.Engine.Word.Extensions;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts;
 using A = DocumentFormat.OpenXml.Drawing;
 using dc = DocumentFormat.OpenXml.Drawing.Charts;
@@ -315,10 +316,10 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 
             // Add the Value Axis.
             dc.ValueAxis valAx = plotArea.AppendChild<dc.ValueAxis>(new dc.ValueAxis(new dc.AxisId() { Val = new UInt32Value(48672768u) },
+                chartModel.ValuesAxisScaling?.GetScaling() ?? 
                 new dc.Scaling(new dc.Orientation()
                 {
-                    Val = new DocumentFormat.OpenXml.EnumValue<dc.OrientationValues>(
-                        DocumentFormat.OpenXml.Drawing.Charts.OrientationValues.MinMax)
+                    Val = new EnumValue<dc.OrientationValues>(dc.OrientationValues.MinMax)
                 }),
                 new dc.Delete() { Val = chartModel.DeleteAxeValue },
                 new dc.AxisPosition() { Val = new DocumentFormat.OpenXml.EnumValue<dc.AxisPositionValues>(dc.AxisPositionValues.Bottom) },
