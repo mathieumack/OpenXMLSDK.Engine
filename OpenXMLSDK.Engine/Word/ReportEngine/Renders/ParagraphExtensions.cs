@@ -38,10 +38,19 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 openXmlPar.ParagraphProperties.KeepNext = new DocumentFormat.OpenXml.Wordprocessing.KeepNext();
             if (paragraph.PageBreakBefore)
                 openXmlPar.ParagraphProperties.PageBreakBefore = new DocumentFormat.OpenXml.Wordprocessing.PageBreakBefore();
-
             // Indents :
             if (paragraph.Indentation != null)
                 openXmlPar.ParagraphProperties.Indentation = paragraph.Indentation.ToOpenXmlElement();
+
+            // Manage numbering :
+            if (paragraph.Numbering != null)
+            {
+                var numberingProperties = new DocumentFormat.OpenXml.Wordprocessing.NumberingProperties(
+                            new DocumentFormat.OpenXml.Wordprocessing.NumberingLevelReference() { Val = paragraph.Numbering.LevelReference },
+                            new DocumentFormat.OpenXml.Wordprocessing.NumberingId() { Val = paragraph.Numbering.Id });
+
+                openXmlPar.ParagraphProperties.NumberingProperties = numberingProperties;
+            }
 
             parent.Append(openXmlPar);
             return openXmlPar;

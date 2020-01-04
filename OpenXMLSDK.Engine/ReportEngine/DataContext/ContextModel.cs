@@ -265,7 +265,14 @@ namespace OpenXMLSDK.Engine.ReportEngine.DataContext
                 var item = GetItem<BooleanModel>(element.PageBreakBeforeKey);
                 element.PageBreakBefore = item.Value;
             }
+
             SetVisibilityFromContext(element);
+
+            // Update numbering id reference from context. Internal work load used by the report engine
+            //if (element.Numbering != null && ExistItem<DoubleModel>("#Internal.Numbering.Id#"))
+            //{
+            //    element.Numbering.Id = (int)GetItem<DoubleModel>("#Internal.Numbering.Id#").Value;
+            //}
         }
 
         /// <summary>

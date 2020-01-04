@@ -38,6 +38,11 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models
         public BorderModel Borders { get; set; }
 
         /// <summary>
+        /// Numbering configuration for the paragraph
+        /// </summary>
+        public Numbering Numbering { get; set; }
+
+        /// <summary>
         /// Keeplines
         /// </summary>
         public bool Keeplines { get; set; }

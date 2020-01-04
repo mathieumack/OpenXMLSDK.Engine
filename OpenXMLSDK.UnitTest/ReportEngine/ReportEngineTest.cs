@@ -669,27 +669,27 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                 RowModel = new Row()
                 {
                     Cells = new List<Cell>()
-    {
-        new Cell()
-        {
-            Shading = "FFA0FF",
-            ChildElements = new List<BaseElement>()
-            {
-                new Label() { Text = "Item Datasource (0 index) #DataSourcePrefix_TableRow_IndexBaseZero# - ",
-                                ShowKey = "#DataSourcePrefix_TableRow_IsFirstItem#" },
-                new Label() { Text = "#Cell1#" }
-            }
-        },
-        new Cell()
-        {
-            ChildElements = new List<BaseElement>()
-            {
-                new Label() { Text = "Item Datasource (1 index) #DataSourcePrefix_TableRow_IndexBaseOne# - ",
-                                ShowKey = "#DataSourcePrefix_TableRow_IsLastItem#" },
-                new Label() { Text = "#Cell2#" }
-            }
-        }
-    }
+                    {
+                        new Cell()
+                        {
+                            Shading = "FFA0FF",
+                            ChildElements = new List<BaseElement>()
+                            {
+                                new Label() { Text = "Item Datasource (0 index) #DataSourcePrefix_TableRow_IndexBaseZero# - ",
+                                                ShowKey = "#DataSourcePrefix_TableRow_IsFirstItem#" },
+                                new Label() { Text = "#Cell1#" }
+                            }
+                        },
+                        new Cell()
+                        {
+                            ChildElements = new List<BaseElement>()
+                            {
+                                new Label() { Text = "Item Datasource (1 index) #DataSourcePrefix_TableRow_IndexBaseOne# - ",
+                                                ShowKey = "#DataSourcePrefix_TableRow_IsLastItem#" },
+                                new Label() { Text = "#Cell2#" }
+                            }
+                        }
+                    }
                 }
             };
 
@@ -1108,6 +1108,48 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             page9.ChildElements.Add(pieChartPr);
 
             doc.Pages.Add(page9);
+
+            var page10 = new Page()
+            {
+                ChildElements = new List<BaseElement>()
+                {
+                    new Paragraph()
+                    {
+                        FontColor = "FF0000",
+                        FontSize = "26",
+                        ChildElements = new List<BaseElement>()
+                        {
+                            new Label() {
+                                Text = "Paragraph with Numbering example :"
+                            }
+                        }
+                    },
+                    new ForEach()
+                    {
+                        DataSourceKey = "#DatasourceTableFusion#",
+                        ItemTemplate = new List<BaseElement>()
+                        {
+                            new Paragraph()
+                            {
+                                FontColor = "CCCCCC", 
+                                FontSize = "18",
+                                Numbering = new Numbering()
+                                {
+                                    Id = 1,
+                                    LevelReference = 0
+                                },
+                                ChildElements = new List<BaseElement>()
+                                {
+                                    new Label() {
+                                        Text = "Paragraph with Numbering - #Label#"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+            doc.Pages.Add(page10);
 
             // Header
             var header = new Header();
