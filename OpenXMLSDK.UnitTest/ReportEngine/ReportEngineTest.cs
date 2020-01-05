@@ -1146,6 +1146,40 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                                 }
                             }
                         }
+                    },
+                    new Paragraph()
+                    {
+                        FontColor = "FF0000",
+                        FontSize = "26",
+                        ChildElements = new List<BaseElement>()
+                        {
+                            new Label() {
+                                Text = "Paragraph with Numbering example. Second list"
+                            }
+                        }
+                    },
+                    new ForEach()
+                    {
+                        DataSourceKey = "#DatasourceTableFusion#",
+                        ItemTemplate = new List<BaseElement>()
+                        {
+                            new Paragraph()
+                            {
+                                FontColor = "CCCCCC",
+                                FontSize = "18",
+                                Numbering = new Numbering()
+                                {
+                                    Id = 2,
+                                    LevelReference = 0
+                                },
+                                ChildElements = new List<BaseElement>()
+                                {
+                                    new Label() {
+                                        Text = "Paragraph with Numbering - #Label#"
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             };
