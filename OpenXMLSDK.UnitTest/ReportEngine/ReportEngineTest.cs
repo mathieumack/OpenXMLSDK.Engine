@@ -1169,8 +1169,8 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                                 FontSize = "18",
                                 Numbering = new Numbering()
                                 {
-                                    Id = 2,
-                                    LevelReference = 0
+                                    Id = 0,
+                                    LevelReference = 1
                                 },
                                 ChildElements = new List<BaseElement>()
                                 {
