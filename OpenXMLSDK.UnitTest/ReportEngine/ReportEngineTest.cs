@@ -402,15 +402,20 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
 
             Base64ContentModel base64ContentModel = new Base64ContentModel("OBFZDTcPCxlCKhdXCQ0kMQhKPh9uIgYIAQxALBtZAwUeOzcdcUEeW0dMO1kbPElWCV1ISFFKZ0kdWFlLAURPZhEFQVseXVtPOUUICVhMAzcfZ14AVEdIVVgfAUIBWVpOUlAeaUVMXFlKIy9rGUN0VF08Oz1POxFfTCcVFw1LMQNbBQYWAQ==");
             BooleanModel booleanModel = new BooleanModel(true);
+            byte[] numbers = { 0, 16, 104, 213 };
+            ByteContentModel byteContentModel = new ByteContentModel() { Content = numbers };
+            DateTimeModel dateTimeModel = new DateTimeModel(DateTime.Now, null);
+            DoubleModel doubleModel = new DoubleModel(5.4, null);
+            StringModel stringModel = new StringModel("TestString");
 
-            string textToDisplay = "Base64ContentModel : {0}, BooleanModel : {1}";
+            string textToDisplay = "Base64ContentModel : {0}\n BooleanModel : {1}\n ByteContentModel : {2}\n DateTimeModel : {3}\n DoubleModel : {4}\n StringModel : {5}\n";
             ContextModel rowSubstitutable = new ContextModel();
             rowSubstitutable.AddItem("#SubstitutableStringData#",
-                    new SubstitutableStringModel(
-                        textToDisplay,
-                        new List<Engine.BaseModel> { base64ContentModel, booleanModel }
-                        )
-                );
+                new SubstitutableStringModel(
+                    textToDisplay,
+                    new List<Engine.BaseModel> { base64ContentModel, booleanModel, byteContentModel, dateTimeModel, doubleModel, stringModel }
+                )
+            );
 
             context.AddCollection("#SubstitutableStringDataSourceModel#", rowSubstitutable);
 
@@ -1122,10 +1127,12 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             page9.ChildElements.Add(pieChartPr);
 
             // Substitutable string
-            var pargraphTitle = new Paragraph();
-            pargraphTitle.SpacingBefore = 800;
-            pargraphTitle.Justification = JustificationValues.Center;
-            pargraphTitle.ParagraphStyleId = "Red";
+            var pargraphTitle = new Paragraph
+            {
+                SpacingBefore = 800,
+                Justification = JustificationValues.Center,
+                ParagraphStyleId = "Red"
+            };
             pargraphTitle.ChildElements.Add(new Label() { Text = "Substitutable string", FontName = "Arial" });
             page9.ChildElements.Add(pargraphTitle);
 
@@ -1143,7 +1150,8 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                             }
                         }
                     }
-                },
+                }
+                ,
                 DataSourceKey = "#SubstitutableStringDataSourceModel#"
             };
 
