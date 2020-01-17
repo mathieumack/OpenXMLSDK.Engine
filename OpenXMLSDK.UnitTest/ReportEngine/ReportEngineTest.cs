@@ -400,6 +400,20 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                 }
             });
 
+            Base64ContentModel base64ContentModel = new Base64ContentModel("OBFZDTcPCxlCKhdXCQ0kMQhKPh9uIgYIAQxALBtZAwUeOzcdcUEeW0dMO1kbPElWCV1ISFFKZ0kdWFlLAURPZhEFQVseXVtPOUUICVhMAzcfZ14AVEdIVVgfAUIBWVpOUlAeaUVMXFlKIy9rGUN0VF08Oz1POxFfTCcVFw1LMQNbBQYWAQ==");
+            BooleanModel booleanModel = new BooleanModel(true);
+
+            string textToDisplay = "Base64ContentModel : {0}, BooleanModel : {1}";
+            ContextModel rowSubstitutable = new ContextModel();
+            rowSubstitutable.AddItem("#SubstitutableStringData#",
+                    new SubstitutableStringModel(
+                        textToDisplay,
+                        new List<Engine.BaseModel> { base64ContentModel, booleanModel }
+                        )
+                );
+
+            context.AddCollection("#SubstitutableStringDataSourceModel#", rowSubstitutable);
+
             return context;
         }
 
@@ -1090,7 +1104,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                         PieChartType = PieChartType.PieChart,
                         DataSourceKey = "#PieGraphSampleData#",
                         ShowMajorGridlines = true,
-                        DataLabel = new DataLabelModel() 
+                        DataLabel = new DataLabelModel()
                         {
                             //ShowDataLabel = true,
                             ShowCatName = true,
@@ -1106,6 +1120,34 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             };
 
             page9.ChildElements.Add(pieChartPr);
+
+            // Substitutable string
+            var pargraphTitle = new Paragraph();
+            pargraphTitle.SpacingBefore = 800;
+            pargraphTitle.Justification = JustificationValues.Center;
+            pargraphTitle.ParagraphStyleId = "Red";
+            pargraphTitle.ChildElements.Add(new Label() { Text = "Substitutable string", FontName = "Arial" });
+            page9.ChildElements.Add(pargraphTitle);
+
+            var substitutableTableDataSource = new Table()
+            {
+                RowModel = new Row()
+                {
+                    Cells = new List<Cell>()
+                    {
+                        new Cell()
+                        {
+                            ChildElements = new List<BaseElement>()
+                            {
+                                new Label() { Text = "#SubstitutableStringData#" }
+                            }
+                        }
+                    }
+                },
+                DataSourceKey = "#SubstitutableStringDataSourceModel#"
+            };
+
+            page9.ChildElements.Add(substitutableTableDataSource);
 
             doc.Pages.Add(page9);
 
