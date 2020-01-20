@@ -8,52 +8,65 @@ namespace OpenXMLSDK.Engine.ReportEngine.DataContext
     /// <summary>
     /// Model class for a substitutable string value in context
     /// </summary>
-    public class SubstitutableStringModel : StringModel
+    public class SubstitutableStringModel : BaseModel
     {
         /// <summary>
         /// List of substitution texts
         /// </summary>
-        public List<BaseModel> SubstitutionTexts { get; set; }
+        public ContextModel DataSource { get; set; }
+
+        /// <summary>
+        /// Used to define the final rendering string You can set precision of other :
+        /// Ex : '{0:G2} kV' for the value 3.230 will generate '3.23 kV' string
+        /// </summary>
+        public string RenderPattern { get; set; }
 
         #region Constructor
 
         /// <summary>
         /// Default constructor
         /// </summary>
-        public SubstitutableStringModel() : this(null, new List<BaseModel>())
+        public SubstitutableStringModel() : this(null, null)
         { }
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="value"></param>
-        public SubstitutableStringModel(string value, List<BaseModel> substitutionTexts) : base(typeof(SubstitutableStringModel).Name)
+        /// <param name="substitutionTexts"></param>
+        public SubstitutableStringModel(string renderPattern, ContextModel dataSource) : base(typeof(SubstitutableStringModel).Name)
         {
-            if (value.Count(f => f == '{') != value.Count(f => f == '}') || value.Count(f => f == '{') != substitutionTexts.Count)
-                throw new ArgumentOutOfRangeException();
+            DataSource = dataSource;
+            this.RenderPattern = renderPattern;
+        }
 
-            IList<string> substitutionTextStrings = new List<string>();
+        #endregion
 
-            foreach (BaseModel baseModel in substitutionTexts)
+        #region Rendering
+
+        /// <summary>
+        /// Create the generated string
+        /// </summary>
+        /// <returns></returns>
+        public string Render(IFormatProvider formatProvider)
+        {
+            var renders = new List<string>();
+
+            foreach (var baseModel in DataSource.Data.Values)
             {
-                var baseModelValue = string.Empty;
-                if (baseModel is Base64ContentModel)
-                    baseModelValue = (baseModel as Base64ContentModel).Base64Content;
-                else if (baseModel is BooleanModel)
-                    baseModelValue = (baseModel as BooleanModel).Value.ToString();
-                else if (baseModel is ByteContentModel)
-                    baseModelValue = (baseModel as ByteContentModel).Content.ToString();
+                var resultItem = "";
+                if (baseModel is DoubleModel)
+                    resultItem = (baseModel as DoubleModel).Render(formatProvider);
                 else if (baseModel is DateTimeModel)
-                    baseModelValue = (baseModel as DateTimeModel).Value.ToString();
-                else if (baseModel is DoubleModel)
-                    baseModelValue = (baseModel as DoubleModel).Value.ToString();
+                    resultItem = (baseModel as DateTimeModel).Render(formatProvider);
+                else if (baseModel is SubstitutableStringModel)
+                    resultItem = (baseModel as SubstitutableStringModel).Render(formatProvider);
                 else if (baseModel is StringModel)
-                    baseModelValue = (baseModel as StringModel).Value;
-
-                substitutionTextStrings.Add(baseModelValue);
+                    resultItem = (baseModel as StringModel).Value;
+                renders.Add(resultItem);
             }
 
-            base.Value = string.Format(value, substitutionTextStrings.Select(x => x).ToArray());
+            return string.Format(RenderPattern, renders.ToArray());
         }
 
         #endregion

@@ -80,6 +80,8 @@ namespace OpenXMLSDK.Engine.ReportEngine.DataContext
                         result = result.Replace(key, GetItem<DoubleModel>(key).Render(formatProvider));
                     else if (ExistItem<DateTimeModel>(key))
                         result = result.Replace(key, GetItem<DateTimeModel>(key).Render(formatProvider));
+                    else if (ExistItem<SubstitutableStringModel>(key))
+                        result = result.Replace(key, GetItem<SubstitutableStringModel>(key).Render(formatProvider));
                     else
                         result = result.Replace(key, string.Empty);
                 }
