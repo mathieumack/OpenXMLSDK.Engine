@@ -66,7 +66,19 @@ namespace OpenXMLSDK.Engine.ReportEngine.DataContext
                 renders.Add(resultItem);
             }
 
-            return string.Format(RenderPattern, renders.ToArray());
+            try
+            {
+                return string.Format(RenderPattern, renders.ToArray());
+            }
+            // When there are less parameters than expected in RenderPattern string 
+            catch (FormatException)
+            {
+                // We add empty parameter 
+                var emptyValue = new StringModel() { Value = string.Empty };
+                DataSource.Data.Add(Guid.NewGuid().ToString(), emptyValue);
+                // And retry to generate string.
+                return Render(formatProvider);
+            }
         }
 
         #endregion

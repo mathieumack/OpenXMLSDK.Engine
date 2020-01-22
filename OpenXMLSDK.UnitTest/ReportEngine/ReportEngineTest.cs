@@ -416,6 +416,31 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                         .AddString("#Val6#", "TestString")
                 )
             );
+            rowSubstitutable.AddItem("#SubstitutableStringDataWithLessParameters#",
+                new SubstitutableStringModel(
+                    textToDisplay,
+                    new ContextModel()
+                        .AddBase64Content("#Val1#", "OBFZDTcPCxlCKhdXCQ0kMQhKPh9uIgYIAQxALBtZAwUeOzcdcUEeW0dMO1kbPElWCV1ISFFKZ0kdWFlLAURPZhEFQVseXVtPOUUICVhMAzcfZ14AVEdIVVgfAUIBWVpOUlAeaUVMXFlKIy9rGUN0VF08Oz1POxFfTCcVFw1LMQNbBQYWAQ==")
+                        .AddBoolean("#Val2#", false)
+                        .AddByteContent("#Val3#", numbers)
+                        .AddDateTime("#Val4#", DateTime.Now, null)
+                )
+            );
+            rowSubstitutable.AddItem("#SubstitutableStringDataWithMoreParameters#",
+                new SubstitutableStringModel(
+                    textToDisplay,
+                    new ContextModel()
+                        .AddBase64Content("#Val1#", "OBFZDTcPCxlCKhdXCQ0kMQhKPh9uIgYIAQxALBtZAwUeOzcdcUEeW0dMO1kbPElWCV1ISFFKZ0kdWFlLAURPZhEFQVseXVtPOUUICVhMAzcfZ14AVEdIVVgfAUIBWVpOUlAeaUVMXFlKIy9rGUN0VF08Oz1POxFfTCcVFw1LMQNbBQYWAQ==")
+                        .AddBoolean("#Val2#", false)
+                        .AddByteContent("#Val3#", numbers)
+                        .AddDateTime("#Val4#", DateTime.Now, null)
+                        .AddDouble("#Val5#", 5.4, null)
+                        .AddString("#Val6#", "TestString")
+                        .AddDouble("#Val7#", 5.4, null)
+                        .AddString("#Val8#", "TestString")
+                )
+            );
+
 
             context.AddCollection("#SubstitutableStringDataSourceModel#", rowSubstitutable);
 
@@ -1129,7 +1154,6 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             // Substitutable string
             var pargraphTitle = new Paragraph
             {
-                SpacingBefore = 800,
                 Justification = JustificationValues.Center,
                 ParagraphStyleId = "Red"
             };
@@ -1146,7 +1170,19 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                         {
                             ChildElements = new List<BaseElement>()
                             {
-                                new Label() { Text = "#SubstitutableStringData#" }
+                                new Label() { Text = "Matching of supplied parameters and expected parameters : \n"
+                                            , Bold = true, Underline = new UnderlineModel () { Val = UnderlineValues.Single } },
+                                new Label() { Text = "#SubstitutableStringData#" },
+
+                                new Label() { Text = "\n" },
+                                new Label() { Text = "Less supplied parameters than expected parameters : \n"
+                                            , Bold = true, Underline = new UnderlineModel () { Val = UnderlineValues.Single } },
+                                new Label() { Text = "#SubstitutableStringDataWithLessParameters#" },
+
+                                new Label() { Text = "\n" },
+                                new Label() { Text = "More supplied parameters than expected parameters : \n"
+                                            , Bold = true, Underline = new UnderlineModel () { Val = UnderlineValues.Single } },
+                                new Label() { Text = "#SubstitutableStringDataWithMoreParameters#" }
                             }
                         }
                     }
