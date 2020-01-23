@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-
 
 namespace OpenXMLSDK.Engine.ReportEngine.DataContext
 {
@@ -17,17 +15,15 @@ namespace OpenXMLSDK.Engine.ReportEngine.DataContext
 
         /// <summary>
         /// Used to define the final rendering string You can set precision of other :
-        /// Ex : '{0:G2} kV' for the value 3.230 will generate '3.23 kV' string
+        /// <list type="bullet">
+        /// <item>
+        /// <description>'{0:G2} kV' for the value 3.230 will generate '3.23 kV' string</description>
+        /// </item>
+        /// </list>
         /// </summary>
         public string RenderPattern { get; set; }
 
         #region Constructor
-
-        /// <summary>
-        /// Default constructor
-        /// </summary>
-        public SubstitutableStringModel() : this(null, null)
-        { }
 
         /// <summary>
         /// Constructor
@@ -50,10 +46,15 @@ namespace OpenXMLSDK.Engine.ReportEngine.DataContext
         /// <returns></returns>
         public string Render(IFormatProvider formatProvider)
         {
-            var renders = new List<string>();
+            if (DataSource is null || DataSource.Data is null || DataSource.Data.Values is null)
+                return string.Empty;
 
+            var renders = new List<string>();
             foreach (var baseModel in DataSource.Data.Values)
             {
+                if (baseModel is null)
+                    continue;
+
                 var resultItem = "";
                 if (baseModel is DoubleModel)
                     resultItem = (baseModel as DoubleModel).Render(formatProvider);
@@ -73,11 +74,8 @@ namespace OpenXMLSDK.Engine.ReportEngine.DataContext
             // When there are less parameters than expected in RenderPattern string 
             catch (FormatException)
             {
-                // We add empty parameter 
-                var emptyValue = new StringModel() { Value = string.Empty };
-                DataSource.Data.Add(Guid.NewGuid().ToString(), emptyValue);
-                // And retry to generate string.
-                return Render(formatProvider);
+                // We return renderPattern not formatting.
+                return RenderPattern;
             }
         }
 
