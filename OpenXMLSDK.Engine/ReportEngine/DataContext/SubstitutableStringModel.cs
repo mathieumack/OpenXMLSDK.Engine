@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace OpenXMLSDK.Engine.ReportEngine.DataContext
 {
@@ -17,7 +18,7 @@ namespace OpenXMLSDK.Engine.ReportEngine.DataContext
         /// Used to define the final rendering string You can set precision of other :
         /// <list type="bullet">
         /// <item>
-        /// <description>'{0:G2} kV' for the value 3.230 will generate '3.23 kV' string</description>
+        /// <description>'{0:G2} miles' for the value 3.230 will generate '3.23 miles' string</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -50,11 +51,8 @@ namespace OpenXMLSDK.Engine.ReportEngine.DataContext
                 return string.Empty;
 
             var renders = new List<string>();
-            foreach (var baseModel in DataSource.Data.Values)
+            foreach (var baseModel in DataSource.Data.Values.Where(e => e != null))
             {
-                if (baseModel is null)
-                    continue;
-
                 var resultItem = "";
                 if (baseModel is DoubleModel)
                     resultItem = (baseModel as DoubleModel).Render(formatProvider);
