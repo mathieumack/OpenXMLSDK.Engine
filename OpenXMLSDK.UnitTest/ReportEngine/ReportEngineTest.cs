@@ -400,6 +400,50 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                 }
             });
 
+            byte[] numbers = { 0, 16, 104, 213 };
+
+            string textToDisplay = "Base64ContentModel : {0}\n BooleanModel : {1}\n ByteContentModel : {2}\n DateTimeModel : {3}\n DoubleModel : {4}\n StringModel : {5}\n";
+            ContextModel rowSubstitutable = new ContextModel();
+            rowSubstitutable.AddItem("#SubstitutableStringData#",
+                new SubstitutableStringModel(
+                    textToDisplay,
+                    new ContextModel()
+                        .AddBase64Content("#Val1#", "OBFZDTcPCxlCKhdXCQ0kMQhKPh9uIgYIAQxALBtZAwUeOzcdcUEeW0dMO1kbPElWCV1ISFFKZ0kdWFlLAURPZhEFQVseXVtPOUUICVhMAzcfZ14AVEdIVVgfAUIBWVpOUlAeaUVMXFlKIy9rGUN0VF08Oz1POxFfTCcVFw1LMQNbBQYWAQ==")
+                        .AddBoolean("#Val2#", false)
+                        .AddByteContent("#Val3#", numbers)
+                        .AddDateTime("#Val4#", DateTime.Now, null)
+                        .AddDouble("#Val5#", 5.4, null)
+                        .AddString("#Val6#", "TestString")
+                )
+            );
+            rowSubstitutable.AddItem("#SubstitutableStringDataWithLessParameters#",
+                new SubstitutableStringModel(
+                    textToDisplay,
+                    new ContextModel()
+                        .AddBase64Content("#Val1#", "OBFZDTcPCxlCKhdXCQ0kMQhKPh9uIgYIAQxALBtZAwUeOzcdcUEeW0dMO1kbPElWCV1ISFFKZ0kdWFlLAURPZhEFQVseXVtPOUUICVhMAzcfZ14AVEdIVVgfAUIBWVpOUlAeaUVMXFlKIy9rGUN0VF08Oz1POxFfTCcVFw1LMQNbBQYWAQ==")
+                        .AddBoolean("#Val2#", false)
+                        .AddByteContent("#Val3#", numbers)
+                        .AddDateTime("#Val4#", DateTime.Now, null)
+                )
+            );
+            rowSubstitutable.AddItem("#SubstitutableStringDataWithMoreParameters#",
+                new SubstitutableStringModel(
+                    textToDisplay,
+                    new ContextModel()
+                        .AddBase64Content("#Val1#", "OBFZDTcPCxlCKhdXCQ0kMQhKPh9uIgYIAQxALBtZAwUeOzcdcUEeW0dMO1kbPElWCV1ISFFKZ0kdWFlLAURPZhEFQVseXVtPOUUICVhMAzcfZ14AVEdIVVgfAUIBWVpOUlAeaUVMXFlKIy9rGUN0VF08Oz1POxFfTCcVFw1LMQNbBQYWAQ==")
+                        .AddBoolean("#Val2#", false)
+                        .AddByteContent("#Val3#", numbers)
+                        .AddDateTime("#Val4#", DateTime.Now, null)
+                        .AddDouble("#Val5#", 5.4, null)
+                        .AddString("#Val6#", "TestString")
+                        .AddDouble("#Val7#", 5.4, null)
+                        .AddString("#Val8#", "TestString")
+                )
+            );
+
+
+            context.AddCollection("#SubstitutableStringDataSourceModel#", rowSubstitutable);
+
             return context;
         }
 
@@ -1090,7 +1134,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                         PieChartType = PieChartType.PieChart,
                         DataSourceKey = "#PieGraphSampleData#",
                         ShowMajorGridlines = true,
-                        DataLabel = new DataLabelModel() 
+                        DataLabel = new DataLabelModel()
                         {
                             //ShowDataLabel = true,
                             ShowCatName = true,
@@ -1106,6 +1150,48 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             };
 
             page9.ChildElements.Add(pieChartPr);
+
+            // Substitutable string
+            var pargraphTitle = new Paragraph
+            {
+                Justification = JustificationValues.Center,
+                ParagraphStyleId = "Red"
+            };
+            pargraphTitle.ChildElements.Add(new Label() { Text = "Substitutable string", FontName = "Arial" });
+            page9.ChildElements.Add(pargraphTitle);
+
+            var substitutableTableDataSource = new Table()
+            {
+                RowModel = new Row()
+                {
+                    Cells = new List<Cell>()
+                    {
+                        new Cell()
+                        {
+                            ChildElements = new List<BaseElement>()
+                            {
+                                new Label() { Text = "Matching of supplied parameters and expected parameters : \n"
+                                            , Bold = true, Underline = new UnderlineModel () { Val = UnderlineValues.Single } },
+                                new Label() { Text = "#SubstitutableStringData#" },
+
+                                new Label() { Text = "\n" },
+                                new Label() { Text = "Less supplied parameters than expected parameters : \n"
+                                            , Bold = true, Underline = new UnderlineModel () { Val = UnderlineValues.Single } },
+                                new Label() { Text = "#SubstitutableStringDataWithLessParameters#" },
+
+                                new Label() { Text = "\n" },
+                                new Label() { Text = "More supplied parameters than expected parameters : \n"
+                                            , Bold = true, Underline = new UnderlineModel () { Val = UnderlineValues.Single } },
+                                new Label() { Text = "#SubstitutableStringDataWithMoreParameters#" }
+                            }
+                        }
+                    }
+                }
+                ,
+                DataSourceKey = "#SubstitutableStringDataSourceModel#"
+            };
+
+            page9.ChildElements.Add(substitutableTableDataSource);
 
             doc.Pages.Add(page9);
 
