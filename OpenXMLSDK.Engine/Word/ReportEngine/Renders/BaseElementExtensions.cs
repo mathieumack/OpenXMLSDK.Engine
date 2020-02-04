@@ -81,6 +81,10 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             {
                 (element as BarModel).Render(parent, context, documentPart, formatProvider);
             }
+            else if (element is PieModel)
+            {
+                (element as PieModel).Render(parent, context, documentPart, formatProvider);
+            }
             else if (element is HtmlContent)
             {
                 (element as HtmlContent).Render(parent, context, documentPart, formatProvider);

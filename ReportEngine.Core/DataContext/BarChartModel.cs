@@ -2,6 +2,7 @@
 
 namespace ReportEngine.Core.DataContext
 {
+    [Obsolete("Please use MultipleSeriesChartModel instead")]
     public class BarChartModel : BaseModel
     {
         /// <summary>

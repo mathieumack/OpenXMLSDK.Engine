@@ -1,4 +1,13 @@
-﻿using OpenXMLSDK.Engine.Word;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using Newtonsoft.Json;
+using OpenXMLSDK.Engine.interfaces.Word.ReportEngine.Models;
+using OpenXMLSDK.Engine.ReportEngine.DataContext;
+using OpenXMLSDK.Engine.ReportEngine.DataContext.Charts;
+using OpenXMLSDK.Engine.ReportEngine.DataContext.FluentExtensions;
+using OpenXMLSDK.Engine.Word;
 using ReportEngine.Core.DataContext.FluentExtensions;
 using Newtonsoft.Json;
 using System;
@@ -168,7 +177,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                 Items = cellsContext
             });
 
-            context.AddItem("#GrahSampleData#", new BarChartModel()
+            context.AddItem("#OldBarGraphSampleData#", new BarChartModel()
             {
                 BarChartContent = new BarModel()
                 {
@@ -207,7 +216,8 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                             {
                                 0, 1, 2, 3, 6, null
                             },
-                            Name = "Bar serie 1"
+                            Name = "Bar serie 1",
+                            Color = "9FA0A4"
                         },
                         new BarSerieModel()
                         {
@@ -215,7 +225,8 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                             {
                                 5, null, 7, 8, 0, 10
                             },
-                            Name = "Bar serie 2"
+                            Name = "Bar serie 2",
+                            Color = "32AD3C"
                         },
                         new BarSerieModel()
                         {
@@ -223,7 +234,8 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                             {
                                 9, 10, 11, 12, 13, 14
                             },
-                            Name = "Bar serie 3"
+                            Name = "Bar serie 3",
+                            Color = "E47F00"
                         },
                         new BarSerieModel()
                         {
@@ -231,11 +243,214 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                             {
                                 9, 10, 11, 12, 15, 25
                             },
-                            Name = "Bar serie 4"
+                            Name = "Bar serie 4",
+                            Color = "DC0A0A"
                         }
                     }
                 }
             });
+
+            context.AddItem("#BarGraphSampleData#", new MultipleSeriesChartModel()
+            {
+                ChartContent = new MultipleSeriesModel()
+                {
+                    Categories = new List<CategoryModel>()
+                    {
+                        new CategoryModel()
+                        {
+                            Name = "Category 1"
+                        },
+                        new CategoryModel()
+                        {
+                            Name = "Category 2"
+                        },
+                        new CategoryModel()
+                        {
+                            Name = "Category 3"
+                        },
+                        new CategoryModel()
+                        {
+                            Name = "Category 4"
+                        },
+                        new CategoryModel()
+                        {
+                            Name = "Category 5"
+                        },
+                        new CategoryModel()
+                        {
+                            Name = "Category 6"
+                        }
+                    },
+                    Series = new List<SerieModel>()
+                    {
+                        new SerieModel()
+                        {
+                            Values = new List<double?>()
+                            {
+                                0, 1, 2, 3, 6, null
+                            },
+                            Name = "Bar serie 1",
+                            Color = "9FA0A4",
+                            HasBorder = true,
+                            BorderColor = "#FF00FF",
+                            BorderWidth = 63500
+                        },
+                        new SerieModel()
+                        {
+                            Values = new List<double?>()
+                            {
+                                5, null, 7, 8, 0, 10
+                            },
+                            Name = "Bar serie 2",
+                            Color = "32AD3C",
+                            HasBorder = true,
+                            BorderColor = "#0000FF",
+                            BorderWidth = 63500
+                        },
+                        new SerieModel()
+                        {
+                            Values = new List<double?>()
+                            {
+                                9, 10, 11, 12, 13, 14
+                            },
+                            Name = "Bar serie 3",
+                            Color = "E47F00"
+                        },
+                        new SerieModel()
+                        {
+                            Values = new List<double?>()
+                            {
+                                9, 10, 11, 12, 15, 25
+                            },
+                            Name = "Bar serie 4",
+                            Color = "DC0A0A"
+                        }
+                    }
+                }
+            });
+
+            context.AddItem("#PieGraphSampleData#", new SingleSerieChartModel()
+            {
+                ChartContent = new OpenXMLSDK.Engine.Word.ReportEngine.BatchModels.Charts.SingleSeriesModel()
+                {
+                    Categories = new List<CategoryModel>()
+                    {
+                        new CategoryModel()
+                        {
+                            Name = "A Category",
+                            Color = "9FA0A4"
+                        },
+                        new CategoryModel()
+                        {
+                            Name = "B Category",
+                            Color = "32AD3C"
+                        },
+                        new CategoryModel()
+                        {
+                            Name = "C Category",
+                            Color = "E47F00"
+                        },
+                        new CategoryModel()
+                        {
+                            Name = "D Category",
+                            Color = "DC0A0A"
+                        },
+                        new CategoryModel()
+                        {
+                            Name = "E Category"
+                        },
+                        new CategoryModel()
+                        {
+                            Name = "F Category"
+                        }
+                    },
+                    Serie = new SerieModel()
+                    {
+                        Values = new List<double?>()
+                        {
+                            10, 20, 5, 50, 15, null
+                        },
+                        Name = "Serie 1",
+                        HasBorder = true,
+                        BorderColor = "#FFFFFF",
+                        Color = "#000000",
+                        BorderWidth = 63500
+                    }
+                }
+            });
+
+            context.AddItem("#SingleStackedBarGraphSampleData#", new MultipleSeriesChartModel()
+            {
+                ChartContent = new MultipleSeriesModel()
+                {
+                    Categories = new List<CategoryModel>()
+                    {
+                        new CategoryModel()
+                        {
+                            Name = "Cat name"
+                        }
+                    },
+                    Series = new List<SerieModel>()
+                    {
+                        new SerieModel()
+                        {
+                            Name = "Serie 1",
+                            Color = "9FA0A4",
+                            Values = new List<double?>{ 98 }
+                        },
+                        new SerieModel()
+                        {
+                            Name = "Serie 2",
+                            Color = "E47F00",
+                            Values = new List<double?>{ 2 }
+                        }
+                    }
+                }
+            });
+
+            byte[] numbers = { 0, 16, 104, 213 };
+
+            string textToDisplay = "Base64ContentModel : {0}\n BooleanModel : {1}\n ByteContentModel : {2}\n DateTimeModel : {3}\n DoubleModel : {4}\n StringModel : {5}\n";
+            ContextModel rowSubstitutable = new ContextModel();
+            rowSubstitutable.AddItem("#SubstitutableStringData#",
+                new SubstitutableStringModel(
+                    textToDisplay,
+                    new ContextModel()
+                        .AddBase64Content("#Val1#", "OBFZDTcPCxlCKhdXCQ0kMQhKPh9uIgYIAQxALBtZAwUeOzcdcUEeW0dMO1kbPElWCV1ISFFKZ0kdWFlLAURPZhEFQVseXVtPOUUICVhMAzcfZ14AVEdIVVgfAUIBWVpOUlAeaUVMXFlKIy9rGUN0VF08Oz1POxFfTCcVFw1LMQNbBQYWAQ==")
+                        .AddBoolean("#Val2#", false)
+                        .AddByteContent("#Val3#", numbers)
+                        .AddDateTime("#Val4#", DateTime.Now, null)
+                        .AddDouble("#Val5#", 5.4, null)
+                        .AddString("#Val6#", "TestString")
+                )
+            );
+            rowSubstitutable.AddItem("#SubstitutableStringDataWithLessParameters#",
+                new SubstitutableStringModel(
+                    textToDisplay,
+                    new ContextModel()
+                        .AddBase64Content("#Val1#", "OBFZDTcPCxlCKhdXCQ0kMQhKPh9uIgYIAQxALBtZAwUeOzcdcUEeW0dMO1kbPElWCV1ISFFKZ0kdWFlLAURPZhEFQVseXVtPOUUICVhMAzcfZ14AVEdIVVgfAUIBWVpOUlAeaUVMXFlKIy9rGUN0VF08Oz1POxFfTCcVFw1LMQNbBQYWAQ==")
+                        .AddBoolean("#Val2#", false)
+                        .AddByteContent("#Val3#", numbers)
+                        .AddDateTime("#Val4#", DateTime.Now, null)
+                )
+            );
+            rowSubstitutable.AddItem("#SubstitutableStringDataWithMoreParameters#",
+                new SubstitutableStringModel(
+                    textToDisplay,
+                    new ContextModel()
+                        .AddBase64Content("#Val1#", "OBFZDTcPCxlCKhdXCQ0kMQhKPh9uIgYIAQxALBtZAwUeOzcdcUEeW0dMO1kbPElWCV1ISFFKZ0kdWFlLAURPZhEFQVseXVtPOUUICVhMAzcfZ14AVEdIVVgfAUIBWVpOUlAeaUVMXFlKIy9rGUN0VF08Oz1POxFfTCcVFw1LMQNbBQYWAQ==")
+                        .AddBoolean("#Val2#", false)
+                        .AddByteContent("#Val3#", numbers)
+                        .AddDateTime("#Val4#", DateTime.Now, null)
+                        .AddDouble("#Val5#", 5.4, null)
+                        .AddString("#Val6#", "TestString")
+                        .AddDouble("#Val7#", 5.4, null)
+                        .AddString("#Val8#", "TestString")
+                )
+            );
+
+
+            context.AddCollection("#SubstitutableStringDataSourceModel#", rowSubstitutable);
 
             return context;
         }
@@ -260,7 +475,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             // Template 1 :
 
             var paragraph = new Paragraph();
-            paragraph.ChildElements.Add(new Label() { Text = "Label wihtou special character (éèàù).", FontSize = "30", FontName = "Arial" });
+            paragraph.ChildElements.Add(new Label() { Text = "Label without special character (éèàù).", FontSize = "30", FontName = "Arial" });
             paragraph.ChildElements.Add(new Hyperlink()
             {
                 Text = new Label()
@@ -277,14 +492,22 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                 Right = "6000"
             };
             paragraph.ChildElements.Add(new Label() { Text = "Ceci est un texte avec accents (éèàù)", FontSize = "30", FontName = "Arial" });
-            paragraph.ChildElements.Add(new Label() { Text = "#KeyTest1#", FontSize = "40",
+            paragraph.ChildElements.Add(new Label()
+            {
+                Text = "#KeyTest1#",
+                FontSize = "40",
                 TransformOperations = new List<LabelTransformOperation>()
                 {
                     new LabelTransformOperation()
                     {
                         TransformOperationType = LabelTransformOperationType.ToUpper
                     }
-                }, FontColor = "#FontColorTestRed#", Shading = "9999FF", BoldKey = "#BoldKey#", Bold = false });
+                },
+                FontColor = "#FontColorTestRed#",
+                Shading = "9999FF",
+                BoldKey = "#BoldKey#",
+                Bold = false
+            });
             paragraph.ChildElements.Add(new Label()
             {
                 Text = "#KeyTest2#",
@@ -598,6 +821,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
 
             doc.Pages.Add(page3);
 
+            // page 4
             var page4 = new Page();
             //New page to manage UniformGrid:
             var uniformGrid = new UniformGrid()
@@ -649,6 +873,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
 
             doc.Pages.Add(page4);
 
+            // page 5
             var page5 = new Page();
             var tableDataSourceWithBeforeAfter = new Table()
             {
@@ -757,7 +982,28 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
 
             doc.Pages.Add(page5);
 
+            // page 6 -> BarChart
             var page6 = new Page();
+
+            var oldpr = new Paragraph()
+            {
+                ChildElements = new List<BaseElement>() {
+                    new OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts.BarModel()
+                    {
+                        Title = "Graph test",
+                        ShowTitle = true,
+                        ShowBarBorder = true,
+                        BarChartType = BarChartType.BarChart,
+                        BarDirectionValues = BarDirectionValues.Column,
+                        BarGroupingValues = BarGroupingValues.PercentStacked,
+                        DataSourceKey = "#OldBarGraphSampleData#",
+                        ShowMajorGridlines = true,
+                        MaxHeight = 320
+                    }
+                }
+            };
+
+            page6.ChildElements.Add(oldpr);
 
             var pr = new Paragraph()
             {
@@ -779,8 +1025,52 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
 
             page6.ChildElements.Add(pr);
 
+            var singleStackedBarGraph = new Paragraph()
+            {
+                ChildElements = new List<BaseElement>() {
+                    new OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts.BarModel()
+                    {
+                        Title = "Single stacked Graph without min-max",
+                        ShowTitle = true,
+                        MaxHeight = 100,
+                        DeleteAxeCategory = true,
+                        DeleteAxeValue = true,
+                        ShowLegend = false,
+                        HasBorder = false,
+                        DataSourceKey = "#SingleStackedBarGraphSampleData#"
+                    }
+                }
+            };
+
+            page6.ChildElements.Add(singleStackedBarGraph);
+
+            var singleStackedBarGraphWithMinMax = new Paragraph()
+            {
+                ChildElements = new List<BaseElement>() {
+                    new OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts.BarModel()
+                    {
+                        Title = "Single stacked Graph with min-max",
+                        ShowTitle = true,
+                        MaxHeight = 100,
+                        DeleteAxeCategory = true,
+                        DeleteAxeValue = true,
+                        ShowLegend = false,
+                        HasBorder = false,
+                        DataSourceKey = "#SingleStackedBarGraphSampleData#",
+                        ValuesAxisScaling = new BarChartScalingModel()
+                        {
+                            MinAxisValue = 0,
+                            MaxAxisValue = 100
+                        }
+                    }
+                }
+            };
+
+            page6.ChildElements.Add(singleStackedBarGraphWithMinMax);
+
             doc.Pages.Add(page6);
 
+            // page 7
             var page7 = new Page();
 
             var tableDataSourceWithCellFusion = new Table()
@@ -837,6 +1127,81 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             page8.ChildElements.Add(p8);
 
             doc.Pages.Add(page8);
+
+            // page 9 -> PieChart
+            var page9 = new Page();
+
+            var pieChartPr = new Paragraph()
+            {
+                ChildElements = new List<BaseElement>() {
+                    new OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts.PieModel()
+                    {
+                        Title = "Pie Chart test",
+                        ShowTitle = true,
+                        ShowChartBorder = true,
+                        PieChartType = PieChartType.PieChart,
+                        DataSourceKey = "#PieGraphSampleData#",
+                        ShowMajorGridlines = true,
+                        DataLabel = new DataLabelModel()
+                        {
+                            //ShowDataLabel = true,
+                            ShowCatName = true,
+                            ShowPercent = true,
+                            Separator = "\n",
+                            FontSize = 8
+                        }
+                        ,
+                        DataLabelColor = "#FFFF00"//Yellow
+                        //DataLabelColor = "#000000"//Black
+                    }
+                }
+            };
+
+            page9.ChildElements.Add(pieChartPr);
+
+            // Substitutable string
+            var pargraphTitle = new Paragraph
+            {
+                Justification = JustificationValues.Center,
+                ParagraphStyleId = "Red"
+            };
+            pargraphTitle.ChildElements.Add(new Label() { Text = "Substitutable string", FontName = "Arial" });
+            page9.ChildElements.Add(pargraphTitle);
+
+            var substitutableTableDataSource = new Table()
+            {
+                RowModel = new Row()
+                {
+                    Cells = new List<Cell>()
+                    {
+                        new Cell()
+                        {
+                            ChildElements = new List<BaseElement>()
+                            {
+                                new Label() { Text = "Matching of supplied parameters and expected parameters : \n"
+                                            , Bold = true, Underline = new UnderlineModel () { Val = UnderlineValues.Single } },
+                                new Label() { Text = "#SubstitutableStringData#" },
+
+                                new Label() { Text = "\n" },
+                                new Label() { Text = "Less supplied parameters than expected parameters : \n"
+                                            , Bold = true, Underline = new UnderlineModel () { Val = UnderlineValues.Single } },
+                                new Label() { Text = "#SubstitutableStringDataWithLessParameters#" },
+
+                                new Label() { Text = "\n" },
+                                new Label() { Text = "More supplied parameters than expected parameters : \n"
+                                            , Bold = true, Underline = new UnderlineModel () { Val = UnderlineValues.Single } },
+                                new Label() { Text = "#SubstitutableStringDataWithMoreParameters#" }
+                            }
+                        }
+                    }
+                }
+                ,
+                DataSourceKey = "#SubstitutableStringDataSourceModel#"
+            };
+
+            page9.ChildElements.Add(substitutableTableDataSource);
+
+            doc.Pages.Add(page9);
 
             // Header
             var header = new Header();

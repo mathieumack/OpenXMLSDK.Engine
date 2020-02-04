@@ -18,11 +18,11 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// <param name="context"></param>
         /// <param name="mainDocumentPart"></param>
         /// <param name="formatProvider"></param>
-        public static void Render(this ForEachPage forEach, 
-                                        Document document, 
-                                        OpenXmlElement wdDoc, 
-                                        ContextModel context, 
-                                        MainDocumentPart mainDocumentPart, 
+        public static void Render(this ForEachPage forEach,
+                                        Document document,
+                                        OpenXmlElement wdDoc,
+                                        ContextModel context,
+                                        MainDocumentPart mainDocumentPart,
                                         IFormatProvider formatProvider)
         {
             context.ReplaceItem(forEach, formatProvider);
