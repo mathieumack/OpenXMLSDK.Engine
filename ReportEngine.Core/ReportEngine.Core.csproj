@@ -1,0 +1,25 @@
+﻿<Project Sdk="MSBuild.Sdk.Extras">
+
+  <PropertyGroup>
+    <ProjectGuid>{5D8217A4-0B23-49B0-921C-1EACCDCD70AD}</ProjectGuid>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>ReportEngine.Core</PackageId>
+    <Authors>MACK Mathieu</Authors>
+    <Copyright>Copyright (c) MACK Mathieu</Copyright>
+    <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/mathieumack/OpenXMLSDK.Engine</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/mathieumack/OpenXMLSDK.Engine</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <Description>This package contains the 'Open-XML-SDK' plugin for MvvmCross.</Description>
+    <RootNamespace>ReportEngine.Core</RootNamespace>
+    <AssemblyName>ReportEngine.Core</AssemblyName>
+    <Product>engine report and helpers for the OpenXML SDK</Product>
+    <PackageTags>mvvmcross,plugin,openxml</PackageTags>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+  </ItemGroup>
+</Project>

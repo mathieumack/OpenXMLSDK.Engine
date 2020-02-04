@@ -2,11 +2,14 @@
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
-using OpenXMLSDK.Engine.ReportEngine.DataContext;
 using A = DocumentFormat.OpenXml.Drawing;
 using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
 using PIC = DocumentFormat.OpenXml.Drawing.Pictures;
+using DOP = DocumentFormat.OpenXml.Packaging;
 using SixLabors.ImageSharp.MetaData;
+using ReportEngine.Core.DataContext;
+using ReportEngine.Core.Template.Images;
+using ReportEngine.Core.Template.Extensions;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 {
@@ -23,16 +26,16 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// <param name="context">Context</param>
         /// <param name="documentPart">MainDocumentPart</param>
         /// <returns></returns>
-        public static OpenXmlElement Render(this Models.Image image, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart)
+        public static OpenXmlElement Render(this Image image, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart)
         {
             context.ReplaceItem(image);
             ImagePart imagePart;
             if (documentPart is MainDocumentPart)
-                imagePart = (documentPart as MainDocumentPart).AddImagePart((ImagePartType)(int)image.ImagePartType);
+                imagePart = (documentPart as MainDocumentPart).AddImagePart((DOP.ImagePartType)(int)image.ImagePartType);
             else if (documentPart is HeaderPart)
-                imagePart = (documentPart as HeaderPart).AddImagePart((ImagePartType)(int)image.ImagePartType);
+                imagePart = (documentPart as HeaderPart).AddImagePart((DOP.ImagePartType)(int)image.ImagePartType);
             else if (documentPart is FooterPart)
-                imagePart = (documentPart as FooterPart).AddImagePart((ImagePartType)(int)image.ImagePartType);
+                imagePart = (documentPart as FooterPart).AddImagePart((DOP.ImagePartType)(int)image.ImagePartType);
             else
                 return null;
 
@@ -72,7 +75,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// <param name="model"></param>
         /// <param name="mainDocumentPart"></param>
         /// <returns></returns>
-        private static OpenXmlElement CreateImage(ImagePart imagePart, Models.Image model, OpenXmlPart mainDocumentPart)
+        private static OpenXmlElement CreateImage(ImagePart imagePart, Image model, OpenXmlPart mainDocumentPart)
         {
             string relationshipId = mainDocumentPart.GetIdOfPart(imagePart);
 

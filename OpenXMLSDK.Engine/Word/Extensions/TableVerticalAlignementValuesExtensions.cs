@@ -1,4 +1,4 @@
-﻿using OpenXMLSDK.Engine.Word.Tables;
+﻿using ReportEngine.Core.Template.Tables;
 
 namespace OpenXMLSDK.Engine.Platform.Word.Extensions
 {

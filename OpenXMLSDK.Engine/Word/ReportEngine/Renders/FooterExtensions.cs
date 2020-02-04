@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Linq;
-using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml.Wordprocessing;
-using OpenXMLSDK.Engine.ReportEngine.DataContext;
+using DOP = DocumentFormat.OpenXml.Packaging;
+using DOW = DocumentFormat.OpenXml.Wordprocessing;
+using ReportEngine.Core.DataContext;
+using ReportEngine.Core.Template;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 {
@@ -19,11 +20,11 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// <param name="mainDocumentPart"></param>
         /// <param name="context"></param>
         /// <param name="formatProvider"></param>
-        public static void Render(this Models.Footer footer, Models.Document document, MainDocumentPart mainDocumentPart, ContextModel context, IFormatProvider formatProvider)
+        public static void Render(this Footer footer, Document document, DOP.MainDocumentPart mainDocumentPart, ContextModel context, IFormatProvider formatProvider)
         {
-            var footerPart = mainDocumentPart.AddNewPart<FooterPart>();
+            var footerPart = mainDocumentPart.AddNewPart<DOP.FooterPart>();
 
-            footerPart.Footer = new Footer();
+            footerPart.Footer = new DOW.Footer();
 
             foreach (var element in footer.ChildElements)
             {
@@ -32,18 +33,18 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             }
 
             string footerPartId = mainDocumentPart.GetIdOfPart(footerPart);
-            if (!mainDocumentPart.Document.Body.Descendants<SectionProperties>().Any())
+            if (!mainDocumentPart.Document.Body.Descendants<DOW.SectionProperties>().Any())
             {
-                mainDocumentPart.Document.Body.AppendChild(new SectionProperties());
+                mainDocumentPart.Document.Body.AppendChild(new DOW.SectionProperties());
             }
-            foreach (var section in mainDocumentPart.Document.Body.Descendants<SectionProperties>())
+            foreach (var section in mainDocumentPart.Document.Body.Descendants<DOW.SectionProperties>())
             {
-                section.PrependChild(new FooterReference() { Id = footerPartId, Type = (DocumentFormat.OpenXml.Wordprocessing.HeaderFooterValues)(int)footer.Type });
+                section.PrependChild(new DOW.FooterReference() { Id = footerPartId, Type = (DOW.HeaderFooterValues)(int)footer.Type });
             }
 
             if (footer.Type == HeaderFooterValues.First)
             {
-                mainDocumentPart.Document.Body.Descendants<SectionProperties>().First().PrependChild(new TitlePage());
+                mainDocumentPart.Document.Body.Descendants<DOW.SectionProperties>().First().PrependChild(new DOW.TitlePage());
             }
         }
     }

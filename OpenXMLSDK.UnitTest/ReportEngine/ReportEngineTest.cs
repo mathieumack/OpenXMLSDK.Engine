@@ -1,20 +1,20 @@
 ﻿using OpenXMLSDK.Engine.Word;
-using OpenXMLSDK.Engine.Word.ReportEngine;
-using OpenXMLSDK.Engine.Word.ReportEngine.Models;
-using OpenXMLSDK.Engine.Word.ReportEngine.Models.ExtendedModels;
-using OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts;
-using OpenXMLSDK.Engine.Word.Tables;
-using OpenXMLSDK.Engine.Word.Tables.Models;
-using OpenXMLSDK.Engine.ReportEngine.DataContext.FluentExtensions;
+using ReportEngine.Core.DataContext.FluentExtensions;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Globalization;
-using OpenXMLSDK.Engine.interfaces.Word.ReportEngine.Models;
-using OpenXMLSDK.Engine.ReportEngine.DataContext.Charts;
-using OpenXMLSDK.Engine.ReportEngine.DataContext;
+using ReportEngine.Core.DataContext.Charts;
+using ReportEngine.Core.DataContext;
+using CUsing = ReportEngine.Core.Template.Charts;
+using ReportEngine.Core.Template.ExtendedModels;
+using ReportEngine.Core.Template;
+using ReportEngine.Core.Template.Images;
+using ReportEngine.Core.Template.Text;
+using ReportEngine.Core.Template.Tables;
+using ReportEngine.Core.Template.Tables.Models;
+using ReportEngine.Core.Template.Styles;
 
 namespace OpenXMLSDK.UnitTest.ReportEngine
 {
@@ -170,7 +170,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
 
             context.AddItem("#GrahSampleData#", new BarChartModel()
             {
-                BarChartContent = new OpenXMLSDK.Engine.ReportEngine.DataContext.Charts.BarModel()
+                BarChartContent = new BarModel()
                 {
                     Categories = new List<BarCategoryModel>()
                     {
@@ -346,7 +346,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                                     {
                                         Width = 50,
                                         Path = @"Resources\Desert.jpg",
-                                        ImagePartType = OpenXMLSDK.Engine.Packaging.ImagePartType.Jpeg
+                                        ImagePartType = ImagePartType.Jpeg
                                     },
                                     new Label() { Text = "Cell 1 - Label in a cell" },
                                     new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "Cell 1 - Second paragraph" } } }
@@ -362,7 +362,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                                     {
                                         Height = 10,
                                         Path = @"Resources\Desert.jpg",
-                                        ImagePartType = OpenXMLSDK.Engine.Packaging.ImagePartType.Jpeg
+                                        ImagePartType = ImagePartType.Jpeg
                                     },
                                     new Label() { Text = "Cell 2 - Second label" }
                                 },
@@ -443,7 +443,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                             MaxHeight = 100,
                             MaxWidth = 100,
                             Path = @"Resources\Desert.jpg",
-                            ImagePartType = OpenXMLSDK.Engine.Packaging.ImagePartType.Jpeg
+                            ImagePartType = ImagePartType.Jpeg
                         }
                         }
                     }
@@ -678,7 +678,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                                         MaxHeight = 100,
                                         MaxWidth = 100,
                                         Path = @"Resources\Desert.jpg",
-                                        ImagePartType = OpenXMLSDK.Engine.Packaging.ImagePartType.Jpeg
+                                        ImagePartType = ImagePartType.Jpeg
                                     },
                                     new Label() { Text = "Custom header" },
                                     new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "Cell 1 - an other paragraph" } } }
@@ -695,7 +695,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                                         MaxHeight = 100,
                                         MaxWidth = 100,
                                         Path = @"Resources\Desert.jpg",
-                                        ImagePartType = OpenXMLSDK.Engine.Packaging.ImagePartType.Jpeg
+                                        ImagePartType = ImagePartType.Jpeg
                                     },
                                     new Label() { Text = "Cell 2 - an other other label" }
                                 },
@@ -762,15 +762,15 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             var pr = new Paragraph()
             {
                 ChildElements = new List<BaseElement>() {
-                    new OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts.BarModel()
+                    new CUsing.BarModel()
                     {
                         Title = "Graph test",
                         ShowTitle = true,
                         FontSize = "23",
                         ShowBarBorder = true,
-                        BarChartType = BarChartType.BarChart,
-                        BarDirectionValues = BarDirectionValues.Column,
-                        BarGroupingValues = BarGroupingValues.PercentStacked,
+                        BarChartType = CUsing.BarChartType.BarChart,
+                        BarDirectionValues = CUsing.BarDirectionValues.Column,
+                        BarGroupingValues = CUsing.BarGroupingValues.PercentStacked,
                         DataSourceKey = "#GrahSampleData#",
                         ShowMajorGridlines = true
                     }
@@ -849,7 +849,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                     MaxHeight = 100,
                     MaxWidth = 100,
                     Path = @"Resources\Desert.jpg",
-                    ImagePartType = OpenXMLSDK.Engine.Packaging.ImagePartType.Jpeg
+                    ImagePartType = ImagePartType.Jpeg
                 });
             header.ChildElements.Add(ph);
             doc.Headers.Add(header);

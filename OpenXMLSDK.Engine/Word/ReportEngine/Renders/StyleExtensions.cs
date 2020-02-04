@@ -1,8 +1,8 @@
-﻿using DocumentFormat.OpenXml.Packaging;
+﻿using DOP = DocumentFormat.OpenXml.Packaging;
+using DOW = DocumentFormat.OpenXml.Wordprocessing;
 using OpenXMLSDK.Engine.Platform.Word.Extensions;
-using OpenXMLSDK.Engine.ReportEngine.DataContext;
-using OpenXMLSDK.Engine.Word.ReportEngine.Models;
-
+using ReportEngine.Core.DataContext;
+using ReportEngine.Core.Template.Styles;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 {
@@ -17,35 +17,36 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// <param name="style"></param>
         /// <param name="spart"></param>
         /// <param name="context"></param>
-        public static void Render(this Style style, StyleDefinitionsPart spart, ContextModel context)
+        public static void Render(this Style style, DOP.StyleDefinitionsPart spart, ContextModel context)
         {
-            var oxstyle = new DocumentFormat.OpenXml.Wordprocessing.Style()
+            var oxstyle = new DOW.Style()
             {
                 Type = style.Type.ToOOxml(),
                 CustomStyle = style.CustomStyle,
                 StyleId = style.StyleId,
-                StyleName = new DocumentFormat.OpenXml.Wordprocessing.StyleName() { Val = style.StyleId },
-                PrimaryStyle = new DocumentFormat.OpenXml.Wordprocessing.PrimaryStyle()
+                StyleName = new DOW.StyleName() { Val = style.StyleId },
+                PrimaryStyle = new DOW.PrimaryStyle()
                 {
-                    Val = style.PrimaryStyle ? DocumentFormat.OpenXml.Wordprocessing.OnOffOnlyValues.On : DocumentFormat.OpenXml.Wordprocessing.OnOffOnlyValues.Off
+                    Val = style.PrimaryStyle ? DOW.OnOffOnlyValues.On : DOW.OnOffOnlyValues.Off
                 }
             };
-            DocumentFormat.OpenXml.Wordprocessing.StyleRunProperties srp = new DocumentFormat.OpenXml.Wordprocessing.StyleRunProperties();
+
+            var srp = new DOW.StyleRunProperties();
             if (style.Bold.HasValue && style.Bold.Value)
-                srp.Append(new DocumentFormat.OpenXml.Wordprocessing.Bold());
+                srp.Append(new DOW.Bold());
             if (style.Italic.HasValue && style.Italic.Value)
-                srp.Append(new DocumentFormat.OpenXml.Wordprocessing.Italic());
+                srp.Append(new DOW.Italic());
             if (!string.IsNullOrWhiteSpace(style.FontName))
-                srp.Append(new DocumentFormat.OpenXml.Wordprocessing.RunFonts() { Ascii = style.FontName, HighAnsi = style.FontName, EastAsia = style.FontName, ComplexScript = style.FontName });
+                srp.Append(new DOW.RunFonts() { Ascii = style.FontName, HighAnsi = style.FontName, EastAsia = style.FontName, ComplexScript = style.FontName });
             if (!string.IsNullOrWhiteSpace(style.FontSize))
-                srp.Append(new DocumentFormat.OpenXml.Wordprocessing.FontSize() { Val = style.FontSize });
+                srp.Append(new DOW.FontSize() { Val = style.FontSize });
             if (!string.IsNullOrWhiteSpace(style.FontColor))
-                srp.Append(new DocumentFormat.OpenXml.Wordprocessing.Color() { Val = style.FontColor });
+                srp.Append(new DOW.Color() { Val = style.FontColor });
             if (!string.IsNullOrWhiteSpace(style.Shading))
-                srp.Append(new DocumentFormat.OpenXml.Wordprocessing.Shading() { Fill = style.Shading });
+                srp.Append(new DOW.Shading() { Fill = style.Shading });
 
             if (!string.IsNullOrWhiteSpace(style.StyleBasedOn))
-                oxstyle.Append(new DocumentFormat.OpenXml.Wordprocessing.BasedOn() { Val = style.StyleBasedOn });
+                oxstyle.Append(new DOW.BasedOn() { Val = style.StyleBasedOn });
 
             oxstyle.Append(srp);
 

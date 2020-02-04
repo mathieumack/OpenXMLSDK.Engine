@@ -1,10 +1,14 @@
-﻿using DocumentFormat.OpenXml;
-using DocumentFormat.OpenXml.Packaging;
+﻿using DO = DocumentFormat.OpenXml;
+using DOP = DocumentFormat.OpenXml.Packaging;
 using Newtonsoft.Json;
-using OpenXMLSDK.Engine.Word.ReportEngine.Models;
-using OpenXMLSDK.Engine.ReportEngine.DataContext;
-using OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts;
 using System;
+using ReportEngine.Core.DataContext;
+using ReportEngine.Core.Template;
+using ReportEngine.Core.Template.Extensions;
+using ReportEngine.Core.Template.Tables;
+using ReportEngine.Core.Template.Images;
+using ReportEngine.Core.Template.Charts;
+using ReportEngine.Core.Template.Text;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 {
@@ -15,11 +19,11 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             return JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(element), new JsonSerializerSettings() { Converters = { new JsonContextConverter() } });
         }
 
-        internal static OpenXmlElement Render(this BaseElement element, Document document, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart, IFormatProvider formatProvider)
+        internal static DO.OpenXmlElement Render(this BaseElement element, Document document, DO.OpenXmlElement parent, ContextModel context, DOP.OpenXmlPart documentPart, IFormatProvider formatProvider)
         {
             context.ReplaceItem(element, formatProvider);
 
-            OpenXmlElement createdElement = null;
+            DO.OpenXmlElement createdElement = null;
 
             if (element.Show)
             {
@@ -28,9 +32,9 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             return createdElement;
         }
 
-        private static OpenXmlElement RenderItem(this BaseElement element, Document document, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart, IFormatProvider formatProvider)
+        private static DO.OpenXmlElement RenderItem(this BaseElement element, Document document, DO.OpenXmlElement parent, ContextModel context, DOP.OpenXmlPart documentPart, IFormatProvider formatProvider)
         {
-            OpenXmlElement createdElement = null;
+            DO.OpenXmlElement createdElement = null;
 
             // Keep this statement order, because of the UniformGrid inherits from Table
             if (element is ForEach)

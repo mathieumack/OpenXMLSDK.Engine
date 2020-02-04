@@ -1,6 +1,6 @@
-﻿using DocumentFormat.OpenXml.Packaging;
-using OpenXMLSDK.Engine.ReportEngine.DataContext;
-using OpenXMLSDK.Engine.Word.ReportEngine.Models;
+﻿using DOP = DocumentFormat.OpenXml.Packaging;
+using ReportEngine.Core.DataContext;
+using ReportEngine.Core.Template;
 using System;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
@@ -14,10 +14,10 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// <param name="wdDoc"></param>
         /// <param name="context"></param>
         /// <param name="formatProvider"></param>
-        public static void Render(this Document document, WordprocessingDocument wdDoc, ContextModel context, IFormatProvider formatProvider)
+        public static void Render(this Document document, DOP.WordprocessingDocument wdDoc, ContextModel context, IFormatProvider formatProvider)
         {
             // add styles in document
-            var spart = wdDoc.MainDocumentPart.AddNewPart<StyleDefinitionsPart>();
+            var spart = wdDoc.MainDocumentPart.AddNewPart<DOP.StyleDefinitionsPart>();
             spart.Styles = new DocumentFormat.OpenXml.Wordprocessing.Styles();
             foreach (var style in document.Styles)
             {
@@ -79,7 +79,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// <param name="wdDoc"></param>
         /// <param name="context"></param>
         /// <param name="formatProvider"></param>
-        public static void Render(this Document document, WordprocessingDocument wdDoc, ContextModel context, bool addPageBreak, IFormatProvider formatProvider)
+        public static void Render(this Document document, DOP.WordprocessingDocument wdDoc, ContextModel context, bool addPageBreak, IFormatProvider formatProvider)
         {
             foreach (var pageItem in document.Pages)
             {

@@ -1,4 +1,4 @@
-﻿using OpenXMLSDK.Engine.Word;
+﻿using ReportEngine.Core.Template;
 
 namespace OpenXMLSDK.Engine.Platform.Word.Extensions
 {

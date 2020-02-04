@@ -5,9 +5,9 @@ using System.Text;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
-using OpenXMLSDK.Engine.interfaces.Word.ReportEngine.Models;
-using OpenXMLSDK.Engine.ReportEngine.DataContext;
-using OpenXMLSDK.Engine.Word.ReportEngine.Models;
+using ReportEngine.Core.DataContext;
+using ReportEngine.Core.Template.Extensions;
+using ReportEngine.Core.Template.Text;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 {

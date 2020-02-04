@@ -1,12 +1,16 @@
 ﻿using System.Linq;
-using DocumentFormat.OpenXml;
-using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml.Wordprocessing;
-using OpenXMLSDK.Engine.ReportEngine.DataContext;
-using OpenXMLSDK.Engine.Word.ReportEngine.Models;
+using ReportEngine.Core.Template;
 using System.Globalization;
 using OpenXMLSDK.Engine.Platform.Word.Extensions;
 using System;
+using ReportEngine.Core.DataContext;
+using ReportEngine.Core.Template.Extensions;
+using ReportEngine.Core.Template.Text;
+using M = ReportEngine.Core.Template;
+using ReportEngine.Core.Template.Tables;
+using DO = DocumentFormat.OpenXml;
+using WP = DocumentFormat.OpenXml.Wordprocessing;
+using DOP = DocumentFormat.OpenXml.Packaging;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 {
@@ -26,19 +30,19 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// <param name="isInAlternateRow"></param>
         /// <param name="formatProvider"></param>
         /// <returns></returns>
-        public static TableCell Render(this Cell cell,
-                                        Models.Document document,
-                                        OpenXmlElement parent,
-                                        ContextModel context,
-                                        OpenXmlPart documentPart,
-                                        bool isInAlternateRow,
-                                        IFormatProvider formatProvider)
+        public static WP.TableCell Render(this Cell cell,
+                                            Document document,
+                                            DO.OpenXmlElement parent,
+                                            ContextModel context,
+                                            DOP.OpenXmlPart documentPart,
+                                            bool isInAlternateRow,
+                                            IFormatProvider formatProvider)
         {
             context.ReplaceItem(cell, formatProvider);
 
-            TableCell wordCell = new TableCell();
+            var wordCell = new WP.TableCell();
 
-            TableCellProperties cellProp = new TableCellProperties();
+            var cellProp = new WP.TableCellProperties();
             wordCell.AppendChild(cellProp);
 
             if (isInAlternateRow)
@@ -50,29 +54,29 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             cellProp.AddJustifications(cell);
 
             if (cell.CellWidth != null)
-                cellProp.AppendChild(new TableCellWidth() { Width = cell.CellWidth.Width, Type = cell.CellWidth.Type.ToOOxml() });
+                cellProp.AppendChild(new WP.TableCellWidth() { Width = cell.CellWidth.Width, Type = cell.CellWidth.Type.ToOOxml() });
 
             // manage cell column and row span
             if (cell.ColSpan > 1)
             {
-                cellProp.AppendChild(new GridSpan() { Val = cell.ColSpan });
+                cellProp.AppendChild(new WP.GridSpan() { Val = cell.ColSpan });
             }
             if (cell.Fusion)
             {
                 if (cell.FusionChild)
                 {
-                    cellProp.AppendChild(new VerticalMerge() { Val = MergedCellValues.Continue });
+                    cellProp.AppendChild(new WP.VerticalMerge() { Val = WP.MergedCellValues.Continue });
                 }
                 else
                 {
-                    cellProp.AppendChild(new VerticalMerge() { Val = MergedCellValues.Restart });
+                    cellProp.AppendChild(new WP.VerticalMerge() { Val = WP.MergedCellValues.Restart });
                 }
             }
 
             if (!cell.Show)
                 return wordCell;
 
-            if (cell.ChildElements.Any(x => x is Models.TemplateModel))
+            if (cell.ChildElements.Any(x => x is TemplateModel))
             {
                 // Need to replace elements :
                 for (int i = 0; i < cell.ChildElements.Count; i++)
@@ -90,12 +94,12 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 }
             }
 
-            if (cell.ChildElements.Any(x => x is Models.Paragraph) || cell.ChildElements.Any(x => x is ForEach))
+            if (cell.ChildElements.Any(x => x is Paragraph) || cell.ChildElements.Any(x => x is ForEach))
             {
                 foreach (var element in cell.ChildElements)
                 {
                     element.InheritFromParent(cell);
-                    if (element is Models.Paragraph
+                    if (element is Paragraph
                         || element is ForEach)
                     {
                         element.Render(document, wordCell, context, documentPart, formatProvider);
@@ -105,12 +109,12 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                         var paragraph = new DocumentFormat.OpenXml.Wordprocessing.Paragraph();
                         if (cell.Justification.HasValue)
                         {
-                            var ppr = new ParagraphProperties();
-                            ppr.AppendChild(new Justification() { Val = cell.Justification.Value.ToOOxml() });
+                            var ppr = new WP.ParagraphProperties();
+                            ppr.AppendChild(new WP.Justification() { Val = cell.Justification.Value.ToOOxml() });
                             paragraph.AppendChild(ppr);
                         }
                         wordCell.AppendChild(paragraph);
-                        var r = new Run();
+                        var r = new WP.Run();
                         paragraph.AppendChild(r);
                         element.Render(document, r, context, documentPart, formatProvider);
                     }
@@ -122,12 +126,12 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 var paragraph = new DocumentFormat.OpenXml.Wordprocessing.Paragraph();
                 if (cell.Justification.HasValue)
                 {
-                    var ppr = new ParagraphProperties();
-                    ppr.AppendChild(new Justification() { Val = cell.Justification.Value.ToOOxml() });
+                    var ppr = new WP.ParagraphProperties();
+                    ppr.AppendChild(new WP.Justification() { Val = cell.Justification.Value.ToOOxml() });
                     paragraph.AppendChild(ppr);
                 }
                 wordCell.AppendChild(paragraph);
-                var r = new Run();
+                var r = new WP.Run();
                 paragraph.AppendChild(r);
                 foreach (var element in cell.ChildElements)
                 {
@@ -158,13 +162,13 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// </summary>
         /// <param name="cellProp"></param>
         /// <param name="cell"></param>
-        private static void AddJustifications(this TableCellProperties cellProp, Cell cell)
+        private static void AddJustifications(this WP.TableCellProperties cellProp, Cell cell)
         {
             if (cell.VerticalAlignment.HasValue)
-                cellProp.AppendChild(new TableCellVerticalAlignment { Val = cell.VerticalAlignment.Value.ToOOxml() });
+                cellProp.AppendChild(new WP.TableCellVerticalAlignment { Val = cell.VerticalAlignment.Value.ToOOxml() });
 
             if (cell.TextDirection.HasValue)
-                cellProp.AppendChild(new TextDirection { Val = cell.TextDirection.ToOOxml() });
+                cellProp.AppendChild(new WP.TextDirection { Val = cell.TextDirection.ToOOxml() });
         }
 
         /// <summary>
@@ -173,10 +177,10 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// <param name="cellProp"></param>
         /// <param name="cell"></param>
         /// <param name="isInAlternateRow"></param>
-        private static void AddShading(this TableCellProperties cellProp, Cell cell)
+        private static void AddShading(this WP.TableCellProperties cellProp, Cell cell)
         {
             if (!string.IsNullOrEmpty(cell.Shading))
-                cellProp.Shading = new Shading() { Fill = cell.Shading };
+                cellProp.Shading = new WP.Shading() { Fill = cell.Shading };
         }
 
         /// <summary>
@@ -185,11 +189,11 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// <param name="cellProp"></param>
         /// <param name="cell"></param>
         /// <param name="isInAlternateRow"></param>
-        private static void AddBorders(this TableCellProperties cellProp, Cell cell)
+        private static void AddBorders(this WP.TableCellProperties cellProp, Cell cell)
         {
             if (cell.Borders != null)
             {
-                TableCellBorders borders = cell.Borders.RenderCellBorder();
+                var borders = cell.Borders.RenderCellBorder();
                 cellProp.AppendChild(borders);
             }
         }
@@ -200,16 +204,16 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// <param name="cellProp"></param>
         /// <param name="cell"></param>
         /// <param name="isInAlternateRow"></param>
-        private static void AddMargin(this TableCellProperties cellProp, Cell cell)
+        private static void AddMargin(this WP.TableCellProperties cellProp, Cell cell)
         {
             if (cell.Margin != null)
             {
-                cellProp.AppendChild(new TableCellMargin()
+                cellProp.AppendChild(new WP.TableCellMargin()
                 {
-                    LeftMargin = new LeftMargin() { Width = cell.Margin.Left.ToString(CultureInfo.InvariantCulture), Type = TableWidthUnitValues.Dxa },
-                    TopMargin = new TopMargin() { Width = cell.Margin.Top.ToString(CultureInfo.InvariantCulture), Type = TableWidthUnitValues.Dxa },
-                    RightMargin = new RightMargin() { Width = cell.Margin.Right.ToString(CultureInfo.InvariantCulture), Type = TableWidthUnitValues.Dxa },
-                    BottomMargin = new BottomMargin() { Width = cell.Margin.Bottom.ToString(CultureInfo.InvariantCulture), Type = TableWidthUnitValues.Dxa }
+                    LeftMargin = new WP.LeftMargin() { Width = cell.Margin.Left.ToString(CultureInfo.InvariantCulture), Type = WP.TableWidthUnitValues.Dxa },
+                    TopMargin = new WP.TopMargin() { Width = cell.Margin.Top.ToString(CultureInfo.InvariantCulture), Type = WP.TableWidthUnitValues.Dxa },
+                    RightMargin = new WP.RightMargin() { Width = cell.Margin.Right.ToString(CultureInfo.InvariantCulture), Type = WP.TableWidthUnitValues.Dxa },
+                    BottomMargin = new WP.BottomMargin() { Width = cell.Margin.Bottom.ToString(CultureInfo.InvariantCulture), Type = WP.TableWidthUnitValues.Dxa }
                 });
             }
         }

@@ -1,8 +1,9 @@
 ﻿using System;
-using DocumentFormat.OpenXml;
-using DocumentFormat.OpenXml.Packaging;
-using OpenXMLSDK.Engine.ReportEngine.DataContext;
-using OpenXMLSDK.Engine.Word.ReportEngine.Models;
+using DO = DocumentFormat.OpenXml;
+using DOP = DocumentFormat.OpenXml.Packaging;
+using ReportEngine.Core.DataContext;
+using ReportEngine.Core.Template.Text;
+using ReportEngine.Core.Template.Extensions;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 {
@@ -17,10 +18,10 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// <param name="documentPart"></param>
         /// <param name="formatProvider"></param>
         /// <returns></returns>
-        public static OpenXmlElement Render(this Hyperlink hyperlink,
-                                                    OpenXmlElement parent,
+        public static DO.OpenXmlElement Render(this Hyperlink hyperlink,
+                                                    DO.OpenXmlElement parent,
                                                     ContextModel context,
-                                                    OpenXmlPart documentPart,
+                                                    DOP.OpenXmlPart documentPart,
                                                     IFormatProvider formatProvider)
         {
             context.ReplaceItem(hyperlink, formatProvider);
@@ -34,7 +35,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 fieldCodeXmlelement.Anchor = hyperlink.Anchor;
             else if(!string.IsNullOrWhiteSpace(hyperlink.WebSiteUri))
             {
-                HyperlinkRelationship hyperlinkPart = documentPart.AddHyperlinkRelationship(new Uri(hyperlink.WebSiteUri), true);
+                var hyperlinkPart = documentPart.AddHyperlinkRelationship(new Uri(hyperlink.WebSiteUri), true);
                 fieldCodeXmlelement.Id = hyperlinkPart.Id;
             }
 

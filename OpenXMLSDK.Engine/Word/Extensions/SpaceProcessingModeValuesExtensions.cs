@@ -1,5 +1,5 @@
 ﻿
-using OpenXMLSDK.Engine.Word;
+using ReportEngine.Core.Template.Text;
 
 namespace OpenXMLSDK.Engine.Platform.Word.Extensions
 {

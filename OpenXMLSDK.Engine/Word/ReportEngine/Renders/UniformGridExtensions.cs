@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using DocumentFormat.OpenXml;
-using DocumentFormat.OpenXml.Packaging;
-using OpenXMLSDK.Engine.ReportEngine.DataContext;
-using OpenXMLSDK.Engine.Word.ReportEngine.Models;
+using DO = DocumentFormat.OpenXml;
+using DOW = DocumentFormat.OpenXml.Wordprocessing;
+using DOP = DocumentFormat.OpenXml.Packaging;
+using ReportEngine.Core.DataContext;
+using ReportEngine.Core.Template;
+using ReportEngine.Core.Template.Tables;
+using ReportEngine.Core.Template.Extensions;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 {
@@ -16,7 +19,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// <param name="parent"></param>
         /// <param name="context"></param>
         /// <returns></returns>
-        public static DocumentFormat.OpenXml.Wordprocessing.Table Render(this UniformGrid uniformGrid, Document document, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart, IFormatProvider formatProvider)
+        public static DOW.Table Render(this UniformGrid uniformGrid, Document document, DO.OpenXmlElement parent, ContextModel context, DOP.OpenXmlPart documentPart, IFormatProvider formatProvider)
         {
             context.ReplaceItem(uniformGrid, formatProvider);
 

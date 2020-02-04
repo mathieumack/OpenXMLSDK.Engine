@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using DocumentFormat.OpenXml;
-using OpenXMLSDK.Engine.Word.ReportEngine.Models;
-using OpenXMLSDK.Engine.Word.ReportEngine.Renders;
+using ReportEngine.Core.Template;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 {

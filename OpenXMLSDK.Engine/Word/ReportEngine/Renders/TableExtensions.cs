@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using DocumentFormat.OpenXml;
-using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml.Wordprocessing;
+using DO = DocumentFormat.OpenXml;
+using DOP = DocumentFormat.OpenXml.Packaging;
+using DOW = DocumentFormat.OpenXml.Wordprocessing;
 using OpenXMLSDK.Engine.Platform.Word.Extensions;
-using OpenXMLSDK.Engine.ReportEngine.DataContext;
+using ReportEngine.Core.Template;
+using ReportEngine.Core.Template.Extensions;
+using ReportEngine.Core.Template.Tables;
+using ReportEngine.Core.DataContext;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 {
@@ -19,7 +22,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// <param name="context"></param>
         /// <param name="formatProvider"></param>
         /// <returns></returns>
-        public static Table Render(this Models.Table table, Models.Document document, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart, IFormatProvider formatProvider)
+        public static DOW.Table Render(this Table table, Document document, DO.OpenXmlElement parent, ContextModel context, DOP.OpenXmlPart documentPart, IFormatProvider formatProvider)
         {
             context.ReplaceItem(table, formatProvider);
 
@@ -86,28 +89,28 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             return wordTable;
         }
 
-        internal static Tuple<Table, TableLook> CreateTable(Models.Document document, Models.Table table, ContextModel context, OpenXmlPart documentPart, IFormatProvider formatProvider)
+        internal static Tuple<DOW.Table, DOW.TableLook> CreateTable(Document document, Table table, ContextModel context, DOP.OpenXmlPart documentPart, IFormatProvider formatProvider)
         {
-            Table wordTable = new Table();
+            var wordTable = new DOW.Table();
 
-            TableProperties wordTableProperties = new TableProperties();
-            var tableLook = new TableLook()
+            var wordTableProperties = new DOW.TableProperties();
+            var tableLook = new DOW.TableLook()
             {
-                FirstRow = OnOffValue.FromBoolean(false),
-                LastRow = OnOffValue.FromBoolean(false),
-                FirstColumn = OnOffValue.FromBoolean(false),
-                LastColumn = OnOffValue.FromBoolean(false),
-                NoHorizontalBand = OnOffValue.FromBoolean(false),
-                NoVerticalBand = OnOffValue.FromBoolean(false)
+                FirstRow = DO.OnOffValue.FromBoolean(false),
+                LastRow = DO.OnOffValue.FromBoolean(false),
+                FirstColumn = DO.OnOffValue.FromBoolean(false),
+                LastColumn = DO.OnOffValue.FromBoolean(false),
+                NoHorizontalBand = DO.OnOffValue.FromBoolean(false),
+                NoVerticalBand = DO.OnOffValue.FromBoolean(false)
             };
             wordTableProperties.AppendChild(tableLook);
             //The type must be Dxa, if the value is set to Pct : the open xml engine will ignored it !
-            wordTableProperties.TableIndentation = new TableIndentation() { Width = table.TableIndentation.Width, Type = TableWidthUnitValues.Dxa };
+            wordTableProperties.TableIndentation = new DOW.TableIndentation() { Width = table.TableIndentation.Width, Type = DOW.TableWidthUnitValues.Dxa };
             wordTable.AppendChild(wordTableProperties);
 
             if (table.Borders != null)
             {
-                TableBorders borders = table.Borders.Render();
+                var borders = table.Borders.Render();
 
                 wordTableProperties.AppendChild(borders);
             }
@@ -115,19 +118,19 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             // add column width definitions
             if (table.ColsWidth != null)
             {
-                wordTable.AppendChild(new TableLayout() { Type = TableLayoutValues.Fixed });
+                wordTable.AppendChild(new DOW.TableLayout() { Type = DOW.TableLayoutValues.Fixed });
 
-                TableGrid tableGrid = new TableGrid();
+                var tableGrid = new DOW.TableGrid();
                 foreach (int width in table.ColsWidth)
                 {
-                    tableGrid.AppendChild(new GridColumn() { Width = width.ToString(CultureInfo.InvariantCulture) });
+                    tableGrid.AppendChild(new DOW.GridColumn() { Width = width.ToString(CultureInfo.InvariantCulture) });
                 }
                 wordTable.AppendChild(tableGrid);
             }
 
             if (table.TableWidth != null)
             {
-                wordTable.AppendChild(new TableWidth() { Width = table.TableWidth.Width, Type = table.TableWidth.Type.ToOOxml() });
+                wordTable.AppendChild(new DOW.TableWidth() { Width = table.TableWidth.Width, Type = table.TableWidth.Type.ToOOxml() });
             }
 
             // add header row
@@ -135,24 +138,24 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             {
                 wordTable.AppendChild(table.HeaderRow.Render(document, wordTable, context, documentPart, true, false, formatProvider));
 
-                tableLook.FirstRow = OnOffValue.FromBoolean(true);
+                tableLook.FirstRow = DO.OnOffValue.FromBoolean(true);
             }
 
-            return new Tuple<Table, TableLook>(wordTable, tableLook);
+            return new Tuple<DOW.Table, DOW.TableLook>(wordTable, tableLook);
         }
 
-        internal static void ManageFooterRow(Models.Document document, Models.Table table, Table wordTable, TableLook tableLook, ContextModel context, OpenXmlPart documentPart, IFormatProvider formatProvider)
+        internal static void ManageFooterRow(Document document, Table table, DOW.Table wordTable, DOW.TableLook tableLook, ContextModel context, DOP.OpenXmlPart documentPart, IFormatProvider formatProvider)
         {
             // add footer row
             if (table.FooterRow != null)
             {
                 wordTable.AppendChild(table.FooterRow.Render(document, wordTable, context, documentPart, false, false, formatProvider));
 
-                tableLook.LastRow = OnOffValue.FromBoolean(true);
+                tableLook.LastRow = DO.OnOffValue.FromBoolean(true);
             }
         }
 
-        internal static void ManageBeforeAfterRows(Models.Document document, Models.Table table, IList<Models.Row> rows, Table wordTable, ContextModel context, OpenXmlPart documentPart, IFormatProvider formatProvider)
+        internal static void ManageBeforeAfterRows(Document document, Table table, IList<Row> rows, DOW.Table wordTable, ContextModel context, DOP.OpenXmlPart documentPart, IFormatProvider formatProvider)
         {
             // After rows :
             if (rows != null && rows.Count > 0)

@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using DocumentFormat.OpenXml;
-using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml.Wordprocessing;
-using OpenXMLSDK.Engine.ReportEngine.DataContext;
-using OpenXMLSDK.Engine.Word.ReportEngine;
+using DO = DocumentFormat.OpenXml;
+using DOP = DocumentFormat.OpenXml.Packaging;
+using DOW = DocumentFormat.OpenXml.Wordprocessing;
 using OpenXMLSDK.Engine.Word.ReportEngine.Renders;
+using ReportEngine.Core.DataContext;
+using ReportEngine.Core.Template;
 
 namespace OpenXMLSDK.Engine.Word
 {
@@ -23,12 +23,12 @@ namespace OpenXMLSDK.Engine.Word
         /// <summary>
         /// Objet Word courant
         /// </summary>
-        private WordprocessingDocument wdDoc = null;
+        private DOP.WordprocessingDocument wdDoc = null;
 
         /// <summary>
         /// Page principale
         /// </summary>
-        private MainDocumentPart wdMainDocumentPart = null;
+        private DOP.MainDocumentPart wdMainDocumentPart = null;
 
         #endregion
 
@@ -81,7 +81,7 @@ namespace OpenXMLSDK.Engine.Word
         /// <param name="updateToc"></param>
         public void SetToCUpdate(bool updateToc)
         {
-            wdMainDocumentPart?.DocumentSettingsPart?.Settings?.Append(new UpdateFieldsOnOpen() { Val = new OnOffValue(updateToc) });
+            wdMainDocumentPart?.DocumentSettingsPart?.Settings?.Append(new DOW.UpdateFieldsOnOpen() { Val = new DO.OnOffValue(updateToc) });
         }
 
         #endregion
@@ -125,7 +125,7 @@ namespace OpenXMLSDK.Engine.Word
 
             try
             {
-                wdDoc = WordprocessingDocument.Open(filePath, isEditable);
+                wdDoc = DOP.WordprocessingDocument.Open(filePath, isEditable);
                 wdMainDocumentPart = wdDoc.MainDocumentPart;
 
                 return true;
@@ -149,7 +149,7 @@ namespace OpenXMLSDK.Engine.Word
 
             try
             {
-                wdDoc = WordprocessingDocument.Open(streamFile, isEditable);
+                wdDoc = DOP.WordprocessingDocument.Open(streamFile, isEditable);
                 wdMainDocumentPart = wdDoc.MainDocumentPart;
 
                 return true;
@@ -180,7 +180,7 @@ namespace OpenXMLSDK.Engine.Word
                 byte[] byteArray = File.ReadAllBytes(templateFilePath);
                 streamFile.Write(byteArray, 0, byteArray.Length);
 
-                wdDoc = WordprocessingDocument.Open(streamFile, true);
+                wdDoc = DOP.WordprocessingDocument.Open(streamFile, true);
 
                 // Change the document type to Document
                 wdDoc.ChangeDocumentType(DocumentFormat.OpenXml.WordprocessingDocumentType.Document);
@@ -213,9 +213,9 @@ namespace OpenXMLSDK.Engine.Word
             filePath = newFilePath;
             try
             {
-                System.IO.File.Copy(templateFilePath, newFilePath, true);
+                File.Copy(templateFilePath, newFilePath, true);
 
-                wdDoc = WordprocessingDocument.Open(filePath, isEditable);
+                wdDoc = DOP.WordprocessingDocument.Open(filePath, isEditable);
 
                 // Change the document type to Document
                 wdDoc.ChangeDocumentType(DocumentFormat.OpenXml.WordprocessingDocumentType.Document);
@@ -238,19 +238,19 @@ namespace OpenXMLSDK.Engine.Word
 
         #region Bookmarks
 
-        public BookmarkEnd FindBookmark(string bookmark)
+        public DOW.BookmarkEnd FindBookmark(string bookmark)
         {
-            var resultMain = wdMainDocumentPart.RootElement.Descendants<BookmarkStart>().FirstOrDefault(e => e.Name == bookmark);
-            if (resultMain != default(BookmarkStart))
-                return wdMainDocumentPart.RootElement.Descendants<BookmarkEnd>().FirstOrDefault(e => e.Id.Value == resultMain.Id);
+            var resultMain = wdMainDocumentPart.RootElement.Descendants<DOW.BookmarkStart>().FirstOrDefault(e => e.Name == bookmark);
+            if (resultMain != default(DOW.BookmarkStart))
+                return wdMainDocumentPart.RootElement.Descendants<DOW.BookmarkEnd>().FirstOrDefault(e => e.Id.Value == resultMain.Id);
 
             if (wdMainDocumentPart.HeaderParts != null)
             {
                 foreach (var header in wdMainDocumentPart.HeaderParts)
                 {
-                    var result = header.RootElement.Descendants<BookmarkStart>().FirstOrDefault(e => e.Name == bookmark);
-                    if (result != default(BookmarkStart))
-                        return header.RootElement.Descendants<BookmarkEnd>().FirstOrDefault(e => e.Id.Value == result.Id);
+                    var result = header.RootElement.Descendants<DOW.BookmarkStart>().FirstOrDefault(e => e.Name == bookmark);
+                    if (result != default(DOW.BookmarkStart))
+                        return header.RootElement.Descendants<DOW.BookmarkEnd>().FirstOrDefault(e => e.Id.Value == result.Id);
                 }
             }
 
@@ -258,9 +258,9 @@ namespace OpenXMLSDK.Engine.Word
             {
                 foreach (var footer in wdMainDocumentPart.FooterParts)
                 {
-                    var result = footer.RootElement.Descendants<BookmarkStart>().FirstOrDefault(e => e.Name == bookmark);
-                    if (result != default(BookmarkStart))
-                        return footer.RootElement.Descendants<BookmarkEnd>().FirstOrDefault(e => e.Id.Value == result.Id);
+                    var result = footer.RootElement.Descendants<DOW.BookmarkStart>().FirstOrDefault(e => e.Name == bookmark);
+                    if (result != default(DOW.BookmarkStart))
+                        return footer.RootElement.Descendants<DOW.BookmarkEnd>().FirstOrDefault(e => e.Id.Value == result.Id);
                 }
             }
 
@@ -272,22 +272,22 @@ namespace OpenXMLSDK.Engine.Word
             if (wdDoc == null)
                 throw new InvalidOperationException("Document not loaded");
 
-            var result = wdMainDocumentPart.Document.Body.Descendants<BookmarkStart>().Select(e => e.Name.Value).ToList();
+            var result = wdMainDocumentPart.Document.Body.Descendants<DOW.BookmarkStart>().Select(e => e.Name.Value).ToList();
             if (wdMainDocumentPart.HeaderParts != null)
             {
                 foreach (var header in wdMainDocumentPart.HeaderParts)
-                    result.AddRange(header.RootElement.Descendants<BookmarkStart>().Select(e => e.Name.Value).ToList());
+                    result.AddRange(header.RootElement.Descendants<DOW.BookmarkStart>().Select(e => e.Name.Value).ToList());
             }
 
             if (wdMainDocumentPart.FooterParts != null)
             {
                 foreach (var footer in wdMainDocumentPart.FooterParts)
-                    result.AddRange(footer.RootElement.Descendants<BookmarkStart>().Select(e => e.Name.Value).ToList());
+                    result.AddRange(footer.RootElement.Descendants<DOW.BookmarkStart>().Select(e => e.Name.Value).ToList());
             }
             return result;
         }
 
-        public void SetOnBookmark(string bookmark, OpenXmlElement element)
+        public void SetOnBookmark(string bookmark, DO.OpenXmlElement element)
         {
             if (string.IsNullOrWhiteSpace(bookmark))
                 throw new ArgumentNullException(nameof(bookmark), "bookmark must be not null or white spaces");
@@ -299,7 +299,7 @@ namespace OpenXMLSDK.Engine.Word
                 bookmarkElement.InsertAfterSelf(element);
         }
 
-        public void SetParagraphsOnBookmark(string bookmark, IList<Paragraph> paragraphs)
+        public void SetParagraphsOnBookmark(string bookmark, IList<DOW.Paragraph> paragraphs)
         {
             if (string.IsNullOrWhiteSpace(bookmark))
                 throw new ArgumentNullException(nameof(bookmark), "bookmark must be not null or white spaces");
@@ -309,8 +309,8 @@ namespace OpenXMLSDK.Engine.Word
             var bookmarkElement = FindBookmark(bookmark);
             if (bookmarkElement != null)
             {
-                var paragraph = bookmarkElement.Ancestors<Paragraph>().LastOrDefault();
-                var firstParagraph = bookmarkElement.Ancestors<Paragraph>().LastOrDefault();
+                var paragraph = bookmarkElement.Ancestors<DOW.Paragraph>().LastOrDefault();
+                var firstParagraph = bookmarkElement.Ancestors<DOW.Paragraph>().LastOrDefault();
                 if (paragraph != null)
                 {
                     foreach (var item in paragraphs)
@@ -329,7 +329,7 @@ namespace OpenXMLSDK.Engine.Word
             if (wdDoc == null)
                 throw new InvalidOperationException("Document not loaded");
 
-            var run = new Run(new Text(text));
+            var run = new DOW.Run(new DOW.Text(text));
             SetOnBookmark(bookmark, run);
         }
 
@@ -340,16 +340,16 @@ namespace OpenXMLSDK.Engine.Word
             if (wdDoc == null)
                 throw new InvalidOperationException("Document not loaded");
 
-            var run = new Run();
+            var run = new DOW.Run();
 
             for (int i = 0; i < texts.Count; i++)
             {
-                run.Append(new Text() { Text = texts[i] });
+                run.Append(new DOW.Text() { Text = texts[i] });
 
                 if (i < texts.Count - 1 && formated)
-                    run.Append(new Break());
+                    run.Append(new DOW.Break());
                 else if (!formated)
-                    run.Append(new Text() { Text = " ", Space = DocumentFormat.OpenXml.SpaceProcessingModeValues.Preserve });
+                    run.Append(new DOW.Text() { Text = " ", Space = DO.SpaceProcessingModeValues.Preserve });
             }
 
             SetOnBookmark(bookmark, run);
@@ -369,7 +369,7 @@ namespace OpenXMLSDK.Engine.Word
 
             using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(html)))
             {
-                AddAltChunkOnBookmark(bookmark, ms, AlternativeFormatImportPartType.Xhtml);
+                AddAltChunkOnBookmark(bookmark, ms, DOP.AlternativeFormatImportPartType.Xhtml);
             }
         }
 
@@ -385,7 +385,7 @@ namespace OpenXMLSDK.Engine.Word
             if (wdDoc == null)
                 throw new InvalidOperationException("Document not loaded");
 
-            AddAltChunkOnBookmark(bookmark, content, AlternativeFormatImportPartType.WordprocessingML);
+            AddAltChunkOnBookmark(bookmark, content, DOP.AlternativeFormatImportPartType.WordprocessingML);
         }
 
         /// <summary>
@@ -398,22 +398,22 @@ namespace OpenXMLSDK.Engine.Word
             if (wdDoc == null)
                 throw new InvalidOperationException("Document not loaded");
 
-            AlternativeFormatImportPart formatImportPart = wdMainDocumentPart.AddAlternativeFormatImportPart(AlternativeFormatImportPartType.WordprocessingML);
+            var formatImportPart = wdMainDocumentPart.AddAlternativeFormatImportPart(DOP.AlternativeFormatImportPartType.WordprocessingML);
             formatImportPart.FeedData(content);
 
-            AltChunk altChunk = new AltChunk();
+            var altChunk = new DOW.AltChunk();
             altChunk.Id = wdMainDocumentPart.GetIdOfPart(formatImportPart);
 
-            OpenXmlElement lastElement = wdMainDocumentPart.Document.Body.LastChild;
+            var lastElement = wdMainDocumentPart.Document.Body.LastChild;
 
-            if(lastElement is SectionProperties)
+            if(lastElement is DOW.SectionProperties)
             {
                 lastElement.InsertBeforeSelf(altChunk);
                 if (withPageBreak)
                 {
-                    SectionProperties sectionProps = (SectionProperties)lastElement.Clone();
-                    var p = new DocumentFormat.OpenXml.Wordprocessing.Paragraph();
-                    var ppr = new DocumentFormat.OpenXml.Wordprocessing.ParagraphProperties();
+                    var sectionProps = (DOW.SectionProperties)lastElement.Clone();
+                    var p = new DOW.Paragraph();
+                    var ppr = new DOW.ParagraphProperties();
                     p.AppendChild(ppr);
                     ppr.AppendChild(sectionProps);
                     altChunk.InsertBeforeSelf(p);
@@ -424,9 +424,9 @@ namespace OpenXMLSDK.Engine.Word
                 lastElement.InsertAfterSelf(altChunk);
                 if (withPageBreak)
                 {
-                    Paragraph p = new Paragraph(
-                        new Run(
-                            new Break() { Type = BreakValues.Page }));
+                    var p = new DOW.Paragraph(
+                        new DOW.Run(
+                            new DOW.Break() { Type = DOW.BreakValues.Page }));
                     altChunk.InsertBeforeSelf(p);
                 }
             }
@@ -440,7 +440,7 @@ namespace OpenXMLSDK.Engine.Word
         /// <param name="insertPageBreaks">Indicate if a page break must be added before each document</param>
         public void AppendSubDocumentsList(string filePath, IList<MemoryStream> filesToInsert, bool withPageBreak)
         {
-            wdDoc = WordprocessingDocument.Open(filePath, true);
+            wdDoc = DOP.WordprocessingDocument.Open(filePath, true);
 
             // Change the document type to Document
             wdDoc.ChangeDocumentType(DocumentFormat.OpenXml.WordprocessingDocumentType.Document);
@@ -466,17 +466,17 @@ namespace OpenXMLSDK.Engine.Word
         /// <param name="filesToInsert"></param>
         /// <param name="insertPageBreaks"></param>
         /// <param name="predecessorElement"></param>
-        private void AppendStreams(IList<MemoryStream> filesToInsert, bool insertPageBreaks, OpenXmlCompositeElement insertAfterElement)
+        private void AppendStreams(IList<MemoryStream> filesToInsert, bool insertPageBreaks, DO.OpenXmlCompositeElement insertAfterElement)
         {
-            OpenXmlCompositeElement openXmlCompositeElement = null;
+            DO.OpenXmlCompositeElement openXmlCompositeElement = null;
             foreach (var file in filesToInsert)
             {
-                using (WordprocessingDocument pkgSourceDoc = WordprocessingDocument.Open(file, true))
+                using (var pkgSourceDoc = DOP.WordprocessingDocument.Open(file, true))
                 {
-                    var headers = pkgSourceDoc.MainDocumentPart.Document.Descendants<HeaderReference>().ToList();
+                    var headers = pkgSourceDoc.MainDocumentPart.Document.Descendants<DOW.HeaderReference>().ToList();
                     foreach (var header in headers)
                         header.Remove();
-                    var footers = pkgSourceDoc.MainDocumentPart.Document.Descendants<FooterReference>().ToList();
+                    var footers = pkgSourceDoc.MainDocumentPart.Document.Descendants<DOW.FooterReference>().ToList();
                     foreach (var footer in footers)
                         footer.Remove();
                     pkgSourceDoc.MainDocumentPart.Document.Save();
@@ -484,23 +484,23 @@ namespace OpenXMLSDK.Engine.Word
 
                 string altChunkId = "AltChunkId-" + Guid.NewGuid();
 
-                AlternativeFormatImportPart chunk = wdMainDocumentPart.AddAlternativeFormatImportPart(AlternativeFormatImportPartType.WordprocessingML, altChunkId);
+                var chunk = wdMainDocumentPart.AddAlternativeFormatImportPart(DOP.AlternativeFormatImportPartType.WordprocessingML, altChunkId);
                 file.Position = 0;
                 chunk.FeedData(file);
 
-                AltChunk altChunk = new AltChunk() { Id = altChunkId };
+                var altChunk = new DOW.AltChunk() { Id = altChunkId };
 
                 if (openXmlCompositeElement == null)
                     openXmlCompositeElement = insertAfterElement;
 
                 if (insertPageBreaks)
                 {
-                    var run = new Run(new Break() { Type = BreakValues.Page });
-                    Paragraph paragraph = new Paragraph(run);
-                    openXmlCompositeElement.InsertAfterSelf<Paragraph>(paragraph);
+                    var run = new DOW.Run(new DOW.Break() { Type = DOW.BreakValues.Page });
+                    var paragraph = new DOW.Paragraph(run);
+                    openXmlCompositeElement.InsertAfterSelf<DOW.Paragraph>(paragraph);
                     openXmlCompositeElement = paragraph;
                 }
-                openXmlCompositeElement.InsertAfterSelf<AltChunk>(altChunk);
+                openXmlCompositeElement.InsertAfterSelf<DOW.AltChunk>(altChunk);
                 openXmlCompositeElement = altChunk;
 
                 if (wdDoc == null)
@@ -514,23 +514,23 @@ namespace OpenXMLSDK.Engine.Word
         /// <param name="bookmark"></param>
         /// <param name="content"></param>
         /// <param name="importType"></param>
-        private void AddAltChunkOnBookmark(string bookmark, Stream content, AlternativeFormatImportPartType importType)
+        private void AddAltChunkOnBookmark(string bookmark, Stream content, DOP.AlternativeFormatImportPartType importType)
         {
-            AlternativeFormatImportPart formatImportPart = wdMainDocumentPart.AddAlternativeFormatImportPart(importType);
+            var formatImportPart = wdMainDocumentPart.AddAlternativeFormatImportPart(importType);
 
             formatImportPart.FeedData(content);
 
-            AltChunk altChunk = new AltChunk();
+            var altChunk = new DOW.AltChunk();
             altChunk.Id = wdMainDocumentPart.GetIdOfPart(formatImportPart);
 
             var bookmarkElement = FindBookmark(bookmark);
             if (bookmarkElement != null)
             {
-                var paragraph = bookmarkElement.Ancestors<Paragraph>().LastOrDefault();
+                var paragraph = bookmarkElement.Ancestors<DOW.Paragraph>().LastOrDefault();
                 // without an empty paragraph after altchunk, the docx might be corrupted if the bookmark is inside a table and the html only contains one paragraph
-                if (paragraph.Ancestors<Table>().Any())
-                    paragraph.InsertAfterSelf(new Paragraph());
-                paragraph.InsertAfterSelf(new AltChunk(altChunk));
+                if (paragraph.Ancestors<DOW.Table>().Any())
+                    paragraph.InsertAfterSelf(new DOW.Paragraph());
+                paragraph.InsertAfterSelf(new DOW.AltChunk(altChunk));
             }
         }
 
@@ -548,10 +548,10 @@ namespace OpenXMLSDK.Engine.Word
                 throw new ArgumentNullException(nameof(filesToInsert), "FilesToInsert must not be null");
 
             var bookmarkElement = FindBookmark(bookmark);
-            if (bookmarkElement != default(BookmarkEnd))
+            if (bookmarkElement != default(DOW.BookmarkEnd))
             {
-                OpenXmlCompositeElement insertAfterElement = wdDoc.MainDocumentPart.Document.Body.Descendants<BookmarkStart>().SingleOrDefault<BookmarkStart>((BookmarkStart b) => b.Name == bookmark)
-                    .Ancestors<Paragraph>().FirstOrDefault<Paragraph>();
+                var insertAfterElement = wdDoc.MainDocumentPart.Document.Body.Descendants<DOW.BookmarkStart>().SingleOrDefault<DOW.BookmarkStart>((DOW.BookmarkStart b) => b.Name == bookmark)
+                    .Ancestors<DOW.Paragraph>().FirstOrDefault<DOW.Paragraph>();
                 AppendStreams(filesToInsert, insertPageBreaks, insertAfterElement);
             }
         }
@@ -565,7 +565,7 @@ namespace OpenXMLSDK.Engine.Word
         /// </summary>
         /// <typeparam name="T">Type of the object</typeparam>
         /// <returns>created part</returns>
-        public T AddNewPart<T>() where T : OpenXmlPart, IFixedContentTypePart
+        public T AddNewPart<T>() where T : DOP.OpenXmlPart, DOP.IFixedContentTypePart
         {
             return wdMainDocumentPart.AddNewPart<T>();
         }
@@ -576,7 +576,7 @@ namespace OpenXMLSDK.Engine.Word
         /// <typeparam name="T">Type du part</typeparam>
         /// <param name="part">Part</param>
         /// <returns>Id du part dans le document</returns>
-        public string GetIdOfPart<T>(T part) where T : OpenXmlPart
+        public string GetIdOfPart<T>(T part) where T : DOP.OpenXmlPart
         {
             return wdMainDocumentPart.GetIdOfPart(part);
         }
@@ -585,13 +585,13 @@ namespace OpenXMLSDK.Engine.Word
 
         #region Report Engine
         
-        public byte[] GenerateReport(ReportEngine.Models.Document document, ContextModel context, IFormatProvider formatProvider)
+        public byte[] GenerateReport(Document document, ContextModel context, IFormatProvider formatProvider)
         {
             using (MemoryStream stream = new MemoryStream())
             {
-                wdDoc = WordprocessingDocument.Create(stream, WordprocessingDocumentType.Document);
+                wdDoc = DOP.WordprocessingDocument.Create(stream, DO.WordprocessingDocumentType.Document);
                 wdDoc.AddMainDocumentPart();
-                wdDoc.MainDocumentPart.Document = new Document(new Body());
+                wdDoc.MainDocumentPart.Document = new DOW.Document(new DOW.Body());
 
                 document.Render(wdDoc, context, formatProvider);
 
@@ -611,12 +611,12 @@ namespace OpenXMLSDK.Engine.Word
         {
             using (MemoryStream stream = new MemoryStream())
             {
-                wdDoc = WordprocessingDocument.Create(stream, WordprocessingDocumentType.Document);
+                wdDoc = DOP.WordprocessingDocument.Create(stream, DO.WordprocessingDocumentType.Document);
                 wdDoc.AddMainDocumentPart();
-                wdDoc.MainDocumentPart.Document = new Document(new Body());
+                wdDoc.MainDocumentPart.Document = new DOW.Document(new DOW.Body());
                 // add styles in document
-                var spart = wdDoc.MainDocumentPart.AddNewPart<StyleDefinitionsPart>();
-                spart.Styles = new Styles();
+                var spart = wdDoc.MainDocumentPart.AddNewPart<DOP.StyleDefinitionsPart>();
+                spart.Styles = new DOW.Styles();
                 IList<string> stylesId = null;
                 if (mergeStyles)
                 {
@@ -660,14 +660,14 @@ namespace OpenXMLSDK.Engine.Word
 
                 //Replace Last page Break
                 if (wdDoc.MainDocumentPart.Document.Body.LastChild != null &&
-                    wdDoc.MainDocumentPart.Document.Body.LastChild is Paragraph &&
+                    wdDoc.MainDocumentPart.Document.Body.LastChild is DOW.Paragraph &&
                     wdDoc.MainDocumentPart.Document.Body.LastChild.FirstChild != null &&
-                    wdDoc.MainDocumentPart.Document.Body.LastChild.FirstChild is ParagraphProperties &&
+                    wdDoc.MainDocumentPart.Document.Body.LastChild.FirstChild is DOW.ParagraphProperties &&
                     wdDoc.MainDocumentPart.Document.Body.LastChild.FirstChild.FirstChild != null &&
-                    wdDoc.MainDocumentPart.Document.Body.LastChild.FirstChild.FirstChild is SectionProperties)
+                    wdDoc.MainDocumentPart.Document.Body.LastChild.FirstChild.FirstChild is DOW.SectionProperties)
                 {
-                    Paragraph lastChild = (Paragraph)wdDoc.MainDocumentPart.Document.Body.LastChild;
-                    SectionProperties sectionPropertie = (SectionProperties)lastChild.FirstChild.FirstChild.Clone();
+                    var lastChild = (DOW.Paragraph)wdDoc.MainDocumentPart.Document.Body.LastChild;
+                    var sectionPropertie = (DOW.SectionProperties)lastChild.FirstChild.FirstChild.Clone();
                     wdDoc.MainDocumentPart.Document.Body.ReplaceChild(sectionPropertie, wdDoc.MainDocumentPart.Document.Body.LastChild);
                 }
 

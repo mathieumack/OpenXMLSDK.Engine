@@ -2,10 +2,11 @@
 using System.IO;
 using System.Linq;
 using System.Text;
-using DocumentFormat.OpenXml;
-using DocumentFormat.OpenXml.Packaging;
-using OpenXMLSDK.Engine.ReportEngine.DataContext;
-using OpenXMLSDK.Engine.Word.ReportEngine.Models;
+using DO = DocumentFormat.OpenXml;
+using DOP = DocumentFormat.OpenXml.Packaging;
+using ReportEngine.Core.DataContext;
+using ReportEngine.Core.Template;
+using ReportEngine.Core.Template.Styles;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 {
@@ -20,10 +21,10 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// <param name="tableOfContents"></param>
         /// <param name="documentPart"></param>
         /// <param name="context"></param>
-        public static void Render(this TableOfContents tableOfContents, OpenXmlPart documentPart, ContextModel context)
+        public static void Render(this TableOfContents tableOfContents, DOP.OpenXmlPart documentPart, ContextModel context)
         {
-            AddToC(documentPart as MainDocumentPart, tableOfContents);
-            AddToCStyles(documentPart as MainDocumentPart, tableOfContents, context);
+            AddToC(documentPart as DOP.MainDocumentPart, tableOfContents);
+            AddToCStyles(documentPart as DOP.MainDocumentPart, tableOfContents, context);
         }
 
         /// <summary>
@@ -31,7 +32,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// </summary>
         /// <param name="document"></param>
         /// <param name="tableOfContents"></param>
-        public static void AddToC(MainDocumentPart documentPart, TableOfContents tableOfContents)
+        public static void AddToC(DOP.MainDocumentPart documentPart, TableOfContents tableOfContents)
         {
             StringBuilder tocParameters = new StringBuilder();
 
@@ -138,10 +139,10 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 sw.Flush();
                 sw.BaseStream.Seek(0, SeekOrigin.Begin);
 
-                OpenXmlReader re = OpenXmlReader.Create(sw.BaseStream);
+                var re = DO.OpenXmlReader.Create(sw.BaseStream);
 
                 re.Read();
-                OpenXmlElement oxe = re.LoadCurrentElement();
+                var oxe = re.LoadCurrentElement();
                 documentPart.Document.Body.AppendChild(oxe);
                 re.Close();
             }
@@ -153,14 +154,14 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// <param name="document"></param>
         /// <param name="tableOfContents"></param>
         /// <param name="context"></param>
-        private static void AddToCStyles(MainDocumentPart document, TableOfContents tableOfContents, ContextModel context)
+        private static void AddToCStyles(DOP.MainDocumentPart document, TableOfContents tableOfContents, ContextModel context)
         {
             var stylesPart = document.StyleDefinitionsPart;
             if (tableOfContents.ToCStylesId.Any())
             {
                 for (int i = 0; i < tableOfContents.ToCStylesId.Count; i++)
                 {
-                    Style style = new Style()
+                    var style = new Style()
                     {
                         StyleId = string.Concat("toc ", i + 1),
                         StyleBasedOn = tableOfContents.ToCStylesId[i],

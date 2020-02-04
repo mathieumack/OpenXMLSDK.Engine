@@ -1,6 +1,6 @@
 ﻿using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Wordprocessing;
-using OpenXMLSDK.Engine.Word.ReportEngine.Models.ExtendedModels;
+using ReportEngine.Core.Template.ExtendedModels;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 {

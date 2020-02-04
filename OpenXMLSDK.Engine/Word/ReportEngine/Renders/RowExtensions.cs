@@ -1,36 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
-using DocumentFormat.OpenXml;
-using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml.Wordprocessing;
-using OpenXMLSDK.Engine.ReportEngine.DataContext;
-using OpenXMLSDK.Engine.Word.ReportEngine.Models;
+using DO = DocumentFormat.OpenXml;
+using DOP = DocumentFormat.OpenXml.Packaging;
+using DOW = DocumentFormat.OpenXml.Wordprocessing;
+using ReportEngine.Core.DataContext;
+using ReportEngine.Core.Template.Extensions;
+using ReportEngine.Core.Template;
+using ReportEngine.Core.Template.Tables;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 {
     public static class RowExtensions
     {
-        public static TableRow Render(this Row row, Models.Document document, OpenXmlElement parent, ContextModel context, IList<ContextModel> cellsContext, Cell cellModel, OpenXmlPart documentPart, bool isHeader, bool isAlternateRow, IFormatProvider formatProvider)
+        public static DOW.TableRow Render(this Row row, Document document, DO.OpenXmlElement parent, ContextModel context, IList<ContextModel> cellsContext, Cell cellModel, DOP.OpenXmlPart documentPart, bool isHeader, bool isAlternateRow, IFormatProvider formatProvider)
         {
             context.ReplaceItem(row, formatProvider);
 
-            TableRow wordRow = new TableRow();
+            var wordRow = new DOW.TableRow();
 
-            TableRowProperties wordRowProperties = new TableRowProperties();
+            var wordRowProperties = new DOW.TableRowProperties();
             if (isHeader)
             {
-                wordRowProperties.AppendChild(new TableHeader() { Val = OnOffOnlyValues.On });
+                wordRowProperties.AppendChild(new DOW.TableHeader() { Val = DOW.OnOffOnlyValues.On });
             }
             wordRow.AppendChild(wordRowProperties);
 
             if (row.RowHeight.HasValue)
             {
-                wordRowProperties.AppendChild(new TableRowHeight() { Val = UInt32Value.FromUInt32((uint)row.RowHeight.Value) });
+                wordRowProperties.AppendChild(new DOW.TableRowHeight() { Val = DO.UInt32Value.FromUInt32((uint)row.RowHeight.Value) });
             }
 
             if (row.CantSplit)
             {
-                wordRowProperties.AppendChild(new CantSplit());
+                wordRowProperties.AppendChild(new DOW.CantSplit());
             }
 
             foreach (var cellContext in cellsContext)
@@ -55,30 +57,30 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// <param name="isAlternateRow">true for even lines</param>
         /// <param name="formatProvider"></param>
         /// <returns></returns>
-        public static TableRow Render(this Row row, Models.Document document, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart, bool isHeader, bool isAlternateRow, IFormatProvider formatProvider)
+        public static DOW.TableRow Render(this Row row, Document document, DO.OpenXmlElement parent, ContextModel context, DOP.OpenXmlPart documentPart, bool isHeader, bool isAlternateRow, IFormatProvider formatProvider)
         {
             if (!string.IsNullOrWhiteSpace(row.ShowKey) && context.ExistItem<BooleanModel>(row.ShowKey) && !context.GetItem<BooleanModel>(row.ShowKey).Value)
                 return null;
 
             context.ReplaceItem(row, formatProvider);
 
-            TableRow wordRow = new TableRow();
+            var wordRow = new DOW.TableRow();
 
-            TableRowProperties wordRowProperties = new TableRowProperties();
+            var wordRowProperties = new DOW.TableRowProperties();
             if (isHeader)
             {                
-                wordRowProperties.AppendChild(new TableHeader() { Val = OnOffOnlyValues.On });
+                wordRowProperties.AppendChild(new DOW.TableHeader() { Val = DOW.OnOffOnlyValues.On });
             }
             wordRow.AppendChild(wordRowProperties);
 
             if (row.RowHeight.HasValue)
             {
-                wordRowProperties.AppendChild(new TableRowHeight() { Val = UInt32Value.FromUInt32((uint)row.RowHeight.Value)});
+                wordRowProperties.AppendChild(new DOW.TableRowHeight() { Val = DO.UInt32Value.FromUInt32((uint)row.RowHeight.Value)});
             }
 
             if (row.CantSplit)
             {
-                wordRowProperties.AppendChild(new CantSplit());
+                wordRowProperties.AppendChild(new DOW.CantSplit());
             }
 
             foreach (var cell in row.Cells)
