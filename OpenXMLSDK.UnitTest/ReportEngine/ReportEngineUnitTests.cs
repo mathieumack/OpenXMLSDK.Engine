@@ -12,4 +12,3 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
         }
     }
 }
-

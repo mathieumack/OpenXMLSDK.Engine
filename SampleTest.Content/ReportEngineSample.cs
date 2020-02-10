@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
-using Newtonsoft.Json;
 using ReportEngine.Core.DataContext.FluentExtensions;
 using ReportEngine.Core.DataContext.Charts;
 using ReportEngine.Core.DataContext;
-using RC = ReportEngine.Core.Template;
 using CUsing = ReportEngine.Core.Template.Charts;
 using ReportEngine.Core.Template.ExtendedModels;
 using ReportEngine.Core.Template;
@@ -15,6 +12,7 @@ using ReportEngine.Core.Template.Text;
 using ReportEngine.Core.Template.Tables;
 using ReportEngine.Core.Template.Tables.Models;
 using ReportEngine.Core.Template.Styles;
+using ReportEngine.Core.Template.Charts;
 
 namespace SampleTest.Content
 {
@@ -112,7 +110,7 @@ namespace SampleTest.Content
 
             context.AddItem("#OldBarGraphSampleData#", new BarChartModel()
             {
-                BarChartContent = new BarModel()
+                BarChartContent = new ReportEngine.Core.DataContext.Charts.BarModel()
                 {
                     Categories = new List<BarCategoryModel>()
                     {
@@ -394,36 +392,33 @@ namespace SampleTest.Content
         /// <returns></returns>
         public static Document GetTemplateDocument()
         {
-            var doc = new Document();
+            var doc = new Document()
+            {
+                FontName = "Times-Roman",
+                FontEncoding = "Cp1252",
+                FontSize = 24
+            };
+
             doc.Styles.Add(new Style() { StyleId = "Red", FontColor = "FF0050", FontSize = 42 });
             doc.Styles.Add(new Style() { StyleId = "Yellow", FontColor = "FFFF00", FontSize = 40 });
 
             var page1 = new Page();
-            
-            // Configuration for PDF :
-            page1.PageSize = RC.PageSize.A4;            
-            // Configuration for OpenXML :
             page1.Margin = new SpacingModel() { Top = 845, Bottom = 1418, Left = 567, Right = 567, Header = 709, Footer = 709 };
-
             var page2 = new Page();
-            // Configuration for PDF :
-            page2.PageSize = RC.PageSize.A4;
-            // Configuration for OpenXML :
             page2.Margin = new SpacingModel() { Top = 1418, Left = 845, Header = 709, Footer = 709 };
-
             doc.Pages.Add(page1);
             doc.Pages.Add(page2);
 
             // Template 1 :
+
             var paragraph = new Paragraph();
-            paragraph.ChildElements.Add(new Label() { Text = "Label without special character (éèàù).", FontSize = 30, FontName = "Times-Roman" });
+            paragraph.ChildElements.Add(new Label() { Text = "Label without special character (éèàù).", FontSize = 30 });
             paragraph.ChildElements.Add(new Hyperlink()
             {
                 Text = new Label()
                 {
                     Text = "Go to github.",
-                    FontSize = 20,
-                    FontName = "Times-Roman"
+                    FontSize = 20
                 },
                 WebSiteUri = "https://www.github.com/"
             });
@@ -432,7 +427,7 @@ namespace SampleTest.Content
                 Left = 300,
                 Right = 6000
             };
-            paragraph.ChildElements.Add(new Label() { Text = "Ceci est un texte avec accents (éèàù)", FontSize = 30, FontName = "Times-Roman" });
+            paragraph.ChildElements.Add(new Label() { Text = "Ceci est un texte avec accents (éèàù)", FontSize = 30 });
             paragraph.ChildElements.Add(new Label()
             {
                 Text = "#KeyTest1#",
@@ -485,7 +480,7 @@ namespace SampleTest.Content
             var p2 = new Paragraph();
             p2.Shading = "#ParagraphShading#";
             p2.ChildElements.Add(new Label() { Text = "   texte paragraph2 avec espace avant", FontSize = 20, SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve });
-            p2.ChildElements.Add(new Label() { Text = "texte2 paragraph2 avec espace après   ", FontSize = 20, SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve });
+            p2.ChildElements.Add(new Label() { Text = "texte2 paragraph2 avec espace après   ", SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve });
             p2.ChildElements.Add(new Label() { Text = "   texte3 paragraph2 avec espace avant et après   ", SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve });
             page1.ChildElements.Add(p2);
 
@@ -694,7 +689,7 @@ namespace SampleTest.Content
             var p21 = new Paragraph();
             p21.Justification = JustificationValues.Center;
             p21.ParagraphStyleId = "Red";
-            p21.ChildElements.Add(new Label() { Text = "texte page2", FontName = "Times-Roman" });
+            p21.ChildElements.Add(new Label() { Text = "texte page2" });
             page2.ChildElements.Add(p21);
 
             var p22 = new Paragraph();
@@ -718,10 +713,6 @@ namespace SampleTest.Content
 
             // Adding a foreach page :
             var foreachPage = new ForEachPage();
-            
-            // Configuration for PDF :
-            foreachPage.PageSize = RC.PageSize.A4;
-
             foreachPage.DataSourceKey = "#DatasourceTableFusion#";
 
             foreachPage.Margin = new SpacingModel() { Top = 1418, Left = 845, Header = 709, Footer = 709 };
@@ -736,13 +727,10 @@ namespace SampleTest.Content
 
             // page 3
             var page3 = new Page();
-            // Configuration for PDF :
-            page3.PageSize = RC.PageSize.A4;
-
-            var p31 = new Paragraph();
-            p31.ChildElements.Add(new Label() { FontColor = "FF0000", FontSize = 26, Text = "Test the HeritFromParent" });
-            var p311 = new Paragraph() {  };
-            p311.ChildElements.Add(new Label() { FontSize = 16, Text = " Success (not the same size)" });
+            var p31 = new Paragraph() { FontColor = "FF0000", FontSize = 26 };
+            p31.ChildElements.Add(new Label() { Text = "Test the HeritFromParent" });
+            var p311 = new Paragraph() { FontSize = 16 };
+            p311.ChildElements.Add(new Label() { Text = " Success (not the same size)" });
             p31.ChildElements.Add(p311);
             page3.ChildElements.Add(p31);
 
@@ -764,7 +752,7 @@ namespace SampleTest.Content
             {
                 ParagraphStyleId = "#ParagraphStyleIdTestYellow#"
             };
-            paragraph.ChildElements.Add(new Label() { Text = "Ceci est un test de paragraph avec Style", FontSize = 30, FontName = "Times-Roman" });
+            paragraph.ChildElements.Add(new Label() { Text = "Ceci est un test de paragraph avec Style", FontSize = 30 });
             page3.ChildElements.Add(paragraph);
 
             doc.Pages.Add(page3);
@@ -941,9 +929,9 @@ namespace SampleTest.Content
                         Title = "Graph test",
                         ShowTitle = true,
                         ShowBarBorder = true,
-                        BarChartType = CUsing.BarChartType.BarChart,
-                        BarDirectionValues = CUsing.BarDirectionValues.Column,
-                        BarGroupingValues = CUsing.BarGroupingValues.PercentStacked,
+                        BarChartType = BarChartType.BarChart,
+                        BarDirectionValues = BarDirectionValues.Column,
+                        BarGroupingValues = BarGroupingValues.PercentStacked,
                         DataSourceKey = "#OldBarGraphSampleData#",
                         ShowMajorGridlines = true,
                         MaxHeight = 320
@@ -960,12 +948,13 @@ namespace SampleTest.Content
                     {
                         Title = "Graph test",
                         ShowTitle = true,
-                        ShowChartBorder = true,
-                        BarChartType = CUsing.BarChartType.BarChart,
-                        BarDirectionValues = CUsing.BarDirectionValues.Column,
-                        BarGroupingValues = CUsing.BarGroupingValues.PercentStacked,
-                        DataSourceKey = "#GrahSampleData#",
-                        ShowMajorGridlines = true
+                        FontSize = 23,
+                        BarChartType = BarChartType.BarChart,
+                        BarDirectionValues = BarDirectionValues.Column,
+                        BarGroupingValues = BarGroupingValues.PercentStacked,
+                        DataSourceKey = "#BarGraphSampleData#",
+                        ShowMajorGridlines = true,
+                        MaxHeight = 320
                     }
                 }
             };
@@ -1004,7 +993,7 @@ namespace SampleTest.Content
                         ShowLegend = false,
                         HasBorder = false,
                         DataSourceKey = "#SingleStackedBarGraphSampleData#",
-                        ValuesAxisScaling = new CUsing.BarChartScalingModel()
+                        ValuesAxisScaling = new BarChartScalingModel()
                         {
                             MinAxisValue = 0,
                             MaxAxisValue = 100
@@ -1069,8 +1058,8 @@ namespace SampleTest.Content
 
             // page 8
             var page8 = new Page();
-            var p8 = new Paragraph();
-            p8.ChildElements.Add(new Label() { FontColor = "FF0000", FontSize = 26, Text = "Label with" + Environment.NewLine + Environment.NewLine + "A new line" });
+            var p8 = new Paragraph() { FontColor = "FF0000", FontSize = 26 };
+            p8.ChildElements.Add(new Label() { Text = "Label with" + Environment.NewLine + Environment.NewLine + "A new line" });
             page8.ChildElements.Add(p8);
 
             doc.Pages.Add(page8);
@@ -1086,10 +1075,10 @@ namespace SampleTest.Content
                         Title = "Pie Chart test",
                         ShowTitle = true,
                         ShowChartBorder = true,
-                        PieChartType = CUsing.PieChartType.PieChart,
+                        PieChartType = PieChartType.PieChart,
                         DataSourceKey = "#PieGraphSampleData#",
                         ShowMajorGridlines = true,
-                        DataLabel = new CUsing.DataLabelModel()
+                        DataLabel = new DataLabelModel()
                         {
                             //ShowDataLabel = true,
                             ShowCatName = true,
@@ -1112,7 +1101,7 @@ namespace SampleTest.Content
                 Justification = JustificationValues.Center,
                 ParagraphStyleId = "Red"
             };
-            pargraphTitle.ChildElements.Add(new Label() { Text = "Substitutable string", FontName = "Times-Roman" });
+            pargraphTitle.ChildElements.Add(new Label() { Text = "Substitutable string" });
             page9.ChildElements.Add(pargraphTitle);
 
             var substitutableTableDataSource = new Table()

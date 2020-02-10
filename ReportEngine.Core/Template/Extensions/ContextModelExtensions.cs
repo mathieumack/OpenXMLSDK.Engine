@@ -195,8 +195,8 @@ namespace ReportEngine.Core.Template.Extensions
         {
             if (!string.IsNullOrEmpty(element.ParagraphStyleId))
                 element.ParagraphStyleId = context.ReplaceText(element.ParagraphStyleId, formatProvider);
-            //if (!string.IsNullOrEmpty(element.FontColor))
-            //    element.FontColor = context.ReplaceText(element.FontColor, formatProvider);
+            if (!string.IsNullOrEmpty(element.FontColor))
+                element.FontColor = context.ReplaceText(element.FontColor, formatProvider);
             if (!string.IsNullOrEmpty(element.Shading))
                 element.Shading = context.ReplaceText(element.Shading, formatProvider);
             if (element.Borders != null)

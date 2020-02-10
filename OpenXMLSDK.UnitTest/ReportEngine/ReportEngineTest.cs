@@ -15,7 +15,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
         {
             // Debut test report engine
             byte[] res = null;
-            using (var word = new WordManager())
+            var word = new WordManager();
             {
                 JsonContextConverter[] converters = { new JsonContextConverter() };
 

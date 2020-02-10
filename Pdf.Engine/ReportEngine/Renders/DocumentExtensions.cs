@@ -4,6 +4,7 @@ using ReportEngine.Core.DataContext;
 using ReportEngine.Core.Template;
 using System;
 using Pdf.Engine.ReportEngine.Helpers;
+using ReportEngine.Core.Template.Extensions;
 
 namespace Pdf.Engine.ReportEngine.Renders
 {
@@ -38,6 +39,7 @@ namespace Pdf.Engine.ReportEngine.Renders
                 else if (pageItem is Page)
                 {
                     var page = (Page)pageItem;
+                    page.InheritsFromParent(document);
 
                     pdfDocument.NewPage();
 
