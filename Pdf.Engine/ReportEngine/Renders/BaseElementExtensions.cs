@@ -70,9 +70,7 @@ namespace Pdf.Engine.ReportEngine.Renders
             //}
             if (element is Paragraph)
             {
-                var modelParagraph = (element as Paragraph);
-                ctx.UpdateInherits(modelParagraph);
-                var paragraph = modelParagraph.Render(document, writer, context, ctx, formatProvider);
+                var paragraph = (element as Paragraph).Render(document, writer, context, ctx, formatProvider);
                 element.AddToParentContainer(ctx, paragraph);
             }
             //else if (element is Image)
@@ -120,12 +118,11 @@ namespace Pdf.Engine.ReportEngine.Renders
                     //}
                     //else
                     {
+                        e.InheritsFromParent(element);
                         e.Render(document, writer, context, ctx, formatProvider);
                     }
                 }
             }
-
-            ctx.EndInherits();
 
             return null;
         }

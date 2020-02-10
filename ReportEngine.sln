@@ -15,7 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pdf.Engine", "Pdf.Engine\Pd
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReportEngine.Core", "ReportEngine.Core\ReportEngine.Core.csproj", "{5D8217A4-0B23-49B0-921C-1EACCDCD70AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pdf.UnitTest", "Pdf.UnitTest\Pdf.UnitTest.csproj", "{B3901C99-DE6F-4E9A-8F6F-8B134E2A6848}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pdf.UnitTest", "Pdf.UnitTest\Pdf.UnitTest.csproj", "{B3901C99-DE6F-4E9A-8F6F-8B134E2A6848}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleTest.Content", "SampleTest.Content\SampleTest.Content.csproj", "{C2BFD0B4-7B1F-44BF-A6E7-AE0C6D58C145}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,6 +45,10 @@ Global
 		{B3901C99-DE6F-4E9A-8F6F-8B134E2A6848}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B3901C99-DE6F-4E9A-8F6F-8B134E2A6848}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B3901C99-DE6F-4E9A-8F6F-8B134E2A6848}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2BFD0B4-7B1F-44BF-A6E7-AE0C6D58C145}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2BFD0B4-7B1F-44BF-A6E7-AE0C6D58C145}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2BFD0B4-7B1F-44BF-A6E7-AE0C6D58C145}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2BFD0B4-7B1F-44BF-A6E7-AE0C6D58C145}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -53,6 +59,7 @@ Global
 		{5D8107A4-0B23-48B0-932C-1EACCDCD70AD} = {DF3FA5BB-6544-4719-BA72-5AB3986A9C3F}
 		{5D8217A4-0B23-49B0-921C-1EACCDCD70AD} = {DF3FA5BB-6544-4719-BA72-5AB3986A9C3F}
 		{B3901C99-DE6F-4E9A-8F6F-8B134E2A6848} = {17464895-F42D-47EE-AC67-7C3947E1A69C}
+		{C2BFD0B4-7B1F-44BF-A6E7-AE0C6D58C145} = {17464895-F42D-47EE-AC67-7C3947E1A69C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F814D346-1498-4E75-9A21-1CAC84F44B13}

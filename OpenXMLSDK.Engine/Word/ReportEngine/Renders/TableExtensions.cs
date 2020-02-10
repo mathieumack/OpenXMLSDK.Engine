@@ -45,7 +45,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     foreach (var item in datasource.Items)
                     {
                         var row = table.RowModel.Clone();
-                        row.InheritFromParent(table);
+                        row.InheritsFromParent(table);
 
                         if (!string.IsNullOrWhiteSpace(table.AutoContextAddItemsPrefix))
                         {
@@ -73,7 +73,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 int i = 0;
                 foreach (var row in table.Rows)
                 {
-                    row.InheritFromParent(table);
+                    row.InheritsFromParent(table);
                     wordTable.AppendChild(row.Render(document, wordTable, context, documentPart, false, (i % 2 == 1), formatProvider));
                     i++;
                 }
@@ -162,7 +162,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             {
                 foreach (var row in rows)
                 {
-                    row.InheritFromParent(table);
+                    row.InheritsFromParent(table);
                     wordTable.AppendChild(row.Render(document, wordTable, context, documentPart, false, false, formatProvider));
                 }
             }

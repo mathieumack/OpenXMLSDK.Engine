@@ -4,6 +4,7 @@ using DOP = DocumentFormat.OpenXml.Packaging;
 using DOW = DocumentFormat.OpenXml.Wordprocessing;
 using ReportEngine.Core.DataContext;
 using ReportEngine.Core.Template;
+using ReportEngine.Core.Template.Extensions;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 {
@@ -28,7 +29,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 
             foreach (var element in footer.ChildElements)
             {
-                element.InheritFromParent(footer);
+                element.InheritsFromParent(footer);
                 element.Render(document, footerPart.Footer, context, footerPart, formatProvider);
             }
 

@@ -78,7 +78,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                         {
                             CantSplit = uniformGrid.CantSplitRows,
                         };
-                        row.InheritFromParent(uniformGrid);
+                        row.InheritsFromParent(uniformGrid);
 
                         wordTable.AppendChild(row.Render(document, wordTable, context, rowContentContext, uniformGrid.CellModel, documentPart, false, (i % 2 == 1), formatProvider));
 

@@ -38,7 +38,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             foreach (var cellContext in cellsContext)
             {
                 var cell = cellModel.Clone();
-                cell.InheritFromParent(row);
+                cell.InheritsFromParent(row);
                 wordRow.AppendChild(cell.Render(document, wordRow, cellContext, documentPart, isAlternateRow, formatProvider));
             }
 
@@ -85,7 +85,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 
             foreach (var cell in row.Cells)
             {
-                cell.InheritFromParent(row);
+                cell.InheritsFromParent(row);
                 wordRow.AppendChild(cell.Render(document, wordRow, context, documentPart, isAlternateRow, formatProvider));
             }
 

@@ -87,10 +87,12 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// <returns></returns>
         private static Run CreateBarGraph(BarModel chartModel, OpenXmlPart documentPart)
         {
+            if (chartModel == null)
+                throw new ArgumentNullException(nameof(chartModel), "categories must not be null");
             if (chartModel.Categories == null)
-                throw new ArgumentNullException("categories of chartModel must not be null");
+                throw new ArgumentNullException(nameof(chartModel), "categories of chartModel must not be null");
             if (chartModel.Series == null)
-                throw new ArgumentNullException("series of chartModel must be not null");
+                throw new ArgumentNullException(nameof(chartModel), "series of chartModel must be not null");
 
             int countCategories = chartModel.Categories.Count;
 

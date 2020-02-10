@@ -57,12 +57,7 @@ namespace ReportEngine.Core.Template.Text
         /// Change the PageBreakBefore value from a ContextModel key
         /// </summary>
         public string PageBreakBeforeKey { get; set; }
-
-        /// <summary>
-        /// Shading color in hex value (RRGGBB format)
-        /// </summary>
-        public string Shading { get; set; }
-
+        
         /// <summary>
         /// Identation properties
         /// </summary>

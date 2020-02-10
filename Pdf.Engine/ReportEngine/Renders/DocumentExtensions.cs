@@ -19,7 +19,6 @@ namespace Pdf.Engine.ReportEngine.Renders
         internal static void Render(this Document document, itp.PdfWriter pdfWriter, it.Document pdfDocument, ContextModel context, EngineContext ctx, IFormatProvider formatProvider)
         {
             ctx.Parents.Add(document);
-            ctx.InitInherits(document);
 
             var pageEvent = new PageEventHelper(document.Headers, document.Footers, ctx, context);
             pdfWriter.PageEvent = pageEvent;

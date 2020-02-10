@@ -46,15 +46,17 @@ namespace OpenXMLSDK.Engine.Word
 
         #region Dispose / fin
 
+        private bool isClosed = false;
         public void CloseDoc()
         {
             this.SaveDoc();
             wdDoc.Close();
+            isClosed = true;
         }
 
         public void Dispose()
         {
-            if (wdDoc != null)
+            if (wdDoc != null && !isClosed)
                 wdDoc.Dispose();
         }
 
@@ -584,10 +586,10 @@ namespace OpenXMLSDK.Engine.Word
         #endregion
 
         #region Report Engine
-        
+
         public byte[] GenerateReport(Document document, ContextModel context, IFormatProvider formatProvider)
         {
-            using (MemoryStream stream = new MemoryStream())
+            using (var stream = new MemoryStream())
             {
                 wdDoc = DOP.WordprocessingDocument.Create(stream, DO.WordprocessingDocumentType.Document);
                 wdDoc.AddMainDocumentPart();
@@ -609,7 +611,7 @@ namespace OpenXMLSDK.Engine.Word
         /// <returns></returns>
         public byte[] GenerateReport(IList<Report> reportList, bool mergeStyles, IFormatProvider formatProvider)
         {
-            using (MemoryStream stream = new MemoryStream())
+            using (var stream = new MemoryStream())
             {
                 wdDoc = DOP.WordprocessingDocument.Create(stream, DO.WordprocessingDocumentType.Document);
                 wdDoc.AddMainDocumentPart();
@@ -622,7 +624,7 @@ namespace OpenXMLSDK.Engine.Word
                 {
                     stylesId = reportList.Where(report => report.Document.Styles != null)
                                             .SelectMany(r => r.Document.Styles)
-                                            .Select(style => style.StyleId)?.Distinct()?.ToList();                    
+                                            .Select(style => style.StyleId)?.Distinct()?.ToList();
                 }
 
                 foreach (Report report in reportList)
@@ -631,7 +633,7 @@ namespace OpenXMLSDK.Engine.Word
                     {
                         foreach (var style in report.Document.Styles)
                         {
-                            if(!mergeStyles)
+                            if (!mergeStyles)
                             {
                                 style.Render(spart, report.ContextModel);
                             }

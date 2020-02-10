@@ -29,6 +29,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Pdf.Engine\Pdf.Engine.csproj" />
+    <ProjectReference Include="..\SampleTest.Content\SampleTest.Content.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -106,7 +106,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     }
                     else
                     {
-                        e.InheritFromParent(element);
+                        e.InheritsFromParent(element);
                         e.Render(document, createdElement ?? parent, context, documentPart, formatProvider);
                     }
                 }

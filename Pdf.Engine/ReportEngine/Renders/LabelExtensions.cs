@@ -30,21 +30,12 @@ namespace Pdf.Engine.ReportEngine.Renders
             // TODO : Manage split lines ?
             var text = label.Text;
 
-            var chunk = new it.Chunk(text, label.GetFont(document.DefaultFontSize));
+            var chunk = new it.Chunk(text, label.GetFont());
 
             //if (label.Underline != null)
             //    chunk.SetUnderline(label.FontUnderline.Thickness, label.FontUnderline.Distance);
-
-            var shading = label.Shading;
-
-            if(string.IsNullOrWhiteSpace(shading))
-            {
-                // try to check inherits :
-                var parent = ctx.Parents.LastOrDefault(e => e is Paragraph || e is Cell);
-                if(parent != null)
-            }
-
-            if (label.Shading != null)
+            
+            if (!string.IsNullOrWhiteSpace(label.Shading))
                 chunk.SetBackground(FontHelper.ConverPdfColorToColor(label.Shading));
             
             return chunk;
@@ -67,7 +58,7 @@ namespace Pdf.Engine.ReportEngine.Renders
 
         }
 
-        public static it.Font GetFont(this Label element, int defaultFontSize)
+        public static it.Font GetFont(this Label element)
         {
             itp.BaseFont bf;
             if (element.FontName == FontNames.TIMES_C_ROMAN)
@@ -89,7 +80,7 @@ namespace Pdf.Engine.ReportEngine.Renders
 
             // TODO : Add FontSize value check
             var fontStyle = GetFontStyle(element); // Normal
-            var font = new it.Font(bf, (element.FontSize.HasValue ? element.FontSize.Value : defaultFontSize) / 2, fontStyle, FontHelper.ConverPdfColorToColor(element.FontColor));
+            var font = new it.Font(bf, (element.FontSize.HasValue ? element.FontSize.Value : 24) / 2, fontStyle, FontHelper.ConverPdfColorToColor(element.FontColor));
             return font;
         }
 

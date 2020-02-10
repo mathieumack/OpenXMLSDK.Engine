@@ -31,45 +31,9 @@ namespace ReportEngine.Core.Template.Text
         public SpaceProcessingModeValues SpaceProcessingModeValue { get; set; }
 
         /// <summary>
-        /// Is text contained in current element bold
-        /// </summary>
-        public bool? Bold { get; set; }
-
-        /// <summary>
         /// Key from context used to determine element boldness
         /// </summary>
         public string BoldKey { get; set; }
-
-        /// <summary>
-        /// Is text contained in current element Italic
-        /// </summary>
-        public bool? Italic { get; set; }
-
-        /// <summary>
-        /// Font
-        /// </summary>
-        public string FontName { get; set; }
-
-        /// <summary>
-        /// Font size. The size is define in demi-point
-        /// </summary>
-        public float? FontSize { get; set; }
-
-        /// <summary>
-        /// Font color in hex value (RRGGBB format)
-        /// </summary>
-        public string FontColor { get; set; }
-
-        /// <summary>
-        /// Font encoding
-        /// <para>Used only for PDF reporting. Default value : Cp1252</para>
-        /// </summary>
-        public string FontEncoding { get; set; }
-
-        /// <summary>
-        /// Shading color in hex value (RRGGBB format)
-        /// </summary>
-        public string Shading { get; set; }
 
         /// <summary>
         /// Definition of the underline

@@ -98,7 +98,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             {
                 foreach (var element in cell.ChildElements)
                 {
-                    element.InheritFromParent(cell);
+                    element.InheritsFromParent(cell);
                     if (element is Paragraph
                         || element is ForEach)
                     {
@@ -135,7 +135,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 paragraph.AppendChild(r);
                 foreach (var element in cell.ChildElements)
                 {
-                    element.InheritFromParent(cell);
+                    element.InheritsFromParent(cell);
                     element.Render(document, r, context, documentPart, formatProvider);
                 }
             }      
