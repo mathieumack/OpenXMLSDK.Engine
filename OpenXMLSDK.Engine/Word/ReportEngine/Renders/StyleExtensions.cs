@@ -38,8 +38,8 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 srp.Append(new DOW.Italic());
             if (!string.IsNullOrWhiteSpace(style.FontName))
                 srp.Append(new DOW.RunFonts() { Ascii = style.FontName, HighAnsi = style.FontName, EastAsia = style.FontName, ComplexScript = style.FontName });
-            if (!string.IsNullOrWhiteSpace(style.FontSize))
-                srp.Append(new DOW.FontSize() { Val = style.FontSize });
+            if (style.FontSize.HasValue)
+                srp.Append(new DOW.FontSize() { Val = style.FontSize.Value.ToString() });
             if (!string.IsNullOrWhiteSpace(style.FontColor))
                 srp.Append(new DOW.Color() { Val = style.FontColor });
             if (!string.IsNullOrWhiteSpace(style.Shading))

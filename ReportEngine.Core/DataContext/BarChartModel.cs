@@ -1,4 +1,5 @@
-﻿using ReportEngine.Core.DataContext.Charts;
+﻿using System;
+using ReportEngine.Core.DataContext.Charts;
 
 namespace ReportEngine.Core.DataContext
 {

@@ -1,4 +1,4 @@
-﻿namespace OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts
+﻿namespace ReportEngine.Core.Template.Charts
 {
     public class PieSerie : ChartSerie
     {

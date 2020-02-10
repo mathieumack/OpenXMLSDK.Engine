@@ -5,7 +5,7 @@
         /// <summary>
         /// Left Indentation.
         /// </summary>
-        public string Left { get; set; }
+        public float? Left { get; set; }
 
         /// <summary>
         /// Left Indentation in Character Units.
@@ -15,7 +15,7 @@
         /// <summary>
         /// Right Indentation.
         /// </summary>
-        public string Right { get; set; }
+        public float? Right { get; set; }
 
         /// <summary>
         /// Right Indentation in Character Units.

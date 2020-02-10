@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Linq;
 using System.Text.RegularExpressions;
-using DocumentFormat.OpenXml;
-using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml.Wordprocessing;
-using OpenXMLSDK.Engine.ReportEngine.DataContext;
+using DO = DocumentFormat.OpenXml;
+using DOP = DocumentFormat.OpenXml.Packaging;
+using DOW = DocumentFormat.OpenXml.Wordprocessing;
 using OpenXMLSDK.Engine.Word.Charts;
-using OpenXMLSDK.Engine.Word.ReportEngine.BatchModels;
-using OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts;
 using A = DocumentFormat.OpenXml.Drawing;
 using dc = DocumentFormat.OpenXml.Drawing.Charts;
 using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
+using ReportEngine.Core.Template.Charts;
+using ReportEngine.Core.DataContext;
+using ReportEngine.Core.Template.Extensions;
+using ReportEngine.Core.DataContext.Charts;
+using OpenXMLSDK.Engine.Word.Extensions;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 {
@@ -25,11 +27,11 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// <param name="documentPart"></param>
         /// <param name="formatProvider"></param>
         /// <returns></returns>
-        public static Run Render(this PieModel pieChart, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart, IFormatProvider formatProvider)
+        public static DOW.Run Render(this PieModel pieChart, DO.OpenXmlElement parent, ContextModel context, DOP.OpenXmlPart documentPart, IFormatProvider formatProvider)
         {
             context.ReplaceItem(pieChart, formatProvider);
 
-            Run runItem = null;
+            DOW.Run runItem = null;
 
             if (!string.IsNullOrWhiteSpace(pieChart.DataSourceKey) && context.ExistItem<SingleSerieChartModel>(pieChart.DataSourceKey))
             {
@@ -84,7 +86,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// <param name="chartModel">Graph model</param>
         /// <param name="documentPart"></param>
         /// <returns></returns>
-        private static Run CreatePieGraph(PieModel chartModel, OpenXmlPart documentPart)
+        private static DOW.Run CreatePieGraph(PieModel chartModel, DOP.OpenXmlPart documentPart)
         {
             if (chartModel.Categories == null)
                 throw new ArgumentNullException("categories of chartModel must not be null");
@@ -100,10 +102,10 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 throw new ChartModelException("Error in series. Serie values must have same count as categories.", "004-001");
 
             // Add a new chart and set the chart language to English-US.
-            ChartPart chartPart = documentPart.AddNewPart<ChartPart>();
+            var chartPart = documentPart.AddNewPart<DOP.ChartPart>();
             chartPart.ChartSpace = new dc.ChartSpace();
-            chartPart.ChartSpace.Append(new dc.EditingLanguage() { Val = new StringValue("en-US") });
-            chartPart.ChartSpace.Append(new dc.RoundedCorners { Val = new BooleanValue(chartModel.RoundedCorner) });
+            chartPart.ChartSpace.Append(new dc.EditingLanguage() { Val = new DO.StringValue("en-US") });
+            chartPart.ChartSpace.Append(new dc.RoundedCorners { Val = new DO.BooleanValue(chartModel.RoundedCorner) });
             dc.Chart chart = chartPart.ChartSpace.AppendChild
                 <DocumentFormat.OpenXml.Drawing.Charts.Chart>
                 (new dc.Chart());
@@ -137,7 +139,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             dc.PieChartSeries pieChartSeries = pieChart.AppendChild<dc.PieChartSeries>
                 (new dc.PieChartSeries(new dc.Index() { Val = i },
                 new dc.Order() { Val = i }, new dc.SeriesText(new dc.StringReference(new dc.StringCache(
-                new dc.PointCount() { Val = new UInt32Value(1U) },
+                new dc.PointCount() { Val = new DO.UInt32Value(1U) },
                 new dc.StringPoint() { Index = (uint)0, NumericValue = new dc.NumericValue() { Text = serie.Name } })))));
 
             // Gestion de la couleur de la série
@@ -226,7 +228,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 new dc.ShowSeriesName() { Val = false },
                 new dc.ShowPercent() { Val = chartModel.DataLabel?.ShowPercent },
                 new dc.ShowBubbleSize() { Val = false },
-                new dc.DataLabelPosition() { Val = chartModel.DataLabel?.LabelPosition },
+                new dc.DataLabelPosition() { Val = chartModel.DataLabel?.LabelPosition.ToOOxml() },
                 new dc.Separator() { Text = chartModel.DataLabel?.Separator }
                 );
 
@@ -265,8 +267,8 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 
             pieChart.Append(new dc.Overlap() { Val = 100 });
 
-            pieChart.Append(new dc.AxisId() { Val = new UInt32Value(48650112u) });
-            pieChart.Append(new dc.AxisId() { Val = new UInt32Value(48672768u) });
+            pieChart.Append(new dc.AxisId() { Val = new DO.UInt32Value(48650112u) });
+            pieChart.Append(new dc.AxisId() { Val = new DO.UInt32Value(48672768u) });
 
             // Set ShapeProperties
             dc.ShapeProperties dcSP = null;
@@ -307,7 +309,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 textProperty));
             }
 
-            chart.Append(new dc.PlotVisibleOnly() { Val = new BooleanValue(true) },
+            chart.Append(new dc.PlotVisibleOnly() { Val = new DO.BooleanValue(true) },
                 new dc.DisplayBlanksAs() { Val = new DocumentFormat.OpenXml.EnumValue<dc.DisplayBlanksAsValues>(dc.DisplayBlanksAsValues.Gap) },
                 new dc.ShowDataLabelsOverMaximum() { Val = false });
 
@@ -347,7 +349,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 imageHeight = (long)chartModel.MaxHeight * 9525;
 
             // Gestion de l'élément Drawing
-            var element = new Run(
+            var element = new DOW.Run(
                 new DocumentFormat.OpenXml.Wordprocessing.Drawing(
                     new DW.Inline(
                         new DW.Extent() { Cx = imageWidth, Cy = imageHeight },
@@ -360,7 +362,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                         },
                         new DW.DocProperties()
                         {
-                            Id = (UInt32Value)1U,
+                            Id = (DO.UInt32Value)1U,
                             Name = "Chart 1"
                         },
                         new DW.NonVisualGraphicFrameDrawingProperties(

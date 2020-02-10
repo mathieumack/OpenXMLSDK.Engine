@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace OpenXMLSDK.Engine.ReportEngine.DataContext
+namespace ReportEngine.Core.DataContext
 {
     /// <summary>
     /// Model class for a substitutable string value in context

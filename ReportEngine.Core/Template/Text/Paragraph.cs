@@ -59,6 +59,11 @@ namespace ReportEngine.Core.Template.Text
         public string PageBreakBeforeKey { get; set; }
 
         /// <summary>
+        /// Shading color in hex value (RRGGBB format)
+        /// </summary>
+        public string Shading { get; set; }
+
+        /// <summary>
         /// Identation properties
         /// </summary>
         public ParagraphIndentationModel Indentation { get; set; }

@@ -58,14 +58,14 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             var result = new DocumentFormat.OpenXml.Wordprocessing.Indentation();
 
             // Left :
-            if (!string.IsNullOrWhiteSpace(indentation.Left))
-                result.Left = indentation.Left;
+            if (indentation.Left.HasValue)
+                result.Left = indentation.Left.Value.ToString();
             if (indentation.LeftChars.HasValue)
                 result.LeftChars = indentation.LeftChars.Value;
 
             // Right :
-            if (!string.IsNullOrWhiteSpace(indentation.Right))
-                result.Right = indentation.Right;
+            if (indentation.Right.HasValue)
+                result.Right = indentation.Right.Value.ToString();
             if (indentation.RightChars.HasValue)
                 result.RightChars = indentation.RightChars.Value;
 

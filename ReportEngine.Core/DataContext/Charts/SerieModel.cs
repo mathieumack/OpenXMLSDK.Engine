@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace OpenXMLSDK.Engine.Word.ReportEngine.BatchModels.Charts
+namespace ReportEngine.Core.DataContext.Charts
 {
     public class SerieModel
     {

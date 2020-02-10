@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using OpenXMLSDK.Engine.Word.ReportEngine.BatchModels.Charts;
 
 namespace ReportEngine.Core.DataContext.Charts
 {

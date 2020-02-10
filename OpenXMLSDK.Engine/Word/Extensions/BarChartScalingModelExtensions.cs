@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Drawing.Charts;
-using OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts;
+using ReportEngine.Core.Template.Charts;
 
 namespace OpenXMLSDK.Engine.Word.Extensions
 {

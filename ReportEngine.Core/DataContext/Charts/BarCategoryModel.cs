@@ -1,4 +1,6 @@
-﻿namespace ReportEngine.Core.DataContext.Charts
+﻿using System;
+
+namespace ReportEngine.Core.DataContext.Charts
 {
     [Obsolete("Please use CategoryModel instead")]
     public class BarCategoryModel

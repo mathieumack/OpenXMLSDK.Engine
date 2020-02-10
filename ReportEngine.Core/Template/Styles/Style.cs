@@ -31,6 +31,36 @@
         public bool PrimaryStyle { get; set; }
 
         /// <summary>
+        /// Is text contained in current element bold
+        /// </summary>
+        public bool? Bold { get; set; }
+
+        /// <summary>
+        /// Is text contained in current element Italic
+        /// </summary>
+        public bool? Italic { get; set; }
+
+        /// <summary>
+        /// Font
+        /// </summary>
+        public string FontName { get; set; }
+
+        /// <summary>
+        /// Shading color in hex value (RRGGBB format)
+        /// </summary>
+        public string Shading { get; set; }
+
+        /// <summary>
+        /// Font size
+        /// </summary>
+        public float? FontSize { get; set; }
+
+        /// <summary>
+        /// Font color in hex value (RRGGBB format)
+        /// </summary>
+        public string FontColor { get; set; }
+
+        /// <summary>
         /// Constructor
         /// </summary>
         public Style()

@@ -39,6 +39,8 @@ namespace ReportEngine.Core.Template
         /// </summary>
         public SpacingModel Margin { get; set; }
 
+        public float DefaultFontSize { get; set; } = 12;
+
         /// <summary>
         /// Constructor
         /// </summary>

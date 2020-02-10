@@ -8,12 +8,19 @@ namespace ReportEngine.Core.Template
     public class Page : BaseElement
     {
         /// <summary>
+        /// Define the page size
+        /// <para>Used only for PDF yet</para>
+        /// </summary>
+        public PageSize PageSize { get; set; } = PageSize.A4;
+
+        /// <summary>
         /// Page orientation : Portrait or Landscape
         /// </summary>
         public PageOrientationValues PageOrientation { get; set; }
 
         /// <summary>
         /// Margin for page
+        /// <para>Used only for OpenXML yet</para>
         /// </summary>
         public SpacingModel Margin { get; set; }
 

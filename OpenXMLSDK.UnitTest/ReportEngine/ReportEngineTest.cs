@@ -3,17 +3,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using Newtonsoft.Json;
-using OpenXMLSDK.Engine.interfaces.Word.ReportEngine.Models;
-using OpenXMLSDK.Engine.ReportEngine.DataContext;
-using OpenXMLSDK.Engine.ReportEngine.DataContext.Charts;
-using OpenXMLSDK.Engine.ReportEngine.DataContext.FluentExtensions;
 using OpenXMLSDK.Engine.Word;
 using ReportEngine.Core.DataContext.FluentExtensions;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Globalization;
 using ReportEngine.Core.DataContext.Charts;
 using ReportEngine.Core.DataContext;
 using CUsing = ReportEngine.Core.Template.Charts;
@@ -331,7 +322,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
 
             context.AddItem("#PieGraphSampleData#", new SingleSerieChartModel()
             {
-                ChartContent = new OpenXMLSDK.Engine.Word.ReportEngine.BatchModels.Charts.SingleSeriesModel()
+                ChartContent = new SingleSeriesModel()
                 {
                     Categories = new List<CategoryModel>()
                     {
@@ -462,8 +453,8 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
         private static Document GetTemplateDocument()
         {
             var doc = new Document();
-            doc.Styles.Add(new Style() { StyleId = "Red", FontColor = "FF0050", FontSize = "42" });
-            doc.Styles.Add(new Style() { StyleId = "Yellow", FontColor = "FFFF00", FontSize = "40" });
+            doc.Styles.Add(new Style() { StyleId = "Red", FontColor = "FF0050", FontSize = 42 });
+            doc.Styles.Add(new Style() { StyleId = "Yellow", FontColor = "FFFF00", FontSize = 40 });
 
             var page1 = new Page();
             page1.Margin = new SpacingModel() { Top = 845, Bottom = 1418, Left = 567, Right = 567, Header = 709, Footer = 709 };
@@ -475,27 +466,27 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             // Template 1 :
 
             var paragraph = new Paragraph();
-            paragraph.ChildElements.Add(new Label() { Text = "Label without special character (éèàù).", FontSize = "30", FontName = "Arial" });
+            paragraph.ChildElements.Add(new Label() { Text = "Label without special character (éèàù).", FontSize = 30, FontName = "Arial" });
             paragraph.ChildElements.Add(new Hyperlink()
             {
                 Text = new Label()
                 {
                     Text = "Go to github.",
-                    FontSize = "20",
+                    FontSize = 20,
                     FontName = "Arial"
                 },
                 WebSiteUri = "https://www.github.com/"
             });
             paragraph.Indentation = new ParagraphIndentationModel()
             {
-                Left = "300",
-                Right = "6000"
+                Left = 300,
+                Right = 6000
             };
-            paragraph.ChildElements.Add(new Label() { Text = "Ceci est un texte avec accents (éèàù)", FontSize = "30", FontName = "Arial" });
+            paragraph.ChildElements.Add(new Label() { Text = "Ceci est un texte avec accents (éèàù)", FontSize = 30, FontName = "Arial" });
             paragraph.ChildElements.Add(new Label()
             {
                 Text = "#KeyTest1#",
-                FontSize = "40",
+                FontSize = 40,
                 TransformOperations = new List<LabelTransformOperation>()
                 {
                     new LabelTransformOperation()
@@ -543,7 +534,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
 
             var p2 = new Paragraph();
             p2.Shading = "#ParagraphShading#";
-            p2.ChildElements.Add(new Label() { Text = "   texte paragraph2 avec espace avant", FontSize = "20", SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve });
+            p2.ChildElements.Add(new Label() { Text = "   texte paragraph2 avec espace avant", FontSize = 20, SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve });
             p2.ChildElements.Add(new Label() { Text = "texte2 paragraph2 avec espace après   ", SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve });
             p2.ChildElements.Add(new Label() { Text = "   texte3 paragraph2 avec espace avant et après   ", SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve });
             page1.ChildElements.Add(p2);
@@ -785,16 +776,16 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             foreachPage.ChildElements.Add(paragraph21);
             var p223 = new Paragraph();
             p223.Shading = "#ParagraphShading#";
-            p223.ChildElements.Add(new Label() { Text = "Texte paragraph2 avec espace avant", FontSize = "20", SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve });
+            p223.ChildElements.Add(new Label() { Text = "Texte paragraph2 avec espace avant", FontSize = 20, SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve });
             foreachPage.ChildElements.Add(p223);
             doc.Pages.Add(foreachPage);
 
             // page 3
             var page3 = new Page();
-            var p31 = new Paragraph() { FontColor = "FF0000", FontSize = "26" };
-            p31.ChildElements.Add(new Label() { Text = "Test the HeritFromParent" });
-            var p311 = new Paragraph() { FontSize = "16" };
-            p311.ChildElements.Add(new Label() { Text = " Success (not the same size)" });
+            var p31 = new Paragraph();
+            p31.ChildElements.Add(new Label() { FontColor = "FF0000", FontSize = 26, Text = "Test the HeritFromParent" });
+            var p311 = new Paragraph();
+            p311.ChildElements.Add(new Label() { FontSize = 16, Text = " Success (not the same size)" });
             p31.ChildElements.Add(p311);
             page3.ChildElements.Add(p31);
 
@@ -816,7 +807,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             {
                 ParagraphStyleId = "#ParagraphStyleIdTestYellow#"
             };
-            paragraph.ChildElements.Add(new Label() { Text = "Ceci est un test de paragraph avec Style", FontSize = "30", FontName = "Arial" });
+            paragraph.ChildElements.Add(new Label() { Text = "Ceci est un test de paragraph avec Style", FontSize = 30, FontName = "Arial" });
             page3.ChildElements.Add(paragraph);
 
             doc.Pages.Add(page3);
@@ -988,14 +979,14 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             var oldpr = new Paragraph()
             {
                 ChildElements = new List<BaseElement>() {
-                    new OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts.BarModel()
+                    new CUsing.BarModel()
                     {
                         Title = "Graph test",
                         ShowTitle = true,
                         ShowBarBorder = true,
-                        BarChartType = BarChartType.BarChart,
-                        BarDirectionValues = BarDirectionValues.Column,
-                        BarGroupingValues = BarGroupingValues.PercentStacked,
+                        BarChartType = CUsing.BarChartType.BarChart,
+                        BarDirectionValues = CUsing.BarDirectionValues.Column,
+                        BarGroupingValues = CUsing.BarGroupingValues.PercentStacked,
                         DataSourceKey = "#OldBarGraphSampleData#",
                         ShowMajorGridlines = true,
                         MaxHeight = 320
@@ -1012,8 +1003,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                     {
                         Title = "Graph test",
                         ShowTitle = true,
-                        FontSize = "23",
-                        ShowBarBorder = true,
+                        ShowChartBorder = true,
                         BarChartType = CUsing.BarChartType.BarChart,
                         BarDirectionValues = CUsing.BarDirectionValues.Column,
                         BarGroupingValues = CUsing.BarGroupingValues.PercentStacked,
@@ -1028,7 +1018,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             var singleStackedBarGraph = new Paragraph()
             {
                 ChildElements = new List<BaseElement>() {
-                    new OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts.BarModel()
+                    new CUsing.BarModel()
                     {
                         Title = "Single stacked Graph without min-max",
                         ShowTitle = true,
@@ -1047,7 +1037,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             var singleStackedBarGraphWithMinMax = new Paragraph()
             {
                 ChildElements = new List<BaseElement>() {
-                    new OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts.BarModel()
+                    new CUsing.BarModel()
                     {
                         Title = "Single stacked Graph with min-max",
                         ShowTitle = true,
@@ -1057,7 +1047,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                         ShowLegend = false,
                         HasBorder = false,
                         DataSourceKey = "#SingleStackedBarGraphSampleData#",
-                        ValuesAxisScaling = new BarChartScalingModel()
+                        ValuesAxisScaling = new CUsing.BarChartScalingModel()
                         {
                             MinAxisValue = 0,
                             MaxAxisValue = 100
@@ -1122,8 +1112,8 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
 
             // page 8
             var page8 = new Page();
-            var p8 = new Paragraph() { FontColor = "FF0000", FontSize = "26" };
-            p8.ChildElements.Add(new Label() { Text = "Label with" + Environment.NewLine + Environment.NewLine + "A new line" });
+            var p8 = new Paragraph();
+            p8.ChildElements.Add(new Label() { FontColor = "FF0000", FontSize = 26, Text = "Label with" + Environment.NewLine + Environment.NewLine + "A new line" });
             page8.ChildElements.Add(p8);
 
             doc.Pages.Add(page8);
@@ -1134,15 +1124,15 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             var pieChartPr = new Paragraph()
             {
                 ChildElements = new List<BaseElement>() {
-                    new OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts.PieModel()
+                    new CUsing.PieModel()
                     {
                         Title = "Pie Chart test",
                         ShowTitle = true,
                         ShowChartBorder = true,
-                        PieChartType = PieChartType.PieChart,
+                        PieChartType = CUsing.PieChartType.PieChart,
                         DataSourceKey = "#PieGraphSampleData#",
                         ShowMajorGridlines = true,
-                        DataLabel = new DataLabelModel()
+                        DataLabel = new CUsing.DataLabelModel()
                         {
                             //ShowDataLabel = true,
                             ShowCatName = true,

@@ -46,10 +46,10 @@ namespace ReportEngine.Core.Template.Extensions
                 element.Title = context.ReplaceText(element.Title, formatProvider);
             if (!string.IsNullOrEmpty(element.DataLabelColor))
                 element.DataLabelColor = context.ReplaceText(element.DataLabelColor, formatProvider);
-            if (!string.IsNullOrEmpty(element.FontName))
-                element.FontName = context.ReplaceText(element.FontName, formatProvider);
-            if (!string.IsNullOrEmpty(element.FontColor))
-                element.FontColor = context.ReplaceText(element.FontColor, formatProvider);
+            //if (!string.IsNullOrEmpty(element.FontName))
+            //    element.FontName = context.ReplaceText(element.FontName, formatProvider);
+            //if (!string.IsNullOrEmpty(element.FontColor))
+            //    element.FontColor = context.ReplaceText(element.FontColor, formatProvider);
             if (!string.IsNullOrEmpty(element.MajorGridlinesColor))
                 element.MajorGridlinesColor = context.ReplaceText(element.MajorGridlinesColor, formatProvider);
         }
@@ -140,11 +140,11 @@ namespace ReportEngine.Core.Template.Extensions
                 element.Id = context.ReplaceText(element.Id, formatProvider);
             if (!string.IsNullOrEmpty(element.Name))
                 element.Name = context.ReplaceText(element.Name, formatProvider);
-            if (!string.IsNullOrEmpty(element.BoldKey) && context.ExistItem<BooleanModel>(element.BoldKey))
-            {
-                var item = context.GetItem<BooleanModel>(element.BoldKey);
-                element.Bold = item.Value;
-            }
+            //if (!string.IsNullOrEmpty(element.BoldKey) && context.ExistItem<BooleanModel>(element.BoldKey))
+            //{
+            //    var item = context.GetItem<BooleanModel>(element.BoldKey);
+            //    element.Bold = item.Value;
+            //}
             context.SetVisibilityFromContext(element);
         }
 
@@ -157,11 +157,11 @@ namespace ReportEngine.Core.Template.Extensions
         {
             if (!string.IsNullOrEmpty(element.Id))
                 element.Id = context.ReplaceText(element.Id, formatProvider);
-            if (!string.IsNullOrEmpty(element.BoldKey) && context.ExistItem<BooleanModel>(element.BoldKey))
-            {
-                var item = context.GetItem<BooleanModel>(element.BoldKey);
-                element.Bold = item.Value;
-            }
+            //if (!string.IsNullOrEmpty(element.BoldKey) && context.ExistItem<BooleanModel>(element.BoldKey))
+            //{
+            //    var item = context.GetItem<BooleanModel>(element.BoldKey);
+            //    element.Bold = item.Value;
+            //}
             context.SetVisibilityFromContext(element);
         }
 
@@ -178,11 +178,11 @@ namespace ReportEngine.Core.Template.Extensions
             if (!string.IsNullOrEmpty(element.WebSiteUri))
                 element.WebSiteUri = context.ReplaceText(element.WebSiteUri, formatProvider);
 
-            if (!string.IsNullOrEmpty(element.BoldKey) && context.ExistItem<BooleanModel>(element.BoldKey))
-            {
-                var item = context.GetItem<BooleanModel>(element.BoldKey);
-                element.Bold = item.Value;
-            }
+            //if (!string.IsNullOrEmpty(element.BoldKey) && context.ExistItem<BooleanModel>(element.BoldKey))
+            //{
+            //    var item = context.GetItem<BooleanModel>(element.BoldKey);
+            //    element.Bold = item.Value;
+            //}
             context.SetVisibilityFromContext(element);
         }
 
@@ -195,17 +195,17 @@ namespace ReportEngine.Core.Template.Extensions
         {
             if (!string.IsNullOrEmpty(element.ParagraphStyleId))
                 element.ParagraphStyleId = context.ReplaceText(element.ParagraphStyleId, formatProvider);
-            if (!string.IsNullOrEmpty(element.FontColor))
-                element.FontColor = context.ReplaceText(element.FontColor, formatProvider);
+            //if (!string.IsNullOrEmpty(element.FontColor))
+            //    element.FontColor = context.ReplaceText(element.FontColor, formatProvider);
             if (!string.IsNullOrEmpty(element.Shading))
                 element.Shading = context.ReplaceText(element.Shading, formatProvider);
             if (element.Borders != null)
                 context.ReplaceBorders(element.Borders, formatProvider);
-            if (!string.IsNullOrEmpty(element.BoldKey) && context.ExistItem<BooleanModel>(element.BoldKey))
-            {
-                var item = context.GetItem<BooleanModel>(element.BoldKey);
-                element.Bold = item.Value;
-            }
+            //if (!string.IsNullOrEmpty(element.BoldKey) && context.ExistItem<BooleanModel>(element.BoldKey))
+            //{
+            //    var item = context.GetItem<BooleanModel>(element.BoldKey);
+            //    element.Bold = item.Value;
+            //}
             if (!string.IsNullOrEmpty(element.PageBreakBeforeKey) && context.ExistItem<BooleanModel>(element.PageBreakBeforeKey))
             {
                 var item = context.GetItem<BooleanModel>(element.PageBreakBeforeKey);
@@ -221,8 +221,8 @@ namespace ReportEngine.Core.Template.Extensions
         /// <param name="formatProvider"></param>
         public static void ReplaceItem(this ContextModel context, Cell element, IFormatProvider formatProvider)
         {
-            if (!string.IsNullOrEmpty(element.FontColor))
-                element.FontColor = context.ReplaceText(element.FontColor, formatProvider);
+            //if (!string.IsNullOrEmpty(element.FontColor))
+            //    element.FontColor = context.ReplaceText(element.FontColor, formatProvider);
             if (!string.IsNullOrEmpty(element.Shading))
                 element.Shading = context.ReplaceText(element.Shading, formatProvider);
             if (element.Borders != null)
@@ -247,8 +247,8 @@ namespace ReportEngine.Core.Template.Extensions
         /// <param name="formatProvider"></param>
         public static void ReplaceItem(this ContextModel context, Table element, IFormatProvider formatProvider)
         {
-            if (!string.IsNullOrEmpty(element.FontColor))
-                element.FontColor = context.ReplaceText(element.FontColor, formatProvider);
+            //if (!string.IsNullOrEmpty(element.FontColor))
+            //    element.FontColor = context.ReplaceText(element.FontColor, formatProvider);
             if (!string.IsNullOrEmpty(element.Shading))
                 element.Shading = context.ReplaceText(element.Shading, formatProvider);
             if (element.Borders != null)

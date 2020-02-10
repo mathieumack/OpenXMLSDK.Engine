@@ -123,8 +123,8 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             var runProperty = new RunProperties();
             if (!string.IsNullOrWhiteSpace(label.FontName))
                 runProperty.RunFonts = new RunFonts() { Ascii = label.FontName, HighAnsi = label.FontName, EastAsia = label.FontName, ComplexScript = label.FontName };
-            if (!string.IsNullOrWhiteSpace(label.FontSize))
-                runProperty.FontSize = new FontSize() { Val = label.FontSize };
+            if (label.FontSize.HasValue)
+                runProperty.FontSize = new FontSize() { Val = label.FontSize.Value.ToString() };
             if (!string.IsNullOrWhiteSpace(label.FontColor))
                 runProperty.Color = new Color() { Val = label.FontColor };
             if (!string.IsNullOrWhiteSpace(label.Shading))

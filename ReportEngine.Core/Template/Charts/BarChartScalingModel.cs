@@ -1,4 +1,4 @@
-﻿namespace OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts
+﻿namespace ReportEngine.Core.Template.Charts
 {
     /// <summary>
     /// Class representating the scaling of a bar chart axis
