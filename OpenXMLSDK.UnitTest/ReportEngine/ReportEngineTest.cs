@@ -31,7 +31,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                     var context = ReportEngineSample.GetContext();
                     var contextJson = JsonConvert.SerializeObject(context);
                     var contextUnserialized = JsonConvert.DeserializeObject<ContextModel>(contextJson, new JsonSerializerSettings() { Converters = converters });
-
+                     
                     res = word.GenerateReport(templateUnserialized, contextUnserialized, new CultureInfo("en-US"));
                 }
                 else

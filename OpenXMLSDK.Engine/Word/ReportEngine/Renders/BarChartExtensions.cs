@@ -11,6 +11,7 @@ using OpenXMLSDK.Engine.Word.Charts;
 using ReportEngine.Core.DataContext;
 using ReportEngine.Core.Template.Charts;
 using ReportEngine.Core.Template.Extensions;
+using RDC = ReportEngine.Core.DataContext.Charts;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 {
@@ -31,36 +32,68 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 
             Run runItem = null;
 
-            if(!string.IsNullOrWhiteSpace(barChart.DataSourceKey) && context.ExistItem<BarChartModel>(barChart.DataSourceKey))
+            if (!string.IsNullOrWhiteSpace(barChart.DataSourceKey))
             {
                 // We construct categories and series from the context object
-                var contextModel = context.GetItem<BarChartModel>(barChart.DataSourceKey);
-
-                if (contextModel.BarChartContent != null && contextModel.BarChartContent.Categories != null
-                   && contextModel.BarChartContent.Series != null)
+                if (context.ExistItem<BarChartModel>(barChart.DataSourceKey))
                 {
-                    // Update barChart object :
-                    barChart.Categories = contextModel.BarChartContent.Categories.Select(e => new BarCategory()
+                    var contextModel = context.GetItem<BarChartModel>(barChart.DataSourceKey);
+                    if (contextModel.BarChartContent != null && contextModel.BarChartContent.Categories != null
+                       && contextModel.BarChartContent.Series != null)
                     {
-                        Name = e.Name,
-                        Color = e.Color
-                    }).ToList();
+                        // Update barChart object :
+                        barChart.Categories = contextModel.BarChartContent.Categories.Select(e => new BarCategory()
+                        {
+                            Name = e.Name,
+                            Color = e.Color
+                        }).ToList();
 
-                    // We update
-                    barChart.Series = contextModel.BarChartContent.Series.Select(e => new BarSerie()
-                    {
-                        LabelFormatString = e.LabelFormatString,
-                        Color = e.Color,
-                        DataLabelColor = e.DataLabelColor,
-                        Values = e.Values,
-                        Name = e.Name
-                    }).ToList();
+                        // We update
+                        barChart.Series = contextModel.BarChartContent.Series.Select(e => new BarSerie()
+                        {
+                            LabelFormatString = e.LabelFormatString,
+                            Color = e.Color,
+                            DataLabelColor = e.DataLabelColor,
+                            Values = e.Values,
+                            Name = e.Name
+                        }).ToList();
+                    }
+                    else
+                        return runItem;
                 }
-                else
-                    return runItem;
+                else if (context.ExistItem<RDC.MultipleSeriesChartModel>(barChart.DataSourceKey)) //MultipleSeriesChartModel
+                {
+                    var multipleSeriesContextModel = context.GetItem<RDC.MultipleSeriesChartModel>(barChart.DataSourceKey);
+
+                    if (multipleSeriesContextModel.ChartContent != null && multipleSeriesContextModel.ChartContent.Categories != null
+                     && multipleSeriesContextModel.ChartContent.Series != null)
+                    {
+                        // Update barChart object :
+                        barChart.Categories = multipleSeriesContextModel.ChartContent.Categories.Select(e => new BarCategory()
+                        {
+                            Name = e.Name,
+                            Color = e.Color
+                        }).ToList();
+
+                        // We update
+                        barChart.Series = multipleSeriesContextModel.ChartContent.Series.Select(e => new BarSerie()
+                        {
+                            LabelFormatString = e.LabelFormatString,
+                            Color = e.Color,
+                            DataLabelColor = e.DataLabelColor,
+                            Values = e.Values,
+                            Name = e.Name,
+                            HasBorder = e.HasBorder,
+                            BorderColor = e.BorderColor,
+                            BorderWidth = e.BorderWidth
+                        }).ToList();
+                    }
+                    else
+                        return runItem;
+                }
             }
 
-            switch(barChart.BarChartType)
+            switch (barChart.BarChartType)
             {
                 case BarChartType.BarChart:
                     runItem = CreateBarGraph(barChart, documentPart);

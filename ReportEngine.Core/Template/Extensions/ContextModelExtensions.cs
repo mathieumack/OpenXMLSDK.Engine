@@ -46,10 +46,10 @@ namespace ReportEngine.Core.Template.Extensions
                 element.Title = context.ReplaceText(element.Title, formatProvider);
             if (!string.IsNullOrEmpty(element.DataLabelColor))
                 element.DataLabelColor = context.ReplaceText(element.DataLabelColor, formatProvider);
-            //if (!string.IsNullOrEmpty(element.FontName))
-            //    element.FontName = context.ReplaceText(element.FontName, formatProvider);
-            //if (!string.IsNullOrEmpty(element.FontColor))
-            //    element.FontColor = context.ReplaceText(element.FontColor, formatProvider);
+            if (!string.IsNullOrEmpty(element.FontName))
+                element.FontName = context.ReplaceText(element.FontName, formatProvider);
+            if (!string.IsNullOrEmpty(element.FontColor))
+                element.FontColor = context.ReplaceText(element.FontColor, formatProvider);
             if (!string.IsNullOrEmpty(element.MajorGridlinesColor))
                 element.MajorGridlinesColor = context.ReplaceText(element.MajorGridlinesColor, formatProvider);
         }
@@ -221,8 +221,8 @@ namespace ReportEngine.Core.Template.Extensions
         /// <param name="formatProvider"></param>
         public static void ReplaceItem(this ContextModel context, Cell element, IFormatProvider formatProvider)
         {
-            //if (!string.IsNullOrEmpty(element.FontColor))
-            //    element.FontColor = context.ReplaceText(element.FontColor, formatProvider);
+            if (!string.IsNullOrEmpty(element.FontColor))
+                element.FontColor = context.ReplaceText(element.FontColor, formatProvider);
             if (!string.IsNullOrEmpty(element.Shading))
                 element.Shading = context.ReplaceText(element.Shading, formatProvider);
             if (element.Borders != null)
@@ -247,8 +247,8 @@ namespace ReportEngine.Core.Template.Extensions
         /// <param name="formatProvider"></param>
         public static void ReplaceItem(this ContextModel context, Table element, IFormatProvider formatProvider)
         {
-            //if (!string.IsNullOrEmpty(element.FontColor))
-            //    element.FontColor = context.ReplaceText(element.FontColor, formatProvider);
+            if (!string.IsNullOrEmpty(element.FontColor))
+                element.FontColor = context.ReplaceText(element.FontColor, formatProvider);
             if (!string.IsNullOrEmpty(element.Shading))
                 element.Shading = context.ReplaceText(element.Shading, formatProvider);
             if (element.Borders != null)
