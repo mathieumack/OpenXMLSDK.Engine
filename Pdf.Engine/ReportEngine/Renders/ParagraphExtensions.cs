@@ -7,19 +7,23 @@ using ReportEngine.Core.Template.ExtendedModels;
 using ReportEngine.Core.Template.Extensions;
 using ReportEngine.Core.Template.Text;
 using System.Linq;
+using Pdf.Engine.ReportEngine.Extensions;
 
 namespace Pdf.Engine.ReportEngine.Renders
 {
     public static class ParagraphExtensions
     {
-        internal static it.Paragraph Render(this Paragraph paragraph,
+        internal static void Render(this Paragraph paragraph,
                                                     Document document,
                                                     itp.PdfWriter writer,
+                                                    it.Document pdfDocument,
                                                     ContextModel context,
                                                     EngineContext ctx,
                                                     IFormatProvider formatProvider)
         {
             context.ReplaceItem(paragraph, formatProvider);
+
+            paragraph.ApplyStyle(document);
 
             var pdfParagraph = new it.Paragraph();
             //pdfParagraph.Alignment = (int)paragraph.HorizontAlignement;
@@ -28,9 +32,10 @@ namespace Pdf.Engine.ReportEngine.Renders
             //pdfParagraph.SpacingBefore = paragraph.SpacingBefore;
             //pdfParagraph.Leading = paragraph.Leading;
 
-            foreach(var child in paragraph.ChildElements)
+            foreach (var child in paragraph.ChildElements)
             {
-                var childElement = child.Render(document, writer, context, ctx, formatProvider);
+                child.InheritsFromParent(paragraph);
+                var childElement = child.Render(document, writer, pdfDocument, context, ctx, formatProvider);
                 pdfParagraph.Add(childElement);
             }
 
@@ -47,7 +52,7 @@ namespace Pdf.Engine.ReportEngine.Renders
 
             // Borders are not managed yet.
 
-            return pdfParagraph;
+            paragraph.AddToParentContainer(ctx, pdfParagraph);
             //var openXmlPar = new DocumentFormat.OpenXml.Wordprocessing.Paragraph();
             //openXmlPar.ParagraphProperties = new DocumentFormat.OpenXml.Wordprocessing.ParagraphProperties()
             //{

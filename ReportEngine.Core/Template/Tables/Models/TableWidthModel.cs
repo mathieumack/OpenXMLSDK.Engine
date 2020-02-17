@@ -9,21 +9,12 @@
         /// Width of the table
         /// default : 5000
         /// </summary>
-        public string Width { get; set; }
+        public float Width { get; set; } = 5000;
 
         /// <summary>
         /// Type of the unit
         /// default : TableWidthUnitValues.Pct
         /// </summary>
-        public TableWidthUnitValues Type { get; set; }
-
-        /// <summary>
-        /// default constructor
-        /// </summary>
-        public TableWidthModel()
-        {
-            Width = "5000";
-            Type = TableWidthUnitValues.Pct;
-        }
+        public TableWidthUnitValues Type { get; set; } = TableWidthUnitValues.Pct;
     }
 }

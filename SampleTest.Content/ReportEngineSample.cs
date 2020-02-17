@@ -486,8 +486,9 @@ namespace SampleTest.Content
 
             var table = new Table()
             {
-                TableWidth = new TableWidthModel() { Width = "5000", Type = TableWidthUnitValues.Pct },
+                TableWidth = new TableWidthModel() { Width = 5000, Type = TableWidthUnitValues.Pct },
                 TableIndentation = new TableIndentation() { Width = 1000 },
+                ColsWidth = new int[] { 2500, 2500 },
                 Rows = new List<Row>()
                 {
                     new Row()
@@ -541,8 +542,12 @@ namespace SampleTest.Content
                         {
                             new Cell()
                             {
-                                Fusion = true,
-                                FusionChild = true
+                                Fusion = false,
+                                FusionChild = false,
+                                ChildElements = new List<BaseElement>()
+                                {
+                                    new Label() { Text = "cellule4" }
+                                }
                             },
                             new Cell()
                             {
@@ -555,37 +560,35 @@ namespace SampleTest.Content
                             }
                         }
                     }
-                }
-            };
-
-            table.HeaderRow = new Row()
-            {
-                Cells = new List<Cell>()
+                },
+                HeaderRow = new Row()
                 {
-                        new Cell()
-                        {
-                            ChildElements = new List<BaseElement>()
+                    Cells = new List<Cell>()
+                    {
+                            new Cell()
                             {
-                                new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "header1" } } }
-                            }
-                        },
-                        new Cell()
-                        {
-                            ChildElements = new List<BaseElement>()
+                                ChildElements = new List<BaseElement>()
+                                {
+                                    new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "header1" } } }
+                                }
+                            },
+                            new Cell()
                             {
-                                new Label() { Text = "header2" }
+                                ChildElements = new List<BaseElement>()
+                                {
+                                    new Label() { Text = "header2" }
+                                }
                             }
-                        }
+                    }
+                },
+                Borders = new BorderModel()
+                {
+                    BorderPositions = BorderPositions.BOTTOM | BorderPositions.INSIDEVERTICAL,
+                    BorderWidthBottom = 50,
+                    BorderWidthInsideVertical = 1,
+                    UseVariableBorders = true,
+                    BorderColor = "FF0000"
                 }
-            };
-
-            table.Borders = new BorderModel()
-            {
-                BorderPositions = BorderPositions.BOTTOM | BorderPositions.INSIDEVERTICAL,
-                BorderWidthBottom = 50,
-                BorderWidthInsideVertical = 1,
-                UseVariableBorders = true,
-                BorderColor = "FF0000"
             };
 
             page1.ChildElements.Add(table);
@@ -597,20 +600,20 @@ namespace SampleTest.Content
                     {
                         ChildElements = new List<BaseElement>()
                         {
-                        new Image()
-                        {
-                            MaxHeight = 100,
-                            MaxWidth = 100,
-                            Path = @"Resources\Desert.jpg",
-                            ImagePartType = ImagePartType.Jpeg
-                        }
+                            new Image()
+                            {
+                                MaxHeight = 250,
+                                MaxWidth = 250,
+                                Path = @"Resources\Desert.jpg",
+                                ImagePartType = ImagePartType.Jpeg
+                            }
                         }
                     }
                 );
 
             var tableDataSource = new Table()
             {
-                TableWidth = new TableWidthModel() { Width = "5000", Type = TableWidthUnitValues.Pct },
+                TableWidth = new TableWidthModel() { Width = 5000, Type = TableWidthUnitValues.Pct },
                 ColsWidth = new int[2] { 750, 4250 },
                 Borders = new BorderModel()
                 {
@@ -644,7 +647,7 @@ namespace SampleTest.Content
 
             var tableDataSourceWithPrefix = new Table()
             {
-                TableWidth = new TableWidthModel() { Width = "5000", Type = TableWidthUnitValues.Pct },
+                TableWidth = new TableWidthModel() { Width = 5000, Type = TableWidthUnitValues.Pct },
                 ColsWidth = new int[2] { 750, 4250 },
                 Borders = new BorderModel()
                 {
@@ -657,27 +660,27 @@ namespace SampleTest.Content
                 RowModel = new Row()
                 {
                     Cells = new List<Cell>()
-    {
-        new Cell()
-        {
-            Shading = "FFA0FF",
-            ChildElements = new List<BaseElement>()
-            {
-                new Label() { Text = "Item Datasource (0 index) #DataSourcePrefix_TableRow_IndexBaseZero# - ",
-                                ShowKey = "#DataSourcePrefix_TableRow_IsFirstItem#" },
-                new Label() { Text = "#Cell1#" }
-            }
-        },
-        new Cell()
-        {
-            ChildElements = new List<BaseElement>()
-            {
-                new Label() { Text = "Item Datasource (1 index) #DataSourcePrefix_TableRow_IndexBaseOne# - ",
-                                ShowKey = "#DataSourcePrefix_TableRow_IsLastItem#" },
-                new Label() { Text = "#Cell2#" }
-            }
-        }
-    }
+                    {
+                        new Cell()
+                        {
+                            Shading = "FFA0FF",
+                            ChildElements = new List<BaseElement>()
+                            {
+                                new Label() { Text = "Item Datasource (0 index) #DataSourcePrefix_TableRow_IndexBaseZero# - ",
+                                                ShowKey = "#DataSourcePrefix_TableRow_IsFirstItem#" },
+                                new Label() { Text = "#Cell1#" }
+                            }
+                        },
+                        new Cell()
+                        {
+                            ChildElements = new List<BaseElement>()
+                            {
+                                new Label() { Text = "Item Datasource (1 index) #DataSourcePrefix_TableRow_IndexBaseOne# - ",
+                                                ShowKey = "#DataSourcePrefix_TableRow_IsLastItem#" },
+                                new Label() { Text = "#Cell2#" }
+                            }
+                        }
+                    }
                 }
             };
 
@@ -764,7 +767,7 @@ namespace SampleTest.Content
             {
                 DataSourceKey = "#UniformGridSample#",
                 ColsWidth = new int[2] { 2500, 2500 },
-                TableWidth = new TableWidthModel() { Width = "5000", Type = TableWidthUnitValues.Pct },
+                TableWidth = new TableWidthModel() { Width = 5000, Type = TableWidthUnitValues.Pct },
                 CellModel = new Cell()
                 {
                     VerticalAlignment = TableVerticalAlignmentValues.Center,
@@ -813,7 +816,7 @@ namespace SampleTest.Content
             var page5 = new Page();
             var tableDataSourceWithBeforeAfter = new Table()
             {
-                TableWidth = new TableWidthModel() { Width = "5000", Type = TableWidthUnitValues.Pct },
+                TableWidth = new TableWidthModel() { Width = 5000, Type = TableWidthUnitValues.Pct },
                 ColsWidth = new int[2] { 750, 4250 },
                 Borders = new BorderModel()
                 {
@@ -914,7 +917,7 @@ namespace SampleTest.Content
                 DataSourceKey = "#Datasource#"
             };
 
-            page5.ChildElements.Add(tableDataSourceWithBeforeAfter);
+            //page5.ChildElements.Add(tableDataSourceWithBeforeAfter);
 
             doc.Pages.Add(page5);
 
@@ -1011,7 +1014,7 @@ namespace SampleTest.Content
 
             var tableDataSourceWithCellFusion = new Table()
             {
-                TableWidth = new TableWidthModel() { Width = "5000", Type = TableWidthUnitValues.Pct },
+                TableWidth = new TableWidthModel() { Width = 5000, Type = TableWidthUnitValues.Pct },
                 ColsWidth = new int[3] { 1200, 1200, 1200 },
                 Borders = new BorderModel()
                 {
@@ -1052,7 +1055,7 @@ namespace SampleTest.Content
                 DataSourceKey = "#DatasourceTableFusion#"
             };
 
-            page7.ChildElements.Add(tableDataSourceWithCellFusion);
+            //page7.ChildElements.Add(tableDataSourceWithCellFusion);
 
             doc.Pages.Add(page7);
 
@@ -1135,7 +1138,7 @@ namespace SampleTest.Content
                 DataSourceKey = "#SubstitutableStringDataSourceModel#"
             };
 
-            page9.ChildElements.Add(substitutableTableDataSource);
+            //page9.ChildElements.Add(substitutableTableDataSource);
 
             doc.Pages.Add(page9);
 

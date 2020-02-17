@@ -8,15 +8,14 @@
         /// <summary>
         /// Table indentation size
         /// default : 0
+        /// Defined by default in dxa. <see cref="TableWidthUnitValues"/>
         /// </summary>
         public int Width { get; set; }
 
         /// <summary>
-        /// default constructor
+        /// Type of the unit
+        /// default : TableWidthUnitValues.Pct
         /// </summary>
-        public TableIndentation()
-        {
-            Width = 0;
-        }
+        public TableWidthUnitValues Type { get; set; } = TableWidthUnitValues.Dxa;
     }
 }

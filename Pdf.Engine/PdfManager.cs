@@ -31,8 +31,14 @@ namespace Pdf.Engine
 
                 var ctx = new EngineContext();
 
-                document.Render(writer, pdfDocument, context, ctx, formatProvider);
-
+                try
+                {
+                    document.Render(writer, pdfDocument, context, ctx, formatProvider);
+                }
+                catch(Exception ex)
+                {
+                    int i = 0;
+                }
                 // Close the Document - this saves the document contents to the output stream
                 if (pdfDocument.IsOpen())
                     pdfDocument.Close();

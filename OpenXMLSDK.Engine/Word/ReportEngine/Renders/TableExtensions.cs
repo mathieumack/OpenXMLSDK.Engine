@@ -62,7 +62,8 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                             item.AddItem("#" + table.AutoContextAddItemsPrefix + "_TableRow_IsEven#", new BooleanModel(i % 2 == 0));
                         }
 
-                        wordTable.AppendChild(row.Render(document, wordTable, item, documentPart, false, (i % 2 == 1), formatProvider));
+                        var rowRender = row.Render(document, wordTable, item, documentPart, false, (i % 2 == 1), formatProvider);
+                        wordTable.AppendChild(rowRender);
 
                         i++;
                     }
@@ -105,7 +106,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             };
             wordTableProperties.AppendChild(tableLook);
             //The type must be Dxa, if the value is set to Pct : the open xml engine will ignored it !
-            wordTableProperties.TableIndentation = new DOW.TableIndentation() { Width = table.TableIndentation.Width, Type = DOW.TableWidthUnitValues.Dxa };
+            wordTableProperties.TableIndentation = new DOW.TableIndentation() { Width = table.TableIndentation.Width, Type = table.TableIndentation.Type.ToOOxml() };
             wordTable.AppendChild(wordTableProperties);
 
             if (table.Borders != null)
@@ -130,7 +131,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 
             if (table.TableWidth != null)
             {
-                wordTable.AppendChild(new DOW.TableWidth() { Width = table.TableWidth.Width, Type = table.TableWidth.Type.ToOOxml() });
+                wordTable.AppendChild(new DOW.TableWidth() { Width = table.TableWidth.Width.ToString(), Type = table.TableWidth.Type.ToOOxml() });
             }
 
             // add header row

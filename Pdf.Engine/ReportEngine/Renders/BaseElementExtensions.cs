@@ -3,11 +3,13 @@ using System;
 using ReportEngine.Core.DataContext;
 using ReportEngine.Core.Template;
 using ReportEngine.Core.Template.Extensions;
+using ReportEngine.Core.Template.Images;
 using ReportEngine.Core.Template.Text;
 using System.Linq;
 using it = iTextSharp.text;
 using itp = iTextSharp.text.pdf;
 using System.Collections.Generic;
+using ReportEngine.Core.Template.Tables;
 
 namespace Pdf.Engine.ReportEngine.Renders
 {
@@ -21,32 +23,55 @@ namespace Pdf.Engine.ReportEngine.Renders
         internal static object Render(this BaseElement element,
                                             Document document,
                                             itp.PdfWriter writer,
+                                            it.Document pdfDocument,
                                             ContextModel context,
                                             EngineContext ctx,
                                             IFormatProvider formatProvider)
         {
-            ctx.Parents.Add(element);
-            context.ReplaceItem(element, formatProvider);
-
             var result = (object)null;
             if (element.Show)
             {
-                result = element.RenderItem(document, writer, context, ctx, formatProvider);
+                ctx.Parents.Add(element);
+                result = element.RenderItem(document, writer, pdfDocument, context, ctx, formatProvider);
+                if (ctx.Parents.Any())
+                    ctx.Parents.RemoveAt(ctx.Parents.Count - 1);
             }
-            
-            if (ctx.Parents.Any())
-                ctx.Parents.RemoveAt(ctx.Parents.Count - 1);
 
             return result;
         }
 
         private static object RenderItem(this BaseElement element, 
                                             Document document,
-                                            itp.PdfWriter writer, 
+                                            itp.PdfWriter writer,
+                                            it.Document pdfDocument,
                                             ContextModel context,
                                             EngineContext ctx,
                                             IFormatProvider formatProvider)
         {
+            context.ReplaceItem(element, formatProvider);
+
+            //if (element.ChildElements != null)
+            //{
+            //    for (int i = 0; i < element.ChildElements.Count; i++)
+            //    {
+            //        var e = element.ChildElements[i];
+
+            //        //if (e is TemplateModel)
+            //        //{
+            //        //    var elements = (e as TemplateModel).ExtractTemplateItems(document);
+            //        //    if (i == element.ChildElements.Count - 1)
+            //        //        element.ChildElements.AddRange(elements);
+            //        //    else
+            //        //        element.ChildElements.InsertRange(i + 1, elements);
+            //        //}
+            //        //else
+            //        {
+            //            e.InheritsFromParent(element);
+            //            e.Render(document, writer, context, ctx, formatProvider);
+            //        }
+            //    }
+            //}
+
             // Keep this statement order, because of the UniformGrid inherits from Table
             //if (element is ForEach)
             //{
@@ -70,21 +95,20 @@ namespace Pdf.Engine.ReportEngine.Renders
             //}
             if (element is Paragraph)
             {
-                var paragraph = (element as Paragraph).Render(document, writer, context, ctx, formatProvider);
-                element.AddToParentContainer(ctx, paragraph);
+                (element as Paragraph).Render(document, writer, pdfDocument, context, ctx, formatProvider);
             }
-            //else if (element is Image)
-            //{
-            //    (element as Image).Render(parent, context, documentPart);
-            //}
-            //else if (element is UniformGrid)
-            //{
-            //    (element as UniformGrid).Render(document, parent, context, documentPart, formatProvider);
-            //}
-            //else if (element is Table)
-            //{
-            //    (element as Table).Render(document, parent, context, documentPart, formatProvider);
-            //}
+            else if (element is Image)
+            {
+                (element as Image).Render(document, writer, context, ctx, formatProvider);
+            }
+            else if (element is UniformGrid)
+            {
+                //(element as UniformGrid).Render(document, parent, context, documentPart, formatProvider);
+            }
+            else if (element is Table)
+            {
+                (element as Table).Render(document, writer, pdfDocument, context, ctx, formatProvider);
+            }
             //else if (element is TableOfContents)
             //{
             //    (element as TableOfContents).Render(documentPart, context);
@@ -101,29 +125,7 @@ namespace Pdf.Engine.ReportEngine.Renders
             //{
             //    (element as HtmlContent).Render(parent, context, documentPart, formatProvider);
             //}
-
-            if (element.ChildElements != null && element.ChildElements.Count > 0)
-            {
-                for (int i = 0; i < element.ChildElements.Count; i++)
-                {
-                    var e = element.ChildElements[i];
-
-                    //if (e is TemplateModel)
-                    //{
-                    //    var elements = (e as TemplateModel).ExtractTemplateItems(document);
-                    //    if (i == element.ChildElements.Count - 1)
-                    //        element.ChildElements.AddRange(elements);
-                    //    else
-                    //        element.ChildElements.InsertRange(i + 1, elements);
-                    //}
-                    //else
-                    {
-                        e.InheritsFromParent(element);
-                        e.Render(document, writer, context, ctx, formatProvider);
-                    }
-                }
-            }
-
+                        
             return null;
         }
 

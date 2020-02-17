@@ -51,7 +51,7 @@ namespace Pdf.Engine.ReportEngine.Renders
                     //    page.Margin = document.Margin;
 
                     // render page
-                    page.Render(document, pdfWriter, context, ctx, formatProvider);
+                    page.Render(document, pdfWriter, pdfDocument, context, ctx, formatProvider);
                 }
             }
             ctx.Parents.RemoveAt(ctx.Parents.Count - 1);
