@@ -1,21 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Pdf.Engine.ReportEngine.Helpers;
 using ReportEngine.Core.DataContext;
 using ReportEngine.Core.Template;
 using ReportEngine.Core.Template.Extensions;
-using ReportEngine.Core.Template.Tables;
 using ReportEngine.Core.Template.Text;
 using it = iTextSharp.text;
 using itp = iTextSharp.text.pdf;
 
 namespace Pdf.Engine.ReportEngine.Renders
 {
-    public static class LabelExtensions
+    public static class HyperlinkExtensions
     {
-        internal static it.Chunk Render(this Label label,
+        internal static it.Anchor Render(this Hyperlink label,
                                                 Document document,
                                                 itp.PdfWriter writer,
                                                 ContextModel context,
@@ -23,62 +19,16 @@ namespace Pdf.Engine.ReportEngine.Renders
                                                 IFormatProvider formatProvider)
         {
             context.ReplaceItem(label, formatProvider);
+            if (!label.Show)
+                return null;
 
             // Transform label Text before rendering :
-            ApplyTransformOperations(label);
+            ApplyTransformOperations(label.Text);
 
-            // TODO : Manage split lines ?
-            var text = label.Text;
+            var anchor = new it.Anchor(label.Text.Text, label.Text.GetFont());
+            anchor.Reference = label.WebSiteUri;
 
-            var chunk = new it.Chunk(text, label.GetFont());
-
-            //if (label.Underline != null)
-            //    chunk.SetUnderline(label.FontUnderline.Thickness, label.FontUnderline.Distance);
-            
-            if (!string.IsNullOrWhiteSpace(label.Shading))
-                chunk.SetBackground(FontHelper.ConverPdfColorToColor(label.Shading));
-            
-            return chunk;
-        }
-
-        public static it.Font GetFont(this Label element)
-        {
-            itp.BaseFont bf;
-            if (element.FontName == FontNames.TIMES_C_ROMAN)
-            {
-                byte[] file = Ressources.fonts.SimSun;
-                bf = itp.BaseFont.CreateFont("SimSum.ttf", itp.BaseFont.IDENTITY_H, itp.BaseFont.NOT_EMBEDDED, itp.BaseFont.CACHED, file, null);
-            }
-            else if (element.FontName == FontNames.ARIAL)
-            {
-                byte[] file = Ressources.fonts.arial;
-                bf = itp.BaseFont.CreateFont("arial.ttf", itp.BaseFont.IDENTITY_H, itp.BaseFont.NOT_EMBEDDED, itp.BaseFont.CACHED, file, null);
-            }
-            else
-            {
-                bf = itp.BaseFont.CreateFont(string.IsNullOrWhiteSpace(element.FontName) ? FontNames.TIMES_ROMAN : element.FontName, 
-                                                string.IsNullOrWhiteSpace(element.FontEncoding) ? FontEncodings.CP1252 : element.FontEncoding, 
-                                                false);
-            }
-
-            // TODO : Add FontSize value check
-            var fontStyle = GetFontStyle(element); // Normal
-            var font = new it.Font(bf, (element.FontSize.HasValue ? element.FontSize.Value : 22) / 2, fontStyle, FontHelper.ConverPdfColorToColor(element.FontColor));
-            return font;
-        }
-
-        private static int GetFontStyle(Label label)
-        {
-            //NORMAL = 0,
-            //BOLD = 1,
-            //ITALIC = 2,
-            //BOLDITALIC = 3,
-            //UNDERLINE = 4,
-            //BOLDUNDERLINE = 5,
-            //ITALICUNDERLINE = 6,
-            //BOLDITALICUNDERLINE = 7,
-            //STRIKETHRU = 8
-            return 0; // normal
+            return anchor;
         }
 
         /// <summary>

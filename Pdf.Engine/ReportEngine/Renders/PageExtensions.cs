@@ -4,12 +4,13 @@ using ReportEngine.Core.DataContext;
 using ReportEngine.Core.Template;
 using System;
 using System.Linq;
+using ReportEngine.Core.Template.Extensions;
 
 namespace Pdf.Engine.ReportEngine.Renders
 {
-    public static class PageExtensions
+    internal static class PageExtensions
     {
-        internal static void Render(this Page page, 
+        public static void Render(this Page page, 
                                         Document document,
                                         itp.PdfWriter writer,
                                         it.Document pdfDocument,
@@ -23,7 +24,15 @@ namespace Pdf.Engine.ReportEngine.Renders
             ctx.Parents.Add(page);
             foreach (var child in page.ChildElements)
             {
-                child.Render(document, writer, pdfDocument, context, ctx, formatProvider);
+                if (child is TemplateModel)
+                {
+                    var templateElements = (child as TemplateModel).ExtractTemplateItems(document);
+                    foreach (var templateElement in templateElements)
+                        templateElement.Render(document, writer, pdfDocument, context, ctx, formatProvider);
+                }
+                else
+
+                    child.Render(document, writer, pdfDocument, context, ctx, formatProvider);
             }
             if (ctx.Parents.Any())
                 ctx.Parents.RemoveAt(ctx.Parents.Count - 1);

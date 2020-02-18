@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using DocumentFormat.OpenXml;
-using ReportEngine.Core.Template;
+using System.Text;
 
-namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
+namespace ReportEngine.Core.Template.Extensions
 {
     /// <summary>
     /// Extension class for Table Cell rendering
@@ -20,7 +19,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// <param name="documentPart"></param>
         /// <param name="formatProvider"></param>
         /// <returns></returns>
-        public static List<BaseElement> ExtractTemplateItems(this TemplateModel templateModel, 
+        public static List<BaseElement> ExtractTemplateItems(this TemplateModel templateModel,
                                                                     Document document)
         {
             if (document.TemplateDefinitions == null)

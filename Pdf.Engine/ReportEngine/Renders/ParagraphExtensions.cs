@@ -29,11 +29,9 @@ namespace Pdf.Engine.ReportEngine.Renders
             if(paragraph.SpacingAfter.HasValue)
                 pdfParagraph.SpacingAfter = paragraph.SpacingAfter.Value / 20f;
             else
-                pdfParagraph.SpacingAfter = 10f; // Default value
+                pdfParagraph.SpacingAfter = 8f; // Default value
             if (paragraph.SpacingBefore.HasValue)
                 pdfParagraph.SpacingBefore = paragraph.SpacingBefore.Value / 20f;
-            else
-                pdfParagraph.SpacingBefore = 10f; // Default value
             //pdfParagraph.Leading = paragraph.Leading;
 
             foreach (var child in paragraph.ChildElements)

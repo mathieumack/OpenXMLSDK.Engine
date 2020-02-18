@@ -53,7 +53,7 @@
         /// <summary>
         /// Font size
         /// </summary>
-        public float? FontSize { get; set; }
+        public int? FontSize { get; set; }
 
         /// <summary>
         /// Font color in hex value (RRGGBB format)

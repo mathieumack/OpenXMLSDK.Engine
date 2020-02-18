@@ -411,7 +411,28 @@ namespace SampleTest.Content
 
             // Template 1 :
 
-            var paragraph = new Paragraph();
+            var paragraph = new Paragraph()
+            {
+                Indentation = new ParagraphIndentationModel()
+                {
+                    Left = 300,
+                    Right = 6000
+                },
+                Borders = new BorderModel()
+                {
+                    BorderPositions = BorderPositions.BOTTOM | BorderPositions.TOP | BorderPositions.LEFT,
+                    BorderWidthBottom = 3,
+                    BorderWidthLeft = 10,
+                    BorderWidthTop = 20,
+                    BorderWidthInsideVertical = 1,
+                    UseVariableBorders = true,
+                    BorderColor = "FF0000",
+                    BorderLeftColor = "CCCCCC",
+                    BorderTopColor = "123456",
+                    BorderRightColor = "FFEEDD",
+                    BorderBottomColor = "FF1234"
+                }
+            };
             paragraph.ChildElements.Add(new Label() { Text = "Label without special character (éèàù).", FontSize = 30 });
             paragraph.ChildElements.Add(new Hyperlink()
             {
@@ -422,12 +443,7 @@ namespace SampleTest.Content
                 },
                 WebSiteUri = "https://www.github.com/"
             });
-            paragraph.Indentation = new ParagraphIndentationModel()
-            {
-                Left = 300,
-                Right = 6000
-            };
-            paragraph.ChildElements.Add(new Label() { Text = "Ceci est un texte avec accents (éèàù)", FontSize = 30 });
+            paragraph.ChildElements.Add(new Label() { Text = "Ceci est un texte avec accents (éèàù)", FontSize = 22 });
             paragraph.ChildElements.Add(new Label()
             {
                 Text = "#KeyTest1#",
@@ -449,20 +465,6 @@ namespace SampleTest.Content
                 Text = "#KeyTest2#",
                 Show = false
             });
-            paragraph.Borders = new BorderModel()
-            {
-                BorderPositions = BorderPositions.BOTTOM | BorderPositions.TOP | BorderPositions.LEFT,
-                BorderWidthBottom = 3,
-                BorderWidthLeft = 10,
-                BorderWidthTop = 20,
-                BorderWidthInsideVertical = 1,
-                UseVariableBorders = true,
-                BorderColor = "FF0000",
-                BorderLeftColor = "CCCCCC",
-                BorderTopColor = "123456",
-                BorderRightColor = "FFEEDD",
-                BorderBottomColor = "FF1234"
-            };
 
             var templateDefinition = new TemplateDefinition()
             {

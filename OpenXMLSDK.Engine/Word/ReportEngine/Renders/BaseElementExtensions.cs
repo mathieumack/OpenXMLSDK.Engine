@@ -1,6 +1,5 @@
 ﻿using DO = DocumentFormat.OpenXml;
 using DOP = DocumentFormat.OpenXml.Packaging;
-using Newtonsoft.Json;
 using System;
 using ReportEngine.Core.DataContext;
 using ReportEngine.Core.Template;
@@ -14,11 +13,6 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 {
     internal static class BaseElementExtensions
     {
-        internal static T Clone<T>(this T element) where T : BaseElement
-        {
-            return JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(element), new JsonSerializerSettings() { Converters = { new JsonContextConverter() } });
-        }
-
         internal static DO.OpenXmlElement Render(this BaseElement element, Document document, DO.OpenXmlElement parent, ContextModel context, DOP.OpenXmlPart documentPart, IFormatProvider formatProvider)
         {
             context.ReplaceItem(element, formatProvider);

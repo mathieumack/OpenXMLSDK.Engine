@@ -74,10 +74,10 @@ namespace Pdf.Engine.ReportEngine.Renders
             //}
 
             // Keep this statement order, because of the UniformGrid inherits from Table
-            //if (element is ForEach)
-            //{
-            //    (element as ForEach).Render(document, parent, context, documentPart, formatProvider);
-            //}
+            if (element is ForEach)
+            {
+                (element as ForEach).Render(document, writer, pdfDocument, context, ctx, formatProvider);
+            }
             if (element is Label)
             {
                 return (element as Label).Render(document, writer, context, ctx, formatProvider);
@@ -90,10 +90,10 @@ namespace Pdf.Engine.ReportEngine.Renders
             //{
             //    (element as BookmarkEnd).Render(parent, context, formatProvider);
             //}
-            //else if (element is Hyperlink)
-            //{
-            //    (element as Hyperlink).Render(parent, context, documentPart, formatProvider);
-            //}
+            else if (element is Hyperlink)
+            {
+                return (element as Hyperlink).Render(document, writer, context, ctx, formatProvider);
+            }
             if (element is Paragraph)
             {
                 (element as Paragraph).Render(document, writer, pdfDocument, context, ctx, formatProvider);

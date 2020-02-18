@@ -37,7 +37,7 @@ namespace ReportEngine.Core.Template
         /// <summary>
         /// Font size. The size is define in demi-point
         /// </summary>
-        public float? FontSize { get; set; }
+        public int? FontSize { get; set; }
 
         /// <summary>
         /// Font color in hex value (RRGGBB format)

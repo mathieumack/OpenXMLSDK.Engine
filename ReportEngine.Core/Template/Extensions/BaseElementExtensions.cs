@@ -1,11 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Newtonsoft.Json;
 
 namespace ReportEngine.Core.Template.Extensions
 {
     public static class BaseElementExtensions
     {
+        public static T Clone<T>(this T element) where T : BaseElement
+        {
+            return JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(element), new JsonSerializerSettings() { Converters = { new JsonContextConverter() } });
+        }
+
         public static void InheritsFromParent(this BaseElement element, BaseElement parent)
         {
             if (element is null || parent is null)
