@@ -23,8 +23,7 @@ namespace Pdf.Engine.ReportEngine.Renders
             ctx.Parents.Add(element);
 
             var image = (it.Image)null;
-            //if (Element.Content != null)
-            //    image = Image.GetInstance(Element.Content);
+
             if (!string.IsNullOrWhiteSpace(element.Path) && File.Exists(element.Path))
                 image = it.Image.GetInstance(File.ReadAllBytes(element.Path));
             else if (element.Content != null)
@@ -33,32 +32,36 @@ namespace Pdf.Engine.ReportEngine.Renders
             if (image != null && element.Show)
             {
                 // TODO : Manage size
-                // On va maintenant gérer le poucentage :
-                var width = element.Width.HasValue ? element.Width : element.MaxWidth;
-                if (element.MaxWidth.HasValue && width.HasValue && element.MaxWidth.Value < width.Value)
-                    width = element.MaxWidth;
-                if (width.HasValue)
-                {
-                    // On va recalculer le pourcentage automatiquement :
-                    image.ScaleAbsoluteWidth(width.Value / 2);
-                }
+                var finalWidth = GetLength(element.Width, element.MaxWidth, image.Width);
+                var finalHeight = GetLength(element.Height, element.MaxHeight, image.Height);
 
-                var height = element.Height.HasValue ? element.Height : element.MaxHeight;
-                if (element.MaxHeight.HasValue && height.HasValue && element.MaxHeight.Value < height.Value)
-                    height = element.MaxHeight;
-                if (height.HasValue)
-                {
-                    // On va recalculer le pourcentage automatiquement :
-                    image.ScaleAbsoluteHeight(height.Value / 2);
-                }
-
-                //image.ScaleAbsolute(width.Value / 2, height.Value / 2);
+                image.ScalePercent(Math.Min(finalWidth, finalHeight));
 
                 // insertion dans le document :
                 element.AddToParentContainer(ctx, image);
             }
 
             ctx.Parents.RemoveAt(ctx.Parents.Count - 1);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="definedValue"></param>
+        /// <param name="maxValue"></param>
+        /// <param name="currentValue"></param>
+        /// <returns></returns>
+        private static float GetLength(long? definedValue, long? maxValue, float currentValue)
+        {
+            if (definedValue.HasValue && maxValue.HasValue && definedValue.Value < maxValue.Value)
+                return ((float)definedValue.Value / 2f) * 100f / currentValue;
+            else if (definedValue.HasValue && maxValue.HasValue)
+                return ((float)maxValue.Value / 2f) * 100f / currentValue;
+            else if (definedValue.HasValue)
+                return ((float)definedValue.Value / 2) * 100f / currentValue;
+            else if (maxValue.HasValue)
+                return ((float)maxValue.Value / 2f) * 100f / currentValue;
+            return 100f;
         }
     }
 }

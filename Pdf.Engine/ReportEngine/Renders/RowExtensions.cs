@@ -37,6 +37,9 @@ namespace Pdf.Engine.ReportEngine.Renders
                                                 EngineContext ctx,
                                                 IFormatProvider formatProvider)
         {
+            context.ReplaceItem(row, formatProvider);
+            if (!row.Show)
+                return null;
 
             var cells = new itp.PdfPCell[row.Cells.Count];
             for (int i = 0; i < row.Cells.Count; i++)
@@ -44,29 +47,13 @@ namespace Pdf.Engine.ReportEngine.Renders
                 var cellModel = row.Cells[i];
 
                 // Rendu du contenu de la cellule
-                var pdfCell = cellModel.Render(document, writer, pdfDocument, context, ctx, formatProvider);
+                var pdfCell = cellModel.Render(elementTable, document, writer, pdfDocument, context, ctx, formatProvider);
                 table.AddCell(pdfCell);
                 cells[i] = pdfCell;
             }
 
             //Check the cells number to add a new row if needeed
             var pdfRow = new itp.PdfPRow(cells);
-
-            //var widths = new float[0];
-            //if (elementTable.ColsWidth != null)
-            //{
-            //    switch (elementTable.TableWidth.Type)
-            //    {
-            //        case TableWidthUnitValues.Dxa:
-            //            widths = elementTable.ColsWidth.Select(c => c / 2f).ToArray();
-            //            break;
-            //        case TableWidthUnitValues.Pct:
-            //            widths = elementTable.ColsWidth.Select(c => c / 50f).ToArray();
-            //            break;
-            //    }
-            //}
-
-            //pdfRow.SetWidths(colWidths);
             return pdfRow;
         }
     }

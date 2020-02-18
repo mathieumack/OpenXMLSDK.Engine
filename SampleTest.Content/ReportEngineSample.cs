@@ -645,6 +645,8 @@ namespace SampleTest.Content
                 DataSourceKey = "#Datasource#"
             };
 
+            page1.ChildElements.Add(tableDataSource);
+
             var tableDataSourceWithPrefix = new Table()
             {
                 TableWidth = new TableWidthModel() { Width = 5000, Type = TableWidthUnitValues.Pct },
@@ -683,9 +685,7 @@ namespace SampleTest.Content
                     }
                 }
             };
-
-            page1.ChildElements.Add(tableDataSource);
-
+            
             page1.ChildElements.Add(tableDataSourceWithPrefix);
 
             // page 2

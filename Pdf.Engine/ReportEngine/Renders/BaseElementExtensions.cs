@@ -28,6 +28,7 @@ namespace Pdf.Engine.ReportEngine.Renders
                                             EngineContext ctx,
                                             IFormatProvider formatProvider)
         {
+            context.ReplaceItem(element, formatProvider);
             var result = (object)null;
             if (element.Show)
             {

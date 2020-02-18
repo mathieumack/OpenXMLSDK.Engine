@@ -8,6 +8,7 @@ using ReportEngine.Core.DataContext;
 using ReportEngine.Core.Template;
 using ReportEngine.Core.Template.Extensions;
 using ReportEngine.Core.Template.Tables;
+using ReportEngine.Core.Template.Text;
 using it = iTextSharp.text;
 using itp = iTextSharp.text.pdf;
 
@@ -41,14 +42,7 @@ namespace Pdf.Engine.ReportEngine.Renders
 
             itp.PdfPTable pdfTable = new itp.PdfPTable(numberOfColumns);
 
-            //pdfTable.TotalWidth = Utilities.MillimetersToPoints(Element.Width);
             pdfTable.KeepTogether = true;
-            //pdfTable.SplitRows = Element.SplitRows;
-
-            //pdfTable.SpacingAfter = Element.SpacingAfter;
-            //pdfTable.SpacingBefore = Element.SpacingBefore;
-
-            //pdfTable.LockedWidth = Element.LockedWidth;
 
             var columnWidths = new float[] { 50, 50 };
 
@@ -81,12 +75,18 @@ namespace Pdf.Engine.ReportEngine.Renders
                     break;
             }
 
-            //pdfTable.TotalWidth = pdfDocument.RightMargin - pdfDocument.LeftMargin;
-            //pdfTable.WidthPercentage = 100f;
-
             pdfTable.LockedWidth = true;
 
             var pdfRows = new List<itp.PdfPRow>();
+
+            // Manage header row
+            if(table.HeaderRow != null)
+            {
+                table.HeaderRow.InheritsFromParent(table);
+                var pdfRow = table.HeaderRow.Render(table, columnWidths, pdfTable, writer, pdfDocument, document, context, ctx, formatProvider);
+                if(pdfRow != null)
+                    pdfRows.Add(pdfRow);
+            }
 
             // On regarde si la table est liée à une DataSource et contient donc une RowModel :
             if (!string.IsNullOrWhiteSpace(table.DataSourceKey))
@@ -128,19 +128,28 @@ namespace Pdf.Engine.ReportEngine.Renders
                 {
                     row.InheritsFromParent(table);
                     var pdfRow = row.Render(table, columnWidths, pdfTable, writer, pdfDocument, document, context, ctx, formatProvider);
-                    pdfRows.Add(pdfRow);
+                    if (pdfRow != null)
+                        pdfRows.Add(pdfRow);
                     i++;
                 }
             }
 
-            // TODO : Manage header row
+            // Manage header row
+            if (table.FooterRow != null)
+            {
+                table.FooterRow.InheritsFromParent(table);
+                var pdfRow = table.FooterRow.Render(table, columnWidths, pdfTable, writer, pdfDocument, document, context, ctx, formatProvider);
+                if (pdfRow != null)
+                    pdfRows.Add(pdfRow);
+            }
+
+            table.AddToParentContainer(ctx, pdfTable);
 
             // Add all rows :
             //pdfTable.Rows.AddRange(pdfRows);
 
             // TODO : Manage footer row
 
-            table.AddToParentContainer(ctx, pdfTable);
 
             ctx.Parents.RemoveAt(ctx.Parents.Count - 1);
         }

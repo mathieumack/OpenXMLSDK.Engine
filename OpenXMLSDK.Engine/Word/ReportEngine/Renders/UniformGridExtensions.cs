@@ -25,9 +25,9 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 
             if (!string.IsNullOrEmpty(uniformGrid.DataSourceKey) && context.ExistItem<DataSourceModel>(uniformGrid.DataSourceKey))
             {
-                var datasource = context.GetItem<DataSourceModel>(uniformGrid.DataSourceKey);
+                var dataSource = context.GetItem<DataSourceModel>(uniformGrid.DataSourceKey);
 
-                if (datasource != null && datasource.Items.Count > 0)
+                if (dataSource != null && dataSource.Items.Count > 0)
                 {
                     var createdTable = TableExtensions.CreateTable(document, uniformGrid, context, documentPart, formatProvider);
                     var wordTable = createdTable.Item1;
@@ -43,7 +43,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     var lastCellsRow = new List<ContextModel>();
 
                     // add content rows
-                    foreach (var item in datasource.Items)
+                    foreach (var item in dataSource.Items)
                     {
                         if (i > 0 && i % uniformGrid.ColsWidth.Length == 0)
                         {
@@ -59,9 +59,9 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     if (i % uniformGrid.ColsWidth.Length == 0)
                         rowsContentContexts.Add(lastCellsRow);
 
-                    if (datasource.Items.Count % uniformGrid.ColsWidth.Length > 0)
+                    if (dataSource.Items.Count % uniformGrid.ColsWidth.Length > 0)
                     {
-                        var acountAddNullItems = uniformGrid.ColsWidth.Length - (datasource.Items.Count % uniformGrid.ColsWidth.Length);
+                        var acountAddNullItems = uniformGrid.ColsWidth.Length - (dataSource.Items.Count % uniformGrid.ColsWidth.Length);
                         if (acountAddNullItems > 0)
                         {
                             for (int j = 0; j < acountAddNullItems; j++)
