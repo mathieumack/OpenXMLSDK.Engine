@@ -919,7 +919,7 @@ namespace SampleTest.Content
                 DataSourceKey = "#Datasource#"
             };
 
-            //page5.ChildElements.Add(tableDataSourceWithBeforeAfter);
+            page5.ChildElements.Add(tableDataSourceWithBeforeAfter);
 
             doc.Pages.Add(page5);
 
@@ -1057,7 +1057,7 @@ namespace SampleTest.Content
                 DataSourceKey = "#DatasourceTableFusion#"
             };
 
-            //page7.ChildElements.Add(tableDataSourceWithCellFusion);
+            page7.ChildElements.Add(tableDataSourceWithCellFusion);
 
             doc.Pages.Add(page7);
 
@@ -1140,7 +1140,7 @@ namespace SampleTest.Content
                 DataSourceKey = "#SubstitutableStringDataSourceModel#"
             };
 
-            //page9.ChildElements.Add(substitutableTableDataSource);
+            page9.ChildElements.Add(substitutableTableDataSource);
 
             doc.Pages.Add(page9);
 
