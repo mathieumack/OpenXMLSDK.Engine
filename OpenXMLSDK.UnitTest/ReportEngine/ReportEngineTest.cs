@@ -21,7 +21,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
 {
     public static class ReportEngineTest
     {
-        public static void ReportEngine(string filePath, string documentName)
+        public static void ReportEngine(string filePath, string documentName, bool useSeveralReports = false)
         {
             // Debut test report engine
             using (var word = new WordManager())
@@ -53,13 +53,24 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                     if (!documentName.EndsWith(".docx"))
                         documentName = string.Concat(documentName, ".docx");
 
-                    var stream = File.ReadAllText(filePath);
-                    var report = JsonConvert.DeserializeObject<Report>(stream, new JsonSerializerSettings() { Converters = converters });
+                    if (useSeveralReports)
+                    {
+                        var stream = File.ReadAllText(filePath);
+                        var reports = JsonConvert.DeserializeObject<IList<Report>>(stream, new JsonSerializerSettings() { Converters = converters });
+                        var res = word.GenerateReport(reports, true, new CultureInfo("en-US"));
 
-                    var res = word.GenerateReport(report.Document, report.ContextModel, new CultureInfo("en-US"));
+                        // test ecriture fichier
+                        File.WriteAllBytes(documentName, res);
+                    }
+                    else
+                    {
+                        var stream = File.ReadAllText(filePath);
+                        var report = JsonConvert.DeserializeObject<Report>(stream, new JsonSerializerSettings() { Converters = converters });
+                        var res = word.GenerateReport(report.Document, report.ContextModel, new CultureInfo("en-US"));
 
-                    // test ecriture fichier
-                    File.WriteAllBytes(documentName, res);
+                        // test ecriture fichier
+                        File.WriteAllBytes(documentName, res);
+                    }
                 }
             }
         }

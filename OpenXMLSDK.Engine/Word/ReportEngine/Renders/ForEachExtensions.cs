@@ -1,9 +1,8 @@
-﻿using DocumentFormat.OpenXml;
+﻿using System;
+using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using OpenXMLSDK.Engine.ReportEngine.DataContext;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models;
-using System;
-using System.Collections.Generic;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 {
@@ -48,6 +47,16 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     // Specific rule for TemplateModels in childs :
                     if (clone is TemplateModel)
                     {
+                        // Search the template ID to use
+                        var templateIdToFindInCurrentContext = (clone as TemplateModel).TemplateId;
+                        var templateIdToUse = item.GetItem<StringModel>(templateIdToFindInCurrentContext)?.Value;
+                        if (string.IsNullOrWhiteSpace(templateIdToUse))
+                            continue;
+                                               
+                        // Update template ID with the ID presents in the context
+                        (clone as TemplateModel).TemplateId = templateIdToUse;
+                              
+                        // Fill document
                         var templateElements = (clone as TemplateModel).ExtractTemplateItems(document);
                         foreach (var templateEement in templateElements)
                             templateEement.Render(document, parent, item, documentPart, formatProvider);
