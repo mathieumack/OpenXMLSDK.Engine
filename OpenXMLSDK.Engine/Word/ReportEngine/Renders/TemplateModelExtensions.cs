@@ -36,5 +36,22 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 
             return templateDefinition.Clone().ChildElements;
         }
+
+        /// <summary>
+        /// Replace a template ID by his context definition
+        /// </summary>
+        /// <param name="templateModel">Template model to update</param>
+        /// <param name="contextToUpdate">Context model containing the template ID</param>
+        public static void ReplaceItem(this TemplateModel templateModel, ContextModel contextContainingTheID)
+        {
+            // Search the template ID to use
+            var templateIdToFindInCurrentContext = templateModel.TemplateId;
+            var templateIdToUse = contextContainingTheID.GetItem<StringModel>(templateIdToFindInCurrentContext)?.Value;
+            if (string.IsNullOrWhiteSpace(templateIdToUse))
+                return;
+                        
+            // Update template ID with the ID presents in the context
+            templateModel.TemplateId = templateIdToUse;
+        }
     }
 }
