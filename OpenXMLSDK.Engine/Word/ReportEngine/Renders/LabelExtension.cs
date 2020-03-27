@@ -120,11 +120,6 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 }
             }
 
-            if (label.IsTabulation)
-            {
-                run.AppendChild(new TabChar());
-            }
-
             var runProperty = new RunProperties();
             if (!string.IsNullOrWhiteSpace(label.FontName))
                 runProperty.RunFonts = new RunFonts() { Ascii = label.FontName, HighAnsi = label.FontName, EastAsia = label.FontName, ComplexScript = label.FontName };
@@ -140,6 +135,8 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 runProperty.Italic = new Italic() { Val = OnOffValue.FromBoolean(label.Italic.Value) };
             if (label.IsPageNumber)
                 run.AppendChild(new PageNumber());
+            if (label.IsTabulation)
+                run.AppendChild(new TabChar());
 
             if (label.Underline != null)
             {
