@@ -20,6 +20,11 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models
         public int ColSpan { get; set; }
 
         /// <summary>
+        /// DoubleModelobject linked that will be linked to the ColSpan property
+        /// </summary>
+        public string ColSpanKey { get; set; }
+
+        /// <summary>
         /// Row Span : Cell is merged vertically : it's the first merged cell
         /// </summary>
         public bool Fusion { get; set; }

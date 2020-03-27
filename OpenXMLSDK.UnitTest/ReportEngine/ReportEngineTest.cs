@@ -103,7 +103,8 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             ContextModel row1 = new ContextModel()
                         .AddString("#Cell1#", "Col 1 Row 1")
                         .AddString("#Cell2#", "Col 2 Row 1")
-                        .AddString("#Label#", "Label 1");
+                        .AddString("#Label#", "Label 1")
+                        .AddDouble("#ColSpan#", 2, "{0}");
 
             ContextModel context = new ContextModel()
                         .AddBoolean("#NoRow#", false)
@@ -680,10 +681,12 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                     {
                         new Cell()
                         {
+                            ColSpanKey = "#ColSpan#",
                             Shading = "FFA0FF",
                             ChildElements = new List<BaseElement>()
                             {
-                                new Label() { Text = "#Cell1#" }
+                                new Label() { Text = "#Cell1#" },
+                                new Label() { Text = "ColSpan 2" },
                             }
                         },
                         new Cell()

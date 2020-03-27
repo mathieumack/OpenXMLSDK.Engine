@@ -293,6 +293,11 @@ namespace OpenXMLSDK.Engine.ReportEngine.DataContext
                 var item = GetItem<BooleanModel>(element.FusionChildKey);
                 element.FusionChild = item.Value;
             }
+            if (!string.IsNullOrEmpty(element.ColSpanKey) && ExistItem<DoubleModel>(element.ColSpanKey))
+            {
+                var item = GetItem<DoubleModel>(element.ColSpanKey);
+                element.ColSpan = (int)item.Value;
+            }
             SetVisibilityFromContext(element);
         }
 
