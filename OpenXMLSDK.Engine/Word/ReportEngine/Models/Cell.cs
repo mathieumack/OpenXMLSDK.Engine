@@ -40,6 +40,11 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models
         public string FusionChildKey { get; set; }
 
         /// <summary>
+        /// No wrap text 
+        /// </summary>
+        public bool NoWrap { get; set; }
+
+        /// <summary>
         /// Justification/ horizontal alignment of cells content
         /// </summary>
         public JustificationValues? Justification { get; set; }
