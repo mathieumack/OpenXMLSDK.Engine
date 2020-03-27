@@ -9,7 +9,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models
     /// Model for a label
     /// </summary>
     public class Label : BaseElement
-    {        
+    {
         /// <summary>
         /// Define if the content is an html content
         /// </summary>
@@ -25,6 +25,11 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models
         /// if true, the label contains the page number
         /// </summary>
         public bool IsPageNumber { get; set; }
+
+        /// <summary>
+        /// if true, the label make a tabulation
+        /// </summary>
+        public bool IsTabulation { get; set; }
 
         /// <summary>
         /// Indicate if the engine must preserve empty space or space before or after text in generation

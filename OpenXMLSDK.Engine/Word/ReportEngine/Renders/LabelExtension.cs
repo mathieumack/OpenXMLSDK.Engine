@@ -120,6 +120,11 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 }
             }
 
+            if (label.IsTabulation)
+            {
+                run.AppendChild(new TabChar());
+            }
+
             var runProperty = new RunProperties();
             if (!string.IsNullOrWhiteSpace(label.FontName))
                 runProperty.RunFonts = new RunFonts() { Ascii = label.FontName, HighAnsi = label.FontName, EastAsia = label.FontName, ComplexScript = label.FontName };
@@ -161,11 +166,11 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// <param name="label"></param>
         private static void ApplyTransformOperations(Label label)
         {
-            if(!string.IsNullOrWhiteSpace(label.Text) && label.TransformOperations != null)
+            if (!string.IsNullOrWhiteSpace(label.Text) && label.TransformOperations != null)
             {
-                foreach(var operation in label.TransformOperations.Where(e => e != null))
+                foreach (var operation in label.TransformOperations.Where(e => e != null))
                 {
-                    switch(operation.TransformOperationType)
+                    switch (operation.TransformOperationType)
                     {
                         case LabelTransformOperationType.ToUpper:
                             label.Text = label.Text.ToUpper();

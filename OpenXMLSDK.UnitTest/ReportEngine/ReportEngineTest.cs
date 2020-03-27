@@ -533,6 +533,76 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             page1.ChildElements.Add(new TemplateModel() { TemplateId = "Template 1" });
             page1.ChildElements.Add(new TemplateModel() { TemplateId = "Template 1" });
 
+            page1.ChildElements.Add(new Paragraph()
+            {
+                ParagraphStyleId = "Red",
+                ChildElements = new List<BaseElement>()
+                {
+                    new Label(){Text = "Tabulation 1"},
+                    new Tabulation()
+                    {
+                        TabStopPosition = 2500,
+                        Leader = TabStopLeaderCharValues.dot,
+                        Alignment = TabAlignmentValues.Right
+                    },
+                    new Tabulation()
+                    {
+                        TabStopPosition = 5000,
+                        Leader = TabStopLeaderCharValues.underscore,
+                        Alignment = TabAlignmentValues.Right
+                    }
+                }
+            });
+
+            page1.ChildElements.Add(new Paragraph()
+            {
+                ParagraphStyleId = "Red",
+                ChildElements = new List<BaseElement>()
+                {
+                    new Label(){Text = "Tabulation 2", IsTabulation = true},
+                    new Label(){Text = "After tabulation"}
+                }
+            });
+
+            page1.ChildElements.Add(new Paragraph()
+            {
+                ParagraphStyleId = "Red",
+                ChildElements = new List<BaseElement>()
+                {
+                    new Label(){Text = "Tabulation 3"},
+                    new Tabulation()
+                    {
+                        TabStopPosition = 10000,
+                        Leader = TabStopLeaderCharValues.dot,
+                        Alignment = TabAlignmentValues.Right,
+                        Text = new Label()
+                        {
+                            Text = "test",
+                            FontColor = "FFFF00"
+                        }
+                    }
+                }
+            });
+
+            page1.ChildElements.Add(new Paragraph()
+            {
+                ParagraphStyleId = "Red",
+                ChildElements = new List<BaseElement>()
+                {
+                    new Tabulation()
+                    {
+                        TabStopPosition = 10000,
+                        Leader = TabStopLeaderCharValues.underscore,
+                        Alignment = TabAlignmentValues.Right,
+                        Text = new Label()
+                        {
+                            FontColor = "FFFF00"
+                        }
+                    },
+                    new Label(){Text = "Tabulation 4"}
+                }
+            });
+
             var p2 = new Paragraph();
             p2.Shading = "#ParagraphShading#";
             p2.ChildElements.Add(new Label() { Text = "   texte paragraph2 avec espace avant", FontSize = "20", SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve });
