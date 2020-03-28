@@ -553,6 +553,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                         {
                             new Cell()
                             {
+                                NoWrap = true,
                                 VerticalAlignment = TableVerticalAlignmentValues.Center,
                                 Justification = JustificationValues.Center,
                                 ChildElements = new List<BaseElement>()
@@ -564,7 +565,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                                         Path = @"Resources\Desert.jpg",
                                         ImagePartType = OpenXMLSDK.Engine.Packaging.ImagePartType.Jpeg
                                     },
-                                    new Label() { Text = "Cell 1 - Label in a cell" },
+                                    new Label() { Text = "Cell 1 No Wrap - Label in a cell" },
                                     new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "Cell 1 - Second paragraph" } } }
                                 },
                                 Fusion = true
