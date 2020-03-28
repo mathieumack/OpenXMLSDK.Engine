@@ -1,4 +1,5 @@
-﻿using OpenXMLSDK.Engine.Word.ReportEngine.Models.ExtendedModels;
+﻿using OpenXMLSDK.Engine.ReportEngine.DataContext;
+using OpenXMLSDK.Engine.Word.ReportEngine.Models.ExtendedModels;
 using OpenXMLSDK.Engine.Word.Tables;
 using OpenXMLSDK.Engine.Word.Tables.Models;
 
@@ -20,7 +21,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models
         public int ColSpan { get; set; }
 
         /// <summary>
-        /// DoubleModelobject linked that will be linked to the ColSpan property
+        /// <see cref="DoubleModel"/> linked that will be linked to the ColSpan property
         /// </summary>
         public string ColSpanKey { get; set; }
 
@@ -30,7 +31,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models
         public bool Fusion { get; set; }
 
         /// <summary>
-        /// BooleanModelobject linked that will be linked to the Fusion property
+        /// <see cref="BooleanModel"/> linked that will be linked to the Fusion property
         /// </summary>
         public string FusionKey { get; set; }
 
@@ -40,7 +41,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models
         public bool FusionChild { get; set; }
 
         /// <summary>
-        /// BooleanModelobject linked that will be linked to the FusionChild property
+        /// <see cref="BooleanModel"/> linked that will be linked to the FusionChild property
         /// </summary>
         public string FusionChildKey { get; set; }
 
