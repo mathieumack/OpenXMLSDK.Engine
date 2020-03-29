@@ -1,10 +1,10 @@
-﻿using DocumentFormat.OpenXml;
+﻿using System;
+using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using Newtonsoft.Json;
-using OpenXMLSDK.Engine.Word.ReportEngine.Models;
 using OpenXMLSDK.Engine.ReportEngine.DataContext;
+using OpenXMLSDK.Engine.Word.ReportEngine.Models;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts;
-using System;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 {
@@ -84,6 +84,10 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             else if (element is HtmlContent)
             {
                 (element as HtmlContent).Render(parent, context, documentPart, formatProvider);
+            }
+            else if (element is SimpleField)
+            {
+                (element as SimpleField).Render(parent, context, documentPart, formatProvider);
             }
 
             if (element.ChildElements != null && element.ChildElements.Count > 0)

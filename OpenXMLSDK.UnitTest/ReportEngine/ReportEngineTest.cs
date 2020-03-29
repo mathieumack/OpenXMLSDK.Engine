@@ -447,6 +447,32 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             return context;
         }
 
+        private static Paragraph CreateTableofContentItem()
+        {
+            return new Paragraph
+            {
+                ParagraphStyleId = "TableOfContent",
+                SpacingAfter = 0,
+                SpacingBefore = 0,
+                ChildElements = new List<BaseElement>()
+                {
+                    new Label()
+                    {
+                        Text ="Table of content simply",
+                        SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve
+                    }
+                }
+            };
+        }
+
+        private static SimpleField PageCrossReference(string anchor)
+        {
+            return new SimpleField()
+            {
+                Instruction = anchor
+            };
+        }
+
         /// <summary>
         /// Generate the template
         /// </summary>
@@ -456,6 +482,26 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             var doc = new Document();
             doc.Styles.Add(new Style() { StyleId = "Red", FontColor = "FF0050", FontSize = "42" });
             doc.Styles.Add(new Style() { StyleId = "Yellow", FontColor = "FFFF00", FontSize = "40" });
+            doc.Styles.Add(new Style()
+            {
+                StyleId = "TableOfContent",
+                Type = StyleValues.Paragraph,
+                CustomStyle = true,
+                FontName = "Arial",
+                FontSize = "20",
+                //PrimaryStyle = true,
+                FontColor = "FFFF00",
+            });
+            doc.Styles.Add(new Style()
+            {
+                StyleId = "TOC 1",
+                Type = StyleValues.Paragraph,
+                PrimaryStyle = false,
+                CustomStyle = false,
+                FontName = "Arial",
+                FontSize = "30",
+                FontColor = "FF0050",
+            });
 
             var page1 = new Page();
             page1.Margin = new SpacingModel() { Top = 845, Bottom = 1418, Left = 567, Right = 567, Header = 709, Footer = 709 };
@@ -465,6 +511,34 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             doc.Pages.Add(page2);
 
             // Template 1 :
+            page1.ChildElements.Add(
+                new Paragraph
+                {
+                    SpacingAfter = 0,
+                    SpacingBefore = 0,
+                    ChildElements = new List<BaseElement>
+                    {
+                           new SimpleField()
+                            {
+                                Instruction = @"TOC \t TableOfContent;1;",
+                                IsDirty = true,
+                            }
+                    }
+                }
+            );
+
+            page1.ChildElements.Add(
+                new Paragraph
+                {
+                    ChildElements = new List<BaseElement>
+                    {
+                       new Hyperlink(){Anchor = "bmk", Text = new Label(){Text = "link to bookmark with Page Ref : ", SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve } },
+                       PageCrossReference("PAGEREF bmk")
+                    }
+                }
+            );
+
+            page1.ChildElements.Add(CreateTableofContentItem());
 
             var paragraph = new Paragraph();
             paragraph.ChildElements.Add(new Label() { Text = "Label without special character (éèàù).", FontSize = "30", FontName = "Arial" });
@@ -1114,10 +1188,26 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             doc.Pages.Add(page7);
 
             // page 8
+
             var page8 = new Page();
             var p8 = new Paragraph() { FontColor = "FF0000", FontSize = "26" };
             p8.ChildElements.Add(new Label() { Text = "Label with" + Environment.NewLine + Environment.NewLine + "A new line" });
             page8.ChildElements.Add(p8);
+
+            page8.ChildElements.Add(
+                new Paragraph
+                {
+                    ChildElements = new List<BaseElement>
+                        {
+                           new Label()
+                           {
+                               Text = "Page Ref bookmark",
+                           },
+                           new BookmarkStart() {Id = "bmk", Name = "bmk" },
+                           new BookmarkEnd(){Id = "bmk"}
+                        }
+                }
+            );
 
             doc.Pages.Add(page8);
 
