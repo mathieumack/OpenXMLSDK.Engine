@@ -27,13 +27,10 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         {
             context.ReplaceItem(forEach, formatProvider);
 
-            if (string.IsNullOrEmpty(forEach.DataSourceKey)
-                || !context.ExistItem<DataSourceModel>(forEach.DataSourceKey))
-                    return;
-
-            var datasource = context.GetItem<DataSourceModel>(forEach.DataSourceKey);
-            if (datasource == null || datasource.Items == null)
+            if (!context.TryGetItem(forEach.DataSourceKey, out DataSourceModel datasource) || datasource.Items == null)
+            {
                 return;
+            }
 
             int i = 0;
             foreach (var item in datasource.Items)

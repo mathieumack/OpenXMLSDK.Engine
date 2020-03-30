@@ -1,8 +1,8 @@
-﻿using DocumentFormat.OpenXml;
+﻿using System;
+using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using OpenXMLSDK.Engine.ReportEngine.DataContext;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models;
-using System;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 {
@@ -26,16 +26,13 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         {
             context.ReplaceItem(forEach, formatProvider);
 
-            if (string.IsNullOrEmpty(forEach.DataSourceKey)
-                || !context.ExistItem<DataSourceModel>(forEach.DataSourceKey))
+            if (!context.TryGetItem(forEach.DataSourceKey, out DataSourceModel dataSource) || dataSource.Items == null)
+            {
                 return;
-
-            var datasource = context.GetItem<DataSourceModel>(forEach.DataSourceKey);
-            if (datasource == null || datasource.Items == null)
-                return;
+            }
 
             int i = 0;
-            foreach (var item in datasource.Items)
+            foreach (var item in dataSource.Items)
             {
                 var newPage = forEach.Clone();
                 // doc inherit margin from page
@@ -52,7 +49,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     item.AddItem("#" + forEach.AutoContextAddItemsPrefix + "_ForEachPage_IsFirstItem#", new BooleanModel(i == 0));
                     item.AddItem("#" + forEach.AutoContextAddItemsPrefix + "_ForEachPage_IsNotFirstItem#", new BooleanModel(i > 0));
                     // Is last item
-                    item.AddItem("#" + forEach.AutoContextAddItemsPrefix + "_ForEachPage_IsLastItem#", new BooleanModel(i == datasource.Items.Count - 1));
+                    item.AddItem("#" + forEach.AutoContextAddItemsPrefix + "_ForEachPage_IsLastItem#", new BooleanModel(i == dataSource.Items.Count - 1));
                     // Index of the element (Based on 0, and based on 1)
                     item.AddItem("#" + forEach.AutoContextAddItemsPrefix + "_ForEachPage_IndexBaseZero#", new StringModel(i.ToString()));
                     item.AddItem("#" + forEach.AutoContextAddItemsPrefix + "_ForEachPage_IndexBaseOne#", new StringModel((i + 1).ToString()));
