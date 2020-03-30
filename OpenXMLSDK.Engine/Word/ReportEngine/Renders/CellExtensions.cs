@@ -1,12 +1,12 @@
-﻿using System.Linq;
+﻿using System;
+using System.Globalization;
+using System.Linq;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
+using OpenXMLSDK.Engine.Platform.Word.Extensions;
 using OpenXMLSDK.Engine.ReportEngine.DataContext;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models;
-using System.Globalization;
-using OpenXMLSDK.Engine.Platform.Word.Extensions;
-using System;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 {
@@ -51,6 +51,9 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 
             if (cell.CellWidth != null)
                 cellProp.AppendChild(new TableCellWidth() { Width = cell.CellWidth.Width, Type = cell.CellWidth.Type.ToOOxml() });
+
+            if (cell.NoWrap)
+                cellProp.AppendChild(new NoWrap());
 
             // manage cell column and row span
             if (cell.ColSpan > 1)
@@ -134,7 +137,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     element.InheritFromParent(cell);
                     element.Render(document, r, context, documentPart, formatProvider);
                 }
-            }      
+            }
 
             return wordCell;
         }
