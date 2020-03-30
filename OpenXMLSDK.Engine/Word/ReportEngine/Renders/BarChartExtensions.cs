@@ -34,9 +34,8 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             if (!string.IsNullOrWhiteSpace(barChart.DataSourceKey))
             {
                 // We construct categories and series from the context object
-                if (context.ExistItem<BarChartModel>(barChart.DataSourceKey))
+                if (context.TryGetItem(barChart.DataSourceKey, out BarChartModel contextModel))
                 {
-                    var contextModel = context.GetItem<BarChartModel>(barChart.DataSourceKey);
                     if (contextModel.BarChartContent != null && contextModel.BarChartContent.Categories != null
                        && contextModel.BarChartContent.Series != null)
                     {
@@ -60,10 +59,8 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     else
                         return runItem;
                 }
-                else if (context.ExistItem<MultipleSeriesChartModel>(barChart.DataSourceKey)) //MultipleSeriesChartModel
+                else if (context.TryGetItem(barChart.DataSourceKey, out MultipleSeriesChartModel multipleSeriesContextModel)) //MultipleSeriesChartModel
                 {
-                    var multipleSeriesContextModel = context.GetItem<MultipleSeriesChartModel>(barChart.DataSourceKey);
-
                     if (multipleSeriesContextModel.ChartContent != null && multipleSeriesContextModel.ChartContent.Categories != null
                      && multipleSeriesContextModel.ChartContent.Series != null)
                     {
@@ -316,7 +313,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 
             // Add the Value Axis.
             dc.ValueAxis valAx = plotArea.AppendChild<dc.ValueAxis>(new dc.ValueAxis(new dc.AxisId() { Val = new UInt32Value(48672768u) },
-                chartModel.ValuesAxisScaling?.GetScaling() ?? 
+                chartModel.ValuesAxisScaling?.GetScaling() ??
                 new dc.Scaling(new dc.Orientation()
                 {
                     Val = new EnumValue<dc.OrientationValues>(dc.OrientationValues.MinMax)

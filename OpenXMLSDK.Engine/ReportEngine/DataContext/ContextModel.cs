@@ -41,14 +41,6 @@ namespace OpenXMLSDK.Engine.ReportEngine.DataContext
 
         #region Methods
 
-        public T GetItem<T>(string key) where T : BaseModel
-        {
-            if (datas.ContainsKey(key))
-                return (T)datas[key];
-            else
-                return default(T);
-        }
-
         public void AddItem<T>(string key, T item) where T : BaseModel
         {
             if (item != null)
@@ -62,7 +54,26 @@ namespace OpenXMLSDK.Engine.ReportEngine.DataContext
 
         public bool ExistItem<T>(string key) where T : BaseModel
         {
-            return !string.IsNullOrWhiteSpace(key) && datas.ContainsKey(key) && datas[key] is T;
+            return TryGetItem<T>(key, out _);
+        }
+
+        public T GetItem<T>(string key) where T : BaseModel
+        {
+            TryGetItem(key, out T item);
+            return item;
+        }
+
+        public bool TryGetItem<T>(string key, out T item) where T : BaseModel
+        {
+            if (!string.IsNullOrWhiteSpace(key) && datas.TryGetValue(key, out BaseModel rawModel))
+            {
+                item = rawModel as T;
+            }
+            else
+            {
+                item = default;
+            }
+            return item != default;
         }
 
         public string ReplaceText(string value, IFormatProvider formatProvider)
@@ -74,16 +85,26 @@ namespace OpenXMLSDK.Engine.ReportEngine.DataContext
                 foreach (Match match in Regex.Matches(value, pattern))
                 {
                     var key = match.Value;
-                    if (ExistItem<StringModel>(key))
-                        result = result.Replace(key, GetItem<StringModel>(key).Value);
-                    else if (ExistItem<DoubleModel>(key))
-                        result = result.Replace(key, GetItem<DoubleModel>(key).Render(formatProvider));
-                    else if (ExistItem<DateTimeModel>(key))
-                        result = result.Replace(key, GetItem<DateTimeModel>(key).Render(formatProvider));
-                    else if (ExistItem<SubstitutableStringModel>(key))
-                        result = result.Replace(key, GetItem<SubstitutableStringModel>(key).Render(formatProvider));
+                    if (TryGetItem(key, out StringModel stringItem))
+                    {
+                        result = result.Replace(key, stringItem.Value);
+                    }
+                    else if (TryGetItem(key, out DoubleModel doubleItem))
+                    {
+                        result = result.Replace(key, doubleItem.Render(formatProvider));
+                    }
+                    else if (TryGetItem(key, out DateTimeModel dateItem))
+                    {
+                        result = result.Replace(key, dateItem.Render(formatProvider));
+                    }
+                    else if (TryGetItem(key, out SubstitutableStringModel subStringItem))
+                    {
+                        result = result.Replace(key, subStringItem.Render(formatProvider));
+                    }
                     else
+                    {
                         result = result.Replace(key, string.Empty);
+                    }
                 }
             }
             return result;
@@ -129,21 +150,20 @@ namespace OpenXMLSDK.Engine.ReportEngine.DataContext
             if (!string.IsNullOrWhiteSpace(element.ContextKey))
             {
                 // On va tenter de charger l'objet depuis sa base64 :
-                if (ExistItem<Base64ContentModel>(element.ContextKey))
+                if (TryGetItem(element.ContextKey, out Base64ContentModel base64Item))
                 {
-                    var item = GetItem<Base64ContentModel>(element.ContextKey);
-                    if (!string.IsNullOrWhiteSpace(item.Base64Content))
-                        element.Content = Convert.FromBase64String(item.Base64Content);
+                    if (!string.IsNullOrWhiteSpace(base64Item.Base64Content))
+                    {
+                        element.Content = Convert.FromBase64String(base64Item.Base64Content);
+                    }
                 }
-                else if (ExistItem<ByteContentModel>(element.ContextKey))
+                else if (TryGetItem(element.ContextKey, out ByteContentModel byteItem))
                 {
-                    var item = GetItem<ByteContentModel>(element.ContextKey);
-                    element.Content = item.Content;
+                    element.Content = byteItem.Content;
                 }
-                else if (ExistItem<FileLinkModel>(element.ContextKey))
+                else if (TryGetItem(element.ContextKey, out FileLinkModel fileLinkItem))
                 {
-                    var item = GetItem<FileLinkModel>(element.ContextKey);
-                    element.Path = item.Value;
+                    element.Path = fileLinkItem.Value;
                 }
             }
             element.ContextKey = string.Empty;
@@ -164,9 +184,8 @@ namespace OpenXMLSDK.Engine.ReportEngine.DataContext
                 element.FontColor = ReplaceText(element.FontColor, formatProvider);
             if (!string.IsNullOrEmpty(element.Shading))
                 element.Shading = ReplaceText(element.Shading, formatProvider);
-            if (!string.IsNullOrEmpty(element.BoldKey) && ExistItem<BooleanModel>(element.BoldKey))
+            if (TryGetItem(element.BoldKey, out BooleanModel item))
             {
-                var item = GetItem<BooleanModel>(element.BoldKey);
                 element.Bold = item.Value;
             }
             SetVisibilityFromContext(element);
@@ -196,9 +215,8 @@ namespace OpenXMLSDK.Engine.ReportEngine.DataContext
                 element.Id = ReplaceText(element.Id, formatProvider);
             if (!string.IsNullOrEmpty(element.Name))
                 element.Name = ReplaceText(element.Name, formatProvider);
-            if (!string.IsNullOrEmpty(element.BoldKey) && ExistItem<BooleanModel>(element.BoldKey))
+            if (TryGetItem(element.BoldKey, out BooleanModel item))
             {
-                var item = GetItem<BooleanModel>(element.BoldKey);
                 element.Bold = item.Value;
             }
             SetVisibilityFromContext(element);
@@ -213,9 +231,8 @@ namespace OpenXMLSDK.Engine.ReportEngine.DataContext
         {
             if (!string.IsNullOrEmpty(element.Id))
                 element.Id = ReplaceText(element.Id, formatProvider);
-            if (!string.IsNullOrEmpty(element.BoldKey) && ExistItem<BooleanModel>(element.BoldKey))
+            if (TryGetItem(element.BoldKey, out BooleanModel item))
             {
-                var item = GetItem<BooleanModel>(element.BoldKey);
                 element.Bold = item.Value;
             }
             SetVisibilityFromContext(element);
@@ -234,9 +251,8 @@ namespace OpenXMLSDK.Engine.ReportEngine.DataContext
             if (!string.IsNullOrEmpty(element.WebSiteUri))
                 element.WebSiteUri = ReplaceText(element.WebSiteUri, formatProvider);
 
-            if (!string.IsNullOrEmpty(element.BoldKey) && ExistItem<BooleanModel>(element.BoldKey))
+            if (TryGetItem(element.BoldKey, out BooleanModel item))
             {
-                var item = GetItem<BooleanModel>(element.BoldKey);
                 element.Bold = item.Value;
             }
             SetVisibilityFromContext(element);
@@ -257,15 +273,13 @@ namespace OpenXMLSDK.Engine.ReportEngine.DataContext
                 element.Shading = ReplaceText(element.Shading, formatProvider);
             if (element.Borders != null)
                 ReplaceBorders(element.Borders, formatProvider);
-            if (!string.IsNullOrEmpty(element.BoldKey) && ExistItem<BooleanModel>(element.BoldKey))
+            if (TryGetItem(element.BoldKey, out BooleanModel item))
             {
-                var item = GetItem<BooleanModel>(element.BoldKey);
                 element.Bold = item.Value;
             }
-            if (!string.IsNullOrEmpty(element.PageBreakBeforeKey) && ExistItem<BooleanModel>(element.PageBreakBeforeKey))
+            if (TryGetItem(element.PageBreakBeforeKey, out BooleanModel pageBreakItem))
             {
-                var item = GetItem<BooleanModel>(element.PageBreakBeforeKey);
-                element.PageBreakBefore = item.Value;
+                element.PageBreakBefore = pageBreakItem.Value;
             }
             SetVisibilityFromContext(element);
         }
@@ -283,20 +297,17 @@ namespace OpenXMLSDK.Engine.ReportEngine.DataContext
                 element.Shading = ReplaceText(element.Shading, formatProvider);
             if (element.Borders != null)
                 ReplaceBorders(element.Borders, formatProvider);
-            if (ExistItem<BooleanModel>(element.FusionKey))
+            if (TryGetItem(element.FusionKey, out BooleanModel fusionItem))
             {
-                var item = GetItem<BooleanModel>(element.FusionKey);
-                element.Fusion = item.Value;
+                element.Fusion = fusionItem.Value;
             }
-            if (ExistItem<BooleanModel>(element.FusionChildKey))
+            if (TryGetItem(element.FusionChildKey, out BooleanModel fusionChildItem))
             {
-                var item = GetItem<BooleanModel>(element.FusionChildKey);
-                element.FusionChild = item.Value;
+                element.FusionChild = fusionChildItem.Value;
             }
-            if (ExistItem<DoubleModel>(element.ColSpanKey))
+            if (TryGetItem(element.ColSpanKey, out DoubleModel colSpanItem))
             {
-                var item = GetItem<DoubleModel>(element.ColSpanKey);
-                element.ColSpan = (int)item.Value;
+                element.ColSpan = (int)colSpanItem.Value;
             }
             SetVisibilityFromContext(element);
         }
@@ -319,9 +330,8 @@ namespace OpenXMLSDK.Engine.ReportEngine.DataContext
 
         private void SetVisibilityFromContext(BaseElement element)
         {
-            if (!string.IsNullOrWhiteSpace(element.ShowKey) && ExistItem<BooleanModel>(element.ShowKey))
+            if (TryGetItem(element.ShowKey, out BooleanModel item))
             {
-                var item = GetItem<BooleanModel>(element.ShowKey);
                 element.Show = item.Value;
             }
             element.ShowKey = string.Empty;
