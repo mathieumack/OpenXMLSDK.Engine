@@ -283,17 +283,17 @@ namespace OpenXMLSDK.Engine.ReportEngine.DataContext
                 element.Shading = ReplaceText(element.Shading, formatProvider);
             if (element.Borders != null)
                 ReplaceBorders(element.Borders, formatProvider);
-            if (!string.IsNullOrEmpty(element.FusionKey) && ExistItem<BooleanModel>(element.FusionKey))
+            if (ExistItem<BooleanModel>(element.FusionKey))
             {
                 var item = GetItem<BooleanModel>(element.FusionKey);
                 element.Fusion = item.Value;
             }
-            if (!string.IsNullOrEmpty(element.FusionChildKey) && ExistItem<BooleanModel>(element.FusionChildKey))
+            if (ExistItem<BooleanModel>(element.FusionChildKey))
             {
                 var item = GetItem<BooleanModel>(element.FusionChildKey);
                 element.FusionChild = item.Value;
             }
-            if (!string.IsNullOrEmpty(element.ColSpanKey) && ExistItem<DoubleModel>(element.ColSpanKey))
+            if (ExistItem<DoubleModel>(element.ColSpanKey))
             {
                 var item = GetItem<DoubleModel>(element.ColSpanKey);
                 element.ColSpan = (int)item.Value;
