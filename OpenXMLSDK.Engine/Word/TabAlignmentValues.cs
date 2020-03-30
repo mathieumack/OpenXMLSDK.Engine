@@ -5,50 +5,58 @@
     /// </summary>
     public enum TabAlignmentValues
     {
-        //
-        // Summary:
-        //     No Tab Stop.
-        //     When the item is serialized out as xml, its value is "clear".
+        /// <summary>
+        /// No Tab Stop.
+        /// <para>When the item is serialized out as xml, its value is "clear".</para>
+        /// </summary>
         Clear = 0,
-        //
-        // Summary:
-        //     Left Tab.
-        //     When the item is serialized out as xml, its value is "left".
+
+        /// <summary>
+        /// Left Tab.
+        /// <para>When the item is serialized out as xml, its value is "left".</para>
+        /// </summary>
         Left = 1,
-        //
-        // Summary:
-        //     start.
-        //     When the item is serialized out as xml, its value is "start".
+
+        /// <summary>
+        /// Start
+        /// <para>When the item is serialized out as xml, its value is "start".</para>
+        /// </summary>
         Start = 2,
-        //
-        // Summary:
-        //     Centered Tab.
-        //     When the item is serialized out as xml, its value is "center".
+
+        /// <summary>
+        /// Centered Tab.
+        /// <para>When the item is serialized out as xml, its value is "center".</para>
+        /// </summary>
         Center = 3,
-        //
-        // Summary:
-        //     Right Tab.
-        //     When the item is serialized out as xml, its value is "right".
+
+        /// <summary>
+        /// Right Tab.
+        /// <para>When the item is serialized out as xml, its value is "right".</para>
+        /// </summary>
         Right = 4,
-        //
-        // Summary:
-        //     end.
-        //     When the item is serialized out as xml, its value is "end".
+
+        /// <summary>
+        /// end.
+        /// <para>When the item is serialized out as xml, its value is "end".</para>
+        /// </summary>
         End = 5,
-        //
-        // Summary:
-        //     Decimal Tab.
-        //     When the item is serialized out as xml, its value is "decimal".
+
+        /// <summary>
+        /// Decimal Tab.
+        /// <para>When the item is serialized out as xml, its value is "decimal".</para>
+        /// </summary>
         Decimal = 6,
-        //
-        // Summary:
-        //     Bar Tab.
-        //     When the item is serialized out as xml, its value is "bar".
+
+        /// <summary>
+        /// Bar Tab.
+        /// <para>When the item is serialized out as xml, its value is "bar".</para>
+        /// </summary>
         Bar = 7,
-        //
-        // Summary:
-        //     List Tab.
-        //     When the item is serialized out as xml, its value is "num".
+
+        /// <summary>
+        /// List Tab.
+        /// <para>When the item is serialized out as xml, its value is "num".</para>
+        /// </summary>
         Number = 8
     }
 }
