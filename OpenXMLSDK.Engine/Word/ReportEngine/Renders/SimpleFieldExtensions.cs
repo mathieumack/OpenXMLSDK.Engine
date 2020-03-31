@@ -7,20 +7,30 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 {
     public static class SimpleFieldExtensions
     {
-        public static DocumentFormat.OpenXml.Wordprocessing.SimpleField Render(this Models.SimpleField simpleField,
-                                        OpenXmlElement parent,
-                                        ContextModel context,
-                                        OpenXmlPart documentPart,
-                                        IFormatProvider formatProvider)
+        /// <summary>
+        /// Render Simplefield
+        /// </summary>
+        /// <param name="simpleField"></param>
+        /// <param name="parent"></param>
+        /// <param name="context"></param>
+        /// <param name="documentPart"></param>
+        /// <param name="formatProvider"></param>
+        public static void Render(this Models.SimpleField simpleField,
+                                  OpenXmlElement parent,
+                                  ContextModel context,
+                                  OpenXmlPart documentPart,
+                                  IFormatProvider formatProvider)
         {
             context.ReplaceItem(simpleField, formatProvider);
 
-            DocumentFormat.OpenXml.Wordprocessing.SimpleField field = new DocumentFormat.OpenXml.Wordprocessing.SimpleField() { Instruction = simpleField.Instruction, Dirty = simpleField.IsDirty };
+            var field = new DocumentFormat.OpenXml.Wordprocessing.SimpleField()
+            {
+                Instruction = simpleField.Instruction,
+                Dirty = simpleField.IsDirty
+            };
             parent.AppendChild(field);
 
             simpleField.Text.Render(field, context, documentPart, formatProvider);
-
-            return field;
         }
     }
 }

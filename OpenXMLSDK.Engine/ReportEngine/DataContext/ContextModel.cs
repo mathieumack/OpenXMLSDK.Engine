@@ -266,7 +266,10 @@ namespace OpenXMLSDK.Engine.ReportEngine.DataContext
         public void ReplaceItem(SimpleField element, IFormatProvider formatProvider)
         {
             if (!string.IsNullOrEmpty(element.Instruction))
+            {
                 element.Instruction = ReplaceText(element.Instruction, formatProvider);
+            }
+
             SetVisibilityFromContext(element);
         }
 
