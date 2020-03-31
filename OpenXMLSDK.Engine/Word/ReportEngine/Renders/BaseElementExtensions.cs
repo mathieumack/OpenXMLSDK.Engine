@@ -1,10 +1,10 @@
-﻿using DocumentFormat.OpenXml;
+﻿using System;
+using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using Newtonsoft.Json;
-using OpenXMLSDK.Engine.Word.ReportEngine.Models;
 using OpenXMLSDK.Engine.ReportEngine.DataContext;
+using OpenXMLSDK.Engine.Word.ReportEngine.Models;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts;
-using System;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 {
@@ -33,57 +33,61 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             OpenXmlElement createdElement = null;
 
             // Keep this statement order, because of the UniformGrid inherits from Table
-            if (element is ForEach)
+            if (element is ForEach forEachElement)
             {
-                (element as ForEach).Render(document, parent, context, documentPart, formatProvider);
+                forEachElement.Render(document, parent, context, documentPart, formatProvider);
             }
-            else if (element is Label)
+            else if (element is Label labelElement)
             {
-                createdElement = (element as Label).Render(parent, context, documentPart, formatProvider);
+                createdElement = labelElement.Render(parent, context, documentPart, formatProvider);
             }
-            else if (element is BookmarkStart)
+            else if (element is BookmarkStart bookmarkStartElement)
             {
-                createdElement = (element as BookmarkStart).Render(parent, context, formatProvider);
+                createdElement = bookmarkStartElement.Render(parent, context, formatProvider);
             }
-            else if (element is BookmarkEnd)
+            else if (element is BookmarkEnd bookmarkEndElement)
             {
-                createdElement = (element as BookmarkEnd).Render(parent, context, formatProvider);
+                createdElement = bookmarkEndElement.Render(parent, context, formatProvider);
             }
-            else if (element is Hyperlink)
+            else if (element is Hyperlink hyperlinkElement)
             {
-                createdElement = (element as Hyperlink).Render(parent, context, documentPart, formatProvider);
+                createdElement = hyperlinkElement.Render(parent, context, documentPart, formatProvider);
             }
-            else if (element is Paragraph)
+            else if (element is Paragraph paragraphElement)
             {
-                createdElement = (element as Paragraph).Render(parent, context, formatProvider);
+                createdElement = paragraphElement.Render(parent, context, formatProvider);
             }
-            else if (element is Image)
+            else if (element is Image imageElement)
             {
-                createdElement = (element as Image).Render(parent, context, documentPart);
+                createdElement = imageElement.Render(parent, context, documentPart);
             }
-            else if (element is UniformGrid)
+            else if (element is UniformGrid uniformGridElement)
             {
-                createdElement = (element as UniformGrid).Render(document, parent, context, documentPart, formatProvider);
+                createdElement = uniformGridElement.Render(document, parent, context, documentPart, formatProvider);
             }
-            else if (element is Table)
+            else if (element is Table tableElement)
             {
-                createdElement = (element as Table).Render(document, parent, context, documentPart, formatProvider);
+                createdElement = tableElement.Render(document, parent, context, documentPart, formatProvider);
             }
-            else if (element is TableOfContents)
+            else if (element is TableOfContents tableOfContentsElement)
             {
-                (element as TableOfContents).Render(documentPart, context);
+                tableOfContentsElement.Render(documentPart, context);
             }
-            else if (element is BarModel)
+            else if (element is BarModel barModelElement)
             {
-                (element as BarModel).Render(parent, context, documentPart, formatProvider);
+                barModelElement.Render(parent, context, documentPart, formatProvider);
             }
-            else if (element is PieModel)
+            else if (element is PieModel pieModelElement)
             {
-                (element as PieModel).Render(parent, context, documentPart, formatProvider);
+                pieModelElement.Render(parent, context, documentPart, formatProvider);
             }
-            else if (element is HtmlContent)
+            else if (element is HtmlContent htmlContentElement)
             {
-                (element as HtmlContent).Render(parent, context, documentPart, formatProvider);
+                htmlContentElement.Render(parent, context, documentPart, formatProvider);
+            }
+            else if (element is SimpleField simpleFieldElement)
+            {
+                simpleFieldElement.Render(parent, context, documentPart, formatProvider);
             }
 
             if (element.ChildElements != null && element.ChildElements.Count > 0)
@@ -92,9 +96,9 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 {
                     var e = element.ChildElements[i];
 
-                    if (e is TemplateModel)
+                    if (e is TemplateModel templateModelChildElement)
                     {
-                        var elements = (e as TemplateModel).ExtractTemplateItems(document);
+                        var elements = templateModelChildElement.ExtractTemplateItems(document);
                         if (i == element.ChildElements.Count - 1)
                             element.ChildElements.AddRange(elements);
                         else
