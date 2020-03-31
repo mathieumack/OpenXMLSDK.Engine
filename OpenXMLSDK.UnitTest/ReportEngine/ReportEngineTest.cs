@@ -8,6 +8,7 @@ using OpenXMLSDK.Engine.ReportEngine.DataContext;
 using OpenXMLSDK.Engine.ReportEngine.DataContext.Charts;
 using OpenXMLSDK.Engine.ReportEngine.DataContext.FluentExtensions;
 using OpenXMLSDK.Engine.Word;
+using OpenXMLSDK.Engine.Word.Models;
 using OpenXMLSDK.Engine.Word.ReportEngine;
 using OpenXMLSDK.Engine.Word.ReportEngine.BatchModels;
 using OpenXMLSDK.Engine.Word.ReportEngine.BatchModels.Charts;
@@ -103,7 +104,8 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             ContextModel row1 = new ContextModel()
                         .AddString("#Cell1#", "Col 1 Row 1")
                         .AddString("#Cell2#", "Col 2 Row 1")
-                        .AddString("#Label#", "Label 1");
+                        .AddString("#Label#", "Label 1")
+                        .AddDouble("#ColSpan#", 2, "{0}");
 
             ContextModel context = new ContextModel()
                         .AddBoolean("#NoRow#", false)
@@ -441,7 +443,6 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                 )
             );
 
-
             context.AddCollection("#SubstitutableStringDataSourceModel#", rowSubstitutable);
 
             return context;
@@ -533,6 +534,100 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             page1.ChildElements.Add(new TemplateModel() { TemplateId = "Template 1" });
             page1.ChildElements.Add(new TemplateModel() { TemplateId = "Template 1" });
 
+            page1.ChildElements.Add(new Paragraph()
+            {
+                ParagraphStyleId = "Red",
+                ChildElements = new List<BaseElement>()
+                {
+                    new Label()
+                    {
+                        Text = "Tabulation 1"
+                    },
+                    new Label()
+                    {
+                        TabulationProperties = new TabulationPropertiesModel()
+                        {
+                            TabStopPosition = 2500,
+                            Leader = TabStopLeaderCharValues.dot,
+                            Alignment = TabAlignmentValues.Right
+                        }
+                    },
+                    new Label()
+                    {
+                        TabulationProperties = new TabulationPropertiesModel()
+                        {
+                            TabStopPosition = 5000,
+                            Leader = TabStopLeaderCharValues.underscore,
+                            Alignment = TabAlignmentValues.Right
+                        }
+                    }
+                }
+            });
+
+            page1.ChildElements.Add(new Paragraph()
+            {
+                ParagraphStyleId = "Red",
+                ChildElements = new List<BaseElement>()
+                {
+                    new Label(){Text = "Tabulation 2" },
+                    new Label()
+                    {
+                        TabulationProperties = new TabulationPropertiesModel()
+                    },
+                    new Label(){Text = "After tabulation"}
+                }
+            });
+
+            page1.ChildElements.Add(new Paragraph()
+            {
+                ParagraphStyleId = "Red",
+                ChildElements = new List<BaseElement>()
+                {
+                    new Label(){ Text = "Tabulation 3"},
+                    new Label(){Text = "test",FontColor = "FFFF00"},
+                    new Label()
+                    {
+                        TabulationProperties = new TabulationPropertiesModel()
+                        {
+                            TabStopPosition = 5000,
+                            Leader = TabStopLeaderCharValues.dot,
+                            Alignment = TabAlignmentValues.Right
+                        },
+                        FontColor = "FFFF00"
+                    },
+                    new Label()
+                    {
+                        TabulationProperties = new TabulationPropertiesModel()
+                        {
+                            TabStopPosition = 10000,
+                            Leader = TabStopLeaderCharValues.middleDot,
+                            Alignment = TabAlignmentValues.Right
+                        },
+                        FontColor = "0000FF"
+                    },
+                    new Label(){ Text = "After 2 Tabulations"}
+                }
+            });
+
+            page1.ChildElements.Add(new Paragraph()
+            {
+                ParagraphStyleId = "Red",
+                ChildElements = new List<BaseElement>()
+                {
+                    new Label()
+                    {
+                        TabulationProperties = new TabulationPropertiesModel()
+                        {
+                            TabStopPosition = 10000,
+                            Leader = TabStopLeaderCharValues.underscore,
+                            Alignment = TabAlignmentValues.Right,
+                        },
+                        FontColor = "FFFF00"
+                    },
+                    new Label(){Text = "Tabulation 4"}
+                }
+            });
+
             var p2 = new Paragraph();
             p2.Shading = "#ParagraphShading#";
             p2.ChildElements.Add(new Label() { Text = "   texte paragraph2 avec espace avant", FontSize = "20", SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve });
@@ -552,6 +647,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                         {
                             new Cell()
                             {
+                                NoWrap = true,
                                 VerticalAlignment = TableVerticalAlignmentValues.Center,
                                 Justification = JustificationValues.Center,
                                 ChildElements = new List<BaseElement>()
@@ -563,7 +659,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                                         Path = @"Resources\Desert.jpg",
                                         ImagePartType = OpenXMLSDK.Engine.Packaging.ImagePartType.Jpeg
                                     },
-                                    new Label() { Text = "Cell 1 - Label in a cell" },
+                                    new Label() { Text = "Cell 1 No Wrap - Label in a cell" },
                                     new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "Cell 1 - Second paragraph" } } }
                                 },
                                 Fusion = true
@@ -680,10 +776,12 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                     {
                         new Cell()
                         {
+                            ColSpanKey = "#ColSpan#",
                             Shading = "FFA0FF",
                             ChildElements = new List<BaseElement>()
                             {
-                                new Label() { Text = "#Cell1#" }
+                                new Label() { Text = "#Cell1#" },
+                                new Label() { Text = "ColSpan 2" },
                             }
                         },
                         new Cell()

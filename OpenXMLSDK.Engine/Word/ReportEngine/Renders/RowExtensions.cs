@@ -57,8 +57,10 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// <returns></returns>
         public static TableRow Render(this Row row, Models.Document document, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart, bool isHeader, bool isAlternateRow, IFormatProvider formatProvider)
         {
-            if (!string.IsNullOrWhiteSpace(row.ShowKey) && context.ExistItem<BooleanModel>(row.ShowKey) && !context.GetItem<BooleanModel>(row.ShowKey).Value)
+            if (context.TryGetItem(row.ShowKey, out BooleanModel showKey) && !showKey.Value)
+            {
                 return null;
+            }
 
             context.ReplaceItem(row, formatProvider);
 
@@ -66,14 +68,14 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 
             TableRowProperties wordRowProperties = new TableRowProperties();
             if (isHeader)
-            {                
+            {
                 wordRowProperties.AppendChild(new TableHeader() { Val = OnOffOnlyValues.On });
             }
             wordRow.AppendChild(wordRowProperties);
 
             if (row.RowHeight.HasValue)
             {
-                wordRowProperties.AppendChild(new TableRowHeight() { Val = UInt32Value.FromUInt32((uint)row.RowHeight.Value)});
+                wordRowProperties.AppendChild(new TableRowHeight() { Val = UInt32Value.FromUInt32((uint)row.RowHeight.Value) });
             }
 
             if (row.CantSplit)

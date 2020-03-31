@@ -52,6 +52,9 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             if (cell.CellWidth != null)
                 cellProp.AppendChild(new TableCellWidth() { Width = cell.CellWidth.Width, Type = cell.CellWidth.Type.ToOOxml() });
 
+            if (cell.NoWrap)
+                cellProp.AppendChild(new NoWrap());
+
             // manage cell column and row span
             if (cell.ColSpan > 1)
             {

@@ -1,10 +1,10 @@
-﻿using DocumentFormat.OpenXml;
+﻿using System;
+using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using Newtonsoft.Json;
-using OpenXMLSDK.Engine.Word.ReportEngine.Models;
 using OpenXMLSDK.Engine.ReportEngine.DataContext;
+using OpenXMLSDK.Engine.Word.ReportEngine.Models;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts;
-using System;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 {
