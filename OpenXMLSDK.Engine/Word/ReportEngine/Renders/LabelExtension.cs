@@ -56,15 +56,17 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// <returns></returns>
         private static AltChunk SetHtmlContent(Label label, OpenXmlElement parent, OpenXmlPart documentPart, AlternativeFormatImportPart formatImportPart)
         {
-            AltChunk altChunk = new AltChunk();
-            altChunk.Id = documentPart.GetIdOfPart(formatImportPart);
+            AltChunk altChunk = new AltChunk
+            {
+                Id = documentPart.GetIdOfPart(formatImportPart)
+            };
 
             using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(label.Text)))
             {
                 formatImportPart.FeedData(ms);
             }
 
-            OpenXmlElement paragraph = null;
+            OpenXmlElement paragraph;
             if (parent is DocumentFormat.OpenXml.Wordprocessing.Paragraph)
             {
                 paragraph = parent;
@@ -91,12 +93,29 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// <returns></returns>
         private static Run SetTextContent(Label label, OpenXmlElement parent)
         {
-            Run run = new Run();
+            var run = new Run();
 
             // Transform label Text before rendering :
             ApplyTransformOperations(label);
 
-            if (label.Text == null)
+            if (label.TabulationProperties != null && parent is DocumentFormat.OpenXml.Wordprocessing.Paragraph paragraph)
+            {
+                // Create tab
+                var tabs = new Tabs();
+                tabs.AppendChild(new TabStop()
+                {
+                    Val = (TabStopValues)label.TabulationProperties.Alignment,
+                    Leader = (DocumentFormat.OpenXml.Wordprocessing.TabStopLeaderCharValues)label.TabulationProperties.Leader,
+                    Position = label.TabulationProperties.TabStopPosition
+                });
+
+                // Add tab properties to paragraph
+                paragraph.ParagraphProperties.Append(tabs);
+
+                // Create effective tab
+                run.AppendChild(new TabChar());
+            }
+            else if (label.Text is null)
             {
                 run.AppendChild(new Text(label.Text)
                 {
@@ -122,19 +141,39 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 
             var runProperty = new RunProperties();
             if (!string.IsNullOrWhiteSpace(label.FontName))
+            {
                 runProperty.RunFonts = new RunFonts() { Ascii = label.FontName, HighAnsi = label.FontName, EastAsia = label.FontName, ComplexScript = label.FontName };
+            }
+
             if (!string.IsNullOrWhiteSpace(label.FontSize))
+            {
                 runProperty.FontSize = new FontSize() { Val = label.FontSize };
+            }
+
             if (!string.IsNullOrWhiteSpace(label.FontColor))
+            {
                 runProperty.Color = new Color() { Val = label.FontColor };
+            }
+
             if (!string.IsNullOrWhiteSpace(label.Shading))
+            {
                 runProperty.Shading = new Shading() { Fill = label.Shading };
+            }
+
             if (label.Bold.HasValue)
+            {
                 runProperty.Bold = new Bold() { Val = OnOffValue.FromBoolean(label.Bold.Value) };
+            }
+
             if (label.Italic.HasValue)
+            {
                 runProperty.Italic = new Italic() { Val = OnOffValue.FromBoolean(label.Italic.Value) };
+            }
+
             if (label.IsPageNumber)
+            {
                 run.AppendChild(new PageNumber());
+            }
 
             if (label.Underline != null)
             {
@@ -161,11 +200,11 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// <param name="label"></param>
         private static void ApplyTransformOperations(Label label)
         {
-            if(!string.IsNullOrWhiteSpace(label.Text) && label.TransformOperations != null)
+            if (!string.IsNullOrWhiteSpace(label.Text) && label.TransformOperations != null)
             {
-                foreach(var operation in label.TransformOperations.Where(e => e != null))
+                foreach (var operation in label.TransformOperations.Where(e => e != null))
                 {
-                    switch(operation.TransformOperationType)
+                    switch (operation.TransformOperationType)
                     {
                         case LabelTransformOperationType.ToUpper:
                             label.Text = label.Text.ToUpper();

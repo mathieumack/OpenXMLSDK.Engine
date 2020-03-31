@@ -8,6 +8,7 @@ using OpenXMLSDK.Engine.ReportEngine.DataContext;
 using OpenXMLSDK.Engine.ReportEngine.DataContext.Charts;
 using OpenXMLSDK.Engine.ReportEngine.DataContext.FluentExtensions;
 using OpenXMLSDK.Engine.Word;
+using OpenXMLSDK.Engine.Word.Models;
 using OpenXMLSDK.Engine.Word.ReportEngine;
 using OpenXMLSDK.Engine.Word.ReportEngine.BatchModels;
 using OpenXMLSDK.Engine.Word.ReportEngine.BatchModels.Charts;
@@ -442,7 +443,6 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                 )
             );
 
-
             context.AddCollection("#SubstitutableStringDataSourceModel#", rowSubstitutable);
 
             return context;
@@ -533,6 +533,100 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             page1.ChildElements.Add(paragraph);
             page1.ChildElements.Add(new TemplateModel() { TemplateId = "Template 1" });
             page1.ChildElements.Add(new TemplateModel() { TemplateId = "Template 1" });
+
+            page1.ChildElements.Add(new Paragraph()
+            {
+                ParagraphStyleId = "Red",
+                ChildElements = new List<BaseElement>()
+                {
+                    new Label()
+                    {
+                        Text = "Tabulation 1"
+                    },
+                    new Label()
+                    {
+                        TabulationProperties = new TabulationPropertiesModel()
+                        {
+                            TabStopPosition = 2500,
+                            Leader = TabStopLeaderCharValues.dot,
+                            Alignment = TabAlignmentValues.Right
+                        }
+                    },
+                    new Label()
+                    {
+                        TabulationProperties = new TabulationPropertiesModel()
+                        {
+                            TabStopPosition = 5000,
+                            Leader = TabStopLeaderCharValues.underscore,
+                            Alignment = TabAlignmentValues.Right
+                        }
+                    }
+                }
+            });
+
+            page1.ChildElements.Add(new Paragraph()
+            {
+                ParagraphStyleId = "Red",
+                ChildElements = new List<BaseElement>()
+                {
+                    new Label(){Text = "Tabulation 2" },
+                    new Label()
+                    {
+                        TabulationProperties = new TabulationPropertiesModel()
+                    },
+                    new Label(){Text = "After tabulation"}
+                }
+            });
+
+            page1.ChildElements.Add(new Paragraph()
+            {
+                ParagraphStyleId = "Red",
+                ChildElements = new List<BaseElement>()
+                {
+                    new Label(){ Text = "Tabulation 3"},
+                    new Label(){Text = "test",FontColor = "FFFF00"},
+                    new Label()
+                    {
+                        TabulationProperties = new TabulationPropertiesModel()
+                        {
+                            TabStopPosition = 5000,
+                            Leader = TabStopLeaderCharValues.dot,
+                            Alignment = TabAlignmentValues.Right
+                        },
+                        FontColor = "FFFF00"
+                    },
+                    new Label()
+                    {
+                        TabulationProperties = new TabulationPropertiesModel()
+                        {
+                            TabStopPosition = 10000,
+                            Leader = TabStopLeaderCharValues.middleDot,
+                            Alignment = TabAlignmentValues.Right
+                        },
+                        FontColor = "0000FF"
+                    },
+                    new Label(){ Text = "After 2 Tabulations"}
+                }
+            });
+
+            page1.ChildElements.Add(new Paragraph()
+            {
+                ParagraphStyleId = "Red",
+                ChildElements = new List<BaseElement>()
+                {
+                    new Label()
+                    {
+                        TabulationProperties = new TabulationPropertiesModel()
+                        {
+                            TabStopPosition = 10000,
+                            Leader = TabStopLeaderCharValues.underscore,
+                            Alignment = TabAlignmentValues.Right,
+                        },
+                        FontColor = "FFFF00"
+                    },
+                    new Label(){Text = "Tabulation 4"}
+                }
+            });
 
             var p2 = new Paragraph();
             p2.Shading = "#ParagraphShading#";
