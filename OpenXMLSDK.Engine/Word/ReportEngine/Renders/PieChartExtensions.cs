@@ -31,11 +31,9 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 
             Run runItem = null;
 
-            if (!string.IsNullOrWhiteSpace(pieChart.DataSourceKey) && context.ExistItem<SingleSerieChartModel>(pieChart.DataSourceKey))
+            if (context.TryGetItem(pieChart.DataSourceKey, out SingleSerieChartModel contextModel))
             {
                 // We construct categories and series from the context object
-                var contextModel = context.GetItem<SingleSerieChartModel>(pieChart.DataSourceKey);
-
                 if (contextModel.ChartContent != null && contextModel.ChartContent.Categories != null
                    && contextModel.ChartContent.Serie != null)
                 {
@@ -60,7 +58,9 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     };
                 }
                 else
+                {
                     return runItem;
+                }
             }
 
             switch (pieChart.PieChartType)

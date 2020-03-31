@@ -1,10 +1,10 @@
-﻿using DocumentFormat.OpenXml;
+﻿using System;
+using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using OpenXMLSDK.Engine.Platform.Word.Extensions;
 using OpenXMLSDK.Engine.ReportEngine.DataContext;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models;
-using System;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 {
@@ -12,8 +12,10 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
     {
         public static void Render(this Page page, Models.Document document, OpenXmlElement wdDoc, ContextModel context, MainDocumentPart mainDocumentPart, IFormatProvider formatProvider)
         {
-            if (!string.IsNullOrWhiteSpace(page.ShowKey) && context.ExistItem<BooleanModel>(page.ShowKey) && !context.GetItem<BooleanModel>(page.ShowKey).Value)
+            if (context.TryGetItem(page.ShowKey, out BooleanModel showPageItem) && !showPageItem.Value)
+            {
                 return;
+            }
 
             // add page content
             ((BaseElement)page).Render(document, wdDoc, context, mainDocumentPart, formatProvider);
