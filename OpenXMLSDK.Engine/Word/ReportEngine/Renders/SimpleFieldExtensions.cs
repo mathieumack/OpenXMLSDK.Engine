@@ -30,7 +30,10 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             };
             parent.AppendChild(field);
 
-            simpleField.Text.Render(field, context, documentPart, formatProvider);
+            if (simpleField.HintText != null)
+            {
+                simpleField.HintText.Render(field, context, documentPart, formatProvider);
+            }
         }
     }
 }

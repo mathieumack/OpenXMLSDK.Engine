@@ -16,9 +16,10 @@
         public bool IsDirty { get; set; }
 
         /// <summary>
-        /// Content text
+        /// Hint text, can be null
+        /// <para>Shown when the <see cref="SimpleField"/> is not yet calculated</para>
         /// </summary>
-        public Label Text { get; set; } = new Label();
+        public Label HintText { get; set; }
 
         /// <summary>
         /// Constructor

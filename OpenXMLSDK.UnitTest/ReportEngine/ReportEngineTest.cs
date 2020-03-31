@@ -523,6 +523,11 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                             {
                                 Instruction = @"TOC \t TableOfContent;1;",
                                 IsDirty = true,
+                                HintText = new Label()
+                                {
+                                    FontColor = "0000FF",
+                                    Text = "Default text"
+                                }
                             }
                     }
                 }
