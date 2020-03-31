@@ -25,55 +25,92 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
         public static void ReportEngine(string filePath, string documentName, bool useSeveralReports = false)
         {
             // Debut test report engine
-            using (var word = new WordManager())
+            var serializerSettings = new JsonSerializerSettings() { Converters = { new JsonContextConverter() } };
+            IList<Report> reports = default;
+            Document reportDocument = default;
+            ContextModel reportContext = default;
+
+            // Format document name
+            documentName = FormatDocumentName(documentName);
+
+            // Report from test data
+            if (string.IsNullOrWhiteSpace(filePath))
             {
-                JsonContextConverter[] converters = { new JsonContextConverter() };
+                var template = GetTemplateDocument();
+                var templateJson = JsonConvert.SerializeObject(template);
+                reportDocument = JsonConvert.DeserializeObject<Document>(templateJson, serializerSettings);
 
-                if (string.IsNullOrWhiteSpace(filePath))
+                var context = GetContext();
+                var contextJson = JsonConvert.SerializeObject(context);
+                reportContext = JsonConvert.DeserializeObject<ContextModel>(contextJson, serializerSettings);
+
+                if (useSeveralReports)
                 {
-                    if (string.IsNullOrWhiteSpace(documentName))
-                        documentName = "ExampleDocument.docx";
+                    // Duplicate reports
+                    reports = new List<Report>()
+                    {
+                        new Report()
+                        {
+                            AddPageBreak = true,
+                            ContextModel = reportContext,
+                            Document = reportDocument
+                        },
+                        new Report()
+                        {
+                            ContextModel = reportContext,
+                            Document = reportDocument
+                        }
+                    };
+                }
+            }
+            // Report from imput data
+            else
+            {
+                var fileContent = File.ReadAllText(filePath);
 
-                    var template = GetTemplateDocument();
-                    var templateJson = JsonConvert.SerializeObject(template);
-                    var templateUnserialized = JsonConvert.DeserializeObject<Document>(templateJson, new JsonSerializerSettings() { Converters = converters });
-
-                    var context = GetContext();
-                    var contextJson = JsonConvert.SerializeObject(context);
-                    var contextUnserialized = JsonConvert.DeserializeObject<ContextModel>(contextJson, new JsonSerializerSettings() { Converters = converters });
-
-                    var res = word.GenerateReport(templateUnserialized, contextUnserialized, new CultureInfo("en-US"));
-
-                    // Write test file
-                    File.WriteAllBytes(documentName, res);
+                if (useSeveralReports)
+                {
+                    reports = JsonConvert.DeserializeObject<IList<Report>>(fileContent, serializerSettings);
                 }
                 else
                 {
-                    if (string.IsNullOrWhiteSpace(documentName))
-                        documentName = "ExampleDocument.docx";
-                    if (!documentName.EndsWith(".docx"))
-                        documentName = string.Concat(documentName, ".docx");
-
-                    if (useSeveralReports)
-                    {
-                        var stream = File.ReadAllText(filePath);
-                        var reports = JsonConvert.DeserializeObject<IList<Report>>(stream, new JsonSerializerSettings() { Converters = converters });
-                        var res = word.GenerateReport(reports, true, new CultureInfo("en-US"));
-
-                        // Write test file
-                        File.WriteAllBytes(documentName, res);
-                    }
-                    else
-                    {
-                        var stream = File.ReadAllText(filePath);
-                        var report = JsonConvert.DeserializeObject<Report>(stream, new JsonSerializerSettings() { Converters = converters });
-                        var res = word.GenerateReport(report.Document, report.ContextModel, new CultureInfo("en-US"));
-
-                        // Write test file
-                        File.WriteAllBytes(documentName, res);
-                    }
+                    var report = JsonConvert.DeserializeObject<Report>(fileContent, serializerSettings);
+                    reportDocument = report.Document;
+                    reportContext = report.ContextModel;
                 }
             }
+
+            // Generate report
+            byte[] res;
+            using (var word = new WordManager())
+            {
+                if (useSeveralReports)
+                {
+                    res = word.GenerateReport(reports, true, new CultureInfo("en-US"));
+                }
+                else
+                {
+                    res = word.GenerateReport(reportDocument, reportContext, new CultureInfo("en-US"));
+                }
+            }
+
+            // Write test file
+            File.WriteAllBytes(documentName, res);
+        }
+
+        private static string FormatDocumentName(string documentName)
+        {
+            if (string.IsNullOrWhiteSpace(documentName))
+            {
+                documentName = "ExampleDocument.docx";
+            }
+
+            if (!documentName.EndsWith(".docx"))
+            {
+                documentName = string.Concat(documentName, ".docx");
+            }
+
+            return documentName;
         }
 
         public static void Test()
@@ -130,6 +167,16 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                         .AddString("#ParagraphStyleIdTestYellow#", "Yellow")
                         .AddCollection("#Datasource#", row1, row2)
                         .AddCollection("#DatasourcePrefix#", row1, row2, row3, row4);
+
+            // For each with template model
+            context.AddItem("#ForEachParagraph#", new DataSourceModel()
+            {
+                Items = new List<ContextModel>()
+                {
+                    new ContextModel().AddString("#TemplateKey#", "Template 1").AddString("#KeyTest1#", "foreach"),
+                    new ContextModel().AddString("#TemplateKey#", "Template 1").AddString("#KeyTest1#", "foreach")
+                }
+            });
 
             ContextModel row11 = new ContextModel();
             row11.AddItem("#IsInGroup#", new BooleanModel(true));
@@ -619,10 +666,20 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             };
             doc.TemplateDefinitions.Add(templateDefinition);
 
-            page1.ChildElements.Add(new TemplateModel() { TemplateId = "Template 1" });
             page1.ChildElements.Add(paragraph);
             page1.ChildElements.Add(new TemplateModel() { TemplateId = "Template 1" });
-            page1.ChildElements.Add(new TemplateModel() { TemplateId = "Template 1" });
+
+            // Foreach with template model
+            var forEach = new ForEach()
+            {
+                DataSourceKey = "#ForEachParagraph#",
+                ItemTemplate = new List<BaseElement>()
+                {
+                    new TemplateModel() { TemplateId = "#TemplateKey#" }
+                }
+            };
+
+            page1.ChildElements.Add(forEach);
 
             page1.ChildElements.Add(new Paragraph()
             {
