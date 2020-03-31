@@ -85,10 +85,6 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             {
                 (element as HtmlContent).Render(parent, context, documentPart, formatProvider);
             }
-            else if (element is Tabulation)
-            {
-                (element as Tabulation).Render(parent, context, documentPart, formatProvider);
-            }
 
             if (element.ChildElements != null && element.ChildElements.Count > 0)
             {

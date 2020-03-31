@@ -8,6 +8,7 @@ using OpenXMLSDK.Engine.ReportEngine.DataContext;
 using OpenXMLSDK.Engine.ReportEngine.DataContext.Charts;
 using OpenXMLSDK.Engine.ReportEngine.DataContext.FluentExtensions;
 using OpenXMLSDK.Engine.Word;
+using OpenXMLSDK.Engine.Word.Models;
 using OpenXMLSDK.Engine.Word.ReportEngine;
 using OpenXMLSDK.Engine.Word.ReportEngine.BatchModels;
 using OpenXMLSDK.Engine.Word.ReportEngine.BatchModels.Charts;
@@ -442,7 +443,6 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                 )
             );
 
-
             context.AddCollection("#SubstitutableStringDataSourceModel#", rowSubstitutable);
 
             return context;
@@ -539,18 +539,27 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                 ParagraphStyleId = "Red",
                 ChildElements = new List<BaseElement>()
                 {
-                    new Label(){Text = "Tabulation 1"},
-                    new Tabulation()
+                    new Label()
                     {
-                        TabStopPosition = 2500,
-                        Leader = TabStopLeaderCharValues.dot,
-                        Alignment = TabAlignmentValues.Right
+                        Text = "Tabulation 1"
                     },
-                    new Tabulation()
+                    new Label()
                     {
-                        TabStopPosition = 5000,
-                        Leader = TabStopLeaderCharValues.underscore,
-                        Alignment = TabAlignmentValues.Right
+                        TabulationProperties = new TabulationPropertiesModel()
+                        {
+                            TabStopPosition = 2500,
+                            Leader = TabStopLeaderCharValues.dot,
+                            Alignment = TabAlignmentValues.Right
+                        }
+                    },
+                    new Label()
+                    {
+                        TabulationProperties = new TabulationPropertiesModel()
+                        {
+                            TabStopPosition = 5000,
+                            Leader = TabStopLeaderCharValues.underscore,
+                            Alignment = TabAlignmentValues.Right
+                        }
                     }
                 }
             });
@@ -560,7 +569,11 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                 ParagraphStyleId = "Red",
                 ChildElements = new List<BaseElement>()
                 {
-                    new Label(){Text = "Tabulation 2", IsTabulation = true},
+                    new Label(){Text = "Tabulation 2" },
+                    new Label()
+                    {
+                        TabulationProperties = new TabulationPropertiesModel()
+                    },
                     new Label(){Text = "After tabulation"}
                 }
             });
@@ -570,18 +583,29 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                 ParagraphStyleId = "Red",
                 ChildElements = new List<BaseElement>()
                 {
-                    new Label(){Text = "Tabulation 3"},
-                    new Tabulation()
+                    new Label(){ Text = "Tabulation 3"},
+                    new Label(){Text = "test",FontColor = "FFFF00"},
+                    new Label()
                     {
-                        TabStopPosition = 10000,
-                        Leader = TabStopLeaderCharValues.dot,
-                        Alignment = TabAlignmentValues.Right,
-                        Text = new Label()
+                        TabulationProperties = new TabulationPropertiesModel()
                         {
-                            Text = "test",
-                            FontColor = "FFFF00"
-                        }
-                    }
+                            TabStopPosition = 5000,
+                            Leader = TabStopLeaderCharValues.dot,
+                            Alignment = TabAlignmentValues.Right
+                        },
+                        FontColor = "FFFF00"
+                    },
+                    new Label()
+                    {
+                        TabulationProperties = new TabulationPropertiesModel()
+                        {
+                            TabStopPosition = 10000,
+                            Leader = TabStopLeaderCharValues.middleDot,
+                            Alignment = TabAlignmentValues.Right
+                        },
+                        FontColor = "0000FF"
+                    },
+                    new Label(){ Text = "After 2 Tabulations"}
                 }
             });
 
@@ -590,15 +614,15 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                 ParagraphStyleId = "Red",
                 ChildElements = new List<BaseElement>()
                 {
-                    new Tabulation()
+                    new Label()
                     {
-                        TabStopPosition = 10000,
-                        Leader = TabStopLeaderCharValues.underscore,
-                        Alignment = TabAlignmentValues.Right,
-                        Text = new Label()
+                        TabulationProperties = new TabulationPropertiesModel()
                         {
-                            FontColor = "FFFF00"
-                        }
+                            TabStopPosition = 10000,
+                            Leader = TabStopLeaderCharValues.underscore,
+                            Alignment = TabAlignmentValues.Right,
+                        },
+                        FontColor = "FFFF00"
                     },
                     new Label(){Text = "Tabulation 4"}
                 }

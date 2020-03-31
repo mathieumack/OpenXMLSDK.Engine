@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using OpenXMLSDK.Engine.interfaces.Word.ReportEngine.Models;
+using OpenXMLSDK.Engine.Word.Models;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models.ExtendedModels;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Models
@@ -27,11 +28,6 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models
         public bool IsPageNumber { get; set; }
 
         /// <summary>
-        /// if true, the label make a tabulation
-        /// </summary>
-        public bool IsTabulation { get; set; }
-
-        /// <summary>
         /// Indicate if the engine must preserve empty space or space before or after text in generation
         /// </summary>
         public SpaceProcessingModeValues SpaceProcessingModeValue { get; set; }
@@ -48,6 +44,12 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models
         /// Works only for non Html content
         /// </summary>
         public List<LabelTransformOperation> TransformOperations { get; set; }
+
+        /// <summary>
+        /// Definition of tabulation properties
+        /// <para>If TabulationProperties is set, Text isn't displayed </para>
+        /// </summary>
+        public TabulationPropertiesModel TabulationProperties { get; set; }
 
         /// <summary>
         /// Constructor

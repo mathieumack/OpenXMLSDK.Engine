@@ -1,9 +1,11 @@
-﻿namespace OpenXMLSDK.Engine.Word.ReportEngine.Models
+﻿using OpenXMLSDK.Engine.Word.ReportEngine.Models;
+
+namespace OpenXMLSDK.Engine.Word.Models
 {
     /// <summary>
-    /// Model for Tabulation
+    /// Model for Tabulation properties
     /// </summary>
-    public class Tabulation : BaseElement
+    public class TabulationPropertiesModel
     {
         /// <summary>
         /// Tabulation alignment 
@@ -19,18 +21,5 @@
         /// Tabulation stop position
         /// </summary>
         public int TabStopPosition { get; set; }
-
-        /// <summary>
-        /// Content text
-        /// </summary>
-        public Label Text { get; set; } = new Label();
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public Tabulation()
-            : base(typeof(Tabulation).Name)
-        {
-        }
     }
 }
