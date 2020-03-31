@@ -259,6 +259,21 @@ namespace OpenXMLSDK.Engine.ReportEngine.DataContext
         }
 
         /// <summary>
+        /// Replace Instruction and visibility of element
+        /// </summary>
+        /// <param name="element"></param>
+        /// <param name="formatProvider"></param>
+        public void ReplaceItem(SimpleField element, IFormatProvider formatProvider)
+        {
+            if (!string.IsNullOrEmpty(element.Instruction))
+            {
+                element.Instruction = ReplaceText(element.Instruction, formatProvider);
+            }
+
+            SetVisibilityFromContext(element);
+        }
+
+        /// <summary>
         /// Replace text, FontColor and visibility of element
         /// </summary>
         /// <param name="element"></param>
