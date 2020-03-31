@@ -1,19 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using DocumentFormat.OpenXml;
 using OpenXMLSDK.Engine.ReportEngine.DataContext;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 {
     /// <summary>
-    /// Extension class for Table Cell rendering
+    /// Extension class for <see cref="TemplateModel"/> rendering
     /// </summary>
     public static class TemplateModelExtensions
     {
         /// <summary>
-        /// Render a cell in a word document
+        /// Render a template in a word document
         /// </summary>
         /// <param name="cell"></param>
         /// <param name="parent"></param>
@@ -21,37 +20,40 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// <param name="documentPart"></param>
         /// <param name="formatProvider"></param>
         /// <returns></returns>
-        public static List<BaseElement> ExtractTemplateItems(this TemplateModel templateModel, 
-                                                                    Document document)
+        public static List<BaseElement> ExtractTemplateItems(this TemplateModel templateModel, Document document)
         {
-            if (document.TemplateDefinitions == null)
+            if (document.TemplateDefinitions is null)
+            {
                 throw new ArgumentNullException(nameof(document), "There is no template definitions defined in the document");
-            if (!document.TemplateDefinitions.Any(e => e.TemplateId == templateModel.TemplateId))
-                throw new ArgumentNullException(nameof(document), "the template does not exists in the template definition list");
+            }
 
             var templateDefinition = document.TemplateDefinitions.FirstOrDefault(e => e.TemplateId == templateModel.TemplateId);
+            if (templateDefinition is null)
+            {
+                throw new ArgumentNullException(nameof(document), "the template does not exist in the template definition list");
+            }
 
             if (templateDefinition.ChildElements == null)
+            {
                 return new List<BaseElement>();
+            }
 
             return templateDefinition.Clone().ChildElements;
         }
 
         /// <summary>
-        /// Replace a template ID by his context definition
+        /// Replace a template Id by its context definition
         /// </summary>
         /// <param name="templateModel">Template model to update</param>
         /// <param name="contextToUpdate">Context model containing the template ID</param>
-        public static void ReplaceItem(this TemplateModel templateModel, ContextModel contextContainingTheID)
+        public static void ReplaceItem(this TemplateModel templateModel, ContextModel contextContainingTheId)
         {
-            // Search the template ID to use
-            var templateIdToFindInCurrentContext = templateModel.TemplateId;
-            var templateIdToUse = contextContainingTheID.GetItem<StringModel>(templateIdToFindInCurrentContext)?.Value;
-            if (string.IsNullOrWhiteSpace(templateIdToUse))
-                return;
-                        
-            // Update template ID with the ID presents in the context
-            templateModel.TemplateId = templateIdToUse;
+            // Search the template Id to use
+            if (contextContainingTheId.TryGetItem(templateModel.TemplateId, out StringModel templateIdItem) && !string.IsNullOrWhiteSpace(templateIdItem.Value))
+            {        
+                // Update template Id with the Id presents in the context
+                templateModel.TemplateId = templateIdItem.Value;
+            }
         }
     }
 }

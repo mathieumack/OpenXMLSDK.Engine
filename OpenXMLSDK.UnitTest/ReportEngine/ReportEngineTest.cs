@@ -44,7 +44,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
 
                     var res = word.GenerateReport(templateUnserialized, contextUnserialized, new CultureInfo("en-US"));
 
-                    // test ecriture fichier
+                    // Write test file
                     File.WriteAllBytes(documentName, res);
                 }
                 else
@@ -60,7 +60,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                         var reports = JsonConvert.DeserializeObject<IList<Report>>(stream, new JsonSerializerSettings() { Converters = converters });
                         var res = word.GenerateReport(reports, true, new CultureInfo("en-US"));
 
-                        // test ecriture fichier
+                        // Write test file
                         File.WriteAllBytes(documentName, res);
                     }
                     else
@@ -69,7 +69,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                         var report = JsonConvert.DeserializeObject<Report>(stream, new JsonSerializerSettings() { Converters = converters });
                         var res = word.GenerateReport(report.Document, report.ContextModel, new CultureInfo("en-US"));
 
-                        // test ecriture fichier
+                        // Write test file
                         File.WriteAllBytes(documentName, res);
                     }
                 }
