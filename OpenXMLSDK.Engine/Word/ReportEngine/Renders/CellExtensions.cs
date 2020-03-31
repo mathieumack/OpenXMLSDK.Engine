@@ -73,7 +73,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             }
 
             if (!cell.Show)
-                return wordCell;
+                return null;
 
             if (cell.ChildElements.Any(x => x is Models.TemplateModel))
             {
