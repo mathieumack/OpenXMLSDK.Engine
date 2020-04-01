@@ -1,9 +1,8 @@
-﻿using DocumentFormat.OpenXml;
+﻿using System;
+using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using OpenXMLSDK.Engine.ReportEngine.DataContext;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models;
-using System;
-using System.Collections.Generic;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 {
@@ -18,11 +17,11 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// <param name="context"></param>
         /// <param name="documentPart"></param>
         /// <param name="formatProvider"></param>
-        public static void Render(this ForEach forEach, 
-                                        Document document, 
-                                        OpenXmlElement parent, 
-                                        ContextModel context, 
-                                        OpenXmlPart documentPart, 
+        public static void Render(this ForEach forEach,
+                                        Document document,
+                                        OpenXmlElement parent,
+                                        ContextModel context,
+                                        OpenXmlPart documentPart,
                                         IFormatProvider formatProvider)
         {
             context.ReplaceItem(forEach, formatProvider);
@@ -43,14 +42,22 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     var clone = template.Clone();
 
                     // Specific rule for TemplateModels in childs :
-                    if (clone is TemplateModel)
+                    if (clone is TemplateModel templateModel)
                     {
-                        var templateElements = (clone as TemplateModel).ExtractTemplateItems(document);
+                        // Update the template ID
+                        templateModel.ReplaceItem(item);
+
+                        // Fill document
+                        var templateElements = templateModel.ExtractTemplateItems(document);
                         foreach (var templateEement in templateElements)
+                        {
                             templateEement.Render(document, parent, item, documentPart, formatProvider);
+                        }
                     }
                     else
+                    {
                         clone.Render(document, parent, item, documentPart, formatProvider);
+                    }
                 }
 
                 i++;

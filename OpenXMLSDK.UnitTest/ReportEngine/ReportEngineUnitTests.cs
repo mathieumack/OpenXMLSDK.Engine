@@ -8,8 +8,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
         [TestMethod]
         public void Global_Generation()
         {
-            ReportEngineTest.ReportEngine(string.Empty, string.Empty);
+            ReportEngineTest.ReportEngine(string.Empty, string.Empty, false);
         }
     }
 }
-
