@@ -147,13 +147,19 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             if (cell.AlternateRowCellConfiguration is null)
                 return;
 
-            cell.Shading = cell.AlternateRowCellConfiguration.Shading;
-            cell.Borders = cell.AlternateRowCellConfiguration.Borders;
-            cell.Margin = cell.AlternateRowCellConfiguration.Margin;
+            if(!string.IsNullOrWhiteSpace(cell.AlternateRowCellConfiguration.Shading))
+                cell.Shading = cell.AlternateRowCellConfiguration.Shading;
+            if (!(cell.AlternateRowCellConfiguration.Borders is null))
+                cell.Borders = cell.AlternateRowCellConfiguration.Borders;
+            if (!(cell.AlternateRowCellConfiguration.Margin is null))
+                cell.Margin = cell.AlternateRowCellConfiguration.Margin;
 
-            cell.VerticalAlignment = cell.AlternateRowCellConfiguration.VerticalAlignment;
-            cell.TextDirection = cell.AlternateRowCellConfiguration.TextDirection;
-            cell.CellWidth = cell.AlternateRowCellConfiguration.CellWidth;
+            if (!(cell.AlternateRowCellConfiguration.VerticalAlignment is null))
+                cell.VerticalAlignment = cell.AlternateRowCellConfiguration.VerticalAlignment;
+            if (!(cell.AlternateRowCellConfiguration.TextDirection is null))
+                cell.TextDirection = cell.AlternateRowCellConfiguration.TextDirection;
+            if (!(cell.AlternateRowCellConfiguration.CellWidth is null))
+                cell.CellWidth = cell.AlternateRowCellConfiguration.CellWidth;
         }
 
         /// <summary>
