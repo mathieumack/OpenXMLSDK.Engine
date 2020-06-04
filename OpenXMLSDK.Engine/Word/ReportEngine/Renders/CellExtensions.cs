@@ -123,12 +123,12 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     paragraph.AppendChild(ppr);
                 }
                 wordCell.AppendChild(paragraph);
-                var r = new Run();
-                paragraph.AppendChild(r);
+                //var r = new Run();
+                //paragraph.AppendChild(r);
                 foreach (var element in cell.ChildElements)
                 {
                     element.InheritFromParent(cell);
-                    element.Render(document, r, context, documentPart, formatProvider);
+                    element.Render(document, paragraph, context, documentPart, formatProvider);
                 }
             }
 

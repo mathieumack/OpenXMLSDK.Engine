@@ -110,7 +110,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 });
 
                 // Add tab properties to paragraph
-                paragraph.ParagraphProperties.Append(tabs);
+                paragraph.ParagraphProperties.Tabs = tabs;
 
                 // Create effective tab
                 run.AppendChild(new TabChar());
