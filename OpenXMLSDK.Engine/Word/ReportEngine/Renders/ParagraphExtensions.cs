@@ -14,12 +14,17 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             context.ReplaceItem(paragraph, formatProvider);
 
             var openXmlPar = new DocumentFormat.OpenXml.Wordprocessing.Paragraph();
-            openXmlPar.ParagraphProperties = new DocumentFormat.OpenXml.Wordprocessing.ParagraphProperties()
-            {
-                Shading = new DocumentFormat.OpenXml.Wordprocessing.Shading() { Fill = paragraph.Shading },
-                Justification = new DocumentFormat.OpenXml.Wordprocessing.Justification() { Val = paragraph.Justification.ToOOxml() },
-                SpacingBetweenLines = new DocumentFormat.OpenXml.Wordprocessing.SpacingBetweenLines()
-            };
+            openXmlPar.ParagraphProperties = new DocumentFormat.OpenXml.Wordprocessing.ParagraphProperties();
+
+            if (!string.IsNullOrWhiteSpace(paragraph.Shading))
+                openXmlPar.ParagraphProperties.Shading = new DocumentFormat.OpenXml.Wordprocessing.Shading() { 
+                    Fill = paragraph.Shading, 
+                    Val = new EnumValue<DocumentFormat.OpenXml.Wordprocessing.ShadingPatternValues>(DocumentFormat.OpenXml.Wordprocessing.ShadingPatternValues.Clear)
+                };
+
+            openXmlPar.ParagraphProperties.Justification = new DocumentFormat.OpenXml.Wordprocessing.Justification() { Val = paragraph.Justification.ToOOxml() };
+            openXmlPar.ParagraphProperties.SpacingBetweenLines = new DocumentFormat.OpenXml.Wordprocessing.SpacingBetweenLines();
+
             if (paragraph.SpacingBefore.HasValue)
                 openXmlPar.ParagraphProperties.SpacingBetweenLines.Before = paragraph.SpacingBefore.ToString();
             if (paragraph.SpacingAfter.HasValue)
@@ -29,9 +34,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             if (!string.IsNullOrWhiteSpace(paragraph.ParagraphStyleId))
                 openXmlPar.ParagraphProperties.ParagraphStyleId = new DocumentFormat.OpenXml.Wordprocessing.ParagraphStyleId() { Val = paragraph.ParagraphStyleId };
             if (paragraph.Borders != null)
-            {
-                openXmlPar.ParagraphProperties.AppendChild(paragraph.Borders.RenderParagraphBorder());
-            }
+                openXmlPar.ParagraphProperties.ParagraphBorders = paragraph.Borders.RenderParagraphBorder();
             if (paragraph.Keeplines)
                 openXmlPar.ParagraphProperties.KeepLines = new DocumentFormat.OpenXml.Wordprocessing.KeepLines();
             if (paragraph.KeepNext)

@@ -95,19 +95,15 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 FirstColumn = OnOffValue.FromBoolean(false),
                 LastColumn = OnOffValue.FromBoolean(false),
                 NoHorizontalBand = OnOffValue.FromBoolean(false),
-                NoVerticalBand = OnOffValue.FromBoolean(false)
+                NoVerticalBand = OnOffValue.FromBoolean(false),
             };
-            wordTableProperties.AppendChild(tableLook);
+            wordTableProperties.TableLook = tableLook;
             //The type must be Dxa, if the value is set to Pct : the open xml engine will ignored it !
             wordTableProperties.TableIndentation = new TableIndentation() { Width = table.TableIndentation.Width, Type = TableWidthUnitValues.Dxa };
             wordTable.AppendChild(wordTableProperties);
 
             if (table.Borders != null)
-            {
-                TableBorders borders = table.Borders.Render();
-
-                wordTableProperties.AppendChild(borders);
-            }
+                wordTableProperties.TableBorders = table.Borders.Render();
 
             // add column width definitions
             if (table.ColsWidth != null)
@@ -124,7 +120,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 
             if (table.TableWidth != null)
             {
-                wordTable.AppendChild(new TableWidth() { Width = table.TableWidth.Width, Type = table.TableWidth.Type.ToOOxml() });
+                wordTableProperties.TableWidth = new TableWidth() { Width = table.TableWidth.Width, Type = table.TableWidth.Type.ToOOxml() };
             }
 
             // add header row

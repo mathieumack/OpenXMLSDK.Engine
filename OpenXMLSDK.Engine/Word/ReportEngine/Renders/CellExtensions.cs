@@ -50,26 +50,19 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             cellProp.AddJustifications(cell);
 
             if (cell.CellWidth != null)
-                cellProp.AppendChild(new TableCellWidth() { Width = cell.CellWidth.Width, Type = cell.CellWidth.Type.ToOOxml() });
+                cellProp.TableCellWidth = new TableCellWidth() { Width = cell.CellWidth.Width, Type = cell.CellWidth.Type.ToOOxml() };
 
             if (cell.NoWrap)
-                cellProp.AppendChild(new NoWrap());
+                cellProp.NoWrap = new NoWrap();
 
             // manage cell column and row span
             if (cell.ColSpan > 1)
             {
-                cellProp.AppendChild(new GridSpan() { Val = cell.ColSpan });
+                cellProp.GridSpan = new GridSpan() { Val = cell.ColSpan };
             }
             if (cell.Fusion)
             {
-                if (cell.FusionChild)
-                {
-                    cellProp.AppendChild(new VerticalMerge() { Val = MergedCellValues.Continue });
-                }
-                else
-                {
-                    cellProp.AppendChild(new VerticalMerge() { Val = MergedCellValues.Restart });
-                }
+                cellProp.VerticalMerge = new VerticalMerge() { Val = cell.FusionChild ? MergedCellValues.Continue : MergedCellValues.Restart };
             }
 
             if (!cell.Show)
@@ -170,10 +163,10 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         private static void AddJustifications(this TableCellProperties cellProp, Cell cell)
         {
             if (cell.VerticalAlignment.HasValue)
-                cellProp.AppendChild(new TableCellVerticalAlignment { Val = cell.VerticalAlignment.Value.ToOOxml() });
+                cellProp.TableCellVerticalAlignment = new TableCellVerticalAlignment { Val = cell.VerticalAlignment.Value.ToOOxml() };
 
             if (cell.TextDirection.HasValue)
-                cellProp.AppendChild(new TextDirection { Val = cell.TextDirection.ToOOxml() });
+                cellProp.TextDirection = new TextDirection { Val = cell.TextDirection.ToOOxml() };
         }
 
         /// <summary>
@@ -185,7 +178,10 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         private static void AddShading(this TableCellProperties cellProp, Cell cell)
         {
             if (!string.IsNullOrEmpty(cell.Shading))
-                cellProp.Shading = new Shading() { Fill = cell.Shading };
+                cellProp.Shading = new Shading() { 
+                    Fill = cell.Shading,
+                    Val = new EnumValue<DocumentFormat.OpenXml.Wordprocessing.ShadingPatternValues>(DocumentFormat.OpenXml.Wordprocessing.ShadingPatternValues.Clear)
+                };
         }
 
         /// <summary>
@@ -197,10 +193,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         private static void AddBorders(this TableCellProperties cellProp, Cell cell)
         {
             if (cell.Borders != null)
-            {
-                TableCellBorders borders = cell.Borders.RenderCellBorder();
-                cellProp.AppendChild(borders);
-            }
+                cellProp.TableCellBorders = cell.Borders.RenderCellBorder();
         }
 
         /// <summary>
@@ -213,13 +206,13 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         {
             if (cell.Margin != null)
             {
-                cellProp.AppendChild(new TableCellMargin()
+                cellProp.TableCellMargin = new TableCellMargin()
                 {
                     LeftMargin = new LeftMargin() { Width = cell.Margin.Left.ToString(CultureInfo.InvariantCulture), Type = TableWidthUnitValues.Dxa },
                     TopMargin = new TopMargin() { Width = cell.Margin.Top.ToString(CultureInfo.InvariantCulture), Type = TableWidthUnitValues.Dxa },
                     RightMargin = new RightMargin() { Width = cell.Margin.Right.ToString(CultureInfo.InvariantCulture), Type = TableWidthUnitValues.Dxa },
                     BottomMargin = new BottomMargin() { Width = cell.Margin.Bottom.ToString(CultureInfo.InvariantCulture), Type = TableWidthUnitValues.Dxa }
-                });
+                };
             }
         }
     }

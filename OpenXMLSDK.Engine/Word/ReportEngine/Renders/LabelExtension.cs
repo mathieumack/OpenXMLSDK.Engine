@@ -157,7 +157,10 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 
             if (!string.IsNullOrWhiteSpace(label.Shading))
             {
-                runProperty.Shading = new Shading() { Fill = label.Shading };
+                runProperty.Shading = new Shading() { 
+                    Fill = label.Shading,
+                    Val = new EnumValue<DocumentFormat.OpenXml.Wordprocessing.ShadingPatternValues>(DocumentFormat.OpenXml.Wordprocessing.ShadingPatternValues.Clear)
+                };
             }
 
             if (label.Bold.HasValue)
