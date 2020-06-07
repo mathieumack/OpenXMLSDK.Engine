@@ -4,6 +4,8 @@ using OpenXMLSDK.Engine.ReportEngine.DataContext;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models;
 using OpenXMLSDK.Engine.Platform.Word.Extensions;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models.ExtendedModels;
+using System.Linq;
+using System.IO;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 {
@@ -12,6 +14,9 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         public static OpenXmlElement Render(this Paragraph paragraph, OpenXmlElement parent, ContextModel context, IFormatProvider formatProvider)
         {
             context.ReplaceItem(paragraph, formatProvider);
+
+            //if (paragraph.ChildElements.OfType<Paragraph>().Any())
+            //    throw new InvalidDataException("A paragraph can not be a direct child of an other paragrah");
 
             var openXmlPar = new DocumentFormat.OpenXml.Wordprocessing.Paragraph();
             openXmlPar.ParagraphProperties = new DocumentFormat.OpenXml.Wordprocessing.ParagraphProperties();

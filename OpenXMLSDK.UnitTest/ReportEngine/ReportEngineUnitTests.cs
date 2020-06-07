@@ -32,7 +32,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                 e.Path
             }).ToList();
 
-            File.WriteAllText(filePath + ".json", JsonConvert.SerializeObject(savedErrors));
+            File.WriteAllText("analyzerResult.json", JsonConvert.SerializeObject(savedErrors));
             Assert.AreEqual(0, savedErrors.Count);
         }
     }

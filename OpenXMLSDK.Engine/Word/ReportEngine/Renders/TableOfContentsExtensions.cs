@@ -97,17 +97,9 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             xmlString += @"
                 <w:p>
                   <w:pPr>
-                    <w:rPr>
-                      <w:noProof/>
-                    </w:rPr>
-                  </w:pPr>
-                  <w:pPr>
                     <w:tabs>
                         <w:tab w:val='right' w:leader='" + tableOfContents.LeaderCharValue.ToString() + @"'/>
                     </w:tabs>
-                    <w:rPr>
-                        <w:noProof/>
-                    </w:rPr>
                   </w:pPr>
                   <w:r>
                     <w:fldChar w:fldCharType='begin' w:dirty='true'/>
