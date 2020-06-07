@@ -138,7 +138,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 <DocumentFormat.OpenXml.Drawing.Charts.Chart>
                 (new dc.Chart());
 
-            // Ajout du titre au graphique
+            // Add graphic title
             if (chartModel.ShowTitle)
             {
                 dc.Title titleChart = chart.AppendChild<dc.Title>(new dc.Title());
@@ -168,7 +168,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     new dc.PointCount() { Val = new UInt32Value(1U) },
                     new dc.StringPoint() { Index = (uint)0, NumericValue = new dc.NumericValue() { Text = serie.Name } })))));
 
-                // Gestion de la couleur de la série
+                // Add series color
                 A.ShapeProperties shapeProperties = new A.ShapeProperties();
 
                 if (!string.IsNullOrWhiteSpace(serie.Color))

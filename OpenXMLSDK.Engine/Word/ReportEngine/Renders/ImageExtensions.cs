@@ -139,11 +139,11 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 imageHeight = bmHeight * (long)(914400 / yResolution);
             }
 
-            var result = new Run();
+            //var result = new Run();
 
-            var runProperties = new RunProperties();
-            runProperties.AppendChild(new NoProof());
-            result.AppendChild(runProperties);
+            //var runProperties = new RunProperties();
+            //runProperties.AppendChild(new NoProof());
+            //result.AppendChild(runProperties);
 
             var graphicFrameLocks = new A.GraphicFrameLocks() { NoChangeAspect = true };
             graphicFrameLocks.AddNamespaceDeclaration("a", "http://schemas.openxmlformats.org/drawingml/2006/main");
@@ -178,7 +178,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                              { Uri = "http://schemas.openxmlformats.org/drawingml/2006/picture" });
             graphic.AddNamespaceDeclaration("a", "http://schemas.openxmlformats.org/drawingml/2006/main");
 
-            result.Append(new DocumentFormat.OpenXml.Wordprocessing.Drawing(
+            return new DocumentFormat.OpenXml.Wordprocessing.Drawing(
                      new DW.Inline(
                          new DW.Extent() { Cx = imageWidth, Cy = imageHeight },
                          new DW.EffectExtent()
@@ -201,8 +201,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                          DistanceFromBottom = 0U,
                          DistanceFromLeft = 0U,
                          DistanceFromRight = 0U
-                     }));
-            return result;
+                     });
         }
     }
 }

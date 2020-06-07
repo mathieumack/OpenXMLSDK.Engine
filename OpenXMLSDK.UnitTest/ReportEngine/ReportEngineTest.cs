@@ -896,13 +896,13 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                     {
                         ChildElements = new List<BaseElement>()
                         {
-                        new Image()
-                        {
-                            MaxHeight = 100,
-                            MaxWidth = 100,
-                            Path = @"Resources\Desert.jpg",
-                            ImagePartType = OpenXMLSDK.Engine.Packaging.ImagePartType.Jpeg
-                        }
+                            new Image()
+                            {
+                                MaxHeight = 100,
+                                MaxWidth = 100,
+                                Path = @"Resources\Desert.jpg",
+                                ImagePartType = OpenXMLSDK.Engine.Packaging.ImagePartType.Jpeg
+                            }
                         }
                     }
                 );
