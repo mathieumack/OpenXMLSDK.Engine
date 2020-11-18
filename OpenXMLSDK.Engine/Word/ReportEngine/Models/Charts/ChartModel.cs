@@ -118,6 +118,11 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts
         }
 
         /// <summary>
+        /// Specifies that each data marker in the series has a different color
+        /// </summary>
+        public bool VaryColors { get; set; } = true;
+
+        /// <summary>
         /// Ctor
         /// </summary>
         public ChartModel(string type) : base(type)

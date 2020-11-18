@@ -503,6 +503,8 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
 
             context.AddCollection("#SubstitutableStringDataSourceModel#", rowSubstitutable);
 
+            GenerateLineGraphContext(context);
+
             return context;
         }
 
@@ -1456,6 +1458,9 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
 
             doc.Pages.Add(page9);
 
+            // Page 10 Curve graphs
+            doc.Pages.Add(GenerateLineGraphsPage());
+
             // Header
             var header = new Header();
             header.Type = HeaderFooterValues.Default;
@@ -1491,5 +1496,70 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
 
             return doc;
         }
+
+        #region Line Graph
+
+        /// <summary>
+        /// Generate context for line graphs
+        /// </summary>
+        /// <param name="context"></param>
+        public static void GenerateLineGraphContext(ContextModel context)
+        {
+            context.AddItem("#LineGraphStandardSampleData#", new MultipleSeriesChartModel()
+            {
+                ChartContent = new MultipleSeriesModel()
+                {
+                    Categories = new List<CategoryModel>()
+                    {
+                        new CategoryModel() { Name = "1" },
+                        new CategoryModel() { Name = "2" },
+                        new CategoryModel() { Name = "3" },
+                        new CategoryModel() { Name = "4" },
+                        new CategoryModel() { Name = "5" }
+                    },
+                    Series = new List<SerieModel>
+                    {
+                        new SerieModel()
+                        {
+                            Name = "Multiple of two",
+                            Color = "9FA0A4",
+                            Values = new List<double?> { 2, 4, 6, 8, 10 }
+                        }
+                    }
+                }
+            });
+        }
+
+        /// <summary>
+        ///  Generate Line graph page templates
+        /// </summary>
+        /// <returns></returns>
+        private static Page GenerateLineGraphsPage()
+        {
+            var page = new Page();
+
+            var pr = new Paragraph()
+            {
+                ChildElements = new List<BaseElement>() {
+                    new LineModel()
+                    {
+                        Title = "Line graph test",
+                        ShowTitle = true,
+                        FontSize = "23",
+                        GroupingValues = GroupingValues.Standard,
+                        DataSourceKey = "#LineGraphStandardSampleData#",
+                        ShowMajorGridlines = true,
+                        MajorGridlinesColor = "FF0000",
+                        MaxHeight = 320
+                    }
+                }
+            };
+
+            page.ChildElements.Add(pr);
+
+            return page;
+        }
+
+        #endregion
     }
 }
