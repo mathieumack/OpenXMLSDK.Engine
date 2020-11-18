@@ -281,22 +281,6 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 new dc.NoMultiLevelLabels() { Val = false },
                 dcSP));
 
-            // Add the secondary Category Axis.
-            plotArea.AppendChild(new dc.CategoryAxis(new dc.AxisId() { Val = new UInt32Value(48650112u) },
-                new dc.Scaling() { Orientation = new dc.Orientation() { Val = new EnumValue<dc.OrientationValues>(dc.OrientationValues.MinMax) } },
-                new dc.Delete() { Val = chartModel.DeleteAxeCategory },
-                new dc.AxisPosition() { Val = new EnumValue<dc.AxisPositionValues>(dc.AxisPositionValues.Right) },
-                new dc.MajorTickMark() { Val = dc.TickMarkValues.None },
-                new dc.MinorTickMark() { Val = dc.TickMarkValues.None },
-                new dc.TickLabelPosition() { Val = new EnumValue<dc.TickLabelPositionValues>(dc.TickLabelPositionValues.NextTo) },
-                new dc.CrossingAxis() { Val = new UInt32Value(48672768U) },
-                new dc.Crosses() { Val = new EnumValue<dc.CrossesValues>(dc.CrossesValues.AutoZero) },
-                new dc.AutoLabeled() { Val = new BooleanValue(true) },
-                new dc.LabelAlignment() { Val = new EnumValue<dc.LabelAlignmentValues>(dc.LabelAlignmentValues.Center) },
-                new dc.LabelOffset() { Val = new UInt16Value((ushort)100) },
-                new dc.NoMultiLevelLabels() { Val = false },
-                dcSP));
-
             // Add the Value Axis.
             plotArea.AppendChild(new dc.ValueAxis(new dc.AxisId() { Val = new UInt32Value(48672768u) },
                 chartModel.ValuesAxisScaling?.GetScaling() ??
