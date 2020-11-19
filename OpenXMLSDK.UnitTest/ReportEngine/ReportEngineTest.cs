@@ -1528,6 +1528,37 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                     }
                 }
             });
+
+            context.AddItem("#LineGraphStandardSecondaryAxisSampleData#", new MultipleSeriesChartModel()
+            {
+                ChartContent = new MultipleSeriesModel()
+                {
+                    Categories = new List<CategoryModel>()
+                    {
+                        new CategoryModel() { Name = "1" },
+                        new CategoryModel() { Name = "2" },
+                        new CategoryModel() { Name = "3" },
+                        new CategoryModel() { Name = "4" },
+                        new CategoryModel() { Name = "5" }
+                    },
+                    Series = new List<SerieModel>
+                    {
+                        new SerieModel()
+                        {
+                            Name = "Multiple of two",
+                            Color = "#874054",
+                            Values = new List<double?> { 2, 4, 6, 8, 10 }
+                        },
+                        new SerieModel()
+                        {
+                            Name = "Multiple of three",
+                            Color = "#080890",
+                            Values = new List<double?> { 3, 6, 9, 12, 15 },
+                            UseSecondaryAxis = true
+                        }
+                    }
+                }
+            });
         }
 
         /// <summary>
@@ -1538,7 +1569,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
         {
             var page = new Page();
 
-            var pr = new Paragraph()
+            page.ChildElements.Add(new Paragraph()
             {
                 ChildElements = new List<BaseElement>() {
                     new LineModel()
@@ -1550,12 +1581,31 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                         DataSourceKey = "#LineGraphStandardSampleData#",
                         ShowMajorGridlines = true,
                         MajorGridlinesColor = "FF0000",
-                        MaxHeight = 320
+                        MaxHeight = 320,
+                        DataLabel = new DataLabelModel { ShowDataLabel = false }
                     }
                 }
-            };
+            });
 
-            page.ChildElements.Add(pr);
+            page.ChildElements.Add(new Paragraph()
+            {
+                ChildElements = new List<BaseElement>() {
+                    new LineModel()
+                    {
+                        Title = "Line graph with secondary axis test",
+                        ShowTitle = true,
+                        FontSize = "23",
+                        GroupingValues = GroupingValues.Standard,
+                        DataSourceKey = "#LineGraphStandardSecondaryAxisSampleData#",
+                        ShowMajorGridlines = true,
+                        MajorGridlinesColor = "48C9B0",
+                        MaxHeight = 320,
+                        DataLabel = new DataLabelModel { ShowDataLabel = false },
+                        DeleteValueAxisCurve = true,
+                        DeleteCategoryAxisCurve = true
+                    }
+                }
+            });
 
             return page;
         }

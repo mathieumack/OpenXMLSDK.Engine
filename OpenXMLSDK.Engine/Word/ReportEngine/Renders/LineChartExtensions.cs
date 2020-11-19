@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Drawing.Charts;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using OpenXMLSDK.Engine.ReportEngine.DataContext;
@@ -9,7 +10,7 @@ using OpenXMLSDK.Engine.Word.Charts;
 using OpenXMLSDK.Engine.Word.Extensions;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts;
 using A = DocumentFormat.OpenXml.Drawing;
-using dc = DocumentFormat.OpenXml.Drawing.Charts;
+using DC = DocumentFormat.OpenXml.Drawing.Charts;
 using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
@@ -50,14 +51,15 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     // We update
                     lineModel.Series = multipleSeriesContextModel.ChartContent.Series.Select(e => new LineSerie()
                     {
-                        LabelFormatString = e.LabelFormatString,
+                        Name = e.Name,
+                        Values = e.Values,
                         Color = e.Color,
                         DataLabelColor = e.DataLabelColor,
-                        Values = e.Values,
-                        Name = e.Name,
+                        LabelFormatString = e.LabelFormatString,
                         HasBorder = e.HasBorder,
                         BorderColor = e.BorderColor,
-                        BorderWidth = e.BorderWidth
+                        BorderWidth = e.BorderWidth,
+                        UseSecondaryAxis = e.UseSecondaryAxis
                     }).ToList();
                 }
                 else
@@ -87,240 +89,65 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             if (chartModel.Series == null)
                 throw new ArgumentNullException("series of chartModel must be not null");
 
-            int countCategories = chartModel.Categories.Count;
-
-            if (chartModel.Series.Any(e => e.Values.Count != countCategories))
+            if (chartModel.Series.Any(e => e.Values.Count != chartModel.Categories.Count))
                 throw new ChartModelException("Error in series. Serie values must have same count as categories.", "004-001");
 
             // Add a new chart and set the chart language to English-US.
             ChartPart chartPart = documentPart.AddNewPart<ChartPart>();
-            chartPart.ChartSpace = new dc.ChartSpace();
-            chartPart.ChartSpace.Append(new dc.EditingLanguage { Val = new StringValue("en-US") });
-            chartPart.ChartSpace.Append(new dc.RoundedCorners { Val = new BooleanValue(chartModel.RoundedCorner) });
-            dc.Chart chart = chartPart.ChartSpace.AppendChild(new dc.Chart());
+            chartPart.ChartSpace = new ChartSpace();
+            chartPart.ChartSpace.AppendChild(new EditingLanguage { Val = new StringValue("en-US") });
+            chartPart.ChartSpace.AppendChild(new RoundedCorners { Val = new BooleanValue(chartModel.RoundedCorner) });
+            Chart chart = chartPart.ChartSpace.AppendChild(new Chart());
 
             // Add graph title.
             if (chartModel.ShowTitle)
             {
-                dc.Title titleChart = chart.AppendChild(new dc.Title());
-                titleChart.AppendChild(new dc.ChartText(new dc.RichText(
-                    new A.BodyProperties(),
-                    new A.ListStyle(),
-                    new A.Paragraph(new A.Run(new A.Text(chartModel.Title))))));
-                titleChart.AppendChild(new dc.Overlay() { Val = false });
+                Title titleChart = chart.AppendChild(new Title());
+                titleChart.AppendChild(
+                    new ChartText(
+                        new RichText(
+                            new A.BodyProperties(),
+                            new A.ListStyle(),
+                            new A.Paragraph(new A.Run(new A.Text(chartModel.Title)))
+                        )
+                    )
+                );
+                titleChart.AppendChild(new Overlay() { Val = false });
             }
 
             // Create a new clustered column chart.
-            dc.PlotArea plotArea = chart.AppendChild(new dc.PlotArea());
-            plotArea.AppendChild(new dc.Layout());
-            dc.LineChart lineChart = plotArea.AppendChild(
-                new dc.LineChart(
-                    new dc.Grouping { Val = new EnumValue<dc.GroupingValues>((dc.GroupingValues)(int)chartModel.GroupingValues) },
-                    new dc.VaryColors { Val = new BooleanValue(chartModel.VaryColors) }));
+            PlotArea plotArea = chart.AppendChild(new PlotArea());
+            plotArea.AppendChild(new Layout());
+
 
             uint i = 0;
-            uint p = 0;
-            // Iterate through each key in the Dictionary collection and add the key to the chart Series
-            // and add the corresponding value to the chart Values.
-            foreach (var serie in chartModel.Series)
-            {
-                // Series.
-                dc.LineChartSeries lineChartSeries = lineChart.AppendChild(
-                    new dc.LineChartSeries(
-                        new dc.Index() { Val = i },
-                        new dc.Order() { Val = i },
-                        new dc.Marker
-                        {
-                            Symbol = new dc.Symbol { Val = new EnumValue<dc.MarkerStyleValues>((dc.MarkerStyleValues)(int)serie.LineSerieMarker.MarkerStyleValues) },
-                            Size = new dc.Size { Val = serie.LineSerieMarker.Size }
-                        },
-                        new dc.SeriesText(
-                            new dc.StringReference(
-                                new dc.StringCache(
-                                    new dc.PointCount() { Val = new UInt32Value(1U) },
-                                    new dc.StringPoint() { Index = (uint)0, NumericValue = new dc.NumericValue() { Text = serie.Name } })))));
-
-                // Serie color.
-                A.ShapeProperties shapeProperties = new A.ShapeProperties();
-
-                if (!string.IsNullOrWhiteSpace(serie.Color))
-                {
-                    string color = serie.Color;
-                    color = color.Replace("#", "");
-                    if (!Regex.IsMatch(color, "^[0-9-A-F]{6}$"))
-                        throw new Exception("Error in color of serie.");
-
-                    shapeProperties.AppendChild(new A.SolidFill() { RgbColorModelHex = new A.RgbColorModelHex() { Val = color } });
-                }
-
-                // Border of all categories.
-                if (serie.HasBorder)
-                {
-                    serie.BorderWidth = serie.BorderWidth.HasValue ? serie.BorderWidth.Value : 12700;
-
-                    serie.BorderColor = !string.IsNullOrEmpty(serie.BorderColor) ? serie.BorderColor : "000000";
-                    serie.BorderColor = serie.BorderColor.Replace("#", "");
-                    if (!Regex.IsMatch(serie.BorderColor, "^[0-9-A-F]{6}$"))
-                        throw new Exception("Error in color of serie.");
-
-                    shapeProperties.AppendChild(new A.Outline(new A.SolidFill(new A.RgbColorModelHex() { Val = serie.BorderColor })) { Width = serie.BorderWidth.Value });
-                }
-
-                if (shapeProperties.HasChildren)
-                    lineChartSeries.AppendChild(shapeProperties);
-
-                // Categories.
-                dc.StringReference strLit = lineChartSeries.AppendChild
-                        (new dc.CategoryAxisData()).AppendChild(new dc.StringReference());
-                strLit.AppendChild(new dc.StringCache());
-                strLit.StringCache.AppendChild(new dc.PointCount() { Val = (uint)countCategories });
-                // Category list.
-                foreach (var categorie in chartModel.Categories)
-                {
-                    strLit.StringCache.AppendChild(new dc.StringPoint() { Index = p, NumericValue = new dc.NumericValue(categorie.Name) });
-                    p++;
-                }
-                p = 0;
-
-                // Values
-                dc.NumberReference numLit = lineChartSeries.AppendChild
-                    (new dc.Values())
-                        .AppendChild(new dc.NumberReference());
-                numLit.AppendChild(new dc.NumberingCache());
-                numLit.NumberingCache.AppendChild(new dc.FormatCode("General"));
-                numLit.NumberingCache.AppendChild(new dc.PointCount() { Val = (uint)serie.Values.Count });
-                foreach (var value in serie.Values)
-                {
-                    numLit.NumberingCache.AppendChild(new dc.NumericPoint() { Index = p, NumericValue = new dc.NumericValue(value != null ? value.ToString() : string.Empty) });
-                    p++;
-                }
-                i++;
-            }
-
-            dc.DataLabels dLbls = new dc.DataLabels(
-                new dc.ShowLegendKey() { Val = false },
-                new dc.ShowValue() { Val = chartModel.DataLabel == null ? false : chartModel.DataLabel.ShowDataLabel },
-                new dc.ShowCategoryName() { Val = false },
-                new dc.ShowSeriesName() { Val = false },
-                new dc.ShowPercent() { Val = false },
-                new dc.ShowBubbleSize() { Val = false });
-
-            // DataLabel
-            string dataLabelColor = "#000000"; //Black by default
-            if (!string.IsNullOrWhiteSpace(chartModel.DataLabelColor))
-                dataLabelColor = chartModel.DataLabelColor;
-            dataLabelColor = dataLabelColor.Replace("#", "");
-            if (!Regex.IsMatch(dataLabelColor, "^[0-9-A-F]{6}$"))
-                throw new Exception("Error in dataLabel color.");
-
-            var fontSize = chartModel.DataLabel.FontSize * 100; // word size x 100 for XML FontSize
-            dc.TextProperties txtPr = new dc.TextProperties(
-            new A.BodyProperties(),
-            new A.ListStyle(),
-            new A.Paragraph
-            (
-                new A.ParagraphProperties
-                (
-                    new A.DefaultRunProperties
-                    (
-                        new A.SolidFill() { RgbColorModelHex = new A.RgbColorModelHex() { Val = dataLabelColor } }
-                    )
-                    { Baseline = 0, FontSize = fontSize }
-                )
-            )
-            );
-            dLbls.Append(txtPr);
-
-            lineChart.Append(dLbls);
-
-            if (chartModel.SpaceBetweenLineCategories.HasValue)
-                lineChart.Append(new dc.GapWidth() { Val = (UInt16)chartModel.SpaceBetweenLineCategories.Value });
-            else
-                lineChart.Append(new dc.GapWidth() { Val = 55 });
-
-            lineChart.Append(new dc.Overlap() { Val = 100 });
-
-            lineChart.Append(new dc.AxisId() { Val = new UInt32Value(48650112U) });
-            lineChart.Append(new dc.AxisId() { Val = new UInt32Value(48672768U) });
-
-            // Set ShapeProperties.
-            dc.ShapeProperties dcSP = null;
-            if (chartModel.ShowMajorGridlines)
-            {
-                if (!string.IsNullOrWhiteSpace(chartModel.MajorGridlinesColor))
-                {
-                    string color = chartModel.MajorGridlinesColor;
-                    color = color.Replace("#", "");
-                    if (!Regex.IsMatch(color, "^[0-9-A-F]{6}$"))
-                        throw new Exception("Error in color of grid lines.");
-                    dcSP = new dc.ShapeProperties(new A.Outline(new A.SolidFill() { RgbColorModelHex = new A.RgbColorModelHex() { Val = color } }));
-                }
-                else
-                {
-                    dcSP = new dc.ShapeProperties();
-                }
-            }
-            else
-            {
-                dcSP = new dc.ShapeProperties(new A.Outline(new A.NoFill()));
-            }
-
-            // Add the Category Axis.
-            plotArea.AppendChild(new dc.CategoryAxis(new dc.AxisId() { Val = new UInt32Value(48650112u) },
-                new dc.Scaling() { Orientation = new dc.Orientation() { Val = new EnumValue<dc.OrientationValues>(dc.OrientationValues.MinMax) } },
-                new dc.Delete() { Val = chartModel.DeleteAxeCategory },
-                new dc.AxisPosition() { Val = new EnumValue<dc.AxisPositionValues>(dc.AxisPositionValues.Left) },
-                new dc.MajorTickMark() { Val = dc.TickMarkValues.None },
-                new dc.MinorTickMark() { Val = dc.TickMarkValues.None },
-                new dc.TickLabelPosition() { Val = new EnumValue<dc.TickLabelPositionValues>(dc.TickLabelPositionValues.NextTo) },
-                new dc.CrossingAxis() { Val = new UInt32Value(48672768U) },
-                new dc.Crosses() { Val = new EnumValue<dc.CrossesValues>(dc.CrossesValues.AutoZero) },
-                new dc.AutoLabeled() { Val = new BooleanValue(true) },
-                new dc.LabelAlignment() { Val = new EnumValue<dc.LabelAlignmentValues>(dc.LabelAlignmentValues.Center) },
-                new dc.LabelOffset() { Val = new UInt16Value((ushort)100) },
-                new dc.NoMultiLevelLabels() { Val = false },
-                dcSP));
-
-            // Add the Value Axis.
-            plotArea.AppendChild(new dc.ValueAxis(new dc.AxisId() { Val = new UInt32Value(48672768u) },
-                chartModel.ValuesAxisScaling?.GetScaling() ??
-                new dc.Scaling() { Orientation = new dc.Orientation() { Val = new EnumValue<dc.OrientationValues>(dc.OrientationValues.MinMax) } },
-                new dc.Delete() { Val = chartModel.DeleteAxeValue },
-                new dc.AxisPosition() { Val = new EnumValue<dc.AxisPositionValues>(dc.AxisPositionValues.Bottom) },
-                new dc.NumberingFormat()
-                {
-                    FormatCode = new StringValue("General"),
-                    SourceLinked = new BooleanValue(true)
-                },
-                new dc.MajorTickMark() { Val = dc.TickMarkValues.None },
-                new dc.MinorTickMark() { Val = dc.TickMarkValues.None },
-                new dc.TickLabelPosition() { Val = new EnumValue<dc.TickLabelPositionValues>(dc.TickLabelPositionValues.NextTo) },
-                new dc.CrossingAxis() { Val = new UInt32Value(48650112U) },
-                new dc.Crosses() { Val = new EnumValue<dc.CrossesValues>(dc.CrossesValues.AutoZero) },
-                new dc.CrossBetween() { Val = new EnumValue<dc.CrossBetweenValues>(dc.CrossBetweenValues.Between) },
-                new dc.MajorGridlines(dcSP.CloneNode(true)),
-                dcSP.CloneNode(true)));
+            ManageLineChart(chartModel, plotArea, new UInt32Value(48650112U), new UInt32Value(48672768U), ref i);
+            if (chartModel.Series.Any(s => s.UseSecondaryAxis))
+                ManageLineChart(chartModel, plotArea, new UInt32Value(48650108U), new UInt32Value(48672708U), ref i, true);
 
             // Add the chart Legend.
             if (chartModel.ShowLegend)
             {
-                var textProperty = new dc.TextProperties();
+                var textProperty = new TextProperties();
                 if (!string.IsNullOrEmpty(chartModel.FontFamilyLegend))
                 {
-                    textProperty = new dc.TextProperties(new A.BodyProperties(),
+                    textProperty = new TextProperties
+                    (
+                        new A.BodyProperties(),
                         new A.ListStyle(),
-                        new A.Paragraph(new A.ParagraphProperties(new A.DefaultRunProperties(new A.LatinFont() { CharacterSet = 0, Typeface = chartModel.FontFamilyLegend }) { Baseline = 0 })));
+                        new A.Paragraph(new A.ParagraphProperties(new A.DefaultRunProperties(new A.LatinFont() { CharacterSet = 0, Typeface = chartModel.FontFamilyLegend }) { Baseline = 0 }))
+                    );
                 }
 
-                dc.Legend legend = chart.AppendChild(new dc.Legend(new dc.LegendPosition() { Val = new EnumValue<dc.LegendPositionValues>(dc.LegendPositionValues.Right) },
-                new dc.Overlay() { Val = false },
-                new dc.Layout(),
+                chart.AppendChild(new Legend(new LegendPosition() { Val = new EnumValue<LegendPositionValues>(LegendPositionValues.Right) },
+                new Overlay() { Val = false },
+                new Layout(),
                 textProperty));
             }
 
-            chart.Append(new dc.PlotVisibleOnly() { Val = new BooleanValue(true) },
-                new dc.DisplayBlanksAs() { Val = new EnumValue<dc.DisplayBlanksAsValues>(dc.DisplayBlanksAsValues.Gap) },
-                new dc.ShowDataLabelsOverMaximum() { Val = false });
+            chart.Append(new PlotVisibleOnly() { Val = new BooleanValue(true) },
+                new DisplayBlanksAs() { Val = new EnumValue<DisplayBlanksAsValues>(DisplayBlanksAsValues.Gap) },
+                new ShowDataLabelsOverMaximum() { Val = false });
 
             // Graph borders.
             if (chartModel.HasBorder)
@@ -332,16 +159,16 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     var color = chartModel.BorderColor.Replace("#", "");
                     if (!Regex.IsMatch(color, "^[0-9-A-F]{6}$"))
                         throw new Exception("Error in color of chart borders.");
-                    chartPart.ChartSpace.Append(new dc.ChartShapeProperties(new A.Outline(new A.SolidFill(new A.RgbColorModelHex() { Val = color })) { Width = chartModel.BorderWidth.Value }));
+                    chartPart.ChartSpace.Append(new ChartShapeProperties(new A.Outline(new A.SolidFill(new A.RgbColorModelHex() { Val = color })) { Width = chartModel.BorderWidth.Value }));
                 }
                 else
                 {
-                    chartPart.ChartSpace.Append(new dc.ChartShapeProperties(new A.Outline(new A.SolidFill(new A.RgbColorModelHex() { Val = "000000" })) { Width = chartModel.BorderWidth.Value }));
+                    chartPart.ChartSpace.Append(new ChartShapeProperties(new A.Outline(new A.SolidFill(new A.RgbColorModelHex() { Val = "000000" })) { Width = chartModel.BorderWidth.Value }));
                 }
             }
             else
             {
-                chartPart.ChartSpace.Append(new dc.ChartShapeProperties(new A.Outline(new A.NoFill())));
+                chartPart.ChartSpace.Append(new ChartShapeProperties(new A.Outline(new A.NoFill())));
             }
 
             // Save the chart part.
@@ -382,7 +209,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                         new A.Graphic(
                             new A.GraphicData(
                                 // Lien avec l'Id du graphique
-                                new dc.ChartReference() { Id = relationshipId }
+                                new ChartReference() { Id = relationshipId }
                                 )
                             { Uri = "http://schemas.openxmlformats.org/drawingml/2006/chart" })
                     )
@@ -391,6 +218,206 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 
             return element;
         }
+
+        /// <summary>
+        /// Manage Line chart
+        /// </summary>
+        /// <param name="chartModel"></param>
+        /// <param name="plotArea"></param>
+        private static void ManageLineChart(LineModel chartModel, PlotArea plotArea, UInt32Value categoryAxisId, UInt32Value valuesAxisId, ref uint i, bool secondaryAxis = false)
+        {
+            LineChart lineChart = plotArea.AppendChild(
+                new LineChart(
+                    new Grouping { Val = new EnumValue<DC.GroupingValues>((DC.GroupingValues)(int)chartModel.GroupingValues) },
+                    new VaryColors { Val = new BooleanValue(chartModel.VaryColors) }));
+
+            uint p = 0;
+            // Iterate through each key in the Dictionary collection and add the key to the chart Series
+            // and add the corresponding value to the chart Values.
+            foreach (var serie in chartModel.Series.Where(s => s.UseSecondaryAxis.Equals(secondaryAxis)))
+            {
+                // Series.
+                LineChartSeries lineChartSeries = lineChart.AppendChild(
+                    new LineChartSeries(
+                        new Index() { Val = i },
+                        new Order() { Val = i },
+                        new Marker
+                        {
+                            Symbol = new Symbol { Val = new EnumValue<DC.MarkerStyleValues>((DC.MarkerStyleValues)(int)serie.LineSerieMarker.MarkerStyleValues) },
+                            Size = new Size { Val = serie.LineSerieMarker.Size }
+                        },
+                        new SeriesText(
+                            new StringReference(
+                                new StringCache(
+                                    new PointCount() { Val = new UInt32Value(1U) },
+                                    new StringPoint() { Index = (uint)0, NumericValue = new NumericValue() { Text = serie.Name } })))));
+
+                // Serie color.
+                A.ShapeProperties shapeProperties = new A.ShapeProperties();
+
+                if (!string.IsNullOrWhiteSpace(serie.Color))
+                {
+                    string color = serie.Color;
+                    color = color.Replace("#", "");
+                    if (!Regex.IsMatch(color, "^[0-9-A-F]{6}$"))
+                        throw new Exception("Error in color of serie.");
+
+                    shapeProperties.AppendChild(new A.SolidFill() { RgbColorModelHex = new A.RgbColorModelHex() { Val = color } });
+                }
+
+                // Border of all categories.
+                if (serie.HasBorder)
+                {
+                    serie.BorderWidth ??= 12700;
+                    serie.BorderColor = !string.IsNullOrEmpty(serie.BorderColor) ? serie.BorderColor : "000000";
+                    serie.BorderColor = serie.BorderColor.Replace("#", "");
+                    if (!Regex.IsMatch(serie.BorderColor, "^[0-9-A-F]{6}$"))
+                        throw new Exception("Error in color of serie.");
+
+                    shapeProperties.AppendChild(new A.Outline(new A.SolidFill(new A.RgbColorModelHex() { Val = serie.BorderColor })) { Width = serie.BorderWidth.Value });
+                }
+
+                if (shapeProperties.HasChildren)
+                    lineChartSeries.AppendChild(shapeProperties);
+
+                // Categories.
+                StringReference strLit = lineChartSeries.AppendChild(new CategoryAxisData()).AppendChild(new StringReference());
+                strLit.AppendChild(new StringCache());
+                strLit.StringCache.AppendChild(new PointCount() { Val = (uint)chartModel.Categories.Count });
+                // Category list.
+                foreach (var categorie in chartModel.Categories)
+                {
+                    strLit.StringCache.AppendChild(new StringPoint() { Index = p, NumericValue = new NumericValue(categorie.Name) });
+                    p++;
+                }
+                p = 0;
+
+                // Values
+                NumberReference numLit = lineChartSeries.AppendChild(new Values()).AppendChild(new NumberReference());
+                numLit.AppendChild(new NumberingCache());
+                numLit.NumberingCache.AppendChild(new FormatCode("General"));
+                numLit.NumberingCache.AppendChild(new PointCount() { Val = (uint)serie.Values.Count });
+                foreach (var value in serie.Values)
+                {
+                    numLit.NumberingCache.AppendChild(new NumericPoint() { Index = p, NumericValue = new NumericValue(value != null ? value.ToString() : string.Empty) });
+                    p++;
+                }
+                i++;
+            }
+
+            ManageDataLabels(chartModel, lineChart);
+
+            if (chartModel.SpaceBetweenLineCategories.HasValue)
+                lineChart.AppendChild(new GapWidth() { Val = (ushort)chartModel.SpaceBetweenLineCategories.Value });
+            else
+                lineChart.AppendChild(new GapWidth() { Val = 55 });
+
+            lineChart.AppendChild(new Overlap() { Val = 100 });
+
+            lineChart.AppendChild(new AxisId() { Val = categoryAxisId });
+            lineChart.AppendChild(new AxisId() { Val = valuesAxisId });
+
+            // Set ShapeProperties.
+            ShapeProperties dcSP = new ShapeProperties(new A.Outline(new A.NoFill()));
+            ShapeProperties axisColors = new ShapeProperties();
+            if (chartModel.ShowMajorGridlines)
+            {
+                dcSP = new ShapeProperties();
+                if (!string.IsNullOrWhiteSpace(chartModel.MajorGridlinesColor))
+                {
+                    string color = chartModel.MajorGridlinesColor;
+                    color = color.Replace("#", "");
+                    if (!Regex.IsMatch(color, "^[0-9-A-F]{6}$"))
+                        throw new Exception("Error in color of grid lines.");
+                    axisColors = dcSP = new ShapeProperties(new A.Outline(new A.SolidFill() { RgbColorModelHex = new A.RgbColorModelHex() { Val = color } }));
+                }
+            }
+
+            // Add the Category Axis.
+            plotArea.AppendChild(
+                new CategoryAxis(
+                    new AxisId() { Val = categoryAxisId },
+                    new Scaling() { Orientation = new Orientation() { Val = new EnumValue<OrientationValues>(OrientationValues.MinMax) } },
+                    new Delete() { Val = secondaryAxis || chartModel.DeleteAxeCategory },
+                    new AxisPosition() { Val = new EnumValue<AxisPositionValues>(AxisPositionValues.Bottom) },
+                    new MajorTickMark() { Val = TickMarkValues.None },
+                    new MinorTickMark() { Val = TickMarkValues.None },
+                    new TickLabelPosition() { Val = new EnumValue<TickLabelPositionValues>(TickLabelPositionValues.NextTo) },
+                    new CrossingAxis() { Val = valuesAxisId },
+                    new Crosses() { Val = new EnumValue<CrossesValues>(CrossesValues.AutoZero) },
+                    new AutoLabeled() { Val = new BooleanValue(true) },
+                    new LabelAlignment() { Val = new EnumValue<LabelAlignmentValues>(LabelAlignmentValues.Center) },
+                    new LabelOffset() { Val = new UInt16Value((ushort)100) },
+                    new NoMultiLevelLabels() { Val = false },
+                    chartModel.DeleteCategoryAxisCurve ? new ShapeProperties(new A.Outline(new A.NoFill())) : axisColors));
+
+            // Add the Value Axis.
+            plotArea.AppendChild(
+                new ValueAxis(
+                    new AxisId() { Val = valuesAxisId },
+                    chartModel.ValuesAxisScaling?.GetScaling() ?? new Scaling() { Orientation = new Orientation() { Val = new EnumValue<OrientationValues>(OrientationValues.MinMax) } },
+                    new Delete() { Val = chartModel.DeleteAxeValue },
+                    new AxisPosition() { Val = secondaryAxis ? new EnumValue<AxisPositionValues>(AxisPositionValues.Right) : new EnumValue<AxisPositionValues>(AxisPositionValues.Left) },
+                    new DC.NumberingFormat()
+                    {
+                        FormatCode = new StringValue("General"),
+                        SourceLinked = new BooleanValue(true)
+                    },
+                    new MajorTickMark() { Val = TickMarkValues.None },
+                    new MinorTickMark() { Val = TickMarkValues.None },
+                    new TickLabelPosition() { Val = secondaryAxis ? new EnumValue<TickLabelPositionValues>(TickLabelPositionValues.High) : new EnumValue<TickLabelPositionValues>(TickLabelPositionValues.NextTo) },
+                    new CrossingAxis() { Val = categoryAxisId },
+                    new Crosses() { Val = new EnumValue<CrossesValues>(CrossesValues.AutoZero) },
+                    new CrossBetween() { Val = new EnumValue<CrossBetweenValues>(CrossBetweenValues.Between) },
+                    new MajorGridlines(secondaryAxis ? new ShapeProperties(new A.Outline(new A.NoFill())) : dcSP.CloneNode(true)),
+                    chartModel.DeleteValueAxisCurve ? new ShapeProperties(new A.Outline(new A.NoFill())) : axisColors.CloneNode(true)));
+        }
+
+        /// <summary>
+        /// Manage DataLabels
+        /// </summary>
+        /// <param name="chartModel"></param>
+        /// <param name="lineChart"></param>
+        private static void ManageDataLabels(LineModel chartModel, LineChart lineChart)
+        {
+            DataLabels dLbls = new DataLabels(
+                new ShowLegendKey() { Val = false },
+                new ShowValue() { Val = chartModel.DataLabel != null && chartModel.DataLabel.ShowDataLabel },
+                new ShowCategoryName() { Val = false },
+                new ShowSeriesName() { Val = false },
+                new ShowPercent() { Val = false },
+                new ShowBubbleSize() { Val = false });
+
+            // DataLabel
+            string dataLabelColor = "#000000"; //Black by default
+            if (!string.IsNullOrWhiteSpace(chartModel.DataLabelColor))
+                dataLabelColor = chartModel.DataLabelColor;
+            dataLabelColor = dataLabelColor.Replace("#", "");
+            if (!Regex.IsMatch(dataLabelColor, "^[0-9-A-F]{6}$"))
+                throw new Exception("Error in dataLabel color.");
+
+            var fontSize = chartModel.DataLabel.FontSize * 100; // word size x 100 for XML FontSize
+            TextProperties txtPr = new TextProperties
+            (
+                new A.BodyProperties(),
+                new A.ListStyle(),
+                new A.Paragraph
+                (
+                    new A.ParagraphProperties
+                    (
+                        new A.DefaultRunProperties
+                        (
+                            new A.SolidFill() { RgbColorModelHex = new A.RgbColorModelHex() { Val = dataLabelColor } }
+                        )
+                        { Baseline = 0, FontSize = fontSize }
+                    )
+                )
+            );
+
+            dLbls.AppendChild(txtPr);
+            lineChart.AppendChild(dLbls);
+        }
+
         #endregion
     }
 }

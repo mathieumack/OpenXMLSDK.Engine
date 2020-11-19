@@ -13,7 +13,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.BatchModels.Charts
         /// Values
         /// </summary>
         public List<double?> Values { get; set; }
-        
+
         /// <summary>
         /// Color of the serie
         /// </summary>
@@ -23,6 +23,12 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.BatchModels.Charts
         /// Color of labels
         /// </summary>
         public string DataLabelColor { get; set; }
+
+        /// <summary>
+        /// Format de rendu des labels
+        /// {0} par défaut
+        /// </summary>
+        public string LabelFormatString { get; set; } = "{0}";
 
         /// <summary>
         /// Define if the serie has a border
@@ -40,9 +46,8 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.BatchModels.Charts
         public int? BorderWidth { get; set; }
 
         /// <summary>
-        /// Format de rendu des labels
-        /// {0} par défaut
+        /// Indicate if this serie is on the first or the secondary axis
         /// </summary>
-        public string LabelFormatString { get; set; } = "{0}";
+        public bool UseSecondaryAxis { get; set; }
     }
 }

@@ -13,7 +13,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts
         /// Values
         /// </summary>
         public List<double?> Values { get; set; }
-        
+
         /// <summary>
         /// Color of the serie
         /// </summary>
@@ -44,6 +44,11 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts
         /// Border width
         /// </summary>
         public int? BorderWidth { get; set; }
+
+        /// <summary>
+        /// Indicate if this serie is on the first or the secondary axis
+        /// </summary>
+        public bool UseSecondaryAxis { get; set; }
 
         public ChartSerie()
             : base(typeof(ChartSerie).Name)

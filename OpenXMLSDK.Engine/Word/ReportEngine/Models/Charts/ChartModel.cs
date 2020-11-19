@@ -20,7 +20,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts
         public bool ShowTitle { get; set; }
 
         /// <summary>
-        /// Indicate if we show major grid lines
+        /// Indicate if the legend must be displayed
         /// </summary>
         public bool ShowLegend { get; set; }
 
@@ -28,6 +28,11 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts
         /// Indicate if we delete axis for values
         /// </summary>
         public bool DeleteAxeValue { get; set; }
+
+        /// <summary>
+        /// Indicate if the curve sepparating value axis from graph must be deleted
+        /// </summary>
+        public bool DeleteValueAxisCurve { get; set; }
 
         /// <summary>
         /// Space between line categories
@@ -38,6 +43,11 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts
         /// Indicate if we delete axis for categories
         /// </summary>
         public bool DeleteAxeCategory { get; set; }
+
+        /// <summary>
+        /// Indicate if the curve sepparating category axis from graph must be deleted
+        /// </summary>
+        public bool DeleteCategoryAxisCurve { get; set; }
 
         /// <summary>
         /// Legend font family
