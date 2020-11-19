@@ -27,12 +27,8 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts
         /// <summary>
         /// Indicate if we delete axis for values
         /// </summary>
+        [Obsolete("Please use ValuesAxisModel.DeleteAxis instead")]
         public bool DeleteAxeValue { get; set; }
-
-        /// <summary>
-        /// Indicate if the curve sepparating value axis from graph must be deleted
-        /// </summary>
-        public bool DeleteValueAxisCurve { get; set; }
 
         /// <summary>
         /// Space between line categories
@@ -42,12 +38,8 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts
         /// <summary>
         /// Indicate if we delete axis for categories
         /// </summary>
+        [Obsolete("Please use CategoriesAxisModel.DeleteAxis instead")]
         public bool DeleteAxeCategory { get; set; }
-
-        /// <summary>
-        /// Indicate if the curve sepparating category axis from graph must be deleted
-        /// </summary>
-        public bool DeleteCategoryAxisCurve { get; set; }
 
         /// <summary>
         /// Legend font family
@@ -77,11 +69,13 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts
         /// <summary>
         /// Indicate if we show major grid lines
         /// </summary>
+        [Obsolete("Please use CategoriesAxisModel.ShowMajorGridlines instead")]
         public bool ShowMajorGridlines { get; set; }
 
         /// <summary>
         /// Indicate the color of major grid lines
         /// </summary>
+        [Obsolete("Please use CategoriesAxisModel.MajorGridlinesColor instead")]
         public string MajorGridlinesColor { get; set; }
 
         /// <summary>
@@ -131,6 +125,21 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts
         /// Specifies that each data marker in the series has a different color
         /// </summary>
         public bool VaryColors { get; set; } = true;
+
+        /// <summary>
+        /// Define the model for categories axis
+        /// </summary>
+        public ChartAxisModel CategoriesAxisModel { get; set; } = new ChartAxisModel();
+
+        /// <summary>
+        /// Define the model for values axis
+        /// </summary>
+        public ChartAxisModel ValuesAxisModel { get; set; } = new ChartAxisModel();
+
+        /// <summary>
+        /// Define the model for secondary values axis
+        /// </summary>
+        public ChartAxisModel SecondaryValuesAxisModel { get; set; } = new ChartAxisModel();
 
         /// <summary>
         /// Ctor

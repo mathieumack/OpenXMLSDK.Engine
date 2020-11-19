@@ -92,6 +92,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             switch (barChart.BarChartType)
             {
                 case BarChartType.BarChart:
+                    ManageCompatibility(barChart);
                     runItem = CreateBarGraph(barChart, documentPart);
                     break;
             }
@@ -103,6 +104,23 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         }
 
         #region Internal methods
+
+        /// <summary>
+        /// Temporary method to manage axes update
+        /// </summary>
+        /// <param name="barChart"></param>
+        private static void ManageCompatibility(BarModel barChart)
+        {
+            if (barChart.DeleteAxeCategory)
+                barChart.CategoriesAxisModel.DeleteAxis = barChart.DeleteAxeCategory;
+            if (barChart.DeleteAxeValue)
+                barChart.ValuesAxisModel.DeleteAxis = barChart.DeleteAxeValue;
+
+            if (barChart.ShowMajorGridlines)
+                barChart.CategoriesAxisModel.ShowMajorGridlines = barChart.ValuesAxisModel.ShowMajorGridlines = barChart.ShowMajorGridlines;
+            if (!string.IsNullOrWhiteSpace(barChart.MajorGridlinesColor))
+                barChart.CategoriesAxisModel.MajorGridlinesColor = barChart.ValuesAxisModel.MajorGridlinesColor = barChart.MajorGridlinesColor;
+        }
 
         /// <summary>
         /// Create a bargraph inside a word document
@@ -273,11 +291,11 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 
             // Set ShapeProperties
             dc.ShapeProperties dcSP = null;
-            if (chartModel.ShowMajorGridlines)
+            if (chartModel.CategoriesAxisModel.ShowMajorGridlines)
             {
-                if (!string.IsNullOrWhiteSpace(chartModel.MajorGridlinesColor))
+                if (!string.IsNullOrWhiteSpace(chartModel.CategoriesAxisModel.MajorGridlinesColor))
                 {
-                    string color = chartModel.MajorGridlinesColor;
+                    string color = chartModel.CategoriesAxisModel.MajorGridlinesColor;
                     color = color.Replace("#", "");
                     if (!Regex.IsMatch(color, "^[0-9-A-F]{6}$"))
                         throw new Exception("Error in color of grid lines.");
@@ -297,7 +315,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             {
                 Val = new DocumentFormat.OpenXml.EnumValue<dc.OrientationValues>(dc.OrientationValues.MinMax)
             }),
-                new dc.Delete() { Val = chartModel.DeleteAxeCategory },
+                new dc.Delete() { Val = chartModel.CategoriesAxisModel.DeleteAxis },
                 new dc.AxisPosition() { Val = new DocumentFormat.OpenXml.EnumValue<dc.AxisPositionValues>(dc.AxisPositionValues.Left) },
                 new dc.MajorTickMark() { Val = dc.TickMarkValues.None },
                 new dc.MinorTickMark() { Val = dc.TickMarkValues.None },
@@ -318,7 +336,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 {
                     Val = new EnumValue<dc.OrientationValues>(dc.OrientationValues.MinMax)
                 }),
-                new dc.Delete() { Val = chartModel.DeleteAxeValue },
+                new dc.Delete() { Val = chartModel.ValuesAxisModel.DeleteAxis },
                 new dc.AxisPosition() { Val = new DocumentFormat.OpenXml.EnumValue<dc.AxisPositionValues>(dc.AxisPositionValues.Bottom) },
                 new dc.NumberingFormat()
                 {
@@ -333,11 +351,11 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     Val = new DocumentFormat.OpenXml.EnumValue<dc.CrossesValues>(dc.CrossesValues.AutoZero)
                 }, new dc.CrossBetween() { Val = new DocumentFormat.OpenXml.EnumValue<dc.CrossBetweenValues>(dc.CrossBetweenValues.Between) }));
 
-            if (chartModel.ShowMajorGridlines)
+            if (chartModel.ValuesAxisModel.ShowMajorGridlines)
             {
-                if (!string.IsNullOrWhiteSpace(chartModel.MajorGridlinesColor))
+                if (!string.IsNullOrWhiteSpace(chartModel.ValuesAxisModel.MajorGridlinesColor))
                 {
-                    string color = chartModel.MajorGridlinesColor;
+                    string color = chartModel.ValuesAxisModel.MajorGridlinesColor;
                     color = color.Replace("#", "");
                     if (!Regex.IsMatch(color, "^[0-9-A-F]{6}$"))
                         throw new Exception("Error in color of grid lines.");

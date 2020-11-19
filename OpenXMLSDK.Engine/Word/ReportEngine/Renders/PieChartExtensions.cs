@@ -268,28 +268,6 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             pieChart.Append(new dc.AxisId() { Val = new UInt32Value(48650112u) });
             pieChart.Append(new dc.AxisId() { Val = new UInt32Value(48672768u) });
 
-            // Set ShapeProperties
-            dc.ShapeProperties dcSP = null;
-            if (chartModel.ShowMajorGridlines)
-            {
-                if (!string.IsNullOrWhiteSpace(chartModel.MajorGridlinesColor))
-                {
-                    string color = chartModel.MajorGridlinesColor;
-                    color = color.Replace("#", "");
-                    if (!Regex.IsMatch(color, "^[0-9-A-F]{6}$"))
-                        throw new Exception("Error in color of grid lines.");
-                    dcSP = new dc.ShapeProperties(new A.Outline(new A.SolidFill() { RgbColorModelHex = new A.RgbColorModelHex() { Val = color } }));
-                }
-                else
-                {
-                    dcSP = new dc.ShapeProperties();
-                }
-            }
-            else
-            {
-                dcSP = new dc.ShapeProperties(new A.Outline(new A.NoFill()));
-            }
-
             // Add the chart Legend.
             if (chartModel.ShowLegend)
             {

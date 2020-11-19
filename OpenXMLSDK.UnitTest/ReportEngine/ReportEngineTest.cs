@@ -1525,6 +1525,11 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                             Color = "9FA0A4",
                             Values = new List<double?> { 2, 4, 6, 8, 10 }
                         }
+                    },
+                    CategoriesAxisModel = new AxisModel
+                    {
+                        Title = "From context",
+                        Color = "9FA0A4"
                     }
                 }
             });
@@ -1556,6 +1561,16 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                             Values = new List<double?> { 3, 6, 9, 12, 15 },
                             UseSecondaryAxis = true
                         }
+                    },
+                    ValuesAxisModel = new AxisModel
+                    {
+                        Title = "Gauche",
+                        Color = "874054"
+                    },
+                    SecondaryValuesAxisModel = new AxisModel
+                    {
+                        Title = "Droite",
+                        Color = "080890"
                     }
                 }
             });
@@ -1579,10 +1594,13 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                         FontSize = "23",
                         GroupingValues = GroupingValues.Standard,
                         DataSourceKey = "#LineGraphStandardSampleData#",
-                        ShowMajorGridlines = true,
-                        MajorGridlinesColor = "FF0000",
                         MaxHeight = 320,
-                        DataLabel = new DataLabelModel { ShowDataLabel = false }
+                        DataLabel = new DataLabelModel { ShowDataLabel = false },
+                        ValuesAxisModel = new ChartAxisModel
+                        {
+                            ShowMajorGridlines = true,
+                            MajorGridlinesColor = "FF0000"
+                        }
                     }
                 }
             });
@@ -1597,12 +1615,21 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                         FontSize = "23",
                         GroupingValues = GroupingValues.Standard,
                         DataSourceKey = "#LineGraphStandardSecondaryAxisSampleData#",
-                        ShowMajorGridlines = true,
-                        MajorGridlinesColor = "48C9B0",
                         MaxHeight = 320,
                         DataLabel = new DataLabelModel { ShowDataLabel = false },
-                        DeleteValueAxisCurve = true,
-                        DeleteCategoryAxisCurve = true
+                        ValuesAxisModel = new ChartAxisModel
+                        {
+                            ShowMajorGridlines = true,
+                            MajorGridlinesColor = "48C9B0",
+                            ShowAxisCurve = true,
+                            AxisCurveColor = "00FF00"
+                        },
+                        CategoriesAxisModel = new ChartAxisModel
+                        {
+                            ShowMajorGridlines = true,
+                            MajorGridlinesColor = "48C9B0",
+                            Title = "Categories !"
+                        }
                     }
                 }
             });
