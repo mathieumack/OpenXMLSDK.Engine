@@ -1612,7 +1612,6 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                     {
                         Title = "Line graph with secondary axis test",
                         ShowTitle = true,
-                        FontSize = "23",
                         GroupingValues = GroupingValues.Standard,
                         DataSourceKey = "#LineGraphStandardSecondaryAxisSampleData#",
                         MaxHeight = 320,

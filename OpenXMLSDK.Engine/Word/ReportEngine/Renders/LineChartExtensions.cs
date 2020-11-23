@@ -415,6 +415,12 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             lineChart.AppendChild(dLbls);
         }
 
+        /// <summary>
+        ///  Manage axes titles
+        /// </summary>
+        /// <param name="title"></param>
+        /// <param name="color"></param>
+        /// <returns></returns>
         private static Title ManageTitle(string title, string color)
         {
             Title titleElement = new Title();
