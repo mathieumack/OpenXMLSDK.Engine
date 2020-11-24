@@ -78,85 +78,6 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             return runItem;
         }
 
-        #region Internal methods
-
-        /// <summary>
-        /// Update template axis model with context values
-        /// </summary>
-        /// <param name="template"></param>
-        /// <param name="context"></param>
-        private static void UpdateAxisFromcontext(ChartAxisModel template, AxisModel context)
-        {
-            if (!string.IsNullOrWhiteSpace(context.Title))
-                template.Title = context.Title;
-
-            if (!string.IsNullOrWhiteSpace(context.Color))
-                template.TitleColor = context.Color;
-        }
-
-        /// <summary>
-        /// Create the graph
-        /// </summary>
-        /// <param name="chartModel"></param>
-        /// <param name="documentPart"></param>
-        /// <returns></returns>
-        private static Run CreateGraph(LineModel chartModel, OpenXmlPart documentPart)
-        {
-            if (chartModel.Categories == null)
-                throw new ArgumentNullException("categories of chartModel must not be null");
-            if (chartModel.Series == null)
-                throw new ArgumentNullException("series of chartModel must be not null");
-
-            if (chartModel.Series.Any(e => e.Values.Count != chartModel.Categories.Count))
-                throw new ChartModelException("Error in series. Serie values must have same count as categories.", "004-001");
-
-            // Add a new chart and set the chart language to English-US.
-            ChartPart chartPart = documentPart.AddNewPart<ChartPart>();
-            chartPart.ChartSpace = new ChartSpace();
-            chartPart.ChartSpace.AppendChild(new EditingLanguage { Val = new StringValue("en-US") });
-            chartPart.ChartSpace.AppendChild(new RoundedCorners { Val = new BooleanValue(chartModel.RoundedCorner) });
-            Chart chart = chartPart.ChartSpace.AppendChild(new Chart());
-
-            // Add graph title.
-            if (chartModel.ShowTitle)
-            {
-                Title titleChart = chart.AppendChild(new Title());
-                titleChart.AppendChild(
-                    new ChartText(
-                        new RichText(
-                            new A.BodyProperties(),
-                            new A.ListStyle(),
-                            new A.Paragraph(new A.Run(new A.Text(chartModel.Title)))
-                        )
-                    )
-                );
-                titleChart.AppendChild(new Overlay() { Val = false });
-            }
-
-            // Create a new clustered column chart.
-            PlotArea plotArea = chart.AppendChild(new PlotArea());
-            plotArea.AppendChild(new Layout());
-
-
-            uint i = 0;
-            ManageLineChart(chartModel, plotArea, new UInt32Value(48650112U), new UInt32Value(48672768U), ref i);
-            if (chartModel.Series.Any(s => s.UseSecondaryAxis))
-                ManageLineChart(chartModel, plotArea, new UInt32Value(48650108U), new UInt32Value(48672708U), ref i, true);
-
-            ManageLegend(chartModel, chart);
-
-            chart.Append(
-                new PlotVisibleOnly() { Val = new BooleanValue(true) },
-                new DisplayBlanksAs() { Val = new EnumValue<DisplayBlanksAsValues>(DisplayBlanksAsValues.Gap) },
-                new ShowDataLabelsOverMaximum() { Val = false });
-
-            ManageGraphBorders(chartModel, chartPart);
-
-            Run element = SaveChart(chartModel, documentPart, chartPart);
-
-            return element;
-        }
-
         /// <summary>
         /// Manage Line chart
         /// </summary>
@@ -166,7 +87,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// <param name="valuesAxisId"></param>
         /// <param name="i"></param>
         /// <param name="secondaryAxis"></param>
-        private static void ManageLineChart(LineModel chartModel, PlotArea plotArea, UInt32Value categoryAxisId, UInt32Value valuesAxisId, ref uint i, bool secondaryAxis = false)
+        public static void ManageLineChart(LineModel chartModel, PlotArea plotArea, UInt32Value categoryAxisId, UInt32Value valuesAxisId, ref uint i, bool secondaryAxis = false)
         {
             LineChart lineChart = plotArea.AppendChild(
                 new LineChart(
@@ -250,26 +171,29 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             lineChart.AppendChild(new AxisId() { Val = categoryAxisId });
             lineChart.AppendChild(new AxisId() { Val = valuesAxisId });
 
-            // Add the Category Axis.
-            var catAxis = new CategoryAxis(
-                new AxisId() { Val = categoryAxisId },
-                new Scaling() { Orientation = new Orientation() { Val = new EnumValue<OrientationValues>(OrientationValues.MinMax) } },
-                new Delete() { Val = secondaryAxis || chartModel.CategoriesAxisModel.DeleteAxis },
-                new AxisPosition() { Val = new EnumValue<AxisPositionValues>(AxisPositionValues.Bottom) },
-                new MajorTickMark() { Val = TickMarkValues.None },
-                new MinorTickMark() { Val = TickMarkValues.None },
-                new TickLabelPosition() { Val = new EnumValue<TickLabelPositionValues>(TickLabelPositionValues.Low) },
-                new CrossingAxis() { Val = valuesAxisId },
-                new Crosses() { Val = new EnumValue<CrossesValues>(CrossesValues.AutoZero) },
-                new AutoLabeled() { Val = new BooleanValue(true) },
-                new LabelAlignment() { Val = new EnumValue<LabelAlignmentValues>(LabelAlignmentValues.Center) },
-                new LabelOffset() { Val = new UInt16Value((ushort)100) },
-                new NoMultiLevelLabels() { Val = false },
-                new MajorGridlines(ManageShapeProperties(chartModel.CategoriesAxisModel.ShowMajorGridlines, chartModel.CategoriesAxisModel.MajorGridlinesColor)),
-                ManageShapeProperties(chartModel.CategoriesAxisModel.ShowAxisCurve, chartModel.CategoriesAxisModel.AxisCurveColor));
-            if (!secondaryAxis && !string.IsNullOrWhiteSpace(chartModel.CategoriesAxisModel.Title))
-                catAxis.Title = ManageTitle(chartModel.CategoriesAxisModel.Title, chartModel.CategoriesAxisModel.TitleColor);
-            plotArea.AppendChild(catAxis);
+            // Add the Category Axis. If secondary axis, the category axis has already been added
+            if (!secondaryAxis)
+            {
+                var catAxis = new CategoryAxis(
+                    new AxisId() { Val = categoryAxisId },
+                    new Scaling() { Orientation = new Orientation() { Val = new EnumValue<OrientationValues>(OrientationValues.MinMax) } },
+                    new Delete() { Val = chartModel.CategoriesAxisModel.DeleteAxis },
+                    new AxisPosition() { Val = new EnumValue<AxisPositionValues>(AxisPositionValues.Bottom) },
+                    new MajorTickMark() { Val = TickMarkValues.None },
+                    new MinorTickMark() { Val = TickMarkValues.None },
+                    new TickLabelPosition() { Val = new EnumValue<TickLabelPositionValues>(TickLabelPositionValues.Low) },
+                    new CrossingAxis() { Val = valuesAxisId },
+                    new Crosses() { Val = new EnumValue<CrossesValues>(CrossesValues.AutoZero) },
+                    new AutoLabeled() { Val = new BooleanValue(true) },
+                    new LabelAlignment() { Val = new EnumValue<LabelAlignmentValues>(LabelAlignmentValues.Center) },
+                    new LabelOffset() { Val = new UInt16Value((ushort)100) },
+                    new NoMultiLevelLabels() { Val = false },
+                    new MajorGridlines(ManageShapeProperties(chartModel.CategoriesAxisModel.ShowMajorGridlines, chartModel.CategoriesAxisModel.MajorGridlinesColor)),
+                    ManageShapeProperties(chartModel.CategoriesAxisModel.ShowAxisCurve, chartModel.CategoriesAxisModel.AxisCurveColor));
+                if (!string.IsNullOrWhiteSpace(chartModel.CategoriesAxisModel.Title))
+                    catAxis.Title = ManageTitle(chartModel.CategoriesAxisModel.Title, chartModel.CategoriesAxisModel.TitleColor);
+                plotArea.AppendChild(catAxis);
+            }
 
             // Add the Value Axis.
             var axixModel = secondaryAxis ? chartModel.SecondaryValuesAxisModel : chartModel.ValuesAxisModel;
@@ -298,6 +222,86 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             if (!string.IsNullOrWhiteSpace(axixModel.Title))
                 valueAxis.Title = ManageTitle(axixModel.Title, axixModel.TitleColor);
             plotArea.AppendChild(valueAxis);
+        }
+
+
+        #region Internal methods
+
+        /// <summary>
+        /// Update template axis model with context values
+        /// </summary>
+        /// <param name="template"></param>
+        /// <param name="context"></param>
+        private static void UpdateAxisFromcontext(ChartAxisModel template, AxisModel context)
+        {
+            if (!string.IsNullOrWhiteSpace(context.Title))
+                template.Title = context.Title;
+
+            if (!string.IsNullOrWhiteSpace(context.Color))
+                template.TitleColor = context.Color;
+        }
+
+        /// <summary>
+        /// Create the graph
+        /// </summary>
+        /// <param name="chartModel"></param>
+        /// <param name="documentPart"></param>
+        /// <returns></returns>
+        private static Run CreateGraph(LineModel chartModel, OpenXmlPart documentPart)
+        {
+            if (chartModel.Categories == null)
+                throw new ArgumentNullException("categories of chartModel must not be null");
+            if (chartModel.Series == null)
+                throw new ArgumentNullException("series of chartModel must be not null");
+
+            if (chartModel.Series.Any(e => e.Values.Count != chartModel.Categories.Count))
+                throw new ChartModelException("Error in series. Serie values must have same count as categories.", "004-001");
+
+            // Add a new chart and set the chart language to English-US.
+            ChartPart chartPart = documentPart.AddNewPart<ChartPart>();
+            chartPart.ChartSpace = new ChartSpace();
+            chartPart.ChartSpace.AppendChild(new EditingLanguage { Val = new StringValue("en-US") });
+            chartPart.ChartSpace.AppendChild(new RoundedCorners { Val = new BooleanValue(chartModel.RoundedCorner) });
+            Chart chart = chartPart.ChartSpace.AppendChild(new Chart());
+
+            // Add graph title.
+            if (chartModel.ShowTitle)
+            {
+                Title titleChart = chart.AppendChild(new Title());
+                titleChart.AppendChild(
+                    new ChartText(
+                        new RichText(
+                            new A.BodyProperties(),
+                            new A.ListStyle(),
+                            new A.Paragraph(new A.Run(new A.Text(chartModel.Title)))
+                        )
+                    )
+                );
+                titleChart.AppendChild(new Overlay() { Val = false });
+            }
+
+            // Create a new clustered column chart.
+            PlotArea plotArea = chart.AppendChild(new PlotArea());
+            plotArea.AppendChild(new Layout());
+
+
+            uint i = 0;
+            ManageLineChart(chartModel, plotArea, new UInt32Value(48650112U), new UInt32Value(48672768U), ref i);
+            if (chartModel.Series.Any(s => s.UseSecondaryAxis))
+                ManageLineChart(chartModel, plotArea, new UInt32Value(48650112U), new UInt32Value(48672708U), ref i, true);
+
+            ManageLegend(chartModel, chart);
+
+            chart.Append(
+                new PlotVisibleOnly() { Val = new BooleanValue(true) },
+                new DisplayBlanksAs() { Val = new EnumValue<DisplayBlanksAsValues>(DisplayBlanksAsValues.Gap) },
+                new ShowDataLabelsOverMaximum() { Val = false });
+
+            ManageGraphBorders(chartModel, chartPart);
+
+            Run element = SaveChart(chartModel, documentPart, chartPart);
+
+            return element;
         }
 
         /// <summary>

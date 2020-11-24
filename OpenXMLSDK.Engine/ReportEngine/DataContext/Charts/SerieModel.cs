@@ -60,5 +60,10 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.BatchModels.Charts
         /// Indicate the curve line style
         /// </summary>
         public PresetLineDashValues PresetLineDashValues { get; set; }
+
+        /// <summary>
+        /// Sepcify the render type of the serie (line, bar, ...)
+        /// </summary>
+        public SerieChartType SerieChartType { get; set; }
     }
 }

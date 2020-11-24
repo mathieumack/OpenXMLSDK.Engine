@@ -505,6 +505,8 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
 
             GenerateLineGraphContext(context);
 
+            GenerateCombineGraphContext(context);
+
             return context;
         }
 
@@ -1461,6 +1463,9 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             // Page 10 Curve graphs
             doc.Pages.Add(GenerateLineGraphsPage());
 
+            // Page 11 Combine graphs (Line and Bar)
+            doc.Pages.Add(GenerateCombineGraphsPage());
+
             // Header
             var header = new Header();
             header.Type = HeaderFooterValues.Default;
@@ -1586,15 +1591,14 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
         {
             var page = new Page();
 
-            page.ChildElements.Add(new Paragraph()
+            page.ChildElements.Add(new Paragraph
             {
-                ChildElements = new List<BaseElement>() {
-                    new LineModel()
+                ChildElements = new List<BaseElement> {
+                    new LineModel
                     {
                         Title = "Line graph test",
                         ShowTitle = true,
                         FontSize = "23",
-                        GroupingValues = GroupingValues.Standard,
                         DataSourceKey = "#LineGraphStandardSampleData#",
                         MaxHeight = 320,
                         DataLabel = new DataLabelModel { ShowDataLabel = false },
@@ -1607,14 +1611,13 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                 }
             });
 
-            page.ChildElements.Add(new Paragraph()
+            page.ChildElements.Add(new Paragraph
             {
-                ChildElements = new List<BaseElement>() {
-                    new LineModel()
+                ChildElements = new List<BaseElement> {
+                    new LineModel
                     {
                         Title = "Line graph with secondary axis test",
                         ShowTitle = true,
-                        GroupingValues = GroupingValues.Standard,
                         DataSourceKey = "#LineGraphStandardSecondaryAxisSampleData#",
                         MaxHeight = 320,
                         DataLabel = new DataLabelModel { ShowDataLabel = false },
@@ -1631,6 +1634,176 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                             MajorGridlinesColor = "48C9B0",
                             Title = "Categories !"
                         }
+                    }
+                }
+            });
+
+            return page;
+        }
+
+        #endregion
+
+        #region Combine Graph
+
+        public static void GenerateCombineGraphContext(ContextModel context)
+        {
+            context.AddItem("#CombineGraphOnlyLineSampleData#", new MultipleSeriesChartModel()
+            {
+                ChartContent = new MultipleSeriesModel()
+                {
+                    Categories = new List<CategoryModel>()
+                    {
+                        new CategoryModel() { Name = "1" },
+                        new CategoryModel() { Name = "2" },
+                        new CategoryModel() { Name = "3" },
+                        new CategoryModel() { Name = "4" },
+                        new CategoryModel() { Name = "5" }
+                    },
+                    Series = new List<SerieModel>
+                    {
+                        new SerieModel()
+                        {
+                            Name = "Multiple of two",
+                            Color = "9FA0A4",
+                            Values = new List<double?> { 2, 4, 6, 8, 10 },
+                            SerieChartType = SerieChartType.Line
+                        }
+                    },
+                    CategoriesAxisModel = new AxisModel
+                    {
+                        Title = "From context",
+                        Color = "9FA0A4"
+                    }
+                }
+            });
+
+            context.AddItem("#CombineGraphOnlyBarSampleData#", new MultipleSeriesChartModel()
+            {
+                ChartContent = new MultipleSeriesModel()
+                {
+                    Categories = new List<CategoryModel>()
+                    {
+                        new CategoryModel() { Name = "1" },
+                        new CategoryModel() { Name = "2" },
+                        new CategoryModel() { Name = "3" },
+                        new CategoryModel() { Name = "4" },
+                        new CategoryModel() { Name = "5" }
+                    },
+                    Series = new List<SerieModel>
+                    {
+                        new SerieModel()
+                        {
+                            Name = "Multiple of two",
+                            Color = "9FA0A4",
+                            Values = new List<double?> { 2, 4, 6, 8, 10 },
+                            SerieChartType = SerieChartType.Bar
+                        }
+                    },
+                    CategoriesAxisModel = new AxisModel
+                    {
+                        Title = "From context",
+                        Color = "9FA0A4"
+                    }
+                }
+            });
+
+            context.AddItem("#CombineGraphFrankensteinSampleData#", new MultipleSeriesChartModel()
+            {
+                ChartContent = new MultipleSeriesModel()
+                {
+                    Categories = new List<CategoryModel>()
+                    {
+                        new CategoryModel() { Name = "1" },
+                        new CategoryModel() { Name = "2" },
+                        new CategoryModel() { Name = "3" },
+                        new CategoryModel() { Name = "4" },
+                        new CategoryModel() { Name = "5" },
+                        new CategoryModel() { Name = "6" }
+                    },
+                    Series = new List<SerieModel>
+                    {
+                        new SerieModel()
+                        {
+                            Name = "Multiple of two",
+                            Color = "EB347A",
+                            Values = new List<double?> { 2, 4, 6, 8, 10, 12 },
+                            SerieChartType = SerieChartType.Line
+                        },
+                        new SerieModel()
+                        {
+                            Name = "Orange",
+                            Color = "E38812",
+                            Values = new List<double?> { 2, 3, 5, 9, 10, 15 },
+                            SerieChartType = SerieChartType.Line,
+                            UseSecondaryAxis = true
+                        },
+                        new SerieModel()
+                        {
+                            Name = "Multiple of two",
+                            Color = "12E3E3",
+                            Values = new List<double?> { 2, 4, 6, 8, 10, 12 },
+                            SerieChartType = SerieChartType.Bar
+                        }
+                    },
+                    CategoriesAxisModel = new AxisModel
+                    {
+                        Title = "From context",
+                        Color = "9FA0A4"
+                    }
+                }
+            });
+        }
+
+        private static Page GenerateCombineGraphsPage()
+        {
+            var page = new Page();
+
+            page.ChildElements.Add(new Paragraph
+            {
+                ChildElements = new List<BaseElement>
+                {
+                    new CombineChartModel
+                    {
+                        Title = "Combine Chart Model - Only Line",
+                        ShowTitle = true,
+                        DataSourceKey = "#CombineGraphOnlyLineSampleData#",
+                        MaxHeight = 320,
+                        DataLabel = new DataLabelModel { ShowDataLabel = false },
+                        ValuesAxisModel = new ChartAxisModel
+                        {
+                            ShowMajorGridlines = true,
+                            MajorGridlinesColor = "34EBC6"
+                        }
+                    }
+                }
+            });
+
+            page.ChildElements.Add(new Paragraph
+            {
+                ChildElements = new List<BaseElement>
+                {
+                    new CombineChartModel
+                    {
+                        Title = "Combine Chart Model - Only Bar",
+                        ShowTitle = true,
+                        DataSourceKey = "#CombineGraphOnlyBarSampleData#",
+                        MaxHeight = 320,
+                        DataLabel = new DataLabelModel { ShowDataLabel = false },
+                    }
+                }
+            });
+
+            page.ChildElements.Add(new Paragraph
+            {
+                ChildElements = new List<BaseElement>
+                {
+                    new CombineChartModel
+                    {
+                        Title = "Combine Chart Model - Frankenstein",
+                        ShowTitle = true,
+                        DataSourceKey = "#CombineGraphFrankensteinSampleData#",
+                        MaxHeight = 320,
+                        DataLabel = new DataLabelModel { ShowDataLabel = false },
                     }
                 }
             });
