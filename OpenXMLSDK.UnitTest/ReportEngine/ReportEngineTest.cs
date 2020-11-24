@@ -1552,14 +1552,16 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                         {
                             Name = "Multiple of two",
                             Color = "#874054",
-                            Values = new List<double?> { 2, 4, 6, 8, 10 }
+                            Values = new List<double?> { -2, -4, 6, 8, 10 }
                         },
                         new SerieModel()
                         {
                             Name = "Multiple of three",
                             Color = "#080890",
-                            Values = new List<double?> { 3, 6, 9, 12, 15 },
-                            UseSecondaryAxis = true
+                            Values = new List<double?> { 3, 6, -9, 12, 15 },
+                            UseSecondaryAxis = true,
+                            SmoothCurve = true,
+                            PresetLineDashValues = PresetLineDashValues.DashDot
                         }
                     },
                     ValuesAxisModel = new AxisModel

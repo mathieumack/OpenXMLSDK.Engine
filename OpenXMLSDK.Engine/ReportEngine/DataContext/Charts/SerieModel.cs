@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using OpenXMLSDK.Engine.ReportEngine.DataContext.Charts;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.BatchModels.Charts
 {
@@ -49,5 +50,15 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.BatchModels.Charts
         /// Indicate if this serie is on the first or the secondary axis
         /// </summary>
         public bool UseSecondaryAxis { get; set; }
+
+        /// <summary>
+        /// Indicate if the curve must be smooth
+        /// </summary>
+        public bool SmoothCurve { get; set; }
+
+        /// <summary>
+        /// Indicate the curve line style
+        /// </summary>
+        public PresetLineDashValues PresetLineDashValues { get; set; }
     }
 }

@@ -59,9 +59,9 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     DataLabelColor = e.DataLabelColor,
                     LabelFormatString = e.LabelFormatString,
                     HasBorder = e.HasBorder,
-                    BorderColor = e.BorderColor,
-                    BorderWidth = e.BorderWidth,
-                    UseSecondaryAxis = e.UseSecondaryAxis
+                    UseSecondaryAxis = e.UseSecondaryAxis,
+                    SmoothCurve = e.SmoothCurve,
+                    PresetLineDashValues = e.PresetLineDashValues
                 }).ToList();
 
                 // Update Axes
@@ -202,7 +202,11 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     if (!Regex.IsMatch(color, "^[0-9-A-F]{6}$"))
                         throw new Exception("Error in color of serie.");
 
-                    lineChartSeries.AppendChild(new ChartShapeProperties(new A.Outline(new A.SolidFill() { RgbColorModelHex = new A.RgbColorModelHex() { Val = color } })));
+                    lineChartSeries.AppendChild(
+                        new ChartShapeProperties(
+                            new A.Outline(
+                                new A.SolidFill() { RgbColorModelHex = new A.RgbColorModelHex() { Val = color } },
+                                new A.PresetDash() { Val = new EnumValue<A.PresetLineDashValues>((A.PresetLineDashValues)(int)serie.PresetLineDashValues) })));
                 }
 
                 // Categories.
@@ -227,6 +231,10 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     numLit.NumberingCache.AppendChild(new NumericPoint() { Index = p, NumericValue = new NumericValue(value != null ? value.ToString() : string.Empty) });
                     p++;
                 }
+
+                // Smooth
+                lineChartSeries.AppendChild(new Smooth { Val = new BooleanValue(serie.SmoothCurve) });
+
                 i++;
             }
 
@@ -250,7 +258,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 new AxisPosition() { Val = new EnumValue<AxisPositionValues>(AxisPositionValues.Bottom) },
                 new MajorTickMark() { Val = TickMarkValues.None },
                 new MinorTickMark() { Val = TickMarkValues.None },
-                new TickLabelPosition() { Val = new EnumValue<TickLabelPositionValues>(TickLabelPositionValues.NextTo) },
+                new TickLabelPosition() { Val = new EnumValue<TickLabelPositionValues>(TickLabelPositionValues.Low) },
                 new CrossingAxis() { Val = valuesAxisId },
                 new Crosses() { Val = new EnumValue<CrossesValues>(CrossesValues.AutoZero) },
                 new AutoLabeled() { Val = new BooleanValue(true) },
@@ -444,7 +452,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             // Graph borders.
             if (chartModel.HasBorder)
             {
-                chartModel.BorderWidth = chartModel.BorderWidth.HasValue ? chartModel.BorderWidth.Value : 12700;
+                chartModel.BorderWidth ??= 12700;
 
                 if (!string.IsNullOrEmpty(chartModel.BorderColor))
                 {
