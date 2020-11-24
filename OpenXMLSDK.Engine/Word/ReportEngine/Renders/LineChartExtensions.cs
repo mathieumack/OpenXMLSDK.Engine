@@ -39,37 +39,35 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             // We construct categories and series from the context object
             if (!string.IsNullOrWhiteSpace(lineModel.DataSourceKey) && context.TryGetItem(lineModel.DataSourceKey, out MultipleSeriesChartModel contextModel))
             {
-                if (contextModel.ChartContent != null && contextModel.ChartContent.Categories != null
-                   && contextModel.ChartContent.Series != null)
-                {
-                    // Update categories object :
-                    lineModel.Categories = contextModel.ChartContent.Categories.Select(e => new LineCategory()
-                    {
-                        Name = e.Name,
-                        Color = e.Color
-                    }).ToList();
-
-                    // We update
-                    lineModel.Series = contextModel.ChartContent.Series.Select(e => new LineSerie()
-                    {
-                        Name = e.Name,
-                        Values = e.Values,
-                        Color = e.Color,
-                        DataLabelColor = e.DataLabelColor,
-                        LabelFormatString = e.LabelFormatString,
-                        HasBorder = e.HasBorder,
-                        BorderColor = e.BorderColor,
-                        BorderWidth = e.BorderWidth,
-                        UseSecondaryAxis = e.UseSecondaryAxis
-                    }).ToList();
-
-                    // Update Axes
-                    UpdateAxisFromcontext(lineModel.CategoriesAxisModel, contextModel.ChartContent.CategoriesAxisModel);
-                    UpdateAxisFromcontext(lineModel.ValuesAxisModel, contextModel.ChartContent.ValuesAxisModel);
-                    UpdateAxisFromcontext(lineModel.SecondaryValuesAxisModel, contextModel.ChartContent.SecondaryValuesAxisModel);
-                }
-                else
+                if (contextModel.ChartContent is null || contextModel.ChartContent.Categories is null
+                   || contextModel.ChartContent.Series is null)
                     return runItem;
+
+                // Update categories object :
+                lineModel.Categories = contextModel.ChartContent.Categories.Select(e => new LineCategory()
+                {
+                    Name = e.Name,
+                    Color = e.Color
+                }).ToList();
+
+                // We update
+                lineModel.Series = contextModel.ChartContent.Series.Select(e => new LineSerie()
+                {
+                    Name = e.Name,
+                    Values = e.Values,
+                    Color = e.Color,
+                    DataLabelColor = e.DataLabelColor,
+                    LabelFormatString = e.LabelFormatString,
+                    HasBorder = e.HasBorder,
+                    BorderColor = e.BorderColor,
+                    BorderWidth = e.BorderWidth,
+                    UseSecondaryAxis = e.UseSecondaryAxis
+                }).ToList();
+
+                // Update Axes
+                UpdateAxisFromcontext(lineModel.CategoriesAxisModel, contextModel.ChartContent.CategoriesAxisModel);
+                UpdateAxisFromcontext(lineModel.ValuesAxisModel, contextModel.ChartContent.ValuesAxisModel);
+                UpdateAxisFromcontext(lineModel.SecondaryValuesAxisModel, contextModel.ChartContent.SecondaryValuesAxisModel);
             }
 
             runItem = CreateGraph(lineModel, documentPart);
@@ -145,96 +143,16 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             if (chartModel.Series.Any(s => s.UseSecondaryAxis))
                 ManageLineChart(chartModel, plotArea, new UInt32Value(48650108U), new UInt32Value(48672708U), ref i, true);
 
-            // Add the chart Legend.
-            if (chartModel.ShowLegend)
-            {
-                var textProperty = new TextProperties();
-                if (!string.IsNullOrEmpty(chartModel.FontFamilyLegend))
-                {
-                    textProperty = new TextProperties
-                    (
-                        new A.BodyProperties(),
-                        new A.ListStyle(),
-                        new A.Paragraph(new A.ParagraphProperties(new A.DefaultRunProperties(new A.LatinFont() { CharacterSet = 0, Typeface = chartModel.FontFamilyLegend }) { Baseline = 0 }))
-                    );
-                }
+            ManageLegend(chartModel, chart);
 
-                chart.AppendChild(new Legend(new LegendPosition() { Val = new EnumValue<LegendPositionValues>(LegendPositionValues.Right) },
-                new Overlay() { Val = false },
-                new Layout(),
-                textProperty));
-            }
-
-            chart.Append(new PlotVisibleOnly() { Val = new BooleanValue(true) },
+            chart.Append(
+                new PlotVisibleOnly() { Val = new BooleanValue(true) },
                 new DisplayBlanksAs() { Val = new EnumValue<DisplayBlanksAsValues>(DisplayBlanksAsValues.Gap) },
                 new ShowDataLabelsOverMaximum() { Val = false });
 
-            // Graph borders.
-            if (chartModel.HasBorder)
-            {
-                chartModel.BorderWidth = chartModel.BorderWidth.HasValue ? chartModel.BorderWidth.Value : 12700;
+            ManageGraphBorders(chartModel, chartPart);
 
-                if (!string.IsNullOrEmpty(chartModel.BorderColor))
-                {
-                    var color = chartModel.BorderColor.Replace("#", "");
-                    if (!Regex.IsMatch(color, "^[0-9-A-F]{6}$"))
-                        throw new Exception("Error in color of chart borders.");
-                    chartPart.ChartSpace.Append(new ChartShapeProperties(new A.Outline(new A.SolidFill(new A.RgbColorModelHex() { Val = color })) { Width = chartModel.BorderWidth.Value }));
-                }
-                else
-                {
-                    chartPart.ChartSpace.Append(new ChartShapeProperties(new A.Outline(new A.SolidFill(new A.RgbColorModelHex() { Val = "000000" })) { Width = chartModel.BorderWidth.Value }));
-                }
-            }
-            else
-            {
-                chartPart.ChartSpace.Append(new ChartShapeProperties(new A.Outline(new A.NoFill())));
-            }
-
-            // Save the chart part.
-            chartPart.ChartSpace.Save();
-
-            // Get the grap Id for the drawing element.
-            string relationshipId = documentPart.GetIdOfPart(chartPart);
-
-            // Resize the graph.
-            long imageWidth = 5486400;
-            long imageHeight = 3200400;
-
-            if (chartModel.MaxWidth.HasValue)
-                // convert pixel in EMU (English Metric Unit normalement c'est : EMU = pixel * 914400 / 96) --> 914400 / 96 = 9525.
-                imageWidth = (long)chartModel.MaxWidth * 9525;
-            if (chartModel.MaxHeight.HasValue)
-                imageHeight = (long)chartModel.MaxHeight * 9525;
-
-            // Drawing element creation.
-            var element = new Run(
-                new Drawing(
-                    new DW.Inline(
-                        new DW.Extent() { Cx = imageWidth, Cy = imageHeight },
-                        new DW.EffectExtent()
-                        {
-                            LeftEdge = 0L,
-                            TopEdge = 0L,
-                            RightEdge = 0L,
-                            BottomEdge = 0L
-                        },
-                        new DW.DocProperties()
-                        {
-                            Id = (UInt32Value)1U,
-                            Name = "Chart 1"
-                        },
-                        new DW.NonVisualGraphicFrameDrawingProperties(
-                            new A.GraphicFrameLocks() { NoChangeAspect = true }),
-                        new A.Graphic(
-                            new A.GraphicData(
-                                // Lien avec l'Id du graphique
-                                new ChartReference() { Id = relationshipId }
-                                )
-                            { Uri = "http://schemas.openxmlformats.org/drawingml/2006/chart" })
-                    )
-                )
-            );
+            Run element = SaveChart(chartModel, documentPart, chartPart);
 
             return element;
         }
@@ -244,6 +162,10 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// </summary>
         /// <param name="chartModel"></param>
         /// <param name="plotArea"></param>
+        /// <param name="categoryAxisId"></param>
+        /// <param name="valuesAxisId"></param>
+        /// <param name="i"></param>
+        /// <param name="secondaryAxis"></param>
         private static void ManageLineChart(LineModel chartModel, PlotArea plotArea, UInt32Value categoryAxisId, UInt32Value valuesAxisId, ref uint i, bool secondaryAxis = false)
         {
             LineChart lineChart = plotArea.AppendChild(
@@ -295,7 +217,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 }
                 p = 0;
 
-                // Values
+                // Values.
                 NumberReference numLit = lineChartSeries.AppendChild(new Values()).AppendChild(new NumberReference());
                 numLit.AppendChild(new NumberingCache());
                 numLit.NumberingCache.AppendChild(new FormatCode("General"));
@@ -341,8 +263,8 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 catAxis.Title = ManageTitle(chartModel.CategoriesAxisModel.Title, chartModel.CategoriesAxisModel.TitleColor);
             plotArea.AppendChild(catAxis);
 
-            var axixModel = secondaryAxis ? chartModel.SecondaryValuesAxisModel : chartModel.ValuesAxisModel;
             // Add the Value Axis.
+            var axixModel = secondaryAxis ? chartModel.SecondaryValuesAxisModel : chartModel.ValuesAxisModel;
             var valueAxis = new ValueAxis(
                 new AxisId() { Val = valuesAxisId },
                 chartModel.ValuesAxisScaling?.GetScaling() ?? new Scaling() { Orientation = new Orientation() { Val = new EnumValue<OrientationValues>(OrientationValues.MinMax) } },
@@ -482,6 +404,120 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             }
 
             return new ChartShapeProperties();
+        }
+
+        /// <summary>
+        /// Manage legend
+        /// </summary>
+        /// <param name="chartModel"></param>
+        /// <param name="chart"></param>
+        private static void ManageLegend(LineModel chartModel, Chart chart)
+        {
+            // Add the chart Legend.
+            if (chartModel.ShowLegend)
+            {
+                var textProperty = new TextProperties();
+                if (!string.IsNullOrEmpty(chartModel.FontFamilyLegend))
+                {
+                    textProperty = new TextProperties
+                    (
+                        new A.BodyProperties(),
+                        new A.ListStyle(),
+                        new A.Paragraph(new A.ParagraphProperties(new A.DefaultRunProperties(new A.LatinFont() { CharacterSet = 0, Typeface = chartModel.FontFamilyLegend }) { Baseline = 0 }))
+                    );
+                }
+
+                chart.AppendChild(new Legend(new LegendPosition() { Val = new EnumValue<LegendPositionValues>(LegendPositionValues.Right) },
+                new Overlay() { Val = false },
+                new Layout(),
+                textProperty));
+            }
+        }
+
+        /// <summary>
+        /// Manage graph borders
+        /// </summary>
+        /// <param name="chartModel"></param>
+        /// <param name="chartPart"></param>
+        private static void ManageGraphBorders(LineModel chartModel, ChartPart chartPart)
+        {
+            // Graph borders.
+            if (chartModel.HasBorder)
+            {
+                chartModel.BorderWidth = chartModel.BorderWidth.HasValue ? chartModel.BorderWidth.Value : 12700;
+
+                if (!string.IsNullOrEmpty(chartModel.BorderColor))
+                {
+                    var color = chartModel.BorderColor.Replace("#", "");
+                    if (!Regex.IsMatch(color, "^[0-9-A-F]{6}$"))
+                        throw new Exception("Error in color of chart borders.");
+                    chartPart.ChartSpace.AppendChild(new ChartShapeProperties(new A.Outline(new A.SolidFill(new A.RgbColorModelHex() { Val = color })) { Width = chartModel.BorderWidth.Value }));
+                }
+                else
+                {
+                    chartPart.ChartSpace.AppendChild(new ChartShapeProperties(new A.Outline(new A.SolidFill(new A.RgbColorModelHex() { Val = "000000" })) { Width = chartModel.BorderWidth.Value }));
+                }
+            }
+            else
+            {
+                chartPart.ChartSpace.AppendChild(new ChartShapeProperties(new A.Outline(new A.NoFill())));
+            }
+        }
+
+        /// <summary>
+        /// Save the chart
+        /// </summary>
+        /// <param name="chartModel"></param>
+        /// <param name="documentPart"></param>
+        /// <param name="chartPart"></param>
+        /// <returns></returns>
+        private static Run SaveChart(LineModel chartModel, OpenXmlPart documentPart, ChartPart chartPart)
+        {
+            // Save the chart part.
+            chartPart.ChartSpace.Save();
+
+            // Get the grap Id for the drawing element.
+            string relationshipId = documentPart.GetIdOfPart(chartPart);
+
+            // Resize the graph.
+            long imageWidth = 5486400;
+            long imageHeight = 3200400;
+
+            if (chartModel.MaxWidth.HasValue)
+                // convert pixel in EMU (English Metric Unit normalement c'est : EMU = pixel * 914400 / 96) --> 914400 / 96 = 9525.
+                imageWidth = (long)chartModel.MaxWidth * 9525;
+            if (chartModel.MaxHeight.HasValue)
+                imageHeight = (long)chartModel.MaxHeight * 9525;
+
+            // Drawing element creation.
+            var element = new Run(
+                new Drawing(
+                    new DW.Inline(
+                        new DW.Extent() { Cx = imageWidth, Cy = imageHeight },
+                        new DW.EffectExtent()
+                        {
+                            LeftEdge = 0L,
+                            TopEdge = 0L,
+                            RightEdge = 0L,
+                            BottomEdge = 0L
+                        },
+                        new DW.DocProperties()
+                        {
+                            Id = (UInt32Value)1U,
+                            Name = "Chart 1"
+                        },
+                        new DW.NonVisualGraphicFrameDrawingProperties(
+                            new A.GraphicFrameLocks() { NoChangeAspect = true }),
+                        new A.Graphic(
+                            new A.GraphicData(
+                                // Lien avec l'Id du graphique
+                                new ChartReference() { Id = relationshipId }
+                                )
+                            { Uri = "http://schemas.openxmlformats.org/drawingml/2006/chart" })
+                    )
+                )
+            );
+            return element;
         }
 
         #endregion
