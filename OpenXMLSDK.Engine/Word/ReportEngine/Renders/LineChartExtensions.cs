@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using DocumentFormat.OpenXml;
@@ -149,7 +150,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 numLit.NumberingCache.AppendChild(new PointCount() { Val = (uint)serie.Values.Count });
                 foreach (var value in serie.Values)
                 {
-                    numLit.NumberingCache.AppendChild(new NumericPoint() { Index = p, NumericValue = new NumericValue(value != null ? value.ToString() : string.Empty) });
+                    numLit.NumberingCache.AppendChild(new NumericPoint() { Index = p, NumericValue = new NumericValue(value != null ? value.Value.ToString(CultureInfo.InvariantCulture) : string.Empty) });
                     p++;
                 }
 
