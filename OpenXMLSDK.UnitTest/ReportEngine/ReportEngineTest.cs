@@ -1602,6 +1602,8 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                         DataSourceKey = "#LineGraphStandardSampleData#",
                         MaxHeight = 320,
                         DataLabel = new DataLabelModel { ShowDataLabel = false },
+                        ShowLegend = true,
+                        LegendPosition = LegendPositionValues.Bottom,
                         ValuesAxisModel = new ChartAxisModel
                         {
                             ShowMajorGridlines = true,
@@ -1665,8 +1667,13 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                         {
                             Name = "Multiple of two",
                             Color = "9FA0A4",
-                            Values = new List<double?> { 2, 4, 6, 8, 10 },
-                            SerieChartType = SerieChartType.Line
+                            Values = new List<double?> { 2, 4, 6, 8, 10 }
+                        },
+                        new SerieModel()
+                        {
+                            Name = "Multiple of three",
+                            Color = "6C8BE0",
+                            Values = new List<double?> { 1, 3, 5, 7, 9 }
                         }
                     },
                     CategoriesAxisModel = new AxisModel
@@ -1696,6 +1703,13 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                             Name = "Multiple of two",
                             Color = "9FA0A4",
                             Values = new List<double?> { 2, 4, 6, 8, 10 },
+                            SerieChartType = SerieChartType.Bar
+                        },
+                        new SerieModel()
+                        {
+                            Name = "Multiple of three",
+                            Color = "6C8BE0",
+                            Values = new List<double?> { 1, 3, 5, 7, 9 },
                             SerieChartType = SerieChartType.Bar
                         }
                     },
@@ -1789,6 +1803,9 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                         DataSourceKey = "#CombineGraphOnlyBarSampleData#",
                         MaxHeight = 320,
                         DataLabel = new DataLabelModel { ShowDataLabel = false },
+                        Overlap = 0,
+                        ShowLegend = true,
+                        LegendPosition = LegendPositionValues.Bottom
                     }
                 }
             });
@@ -1804,6 +1821,9 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                         DataSourceKey = "#CombineGraphFrankensteinSampleData#",
                         MaxHeight = 320,
                         DataLabel = new DataLabelModel { ShowDataLabel = false },
+                        ShowLegend = true,
+                        FontFamilyLegend = "Calibri",
+                        LegendPosition = LegendPositionValues.Top
                     }
                 }
             });

@@ -167,8 +167,6 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             else
                 lineChart.AppendChild(new GapWidth() { Val = 55 });
 
-            lineChart.AppendChild(new Overlap() { Val = 100 });
-
             lineChart.AppendChild(new AxisId() { Val = categoryAxisId });
             lineChart.AppendChild(new AxisId() { Val = valuesAxisId });
 
@@ -440,10 +438,11 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     );
                 }
 
-                chart.AppendChild(new Legend(new LegendPosition() { Val = new EnumValue<LegendPositionValues>(LegendPositionValues.Right) },
-                new Overlay() { Val = false },
-                new Layout(),
-                textProperty));
+                chart.AppendChild(
+                    new Legend(new LegendPosition() { Val = new EnumValue<DC.LegendPositionValues>((DC.LegendPositionValues)(int)chartModel.LegendPosition) },
+                    new Overlay() { Val = false },
+                    new Layout(),
+                    textProperty));
             }
         }
 

@@ -10,6 +10,7 @@ using OpenXMLSDK.Engine.Word.Charts;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts;
 using A = DocumentFormat.OpenXml.Drawing;
 using D = OpenXMLSDK.Engine.ReportEngine.DataContext.Charts;
+using DC = DocumentFormat.OpenXml.Drawing.Charts;
 using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
@@ -230,7 +231,8 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 CategoriesAxisModel = chartModel.CategoriesAxisModel,
                 ValuesAxisModel = chartModel.ValuesAxisModel,
                 SecondaryValuesAxisModel = chartModel.SecondaryValuesAxisModel,
-                ValuesAxisScaling = new BarChartScalingModel()
+                ValuesAxisScaling = new BarChartScalingModel(),
+                Overlap = chartModel.Overlap
             };
         }
 
@@ -255,10 +257,11 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     );
                 }
 
-                chart.AppendChild(new Legend(new LegendPosition() { Val = new EnumValue<LegendPositionValues>(LegendPositionValues.Right) },
-                new Overlay() { Val = false },
-                new Layout(),
-                textProperty));
+                chart.AppendChild(
+                    new Legend(new LegendPosition() { Val = new EnumValue<DC.LegendPositionValues>((DC.LegendPositionValues)(int)chartModel.LegendPosition) },
+                    new Overlay() { Val = false },
+                    new Layout(),
+                    textProperty));
             }
         }
 

@@ -11,7 +11,7 @@ using OpenXMLSDK.Engine.Word.Charts;
 using OpenXMLSDK.Engine.Word.Extensions;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts;
 using A = DocumentFormat.OpenXml.Drawing;
-using dc = DocumentFormat.OpenXml.Drawing.Charts;
+using DC = DocumentFormat.OpenXml.Drawing.Charts;
 using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
@@ -119,8 +119,8 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         {
             BarChart barChart = plotArea.AppendChild(
                 new BarChart(
-                    new BarDirection() { Val = new EnumValue<dc.BarDirectionValues>((dc.BarDirectionValues)(int)chartModel.BarDirectionValues) },
-                    new BarGrouping() { Val = new EnumValue<dc.BarGroupingValues>((dc.BarGroupingValues)(int)chartModel.BarGroupingValues) }));
+                    new BarDirection() { Val = new EnumValue<DC.BarDirectionValues>((DC.BarDirectionValues)(int)chartModel.BarDirectionValues) },
+                    new BarGrouping() { Val = new EnumValue<DC.BarGroupingValues>((DC.BarGroupingValues)(int)chartModel.BarGroupingValues) }));
 
             uint p = 0;
             // Iterate through each key in the Dictionary collection and add the key to the chart Series
@@ -198,7 +198,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             else
                 barChart.AppendChild(new GapWidth() { Val = 55 });
 
-            barChart.AppendChild(new Overlap() { Val = 100 });
+            barChart.AppendChild(new Overlap() { Val = chartModel.Overlap });
 
             barChart.AppendChild(new AxisId() { Val = categoryAxisId });
             barChart.AppendChild(new AxisId() { Val = valuesAxisId });
@@ -232,7 +232,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     chartModel.ValuesAxisScaling?.GetScaling() ?? new Scaling() { Orientation = new Orientation() { Val = new EnumValue<OrientationValues>(OrientationValues.MinMax) } },
                     new Delete() { Val = chartModel.ValuesAxisModel.DeleteAxis },
                     new AxisPosition() { Val = new EnumValue<AxisPositionValues>(AxisPositionValues.Bottom) },
-                    new dc.NumberingFormat()
+                    new DC.NumberingFormat()
                     {
                         FormatCode = new StringValue("General"),
                         SourceLinked = new BooleanValue(true)
@@ -477,11 +477,10 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 }
 
                 chart.AppendChild(
-                    new Legend(
-                        new LegendPosition() { Val = new EnumValue<LegendPositionValues>(LegendPositionValues.Right) },
-                        new Overlay() { Val = false },
-                        new Layout(),
-                        textProperty));
+                    new Legend(new LegendPosition() { Val = new EnumValue<DC.LegendPositionValues>((DC.LegendPositionValues)(int)chartModel.LegendPosition) },
+                    new Overlay() { Val = false },
+                    new Layout(),
+                    textProperty));
             }
         }
 
