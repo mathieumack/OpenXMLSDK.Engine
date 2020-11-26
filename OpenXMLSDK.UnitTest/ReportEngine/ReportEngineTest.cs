@@ -1755,7 +1755,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                         {
                             Name = "Multiple of two",
                             Color = "12E3E3",
-                            Values = new List<double?> { 2, 4, 6, 8, 10, 12 },
+                            Values = new List<double?> { 2, 4, -6, 8, 10, 12 },
                             SerieChartType = SerieChartType.Bar
                         }
                     },
