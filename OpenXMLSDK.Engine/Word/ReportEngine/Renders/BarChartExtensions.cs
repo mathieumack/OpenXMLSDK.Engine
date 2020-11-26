@@ -132,6 +132,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     new BarChartSeries(
                         new Index() { Val = i },
                         new Order() { Val = i },
+                        new InvertIfNegative() { Val = new BooleanValue(false) },
                         new SeriesText(
                             new StringReference(
                                 new StringCache(
