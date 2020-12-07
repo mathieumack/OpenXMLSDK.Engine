@@ -271,13 +271,15 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             // Add the chart Legend.
             if (chartModel.ShowLegend)
             {
-                var textProperty = new dc.TextProperties();
+                var defaultRunProperties = new A.DefaultRunProperties { Baseline = 0 };
                 if (!string.IsNullOrEmpty(chartModel.FontFamilyLegend))
-                {
-                    textProperty = new dc.TextProperties(new A.BodyProperties(),
+                    defaultRunProperties.AppendChild(new A.LatinFont { CharacterSet = 0, Typeface = chartModel.FontFamilyLegend });
+
+                var textProperty = new dc.TextProperties
+                    (
+                        new A.BodyProperties(),
                         new A.ListStyle(),
-                        new A.Paragraph(new A.ParagraphProperties(new A.DefaultRunProperties(new A.LatinFont() { CharacterSet = 0, Typeface = chartModel.FontFamilyLegend }) { Baseline = 0 })));
-                }
+                        new A.Paragraph(new A.ParagraphProperties(defaultRunProperties)));
 
                 dc.Legend legend = chart.AppendChild<dc.Legend>(new dc.Legend(new dc.LegendPosition() { Val = new DocumentFormat.OpenXml.EnumValue<dc.LegendPositionValues>(dc.LegendPositionValues.Right) },
                 new dc.Overlay() { Val = false },

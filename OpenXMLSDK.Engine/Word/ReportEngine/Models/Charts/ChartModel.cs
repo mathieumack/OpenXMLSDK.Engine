@@ -44,7 +44,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts
         /// <summary>
         /// Legend font family
         /// </summary>
-        public string FontFamilyLegend { get; set; } = "Arial";
+        public string FontFamilyLegend { get; set; }
 
         /// <summary>
         /// Specify the legend position

@@ -1822,7 +1822,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                         MaxHeight = 320,
                         DataLabel = new DataLabelModel { ShowDataLabel = false },
                         ShowLegend = true,
-                        FontFamilyLegend = "Calibri",
+                        FontFamilyLegend = "Arial",
                         LegendPosition = LegendPositionValues.Top
                     }
                 }

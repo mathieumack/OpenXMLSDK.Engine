@@ -26,8 +26,8 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.BatchModels.Charts
         public string DataLabelColor { get; set; }
 
         /// <summary>
-        /// Format de rendu des labels
-        /// {0} par défaut
+        /// Labels rendering format
+        /// {0} by default
         /// </summary>
         public string LabelFormatString { get; set; } = "{0}";
 

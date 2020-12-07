@@ -370,7 +370,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             {
                 color = color.Replace("#", "");
                 if (!Regex.IsMatch(color, "^[0-9-A-F]{6}$"))
-                    throw new Exception("Error in color of serie.");
+                    throw new Exception("Error in Title color.");
 
                 rpr.AppendChild(new A.SolidFill() { RgbColorModelHex = new A.RgbColorModelHex() { Val = color } });
             }
@@ -427,16 +427,15 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             // Add the chart Legend.
             if (chartModel.ShowLegend)
             {
-                var textProperty = new TextProperties();
+                var defaultRunProperties = new A.DefaultRunProperties { Baseline = 0 };
                 if (!string.IsNullOrEmpty(chartModel.FontFamilyLegend))
-                {
-                    textProperty = new TextProperties
+                    defaultRunProperties.AppendChild(new A.LatinFont { CharacterSet = 0, Typeface = chartModel.FontFamilyLegend });
+
+                var textProperty = new TextProperties
                     (
                         new A.BodyProperties(),
                         new A.ListStyle(),
-                        new A.Paragraph(new A.ParagraphProperties(new A.DefaultRunProperties(new A.LatinFont() { CharacterSet = 0, Typeface = chartModel.FontFamilyLegend }) { Baseline = 0 }))
-                    );
-                }
+                        new A.Paragraph(new A.ParagraphProperties(defaultRunProperties)));
 
                 chart.AppendChild(
                     new Legend(new LegendPosition() { Val = new EnumValue<DC.LegendPositionValues>((DC.LegendPositionValues)(int)chartModel.LegendPosition) },

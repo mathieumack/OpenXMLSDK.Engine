@@ -115,7 +115,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         private static Run CreateGraph(CombineChartModel chartModel, OpenXmlPart documentPart)
         {
             if (chartModel.Categories == null)
-                throw new ArgumentNullException("categories of chartModel must not be null");
+                throw new ArgumentNullException("Categories of chartModel must not be null");
             if (chartModel.LineSeries == null && chartModel.BarSeries == null)
                 throw new ArgumentNullException("At least one LineSeries or BarSeries must been set");
 
@@ -246,16 +246,15 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             // Add the chart Legend.
             if (chartModel.ShowLegend)
             {
-                var textProperty = new TextProperties();
+                var defaultRunProperties = new A.DefaultRunProperties { Baseline = 0 };
                 if (!string.IsNullOrEmpty(chartModel.FontFamilyLegend))
-                {
-                    textProperty = new TextProperties
+                    defaultRunProperties.AppendChild(new A.LatinFont { CharacterSet = 0, Typeface = chartModel.FontFamilyLegend });
+
+                var textProperty = new TextProperties
                     (
                         new A.BodyProperties(),
                         new A.ListStyle(),
-                        new A.Paragraph(new A.ParagraphProperties(new A.DefaultRunProperties(new A.LatinFont() { CharacterSet = 0, Typeface = chartModel.FontFamilyLegend }) { Baseline = 0 }))
-                    );
-                }
+                        new A.Paragraph(new A.ParagraphProperties(defaultRunProperties)));
 
                 chart.AppendChild(
                     new Legend(new LegendPosition() { Val = new EnumValue<DC.LegendPositionValues>((DC.LegendPositionValues)(int)chartModel.LegendPosition) },

@@ -11,7 +11,8 @@
         public string Title { get; set; }
 
         /// <summary>
-        /// Title color
+        /// Title color, must be in hex format (with or without #).
+        /// Exemple of valid format: 000000 or #000000
         /// </summary>
         public string TitleColor { get; set; }
 
@@ -26,7 +27,8 @@
         public bool ShowAxisCurve { get; set; }
 
         /// <summary>
-        /// Define the color of the curve sepparating axis from graph
+        /// Define the color of the curve sepparating axis from graph, must be in hex format (with or without #).
+        /// Exemple of valid format: 000000 or #000000
         /// </summary>
         public string AxisCurveColor { get; set; }
 
@@ -36,7 +38,8 @@
         public bool ShowMajorGridlines { get; set; }
 
         /// <summary>
-        /// Indicate the color of major grid lines
+        /// Indicate the color of major grid lines, must be in hex format (with or without #).
+        /// Exemple of valid format: 000000 or #000000
         /// </summary>
         public string MajorGridlinesColor { get; set; }
     }
