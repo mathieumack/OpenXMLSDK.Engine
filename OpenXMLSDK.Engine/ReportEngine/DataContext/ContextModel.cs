@@ -127,8 +127,6 @@ namespace OpenXMLSDK.Engine.ReportEngine.DataContext
                 element.FontName = ReplaceText(element.FontName, formatProvider);
             if (!string.IsNullOrEmpty(element.FontColor))
                 element.FontColor = ReplaceText(element.FontColor, formatProvider);
-            if (!string.IsNullOrEmpty(element.MajorGridlinesColor))
-                element.MajorGridlinesColor = ReplaceText(element.MajorGridlinesColor, formatProvider);
         }
 
         /// <summary>

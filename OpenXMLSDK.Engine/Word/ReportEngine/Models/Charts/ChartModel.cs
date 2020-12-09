@@ -20,13 +20,9 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts
         public bool ShowTitle { get; set; }
 
         /// <summary>
-        /// Indicate if we show major grid lines
-        /// </summary>
-        public bool ShowLegend { get; set; }
-
-        /// <summary>
         /// Indicate if we delete axis for values
         /// </summary>
+        [Obsolete("Please use ValuesAxisModel.DeleteAxis instead")]
         public bool DeleteAxeValue { get; set; }
 
         /// <summary>
@@ -37,12 +33,23 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts
         /// <summary>
         /// Indicate if we delete axis for categories
         /// </summary>
+        [Obsolete("Please use CategoriesAxisModel.DeleteAxis instead")]
         public bool DeleteAxeCategory { get; set; }
+
+        /// <summary>
+        /// Indicate if the legend must be displayed
+        /// </summary>
+        public bool ShowLegend { get; set; }
 
         /// <summary>
         /// Legend font family
         /// </summary>
         public string FontFamilyLegend { get; set; }
+
+        /// <summary>
+        /// Specify the legend position
+        /// </summary>
+        public LegendPositionValues LegendPosition { get; set; } = LegendPositionValues.Right;
 
         /// <summary>
         /// Define if the graph has a border
@@ -67,11 +74,13 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts
         /// <summary>
         /// Indicate if we show major grid lines
         /// </summary>
+        [Obsolete("Please use CategoriesAxisModel.ShowMajorGridlines instead")]
         public bool ShowMajorGridlines { get; set; }
 
         /// <summary>
         /// Indicate the color of major grid lines
         /// </summary>
+        [Obsolete("Please use CategoriesAxisModel.MajorGridlinesColor instead")]
         public string MajorGridlinesColor { get; set; }
 
         /// <summary>
@@ -116,6 +125,31 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts
                 DataLabel.ShowDataLabel = value;
             }
         }
+
+        /// <summary>
+        /// Specifies that each data marker in the series has a different color
+        /// </summary>
+        public bool VaryColors { get; set; } = true;
+
+        /// <summary>
+        /// Define the model for categories axis
+        /// </summary>
+        public ChartAxisModel CategoriesAxisModel { get; set; } = new ChartAxisModel();
+
+        /// <summary>
+        /// Define the model for values axis
+        /// </summary>
+        public ChartAxisModel ValuesAxisModel { get; set; } = new ChartAxisModel();
+
+        /// <summary>
+        /// Define the model for secondary values axis
+        /// </summary>
+        public ChartAxisModel SecondaryValuesAxisModel { get; set; } = new ChartAxisModel();
+
+        /// <summary>
+        /// Indicate the overlap of bar series in percent, Min = -100, Max = 100
+        /// </summary>
+        public sbyte Overlap { get; set; } = 100;
 
         /// <summary>
         /// Ctor

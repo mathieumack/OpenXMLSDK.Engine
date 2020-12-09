@@ -3,10 +3,10 @@ using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using OpenXMLSDK.Engine.ReportEngine.DataContext;
+using SixLabors.ImageSharp.Metadata;
 using A = DocumentFormat.OpenXml.Drawing;
 using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
 using PIC = DocumentFormat.OpenXml.Drawing.Pictures;
-using SixLabors.ImageSharp.MetaData;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 {
@@ -62,7 +62,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             else
             {
                 return null;
-            }            
+            }
         }
 
         /// <summary>
@@ -120,16 +120,16 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     bmHeight = (long)(bmHeight * (ratio / 100D));
                 }
 
-                var xResolution = image.MetaData.HorizontalResolution;
-                var yResolution = image.MetaData.VerticalResolution;
+                var xResolution = image.Metadata.HorizontalResolution;
+                var yResolution = image.Metadata.VerticalResolution;
 
                 // The resolution may come in differents units, convert it to pixels per inch
-                if (image.MetaData.ResolutionUnits == PixelResolutionUnit.PixelsPerMeter)
+                if (image.Metadata.ResolutionUnits == PixelResolutionUnit.PixelsPerMeter)
                 {
                     xResolution *= 0.0254;
                     yResolution *= 0.0254;
                 }
-                else if (image.MetaData.ResolutionUnits == PixelResolutionUnit.PixelsPerCentimeter)
+                else if (image.Metadata.ResolutionUnits == PixelResolutionUnit.PixelsPerCentimeter)
                 {
                     xResolution *= 2.54;
                     yResolution *= 2.54;
