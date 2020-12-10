@@ -211,12 +211,11 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     new AxisId() { Val = new UInt32Value(categoryAxisId) },
                     new Scaling() { Orientation = new Orientation() { Val = new EnumValue<OrientationValues>(OrientationValues.MinMax) } },
                     new Delete() { Val = chartModel.CategoriesAxisModel.DeleteAxis },
-                    new AxisPosition() { Val = new EnumValue<AxisPositionValues>(AxisPositionValues.Left) },
+                    new AxisPosition() { Val = new EnumValue<AxisPositionValues>(AxisPositionValues.Bottom) },
                     new MajorTickMark() { Val = TickMarkValues.None },
                     new MinorTickMark() { Val = TickMarkValues.None },
-                    new TickLabelPosition() { Val = new EnumValue<TickLabelPositionValues>(TickLabelPositionValues.NextTo) },
+                    new TickLabelPosition() { Val = new EnumValue<TickLabelPositionValues>(TickLabelPositionValues.Low) },
                     new CrossingAxis() { Val = valuesAxisId },
-                    new Crosses() { Val = new EnumValue<CrossesValues>(CrossesValues.AutoZero) },
                     new AutoLabeled() { Val = new BooleanValue(true) },
                     new LabelAlignment() { Val = new EnumValue<LabelAlignmentValues>(LabelAlignmentValues.Center) },
                     new LabelOffset() { Val = new UInt16Value((ushort)100) },
@@ -224,7 +223,11 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     new MajorGridlines(ManageShapeProperties(chartModel.CategoriesAxisModel.ShowMajorGridlines, chartModel.CategoriesAxisModel.MajorGridlinesColor)),
                     ManageShapeProperties(chartModel.CategoriesAxisModel.ShowAxisCurve, chartModel.CategoriesAxisModel.AxisCurveColor));
                 if (!string.IsNullOrWhiteSpace(chartModel.CategoriesAxisModel.Title))
-                    catAxis.Title = ManageTitle(chartModel.CategoriesAxisModel.Title, chartModel.CategoriesAxisModel.TitleColor);
+                    catAxis.Title = ManageTitle(chartModel.CategoriesAxisModel.Title, chartModel.CategoriesAxisModel.LabelFormat, chartModel.CategoriesAxisModel.TitleColor);
+                if (chartModel.CategoriesAxisModel.CrossesAt != null)
+                    catAxis.AppendChild(new CrossesAt() { Val = new DoubleValue(chartModel.CategoriesAxisModel.CrossesAt) });
+                else
+                    catAxis.AppendChild(new Crosses() { Val = new EnumValue<CrossesValues>(CrossesValues.AutoZero) });
                 plotArea.AppendChild(catAxis);
 
                 // Add the Value Axis.
@@ -232,7 +235,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     new AxisId() { Val = valuesAxisId },
                     chartModel.ValuesAxisScaling?.GetScaling() ?? new Scaling() { Orientation = new Orientation() { Val = new EnumValue<OrientationValues>(OrientationValues.MinMax) } },
                     new Delete() { Val = chartModel.ValuesAxisModel.DeleteAxis },
-                    new AxisPosition() { Val = new EnumValue<AxisPositionValues>(AxisPositionValues.Bottom) },
+                    new AxisPosition() { Val = new EnumValue<AxisPositionValues>(AxisPositionValues.Left) },
                     new DC.NumberingFormat()
                     {
                         FormatCode = new StringValue("General"),
@@ -242,12 +245,15 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     new MinorTickMark() { Val = TickMarkValues.None },
                     new TickLabelPosition() { Val = new EnumValue<TickLabelPositionValues>(TickLabelPositionValues.NextTo) },
                     new CrossingAxis() { Val = categoryAxisId },
-                    new Crosses() { Val = new EnumValue<CrossesValues>(CrossesValues.AutoZero) },
                     new CrossBetween() { Val = new EnumValue<CrossBetweenValues>(CrossBetweenValues.Between) },
                     new MajorGridlines(ManageShapeProperties(chartModel.ValuesAxisModel.ShowMajorGridlines, chartModel.ValuesAxisModel.MajorGridlinesColor)),
                     ManageShapeProperties(chartModel.ValuesAxisModel.ShowAxisCurve, chartModel.ValuesAxisModel.AxisCurveColor));
                 if (!string.IsNullOrWhiteSpace(chartModel.ValuesAxisModel.Title))
-                    valueAxis.Title = ManageTitle(chartModel.ValuesAxisModel.Title, chartModel.ValuesAxisModel.TitleColor);
+                    valueAxis.Title = ManageTitle(chartModel.ValuesAxisModel.Title, chartModel.ValuesAxisModel.LabelFormat, chartModel.ValuesAxisModel.TitleColor);
+                if (chartModel.ValuesAxisModel.CrossesAt != null)
+                    valueAxis.AppendChild(new CrossesAt() { Val = new DoubleValue(chartModel.ValuesAxisModel.CrossesAt) });
+                else
+                    valueAxis.AppendChild(new Crosses() { Val = new EnumValue<CrossesValues>(CrossesValues.AutoZero) });
                 plotArea.AppendChild(valueAxis);
             }
         }
@@ -266,6 +272,12 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 
             if (!string.IsNullOrWhiteSpace(context.Color))
                 template.TitleColor = context.Color;
+
+            if (context.CrossesAt != null)
+                template.CrossesAt = context.CrossesAt;
+
+            if (!string.IsNullOrWhiteSpace(context.LabelFormat))
+                template.LabelFormat = context.LabelFormat;
         }
 
         /// <summary>
@@ -396,7 +408,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// <param name="title"></param>
         /// <param name="color"></param>
         /// <returns></returns>
-        private static Title ManageTitle(string title, string color)
+        private static Title ManageTitle(string title, string format, string color)
         {
             Title titleElement = new Title();
 
@@ -420,7 +432,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             var paragraph = new A.Paragraph();
             paragraph.AppendChild(new A.Run
             {
-                Text = new A.Text(title),
+                Text = new A.Text(string.IsNullOrWhiteSpace(format) ? title : string.Format(format, title)),
                 RunProperties = rpr
             });
 

@@ -104,6 +104,12 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 
             if (!string.IsNullOrWhiteSpace(context.Color))
                 template.TitleColor = context.Color;
+
+            if (context.CrossesAt != null)
+                template.CrossesAt = context.CrossesAt;
+
+            if (!string.IsNullOrWhiteSpace(context.LabelFormat))
+                template.LabelFormat = context.LabelFormat;
         }
 
         /// <summary>
