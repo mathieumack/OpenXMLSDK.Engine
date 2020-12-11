@@ -182,7 +182,6 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     new MinorTickMark() { Val = TickMarkValues.None },
                     new TickLabelPosition() { Val = new EnumValue<TickLabelPositionValues>(TickLabelPositionValues.Low) },
                     new CrossingAxis() { Val = valuesAxisId },
-                    new Crosses() { Val = new EnumValue<CrossesValues>(CrossesValues.AutoZero) },
                     new AutoLabeled() { Val = new BooleanValue(true) },
                     new LabelAlignment() { Val = new EnumValue<LabelAlignmentValues>(LabelAlignmentValues.Center) },
                     new LabelOffset() { Val = new UInt16Value((ushort)100) },
@@ -190,7 +189,11 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     new MajorGridlines(ManageShapeProperties(chartModel.CategoriesAxisModel.ShowMajorGridlines, chartModel.CategoriesAxisModel.MajorGridlinesColor)),
                     ManageShapeProperties(chartModel.CategoriesAxisModel.ShowAxisCurve, chartModel.CategoriesAxisModel.AxisCurveColor));
                 if (!string.IsNullOrWhiteSpace(chartModel.CategoriesAxisModel.Title))
-                    catAxis.Title = ManageTitle(chartModel.CategoriesAxisModel.Title, chartModel.CategoriesAxisModel.TitleColor);
+                    catAxis.Title = ManageTitle(chartModel.CategoriesAxisModel.Title, chartModel.CategoriesAxisModel.LabelFormat, chartModel.CategoriesAxisModel.TitleColor);
+                if (chartModel.CategoriesAxisModel.CrossesAt != null)
+                    catAxis.AppendChild(new CrossesAt() { Val = new DoubleValue(chartModel.CategoriesAxisModel.CrossesAt) });
+                else
+                    catAxis.AppendChild(new Crosses() { Val = new EnumValue<CrossesValues>(CrossesValues.AutoZero) });
                 plotArea.AppendChild(catAxis);
             }
 
@@ -210,7 +213,6 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 new MinorTickMark() { Val = TickMarkValues.None },
                 new TickLabelPosition() { Val = new EnumValue<TickLabelPositionValues>(TickLabelPositionValues.NextTo) },
                 new CrossingAxis() { Val = categoryAxisId },
-                new Crosses() { Val = secondaryAxis ? new EnumValue<CrossesValues>(CrossesValues.Maximum) : new EnumValue<CrossesValues>(CrossesValues.AutoZero) },
                 new CrossBetween() { Val = new EnumValue<CrossBetweenValues>(CrossBetweenValues.Between) },
                 ManageShapeProperties(axixModel.ShowAxisCurve, axixModel.AxisCurveColor));
             if (!secondaryAxis)
@@ -219,7 +221,11 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     ChartShapeProperties = ManageShapeProperties(axixModel.ShowMajorGridlines, axixModel.MajorGridlinesColor)
                 };
             if (!string.IsNullOrWhiteSpace(axixModel.Title))
-                valueAxis.Title = ManageTitle(axixModel.Title, axixModel.TitleColor);
+                valueAxis.Title = ManageTitle(axixModel.Title, axixModel.LabelFormat, axixModel.TitleColor);
+            if (axixModel.CrossesAt != null)
+                valueAxis.AppendChild(new CrossesAt() { Val = new DoubleValue(axixModel.CrossesAt) });
+            else
+                valueAxis.AppendChild(new Crosses() { Val = new EnumValue<CrossesValues>(secondaryAxis ? new EnumValue<CrossesValues>(CrossesValues.Maximum) : new EnumValue<CrossesValues>(CrossesValues.AutoZero)) });
             plotArea.AppendChild(valueAxis);
         }
 
@@ -238,6 +244,12 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 
             if (!string.IsNullOrWhiteSpace(context.Color))
                 template.TitleColor = context.Color;
+
+            if (context.CrossesAt != null)
+                template.CrossesAt = context.CrossesAt;
+
+            if (!string.IsNullOrWhiteSpace(context.LabelFormat))
+                template.LabelFormat = context.LabelFormat;
         }
 
         /// <summary>
@@ -354,7 +366,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// <param name="title"></param>
         /// <param name="color"></param>
         /// <returns></returns>
-        private static Title ManageTitle(string title, string color)
+        private static Title ManageTitle(string title, string format, string color)
         {
             Title titleElement = new Title();
 
@@ -378,7 +390,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             var paragraph = new A.Paragraph();
             paragraph.AppendChild(new A.Run
             {
-                Text = new A.Text(title),
+                Text = new A.Text(string.IsNullOrWhiteSpace(format) ? title : string.Format(format, title)),
                 RunProperties = rpr
             });
 

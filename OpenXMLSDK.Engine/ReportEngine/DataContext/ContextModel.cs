@@ -115,7 +115,7 @@ namespace OpenXMLSDK.Engine.ReportEngine.DataContext
         /// </summary>
         /// <param name="element"></param>
         /// <param name="formatProvider"></param>
-        public void ReplaceItem(BarModel element, IFormatProvider formatProvider)
+        public void ReplaceItem(ChartModel element, IFormatProvider formatProvider)
         {
             SetVisibilityFromContext(element);
 
@@ -127,6 +127,20 @@ namespace OpenXMLSDK.Engine.ReportEngine.DataContext
                 element.FontName = ReplaceText(element.FontName, formatProvider);
             if (!string.IsNullOrEmpty(element.FontColor))
                 element.FontColor = ReplaceText(element.FontColor, formatProvider);
+
+            // Axis
+            if (!string.IsNullOrEmpty(element.CategoriesAxisModel.Title))
+                element.CategoriesAxisModel.Title = ReplaceText(element.CategoriesAxisModel.Title, formatProvider);
+            if (!string.IsNullOrEmpty(element.CategoriesAxisModel.TitleColor))
+                element.CategoriesAxisModel.TitleColor = ReplaceText(element.CategoriesAxisModel.TitleColor, formatProvider);
+            if (!string.IsNullOrEmpty(element.ValuesAxisModel.Title))
+                element.ValuesAxisModel.Title = ReplaceText(element.ValuesAxisModel.Title, formatProvider);
+            if (!string.IsNullOrEmpty(element.ValuesAxisModel.TitleColor))
+                element.ValuesAxisModel.TitleColor = ReplaceText(element.ValuesAxisModel.TitleColor, formatProvider);
+            if (!string.IsNullOrEmpty(element.SecondaryValuesAxisModel.Title))
+                element.SecondaryValuesAxisModel.Title = ReplaceText(element.SecondaryValuesAxisModel.Title, formatProvider);
+            if (!string.IsNullOrEmpty(element.SecondaryValuesAxisModel.TitleColor))
+                element.SecondaryValuesAxisModel.TitleColor = ReplaceText(element.SecondaryValuesAxisModel.TitleColor, formatProvider);
         }
 
         /// <summary>

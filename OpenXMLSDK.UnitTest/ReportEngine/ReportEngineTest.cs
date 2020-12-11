@@ -1716,7 +1716,8 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                     CategoriesAxisModel = new AxisModel
                     {
                         Title = "From context",
-                        Color = "9FA0A4"
+                        Color = "9FA0A4",
+                        CrossesAt = 3.5
                     }
                 }
             });
@@ -1762,7 +1763,17 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                     CategoriesAxisModel = new AxisModel
                     {
                         Title = "From context",
-                        Color = "9FA0A4"
+                        LabelFormat = "{0} with 'unit'",
+                        Color = "9FA0A4",
+                        CrossesAt = 2.3
+                    },
+                    ValuesAxisModel = new AxisModel
+                    {
+                        CrossesAt = 3
+                    },
+                    SecondaryValuesAxisModel = new AxisModel
+                    {
+                        CrossesAt = 5
                     }
                 }
             });
