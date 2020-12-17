@@ -134,17 +134,34 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts
         /// <summary>
         /// Define the model for categories axis
         /// </summary>
-        public ChartAxisModel CategoriesAxisModel { get; set; } = new ChartAxisModel();
+        public ChartAxisModel CategoriesAxisModel { get; set; } = new ChartAxisModel
+        {
+            TickLabelPositions = TickLabelPositions.Low
+        };
 
         /// <summary>
         /// Define the model for values axis
         /// </summary>
-        public ChartAxisModel ValuesAxisModel { get; set; } = new ChartAxisModel();
+        public ChartAxisModel ValuesAxisModel { get; set; } = new ChartAxisModel
+        {
+            TickLabelPositions = TickLabelPositions.NextTo
+        };
+
+        /// <summary>
+        /// Define the model for secondary categories axis
+        /// </summary>
+        public ChartAxisModel SecondaryCategoriesAxisModel { get; set; } = new ChartAxisModel
+        {
+            TickLabelPositions = TickLabelPositions.High
+        };
 
         /// <summary>
         /// Define the model for secondary values axis
         /// </summary>
-        public ChartAxisModel SecondaryValuesAxisModel { get; set; } = new ChartAxisModel();
+        public ChartAxisModel SecondaryValuesAxisModel { get; set; } = new ChartAxisModel
+        {
+            TickLabelPositions = TickLabelPositions.NextTo
+        };
 
         /// <summary>
         /// Indicate the overlap of bar series in percent, Min = -100, Max = 100

@@ -1,4 +1,6 @@
-﻿namespace OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts
+﻿using OpenXMLSDK.Engine.ReportEngine.DataContext.Charts;
+
+namespace OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts
 {
     /// <summary>
     /// Line graph serie
@@ -6,9 +8,9 @@
     public class LineSerie : ChartSerie
     {
         /// <summary>
-        /// Line Marker
+        /// Serie Marker
         /// </summary>
-        public LineSerieMarker LineSerieMarker { get; set; } = new LineSerieMarker();
+        public SerieMarker LineSerieMarker { get; set; } = new SerieMarker();
 
         /// <summary>
         /// Default constructor

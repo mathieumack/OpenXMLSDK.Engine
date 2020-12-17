@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using OpenXMLSDK.Engine.ReportEngine.DataContext.Charts;
 
-namespace OpenXMLSDK.Engine.Word.ReportEngine.BatchModels.Charts
+namespace OpenXMLSDK.Engine.ReportEngine.DataContext.Charts
 {
     public class SerieModel
     {
@@ -65,5 +64,10 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.BatchModels.Charts
         /// Sepcify the render type of the serie (line, bar, ...)
         /// </summary>
         public SerieChartType SerieChartType { get; set; }
+
+        /// <summary>
+        /// Specify the marker used at each point (none by default)
+        /// </summary>
+        public SerieMarker SerieMarker { get; set; } = new SerieMarker();
     }
 }

@@ -8,7 +8,6 @@ using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using OpenXMLSDK.Engine.ReportEngine.DataContext;
 using OpenXMLSDK.Engine.ReportEngine.DataContext.Charts;
-using OpenXMLSDK.Engine.Word.Charts;
 using OpenXMLSDK.Engine.Word.Extensions;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts;
 using A = DocumentFormat.OpenXml.Drawing;
@@ -17,42 +16,31 @@ using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 {
-    /// <summary>
-    /// Line graph extension
-    /// </summary>
-    public static class LineChartExtensions
+    public static class ScatterChartExtensions
     {
         /// <summary>
-        ///  Render the graph
+        /// Graph render
         /// </summary>
-        /// <param name="lineModel"></param>
+        /// <param name="scatterModel"></param>
         /// <param name="parent"></param>
         /// <param name="context"></param>
         /// <param name="documentPart"></param>
         /// <param name="formatProvider"></param>
         /// <returns></returns>
-        public static Run Render(this LineModel lineModel, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart, IFormatProvider formatProvider)
+        public static Run Render(this ScatterModel scatterModel, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart, IFormatProvider formatProvider)
         {
-            context.ReplaceItem(lineModel, formatProvider);
+            context.ReplaceItem(scatterModel, formatProvider);
 
             Run runItem = null;
 
             // We construct categories and series from the context object
-            if (!string.IsNullOrWhiteSpace(lineModel.DataSourceKey) && context.TryGetItem(lineModel.DataSourceKey, out MultipleSeriesChartModel contextModel))
+            if (!string.IsNullOrWhiteSpace(scatterModel.DataSourceKey) && context.TryGetItem(scatterModel.DataSourceKey, out MultipleSeriesChartModel contextModel))
             {
-                if (contextModel.ChartContent is null || contextModel.ChartContent.Categories is null
-                   || contextModel.ChartContent.Series is null)
+                if (contextModel.ChartContent is null || contextModel.ChartContent.ScatterSeries is null)
                     return runItem;
 
-                // Update categories object :
-                lineModel.Categories = contextModel.ChartContent.Categories.Select(e => new LineCategory()
-                {
-                    Name = e.Name,
-                    Color = e.Color
-                }).ToList();
-
-                // We update
-                lineModel.Series = contextModel.ChartContent.Series.Select(e => new LineSerie()
+                // Series update
+                scatterModel.Series = contextModel.ChartContent.ScatterSeries.Select(e => new ScatterSerie()
                 {
                     Name = e.Name,
                     Values = e.Values,
@@ -63,171 +51,23 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     UseSecondaryAxis = e.UseSecondaryAxis,
                     SmoothCurve = e.SmoothCurve,
                     PresetLineDashValues = e.PresetLineDashValues,
-                    LineSerieMarker = e.SerieMarker
+                    HideCurve = e.HideCurve,
+                    SerieMarker = e.SerieMarker
                 }).ToList();
 
                 // Update Axes
-                UpdateAxisFromcontext(lineModel.CategoriesAxisModel, contextModel.ChartContent.CategoriesAxisModel);
-                UpdateAxisFromcontext(lineModel.ValuesAxisModel, contextModel.ChartContent.ValuesAxisModel);
-                UpdateAxisFromcontext(lineModel.SecondaryValuesAxisModel, contextModel.ChartContent.SecondaryValuesAxisModel);
+                UpdateAxisFromcontext(scatterModel.CategoriesAxisModel, contextModel.ChartContent.CategoriesAxisModel);
+                UpdateAxisFromcontext(scatterModel.ValuesAxisModel, contextModel.ChartContent.ValuesAxisModel);
+                UpdateAxisFromcontext(scatterModel.SecondaryCategoriesAxisModel, contextModel.ChartContent.SecondaryCategoriesAxisModel);
+                UpdateAxisFromcontext(scatterModel.SecondaryValuesAxisModel, contextModel.ChartContent.SecondaryValuesAxisModel);
             }
 
-            runItem = CreateGraph(lineModel, documentPart);
+            runItem = CreateGraph(scatterModel, documentPart);
 
             if (runItem != null)
                 parent.AppendChild(runItem);
 
             return runItem;
-        }
-
-        /// <summary>
-        /// Manage Line chart
-        /// </summary>
-        /// <param name="chartModel"></param>
-        /// <param name="plotArea"></param>
-        /// <param name="categoryAxisId"></param>
-        /// <param name="valuesAxisId"></param>
-        /// <param name="i"></param>
-        /// <param name="secondaryAxis"></param>
-        public static void ManageLineChart(LineModel chartModel, PlotArea plotArea, UInt32Value categoryAxisId, UInt32Value valuesAxisId, ref uint i, bool secondaryAxis = false)
-        {
-            LineChart lineChart = plotArea.AppendChild(
-                new LineChart(
-                    new Grouping { Val = new EnumValue<DC.GroupingValues>((DC.GroupingValues)(int)chartModel.GroupingValues) },
-                    new VaryColors { Val = new BooleanValue(chartModel.VaryColors) }));
-
-            uint p = 0;
-            // Iterate through each key in the Dictionary collection and add the key to the chart Series
-            // and add the corresponding value to the chart Values.
-            foreach (var serie in chartModel.Series.Where(s => s.UseSecondaryAxis.Equals(secondaryAxis)))
-            {
-                // Series.
-                LineChartSeries lineChartSeries = lineChart.AppendChild(
-                    new LineChartSeries(
-                        new Index() { Val = i },
-                        new Order() { Val = i },
-                        new Marker
-                        {
-                            Symbol = new Symbol { Val = new EnumValue<DC.MarkerStyleValues>((DC.MarkerStyleValues)(int)serie.LineSerieMarker.MarkerStyleValues) },
-                            Size = new Size { Val = serie.LineSerieMarker.Size }
-                        },
-                        new SeriesText(
-                            new StringReference(
-                                new StringCache(
-                                    new PointCount() { Val = new UInt32Value(1U) },
-                                    new StringPoint() { Index = (uint)0, NumericValue = new NumericValue() { Text = serie.Name } })))));
-
-                // Serie color.
-                if (!string.IsNullOrWhiteSpace(serie.Color))
-                {
-                    string color = serie.Color;
-                    color = color.Replace("#", "");
-                    if (!Regex.IsMatch(color, "^[0-9-A-F]{6}$"))
-                        throw new Exception("Error in color of serie.");
-
-                    lineChartSeries.AppendChild(
-                        new ChartShapeProperties(
-                            new A.Outline(
-                                new A.SolidFill() { RgbColorModelHex = new A.RgbColorModelHex() { Val = color } },
-                                new A.PresetDash() { Val = new EnumValue<A.PresetLineDashValues>((A.PresetLineDashValues)(int)serie.PresetLineDashValues) })));
-                }
-
-                // Categories.
-                StringReference strLit = lineChartSeries.AppendChild(new CategoryAxisData()).AppendChild(new StringReference());
-                strLit.AppendChild(new StringCache());
-                strLit.StringCache.AppendChild(new PointCount() { Val = (uint)chartModel.Categories.Count });
-                // Category list.
-                foreach (var categorie in chartModel.Categories)
-                {
-                    strLit.StringCache.AppendChild(new StringPoint() { Index = p, NumericValue = new NumericValue(categorie.Name) });
-                    p++;
-                }
-                p = 0;
-
-                // Values.
-                NumberReference numLit = lineChartSeries.AppendChild(new Values()).AppendChild(new NumberReference());
-                numLit.AppendChild(new NumberingCache());
-                numLit.NumberingCache.AppendChild(new FormatCode("General"));
-                numLit.NumberingCache.AppendChild(new PointCount() { Val = (uint)serie.Values.Count });
-                foreach (var value in serie.Values)
-                {
-                    numLit.NumberingCache.AppendChild(new NumericPoint() { Index = p, NumericValue = new NumericValue(value != null ? value.Value.ToString(CultureInfo.InvariantCulture) : string.Empty) });
-                    p++;
-                }
-
-                // Smooth
-                lineChartSeries.AppendChild(new Smooth { Val = new BooleanValue(serie.SmoothCurve) });
-
-                i++;
-            }
-
-            ManageDataLabels(chartModel, lineChart);
-
-            if (chartModel.SpaceBetweenLineCategories.HasValue)
-                lineChart.AppendChild(new GapWidth() { Val = (ushort)chartModel.SpaceBetweenLineCategories.Value });
-            else
-                lineChart.AppendChild(new GapWidth() { Val = 55 });
-
-            lineChart.AppendChild(new AxisId() { Val = categoryAxisId });
-            lineChart.AppendChild(new AxisId() { Val = valuesAxisId });
-
-            // Add the Category Axis. If secondary axis, the category axis has already been added
-            if (!secondaryAxis)
-            {
-                var catAxis = new CategoryAxis(
-                    new AxisId() { Val = categoryAxisId },
-                    new Scaling() { Orientation = new Orientation() { Val = new EnumValue<OrientationValues>(OrientationValues.MinMax) } },
-                    new Delete() { Val = chartModel.CategoriesAxisModel.DeleteAxis },
-                    new AxisPosition() { Val = new EnumValue<AxisPositionValues>(AxisPositionValues.Bottom) },
-                    new MajorTickMark() { Val = TickMarkValues.None },
-                    new MinorTickMark() { Val = TickMarkValues.None },
-                    new TickLabelPosition() { Val = chartModel.CategoriesAxisModel.TickLabelPositions.HasValue ? new EnumValue<TickLabelPositionValues>((TickLabelPositionValues)(int)chartModel.CategoriesAxisModel.TickLabelPositions) : new EnumValue<TickLabelPositionValues>(TickLabelPositionValues.NextTo) },
-                    new CrossingAxis() { Val = valuesAxisId },
-                    new AutoLabeled() { Val = new BooleanValue(true) },
-                    new LabelAlignment() { Val = new EnumValue<LabelAlignmentValues>(LabelAlignmentValues.Center) },
-                    new LabelOffset() { Val = new UInt16Value((ushort)100) },
-                    new NoMultiLevelLabels() { Val = false },
-                    new MajorGridlines(ManageShapeProperties(chartModel.CategoriesAxisModel.ShowMajorGridlines, chartModel.CategoriesAxisModel.MajorGridlinesColor)),
-                    ManageShapeProperties(chartModel.CategoriesAxisModel.ShowAxisCurve, chartModel.CategoriesAxisModel.AxisCurveColor));
-                if (!string.IsNullOrWhiteSpace(chartModel.CategoriesAxisModel.Title))
-                    catAxis.Title = ManageTitle(chartModel.CategoriesAxisModel.Title, chartModel.CategoriesAxisModel.LabelFormat, chartModel.CategoriesAxisModel.TitleColor);
-                if (chartModel.CategoriesAxisModel.CrossesAt != null)
-                    catAxis.AppendChild(new CrossesAt() { Val = new DoubleValue(chartModel.CategoriesAxisModel.CrossesAt) });
-                else
-                    catAxis.AppendChild(new Crosses() { Val = new EnumValue<CrossesValues>(CrossesValues.AutoZero) });
-                plotArea.AppendChild(catAxis);
-            }
-
-            // Add the Value Axis.
-            var axisModel = secondaryAxis ? chartModel.SecondaryValuesAxisModel : chartModel.ValuesAxisModel;
-            var valueAxis = new ValueAxis(
-                new AxisId() { Val = valuesAxisId },
-                chartModel.ValuesAxisScaling?.GetScaling() ?? new Scaling() { Orientation = new Orientation() { Val = new EnumValue<OrientationValues>(OrientationValues.MinMax) } },
-                new Delete() { Val = axisModel.DeleteAxis },
-                new AxisPosition() { Val = secondaryAxis ? new EnumValue<AxisPositionValues>(AxisPositionValues.Right) : new EnumValue<AxisPositionValues>(AxisPositionValues.Left) },
-                new DC.NumberingFormat()
-                {
-                    FormatCode = new StringValue("General"),
-                    SourceLinked = new BooleanValue(true)
-                },
-                new MajorTickMark() { Val = TickMarkValues.None },
-                new MinorTickMark() { Val = TickMarkValues.None },
-                new TickLabelPosition() { Val = axisModel.TickLabelPositions.HasValue ? new EnumValue<TickLabelPositionValues>((TickLabelPositionValues)(int)axisModel.TickLabelPositions) : new EnumValue<TickLabelPositionValues>(TickLabelPositionValues.NextTo) },
-                new CrossingAxis() { Val = categoryAxisId },
-                new CrossBetween() { Val = new EnumValue<CrossBetweenValues>(CrossBetweenValues.Between) },
-                ManageShapeProperties(axisModel.ShowAxisCurve, axisModel.AxisCurveColor));
-            if (!secondaryAxis)
-                valueAxis.MajorGridlines = new MajorGridlines
-                {
-                    ChartShapeProperties = ManageShapeProperties(axisModel.ShowMajorGridlines, axisModel.MajorGridlinesColor)
-                };
-            if (!string.IsNullOrWhiteSpace(axisModel.Title))
-                valueAxis.Title = ManageTitle(axisModel.Title, axisModel.LabelFormat, axisModel.TitleColor);
-            if (axisModel.CrossesAt != null)
-                valueAxis.AppendChild(new CrossesAt() { Val = new DoubleValue(axisModel.CrossesAt) });
-            else
-                valueAxis.AppendChild(new Crosses() { Val = new EnumValue<CrossesValues>(secondaryAxis ? new EnumValue<CrossesValues>(CrossesValues.Maximum) : new EnumValue<CrossesValues>(CrossesValues.AutoZero)) });
-            plotArea.AppendChild(valueAxis);
         }
 
         #region Internal methods
@@ -260,20 +100,172 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         }
 
         /// <summary>
-        /// Create the graph
+        /// Manage Line chart
+        /// </summary>
+        /// <param name="chartModel"></param>
+        /// <param name="plotArea"></param>
+        /// <param name="categoryAxisId"></param>
+        /// <param name="valuesAxisId"></param>
+        /// <param name="i"></param>
+        /// <param name="secondaryAxis"></param>
+        public static void ManageScatterChart(ScatterModel chartModel, PlotArea plotArea, UInt32Value categoryAxisId, UInt32Value valuesAxisId, ref uint i, bool secondaryAxis = false)
+        {
+            ScatterChart chart = plotArea.AppendChild(
+                new ScatterChart(
+                    new ScatterStyle { Val = ScatterStyleValues.Line },
+                    new VaryColors { Val = new BooleanValue(chartModel.VaryColors) }));
+
+            // Iterate through each key in the Dictionary collection and add the key to the chart Series
+            // and add the corresponding value to the chart Values.
+            foreach (var serie in chartModel.Series.Where(s => s.UseSecondaryAxis.Equals(secondaryAxis)))
+            {
+                // Series.
+                ScatterChartSeries scatterChartSeries = chart.AppendChild(
+                    new ScatterChartSeries(
+                        new Index() { Val = i },
+                        new Order() { Val = i },
+                        new Marker
+                        {
+                            Symbol = new Symbol { Val = new EnumValue<DC.MarkerStyleValues>((DC.MarkerStyleValues)(int)serie.SerieMarker.MarkerStyleValues) },
+                            Size = new Size { Val = serie.SerieMarker.Size }
+                        },
+                        new SeriesText(
+                            new StringReference(
+                                new StringCache(
+                                    new PointCount() { Val = new UInt32Value(1U) },
+                                    new StringPoint() { Index = (uint)0, NumericValue = new NumericValue() { Text = serie.Name } })))));
+
+                // Serie color.
+                if (!string.IsNullOrWhiteSpace(serie.Color))
+                {
+                    string color = serie.Color;
+                    color = color.Replace("#", "");
+                    if (!Regex.IsMatch(color, "^[0-9-A-F]{6}$"))
+                        throw new Exception("Error in color of serie.");
+
+                    if (serie.HideCurve.HasValue && serie.HideCurve.Value)
+                    {
+                        scatterChartSeries.AppendChild(new ChartShapeProperties(new A.Outline(new A.NoFill())));
+                        scatterChartSeries.Marker.ChartShapeProperties = new ChartShapeProperties(
+                                new A.Outline(
+                                    new A.SolidFill() { RgbColorModelHex = new A.RgbColorModelHex() { Val = color } },
+                                    new A.PresetDash() { Val = new EnumValue<A.PresetLineDashValues>((A.PresetLineDashValues)(int)serie.PresetLineDashValues) }));
+                    }
+                    else
+                        scatterChartSeries.AppendChild(
+                            new ChartShapeProperties(
+                                new A.Outline(
+                                    new A.SolidFill() { RgbColorModelHex = new A.RgbColorModelHex() { Val = color } },
+                                    new A.PresetDash() { Val = new EnumValue<A.PresetLineDashValues>((A.PresetLineDashValues)(int)serie.PresetLineDashValues) })));
+                }
+                else if (serie.HideCurve.HasValue && serie.HideCurve.Value)
+                    scatterChartSeries.AppendChild(new ChartShapeProperties(new A.Outline(new A.NoFill())));
+
+                // Values.
+                var xValues = scatterChartSeries.AppendChild(new XValues()).AppendChild(new NumberReference());
+                xValues.AppendChild(new NumberingCache());
+                xValues.NumberingCache.AppendChild(new FormatCode("General"));
+                xValues.NumberingCache.AppendChild(new PointCount() { Val = (uint)serie.Values.Count });
+
+                var yValues = scatterChartSeries.AppendChild(new YValues()).AppendChild(new NumberReference());
+                yValues.AppendChild(new NumberingCache());
+                yValues.NumberingCache.AppendChild(new FormatCode("General"));
+                yValues.NumberingCache.AppendChild(new PointCount() { Val = (uint)serie.Values.Count });
+
+                uint p = 0;
+                foreach (var value in serie.Values)
+                {
+                    xValues.NumberingCache.AppendChild(new NumericPoint() { Index = p, NumericValue = new NumericValue(value.X.HasValue ? value.X.Value.ToString(CultureInfo.InvariantCulture) : string.Empty) });
+                    yValues.NumberingCache.AppendChild(new NumericPoint() { Index = p, NumericValue = new NumericValue(value.Y.HasValue ? value.Y.Value.ToString(CultureInfo.InvariantCulture) : string.Empty) });
+                    p++;
+                }
+
+                // Smooth
+                scatterChartSeries.AppendChild(new Smooth { Val = new BooleanValue(serie.SmoothCurve) });
+                i++;
+            }
+
+            ManageDataLabels(chartModel, chart);
+
+            if (chartModel.SpaceBetweenLineCategories.HasValue)
+                chart.AppendChild(new GapWidth() { Val = (ushort)chartModel.SpaceBetweenLineCategories.Value });
+            else
+                chart.AppendChild(new GapWidth() { Val = 55 });
+
+            chart.AppendChild(new AxisId() { Val = categoryAxisId });
+            chart.AppendChild(new AxisId() { Val = valuesAxisId });
+
+            // Add the X Axis. 
+            var xAxixModel = secondaryAxis ? chartModel.SecondaryCategoriesAxisModel : chartModel.CategoriesAxisModel;
+            var xAxis = new ValueAxis(
+                new AxisId() { Val = categoryAxisId },
+                xAxixModel.ScalingModel.GetScaling(),
+                new Delete() { Val = xAxixModel.DeleteAxis },
+                new AxisPosition() { Val = secondaryAxis ? new EnumValue<AxisPositionValues>(AxisPositionValues.Top) : new EnumValue<AxisPositionValues>(AxisPositionValues.Bottom) },
+                new MajorTickMark() { Val = TickMarkValues.None },
+                new MinorTickMark() { Val = TickMarkValues.None },
+                new TickLabelPosition() { Val = xAxixModel.TickLabelPositions.HasValue ? new EnumValue<TickLabelPositionValues>((TickLabelPositionValues)(int)xAxixModel.TickLabelPositions) : new EnumValue<TickLabelPositionValues>(TickLabelPositionValues.NextTo) },
+                new CrossingAxis() { Val = valuesAxisId },
+                new AutoLabeled() { Val = new BooleanValue(true) },
+                new LabelAlignment() { Val = new EnumValue<LabelAlignmentValues>(LabelAlignmentValues.Center) },
+                new LabelOffset() { Val = new UInt16Value((ushort)100) },
+                new NoMultiLevelLabels() { Val = false },
+                ManageShapeProperties(xAxixModel.ShowAxisCurve, xAxixModel.AxisCurveColor));
+            if (!secondaryAxis)
+                xAxis.MajorGridlines = new MajorGridlines
+                {
+                    ChartShapeProperties = ManageShapeProperties(xAxixModel.ShowMajorGridlines, xAxixModel.MajorGridlinesColor)
+                };
+            if (!string.IsNullOrWhiteSpace(xAxixModel.Title))
+                xAxis.Title = ManageTitle(xAxixModel.Title, xAxixModel.LabelFormat, xAxixModel.TitleColor);
+            if (xAxixModel.CrossesAt != null)
+                xAxis.AppendChild(new CrossesAt() { Val = new DoubleValue(xAxixModel.CrossesAt) });
+            else
+                xAxis.AppendChild(new Crosses() { Val = new EnumValue<CrossesValues>(CrossesValues.AutoZero) });
+            plotArea.AppendChild(xAxis);
+
+            // Add the Y Axis.
+            var yAxixModel = secondaryAxis ? chartModel.SecondaryValuesAxisModel : chartModel.ValuesAxisModel;
+            var yAxis = new ValueAxis(
+                new AxisId() { Val = valuesAxisId },
+                yAxixModel.ScalingModel.GetScaling(),
+                new Delete() { Val = yAxixModel.DeleteAxis },
+                new AxisPosition() { Val = secondaryAxis ? new EnumValue<AxisPositionValues>(AxisPositionValues.Right) : new EnumValue<AxisPositionValues>(AxisPositionValues.Left) },
+                new DC.NumberingFormat()
+                {
+                    FormatCode = new StringValue("General"),
+                    SourceLinked = new BooleanValue(true)
+                },
+                new MajorTickMark() { Val = TickMarkValues.None },
+                new MinorTickMark() { Val = TickMarkValues.None },
+                new TickLabelPosition() { Val = yAxixModel.TickLabelPositions.HasValue ? new EnumValue<TickLabelPositionValues>((TickLabelPositionValues)(int)yAxixModel.TickLabelPositions) : new EnumValue<TickLabelPositionValues>(TickLabelPositionValues.NextTo) },
+                new CrossingAxis() { Val = categoryAxisId },
+                new CrossBetween() { Val = new EnumValue<CrossBetweenValues>(CrossBetweenValues.Between) },
+                ManageShapeProperties(yAxixModel.ShowAxisCurve, yAxixModel.AxisCurveColor));
+            if (!secondaryAxis)
+                yAxis.MajorGridlines = new MajorGridlines
+                {
+                    ChartShapeProperties = ManageShapeProperties(yAxixModel.ShowMajorGridlines, yAxixModel.MajorGridlinesColor)
+                };
+            if (!string.IsNullOrWhiteSpace(yAxixModel.Title))
+                yAxis.Title = ManageTitle(yAxixModel.Title, yAxixModel.LabelFormat, yAxixModel.TitleColor);
+            if (yAxixModel.CrossesAt != null)
+                yAxis.AppendChild(new CrossesAt() { Val = new DoubleValue(yAxixModel.CrossesAt) });
+            else
+                yAxis.AppendChild(new Crosses() { Val = new EnumValue<CrossesValues>(secondaryAxis ? new EnumValue<CrossesValues>(CrossesValues.Maximum) : new EnumValue<CrossesValues>(CrossesValues.AutoZero)) });
+            plotArea.AppendChild(yAxis);
+        }
+
+        /// <summary>
+        /// Create graph
         /// </summary>
         /// <param name="chartModel"></param>
         /// <param name="documentPart"></param>
         /// <returns></returns>
-        private static Run CreateGraph(LineModel chartModel, OpenXmlPart documentPart)
+        private static Run CreateGraph(ScatterModel chartModel, OpenXmlPart documentPart)
         {
-            if (chartModel.Categories == null)
-                throw new ArgumentNullException("categories of chartModel must not be null");
             if (chartModel.Series == null)
                 throw new ArgumentNullException("series of chartModel must be not null");
-
-            if (chartModel.Series.Any(e => e.Values.Count != chartModel.Categories.Count))
-                throw new ChartModelException("Error in series. Serie values must have same count as categories.", "004-001");
 
             // Add a new chart and set the chart language to English-US.
             ChartPart chartPart = documentPart.AddNewPart<ChartPart>();
@@ -304,9 +296,9 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 
 
             uint i = 0;
-            ManageLineChart(chartModel, plotArea, new UInt32Value(48650112U), new UInt32Value(48672768U), ref i);
+            ManageScatterChart(chartModel, plotArea, new UInt32Value(48650112U), new UInt32Value(48672768U), ref i);
             if (chartModel.Series.Any(s => s.UseSecondaryAxis))
-                ManageLineChart(chartModel, plotArea, new UInt32Value(48650112U), new UInt32Value(48672708U), ref i, true);
+                ManageScatterChart(chartModel, plotArea, new UInt32Value(48650113U), new UInt32Value(48672708U), ref i, true);
 
             ManageLegend(chartModel, chart);
 
@@ -326,8 +318,8 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// Manage DataLabels
         /// </summary>
         /// <param name="chartModel"></param>
-        /// <param name="lineChart"></param>
-        private static void ManageDataLabels(LineModel chartModel, LineChart lineChart)
+        /// <param name="chart"></param>
+        private static void ManageDataLabels(ScatterModel chartModel, ScatterChart chart)
         {
             DataLabels dLbls = new DataLabels(
                 new ShowLegendKey() { Val = false },
@@ -364,7 +356,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             );
 
             dLbls.AppendChild(txtPr);
-            lineChart.AppendChild(dLbls);
+            chart.AppendChild(dLbls);
         }
 
         /// <summary>
@@ -441,7 +433,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// </summary>
         /// <param name="chartModel"></param>
         /// <param name="chart"></param>
-        private static void ManageLegend(LineModel chartModel, Chart chart)
+        private static void ManageLegend(ScatterModel chartModel, Chart chart)
         {
             // Add the chart Legend.
             if (chartModel.ShowLegend)
@@ -469,7 +461,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// </summary>
         /// <param name="chartModel"></param>
         /// <param name="chartPart"></param>
-        private static void ManageGraphBorders(LineModel chartModel, ChartPart chartPart)
+        private static void ManageGraphBorders(ScatterModel chartModel, ChartPart chartPart)
         {
             // Graph borders.
             if (chartModel.HasBorder)
@@ -501,7 +493,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// <param name="documentPart"></param>
         /// <param name="chartPart"></param>
         /// <returns></returns>
-        private static Run SaveChart(LineModel chartModel, OpenXmlPart documentPart, ChartPart chartPart)
+        private static Run SaveChart(ScatterModel chartModel, OpenXmlPart documentPart, ChartPart chartPart)
         {
             // Save the chart part.
             chartPart.ChartSpace.Save();

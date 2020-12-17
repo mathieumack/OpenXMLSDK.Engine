@@ -1,4 +1,4 @@
-﻿namespace OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts
+﻿namespace OpenXMLSDK.Engine.ReportEngine.DataContext.Charts
 {
     /// <summary>
     /// Marker Style
