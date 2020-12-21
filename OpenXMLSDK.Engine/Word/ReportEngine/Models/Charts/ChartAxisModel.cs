@@ -63,6 +63,6 @@
         /// <summary>
         /// Define the tick label position
         /// </summary>
-        public TickLabelPositions? TickLabelPositions { get; set; }
+        public TickLabelPositionValues? TickLabelPosition { get; set; }
     }
 }

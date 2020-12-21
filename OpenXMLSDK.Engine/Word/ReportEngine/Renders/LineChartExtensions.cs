@@ -181,7 +181,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     new AxisPosition() { Val = new EnumValue<AxisPositionValues>(AxisPositionValues.Bottom) },
                     new MajorTickMark() { Val = TickMarkValues.None },
                     new MinorTickMark() { Val = TickMarkValues.None },
-                    new TickLabelPosition() { Val = chartModel.CategoriesAxisModel.TickLabelPositions.HasValue ? new EnumValue<TickLabelPositionValues>((TickLabelPositionValues)(int)chartModel.CategoriesAxisModel.TickLabelPositions) : new EnumValue<TickLabelPositionValues>(TickLabelPositionValues.NextTo) },
+                    new TickLabelPosition() { Val = chartModel.CategoriesAxisModel.TickLabelPosition.HasValue ? new EnumValue<DC.TickLabelPositionValues>((DC.TickLabelPositionValues)(int)chartModel.CategoriesAxisModel.TickLabelPosition) : new EnumValue<DC.TickLabelPositionValues>(DC.TickLabelPositionValues.NextTo) },
                     new CrossingAxis() { Val = valuesAxisId },
                     new AutoLabeled() { Val = new BooleanValue(true) },
                     new LabelAlignment() { Val = new EnumValue<LabelAlignmentValues>(LabelAlignmentValues.Center) },
@@ -212,7 +212,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 },
                 new MajorTickMark() { Val = TickMarkValues.None },
                 new MinorTickMark() { Val = TickMarkValues.None },
-                new TickLabelPosition() { Val = axisModel.TickLabelPositions.HasValue ? new EnumValue<TickLabelPositionValues>((TickLabelPositionValues)(int)axisModel.TickLabelPositions) : new EnumValue<TickLabelPositionValues>(TickLabelPositionValues.NextTo) },
+                new TickLabelPosition() { Val = axisModel.TickLabelPosition.HasValue ? new EnumValue<DC.TickLabelPositionValues>((DC.TickLabelPositionValues)(int)axisModel.TickLabelPosition) : new EnumValue<DC.TickLabelPositionValues>(DC.TickLabelPositionValues.NextTo) },
                 new CrossingAxis() { Val = categoryAxisId },
                 new CrossBetween() { Val = new EnumValue<CrossBetweenValues>(CrossBetweenValues.Between) },
                 ManageShapeProperties(axisModel.ShowAxisCurve, axisModel.AxisCurveColor));

@@ -1843,7 +1843,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                         SecondaryCategoriesAxisModel = new ChartAxisModel
                         {
                             ShowAxisCurve = false,
-                            TickLabelPositions = TickLabelPositions.None
+                            TickLabelPosition = TickLabelPositionValues.None
                         }
                     }
                 }

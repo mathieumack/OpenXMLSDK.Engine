@@ -136,7 +136,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts
         /// </summary>
         public ChartAxisModel CategoriesAxisModel { get; set; } = new ChartAxisModel
         {
-            TickLabelPositions = TickLabelPositions.Low
+            TickLabelPosition = TickLabelPositionValues.Low
         };
 
         /// <summary>
@@ -144,7 +144,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts
         /// </summary>
         public ChartAxisModel ValuesAxisModel { get; set; } = new ChartAxisModel
         {
-            TickLabelPositions = TickLabelPositions.NextTo
+            TickLabelPosition = TickLabelPositionValues.NextTo
         };
 
         /// <summary>
@@ -152,7 +152,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts
         /// </summary>
         public ChartAxisModel SecondaryCategoriesAxisModel { get; set; } = new ChartAxisModel
         {
-            TickLabelPositions = TickLabelPositions.High
+            TickLabelPosition = TickLabelPositionValues.High
         };
 
         /// <summary>
@@ -160,7 +160,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts
         /// </summary>
         public ChartAxisModel SecondaryValuesAxisModel { get; set; } = new ChartAxisModel
         {
-            TickLabelPositions = TickLabelPositions.NextTo
+            TickLabelPosition = TickLabelPositionValues.NextTo
         };
 
         /// <summary>

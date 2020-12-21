@@ -3,7 +3,7 @@
     /// <summary>
     /// Define the position of tick labels
     /// </summary>
-    public enum TickLabelPositions
+    public enum TickLabelPositionValues
     {
         /// <summary>
         /// Over the graph
