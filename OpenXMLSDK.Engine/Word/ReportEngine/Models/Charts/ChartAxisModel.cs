@@ -54,5 +54,15 @@
         /// For a value axis, the value is an integer category number, starting with 1 as the first category.
         /// </summary>
         public double? CrossesAt { get; set; }
+
+        /// <summary>
+        /// Define Axis orientation and minimum and maximum values
+        /// </summary>
+        public ScalingModel ScalingModel { get; set; } = new ScalingModel();
+
+        /// <summary>
+        /// Define the tick label position
+        /// </summary>
+        public TickLabelPositionValues? TickLabelPosition { get; set; }
     }
 }

@@ -505,6 +505,8 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
 
             GenerateLineGraphContext(context);
 
+            GenerateScatterGraphContext(context);
+
             GenerateCombineGraphContext(context);
 
             return context;
@@ -1463,7 +1465,10 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             // Page 10 Curve graphs
             doc.Pages.Add(GenerateLineGraphsPage());
 
-            // Page 11 Combine graphs (Line and Bar)
+            // Page 11 Scatter graphs
+            doc.Pages.Add(GenerateScatterGraphsPage());
+
+            // Page 12 Combine graphs (Line and Bar)
             doc.Pages.Add(GenerateCombineGraphsPage());
 
             // Header
@@ -1645,6 +1650,210 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
 
         #endregion
 
+        #region Scatter Graph
+
+        /// <summary>
+        /// Generate context for scatter graphs
+        /// </summary>
+        /// <param name="context"></param>
+        public static void GenerateScatterGraphContext(ContextModel context)
+        {
+            context.AddItem("#ScatterGraphStandardSampleData#", new MultipleSeriesChartModel()
+            {
+                ChartContent = new MultipleSeriesModel()
+                {
+                    ScatterSeries = new List<ScatterSerieModel>
+                    {
+                        new ScatterSerieModel
+                        {
+                            Name = "Cloud",
+                            HideCurve = false,
+                            Color = "2CADD4",
+                            Values = new List<CurvePoint>
+                            {
+                                new CurvePoint{ X = 1, Y = 1 },
+                                new CurvePoint{ X = 2, Y = 5 },
+                                new CurvePoint{ X = 3, Y = 8 },
+                                new CurvePoint{ X = 4, Y = 2 },
+                                new CurvePoint{ X = 5, Y = 6 }
+                            }
+                        }
+                    },
+                    CategoriesAxisModel = new AxisModel
+                    {
+                        Title = "Cloud from context",
+                        Color = "9FA0A4"
+                    }
+                }
+            });
+
+            context.AddItem("#ScatterGraphCloudSampleData#", new MultipleSeriesChartModel()
+            {
+                ChartContent = new MultipleSeriesModel()
+                {
+                    ScatterSeries = new List<ScatterSerieModel>
+                    {
+                        new ScatterSerieModel
+                        {
+                            Name = "Cloud",
+                            HideCurve = true,
+                            Color = "2CADD4",
+                            Values = new List<CurvePoint>
+                            {
+                                new CurvePoint{ X = 1, Y = 1 },
+                                new CurvePoint{ X = 2, Y = 5 },
+                                new CurvePoint{ X = 3, Y = 8 },
+                                new CurvePoint{ X = 4, Y = 2 },
+                                new CurvePoint{ X = 5, Y = 6 }
+                            },
+                            SerieMarker = new SerieMarker
+                            {
+                                MarkerStyleValues = MarkerStyleValues.Star
+                            }
+                        }
+                    }
+                }
+            });
+
+            context.AddItem("#ScatterGraphCurvesWithDifferentXAxisSampleData#", new MultipleSeriesChartModel()
+            {
+                ChartContent = new MultipleSeriesModel()
+                {
+                    ScatterSeries = new List<ScatterSerieModel>
+                    {
+                        new ScatterSerieModel
+                        {
+                            Name = "5 points",
+                            Color = "2CADD4",
+                            Values = new List<CurvePoint>
+                            {
+                                new CurvePoint{ X = 1, Y = 1 },
+                                new CurvePoint{ X = 2, Y = 5 },
+                                new CurvePoint{ X = 3, Y = 8 },
+                                new CurvePoint{ X = 4, Y = 2 },
+                                new CurvePoint{ X = 5, Y = 6 }
+                            }
+                        },
+                        new ScatterSerieModel
+                        {
+                            Name = "10 points",
+                            Color = "32ED76",
+                            UseSecondaryAxis = true,
+                            Values = new List<CurvePoint>
+                            {
+                                new CurvePoint{ X = 1, Y = 10 },
+                                new CurvePoint{ X = 2, Y = 20 },
+                                new CurvePoint{ X = 3, Y = 5 },
+                                new CurvePoint{ X = 4, Y = 8 },
+                                new CurvePoint{ X = 5, Y = 15 },
+                                new CurvePoint{ X = 6, Y = 18 },
+                                new CurvePoint{ X = 7, Y = 1 },
+                                new CurvePoint{ X = 8, Y = 7 },
+                                new CurvePoint{ X = 9, Y = 3 },
+                                new CurvePoint{ X = 10, Y = 20 }
+                            }
+                        }
+                    },
+                    CategoriesAxisModel = new AxisModel
+                    {
+                        Title = "Cloud from context",
+                        Color = "9FA0A4",
+                        MinimumValue = 1,
+                        MaximumValue = 5
+                    },
+                    SecondaryCategoriesAxisModel = new AxisModel
+                    {
+                        MinimumValue = 1,
+                        MaximumValue = 10
+                    }
+                }
+            });
+        }
+
+        /// <summary>
+        ///  Generate Scatter graph page templates
+        /// </summary>
+        /// <returns></returns>
+        private static Page GenerateScatterGraphsPage()
+        {
+            var page = new Page();
+
+            page.ChildElements.Add(new Paragraph
+            {
+                Justification = JustificationValues.Center,
+                ParagraphStyleId = "Red",
+                ChildElements = new List<BaseElement>
+                {
+                    new Label
+                    {
+                        Text = "Scatter graphs test page"
+                    }
+                }
+            });
+
+            page.ChildElements.Add(new Paragraph
+            {
+                ChildElements = new List<BaseElement> {
+                    new ScatterModel
+                    {
+                        Title = "Scatter graph - 1 curve",
+                        ShowTitle = true,
+                        FontSize = "23",
+                        DataSourceKey = "#ScatterGraphStandardSampleData#",
+                        DataLabel = new DataLabelModel { ShowDataLabel = false },
+                        ShowLegend = true,
+                        LegendPosition = LegendPositionValues.Bottom,
+                        ValuesAxisModel = new ChartAxisModel
+                        {
+                            ShowMajorGridlines = true,
+                            MajorGridlinesColor = "F2308B"
+                        }
+                    }
+                }
+            });
+
+            page.ChildElements.Add(new Paragraph
+            {
+                ChildElements = new List<BaseElement> {
+                    new ScatterModel
+                    {
+                        Title = "Scatter graph - Cloud Points",
+                        ShowTitle = true,
+                        FontSize = "23",
+                        DataSourceKey = "#ScatterGraphCloudSampleData#",
+                        DataLabel = new DataLabelModel { ShowDataLabel = false },
+                        ShowLegend = true,
+                        LegendPosition = LegendPositionValues.Bottom
+                    }
+                }
+            });
+
+            page.ChildElements.Add(new Paragraph
+            {
+                ChildElements = new List<BaseElement> {
+                    new ScatterModel
+                    {
+                        Title = "Scatter graph - 2 curves with different X number",
+                        ShowTitle = true,
+                        FontSize = "23",
+                        DataSourceKey = "#ScatterGraphCurvesWithDifferentXAxisSampleData#",
+                        DataLabel = new DataLabelModel { ShowDataLabel = false },
+                        ShowLegend = true,
+                        LegendPosition = LegendPositionValues.Bottom,
+                        SecondaryCategoriesAxisModel = new ChartAxisModel
+                        {
+                            ShowAxisCurve = false,
+                            TickLabelPosition = TickLabelPositionValues.None
+                        }
+                    }
+                }
+            });
+
+            return page;
+        }
+
+        #endregion
+
         #region Combine Graph
 
         public static void GenerateCombineGraphContext(ContextModel context)
@@ -1792,7 +2001,6 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                         Title = "Combine Chart Model - Only Line",
                         ShowTitle = true,
                         DataSourceKey = "#CombineGraphOnlyLineSampleData#",
-                        MaxHeight = 320,
                         DataLabel = new DataLabelModel { ShowDataLabel = false },
                         ValuesAxisModel = new ChartAxisModel
                         {
@@ -1834,7 +2042,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                         DataLabel = new DataLabelModel { ShowDataLabel = false },
                         ShowLegend = true,
                         FontFamilyLegend = "Arial",
-                        LegendPosition = LegendPositionValues.Top
+                        LegendPosition = LegendPositionValues.Top,
                     }
                 }
             });

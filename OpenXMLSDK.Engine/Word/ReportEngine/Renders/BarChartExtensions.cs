@@ -214,7 +214,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     new AxisPosition() { Val = new EnumValue<AxisPositionValues>(AxisPositionValues.Bottom) },
                     new MajorTickMark() { Val = TickMarkValues.None },
                     new MinorTickMark() { Val = TickMarkValues.None },
-                    new TickLabelPosition() { Val = new EnumValue<TickLabelPositionValues>(TickLabelPositionValues.Low) },
+                    new TickLabelPosition() { Val = chartModel.CategoriesAxisModel.TickLabelPosition.HasValue ? new EnumValue<DC.TickLabelPositionValues>((DC.TickLabelPositionValues)(int)chartModel.CategoriesAxisModel.TickLabelPosition) : new EnumValue<DC.TickLabelPositionValues>(DC.TickLabelPositionValues.NextTo) },
                     new CrossingAxis() { Val = valuesAxisId },
                     new AutoLabeled() { Val = new BooleanValue(true) },
                     new LabelAlignment() { Val = new EnumValue<LabelAlignmentValues>(LabelAlignmentValues.Center) },
@@ -243,7 +243,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     },
                     new MajorTickMark() { Val = TickMarkValues.None },
                     new MinorTickMark() { Val = TickMarkValues.None },
-                    new TickLabelPosition() { Val = new EnumValue<TickLabelPositionValues>(TickLabelPositionValues.NextTo) },
+                    new TickLabelPosition() { Val = chartModel.ValuesAxisModel.TickLabelPosition.HasValue ? new EnumValue<DC.TickLabelPositionValues>((DC.TickLabelPositionValues)(int)chartModel.ValuesAxisModel.TickLabelPosition) : new EnumValue<DC.TickLabelPositionValues>(DC.TickLabelPositionValues.NextTo) },
                     new CrossingAxis() { Val = categoryAxisId },
                     new CrossBetween() { Val = new EnumValue<CrossBetweenValues>(CrossBetweenValues.Between) },
                     new MajorGridlines(ManageShapeProperties(chartModel.ValuesAxisModel.ShowMajorGridlines, chartModel.ValuesAxisModel.MajorGridlinesColor)),
@@ -273,11 +273,18 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             if (!string.IsNullOrWhiteSpace(context.Color))
                 template.TitleColor = context.Color;
 
-            if (context.CrossesAt != null)
+            if (context.CrossesAt.HasValue)
                 template.CrossesAt = context.CrossesAt;
 
             if (!string.IsNullOrWhiteSpace(context.LabelFormat))
                 template.LabelFormat = context.LabelFormat;
+
+            if (context.InvertAxisOrder.HasValue)
+                template.ScalingModel.Orientation = context.InvertAxisOrder.Value ? OrientationType.MaxMin : OrientationType.MinMax;
+            if (context.MinimumValue.HasValue)
+                template.ScalingModel.MinAxisValue = context.MinimumValue.Value;
+            if (context.MaximumValue.HasValue)
+                template.ScalingModel.MaxAxisValue = context.MaximumValue.Value;
         }
 
         /// <summary>

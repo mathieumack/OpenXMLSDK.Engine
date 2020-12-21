@@ -85,6 +85,10 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             {
                 lineModel.Render(parent, context, documentPart, formatProvider);
             }
+            else if (element is ScatterModel scatterModel)
+            {
+                scatterModel.Render(parent, context, documentPart, formatProvider);
+            }
             else if (element is CombineChartModel combineChartModel)
             {
                 combineChartModel.Render(parent, context, documentPart, formatProvider);
