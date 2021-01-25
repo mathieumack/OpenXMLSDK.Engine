@@ -570,10 +570,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
 
             var page1 = new Page();
             page1.Margin = new SpacingModel() { Top = 845, Bottom = 1418, Left = 567, Right = 567, Header = 709, Footer = 709 };
-            var page2 = new Page();
-            page2.Margin = new SpacingModel() { Top = 1418, Left = 845, Header = 709, Footer = 709 };
             doc.Pages.Add(page1);
-            doc.Pages.Add(page2);
 
             // Template 1 :
             page1.ChildElements.Add(
@@ -993,6 +990,11 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             page1.ChildElements.Add(tableDataSourceWithPrefix);
 
             // page 2
+            var page2 = new Page();
+            page2.ColumnCount = 2;
+            page2.Margin = new SpacingModel() { Top = 1418, Left = 845, Header = 709, Footer = 709 };
+            doc.Pages.Add(page2);
+
             var p21 = new Paragraph();
             p21.Justification = JustificationValues.Center;
             p21.ParagraphStyleId = "Red";
@@ -1000,7 +1002,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             page2.ChildElements.Add(p21);
 
             var p22 = new Paragraph();
-            p22.ColumnCount = 2;
+            //p22.ColumnCount = 2;
             p22.SpacingBefore = 800;
             p22.SpacingAfter = 800;
             p22.Justification = JustificationValues.Both;
