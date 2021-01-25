@@ -64,6 +64,11 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models
         public ParagraphIndentationModel Indentation { get; set; }
 
         /// <summary>
+        /// Number of column for splitting paragraph
+        /// </summary>
+        public int? ColumnCount { get; set; }
+
+        /// <summary>
         /// Constructor
         /// </summary>
         public Paragraph()

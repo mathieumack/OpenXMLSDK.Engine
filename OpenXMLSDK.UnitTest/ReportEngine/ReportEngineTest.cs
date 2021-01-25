@@ -1000,6 +1000,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             page2.ChildElements.Add(p21);
 
             var p22 = new Paragraph();
+            p22.ColumnCount = 2;
             p22.SpacingBefore = 800;
             p22.SpacingAfter = 800;
             p22.Justification = JustificationValues.Both;

@@ -20,6 +20,24 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 Justification = new DocumentFormat.OpenXml.Wordprocessing.Justification() { Val = paragraph.Justification.ToOOxml() },
                 SpacingBetweenLines = new DocumentFormat.OpenXml.Wordprocessing.SpacingBetweenLines()
             };
+
+            // If a ColumnCount is defined with this split paragraph in columns
+            if (paragraph.ColumnCount.HasValue)
+            {
+                // Create new section
+                var sectionProperties = new DocumentFormat.OpenXml.Wordprocessing.SectionProperties();
+                var columns = new DocumentFormat.OpenXml.Wordprocessing.Columns
+                {
+                    EqualWidth = true,
+                    ColumnCount = (Int16)paragraph.ColumnCount.Value
+                };
+
+                // Add columns in section
+                sectionProperties.Append(columns);
+                // Add section in paragraph
+                openXmlPar.ParagraphProperties.SectionProperties = sectionProperties;             
+            }
+
             if (paragraph.SpacingBefore.HasValue)
                 openXmlPar.ParagraphProperties.SpacingBetweenLines.Before = paragraph.SpacingBefore.ToString();
             if (paragraph.SpacingAfter.HasValue)
