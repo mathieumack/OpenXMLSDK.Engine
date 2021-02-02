@@ -43,19 +43,6 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 sectionProps.AppendChild(pageMargins);
             }
 
-            // If a ColumnCount is defined with this split paragraph in columns
-            if (page.ColumnCount.HasValue)
-            {
-                var columns = new DocumentFormat.OpenXml.Wordprocessing.Columns
-                {
-                    EqualWidth = true,
-                    ColumnCount = (Int16)page.ColumnCount.Value
-                };
-
-                // Add columns in section
-                sectionProps.Append(columns);
-            }
-
             var p = new DocumentFormat.OpenXml.Wordprocessing.Paragraph();
             var ppr = new ParagraphProperties();
             p.AppendChild(ppr);

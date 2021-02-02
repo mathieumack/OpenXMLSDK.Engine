@@ -18,11 +18,6 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models
         public SpacingModel Margin { get; set; }
 
         /// <summary>
-        /// Number of column for splitting page
-        /// </summary>
-        public int? ColumnCount { get; set; }
-
-        /// <summary>
         /// Internal constructor used for ForEachPage
         /// </summary>
         internal Page(string type)

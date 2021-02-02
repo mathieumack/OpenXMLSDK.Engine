@@ -991,7 +991,6 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
 
             // page 2
             var page2 = new Page();
-            page2.ColumnCount = 2;
             page2.Margin = new SpacingModel() { Top = 1418, Left = 845, Header = 709, Footer = 709 };
             doc.Pages.Add(page2);
 
@@ -1002,7 +1001,6 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             page2.ChildElements.Add(p21);
 
             var p22 = new Paragraph();
-            //p22.ColumnCount = 2;
             p22.SpacingBefore = 800;
             p22.SpacingAfter = 800;
             p22.Justification = JustificationValues.Both;
