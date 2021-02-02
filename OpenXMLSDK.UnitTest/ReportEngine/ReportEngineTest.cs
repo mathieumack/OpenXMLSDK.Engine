@@ -22,6 +22,8 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
 {
     public static class ReportEngineTest
     {
+        private const string Lorem_Ipsum = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse urna augue, convallis eu enim vitae, maximus ultrices nulla. Sed egestas volutpat luctus. Maecenas sodales erat eu elit auctor, eu mattis neque maximus. Duis ac risus quis sem bibendum efficitur. Vivamus justo augue, molestie quis orci non, maximus imperdiet justo. Donec condimentum rhoncus est, ut varius lorem efficitur sed. Donec accumsan sit amet nisl vel ornare. Duis aliquet urna eu mauris porttitor facilisis. ";
+
         public static void ReportEngine(string filePath, string documentName, bool useSeveralReports = false)
         {
             // Debut test report engine
@@ -1005,7 +1007,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             p22.SpacingAfter = 800;
             p22.Justification = JustificationValues.Both;
             p22.ParagraphStyleId = "Yellow";
-            p22.ChildElements.Add(new Label() { Text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse urna augue, convallis eu enim vitae, maximus ultrices nulla. Sed egestas volutpat luctus. Maecenas sodales erat eu elit auctor, eu mattis neque maximus. Duis ac risus quis sem bibendum efficitur. Vivamus justo augue, molestie quis orci non, maximus imperdiet justo. Donec condimentum rhoncus est, ut varius lorem efficitur sed. Donec accumsan sit amet nisl vel ornare. Duis aliquet urna eu mauris porttitor facilisis. " });
+            p22.ChildElements.Add(new Label() { Text = Lorem_Ipsum });
             page2.ChildElements.Add(p22);
 
             var p23 = new Paragraph();
@@ -1016,7 +1018,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                 BorderColor = "#ParagraphBorderColor#"
             };
             p23.SpacingBetweenLines = 360;
-            p23.ChildElements.Add(new Label() { Text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse urna augue, convallis eu enim vitae, maximus ultrices nulla. Sed egestas volutpat luctus. Maecenas sodales erat eu elit auctor, eu mattis neque maximus. Duis ac risus quis sem bibendum efficitur. Vivamus justo augue, molestie quis orci non, maximus imperdiet justo. Donec condimentum rhoncus est, ut varius lorem efficitur sed. Donec accumsan sit amet nisl vel ornare. Duis aliquet urna eu mauris porttitor facilisis. " });
+            p23.ChildElements.Add(new Label() { Text = Lorem_Ipsum });
             page2.ChildElements.Add(p23);
 
             // Adding a foreach page :
@@ -1067,7 +1069,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
 
             // page 4
             var page4 = new Page();
-            //New page to manage UniformGrid:
+            // New page to manage UniformGrid:
             var uniformGrid = new UniformGrid()
             {
                 DataSourceKey = "#UniformGridSample#",
@@ -1113,9 +1115,9 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                 }
             };
 
-            page4.ChildElements.Add(uniformGrid);
+            //page4.ChildElements.Add(uniformGrid);
 
-            doc.Pages.Add(page4);
+            //doc.Pages.Add(page4);
 
             // page 5
             var page5 = new Page();
@@ -1471,6 +1473,10 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
 
             // Page 12 Combine graphs (Line and Bar)
             doc.Pages.Add(GenerateCombineGraphsPage());
+
+            // Page 13 and 14 Split page on 2 columns
+            doc.Pages.Add(GenerateTableOn1stPage());
+            doc.Pages.Add(Generate2ColmunOnSamePage());
 
             // Header
             var header = new Header();
@@ -2052,5 +2058,136 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
         }
 
         #endregion
+
+        #region Multiple columns 
+
+        private static Page GenerateTableOn1stPage()
+        {
+            var page = new Page();
+
+            var tableDataSourceWithBeforeAfter = new Table()
+            {
+                TableWidth = new TableWidthModel() { Width = "5000", Type = TableWidthUnitValues.Pct },
+                ColsWidth = new int[2] { 750, 4250 },
+                Borders = new BorderModel()
+                {
+                    BorderPositions = (BorderPositions)63,
+                    BorderColor = "328864",
+                    BorderWidth = 20,
+                },
+                BeforeRows = new List<Row>()
+                {
+                    new Row()
+                    {
+                        Cells = new List<Cell>()
+                        {
+                            new Cell()
+                            {
+                                VerticalAlignment = TableVerticalAlignmentValues.Bottom,
+                                Justification = JustificationValues.Left,
+                                ChildElements = new List<BaseElement>()
+                                {
+                                    new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "Cell 1 - A small paragraph" } }, ParagraphStyleId = "Yellow" },
+                                    new Label() { Text = "Custom header" },
+                                    new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "Cell 1 - an other paragraph" } } }
+                                },
+                                Fusion = true
+                            },
+                            new Cell()
+                            {
+                                ChildElements = new List<BaseElement>()
+                                {
+                                    new Label() { Text = "Cell 2 - an other label" },
+                                    new Label() { Text = "Cell 2 - an other other label" }
+                                },
+                                Borders = new BorderModel()
+                                {
+                                    BorderColor = "00FF22",
+                                    BorderWidth = 15,
+                                    BorderPositions = BorderPositions.RIGHT | BorderPositions.TOP
+                                }
+                            }
+                        }
+                    },
+                    new Row()
+                    {
+                        Cells = new List<Cell>()
+                        {
+                            new Cell()
+                            {
+                                Fusion = true,
+                                FusionChild = true
+                            },
+                            new Cell()
+                            {
+                                VerticalAlignment = TableVerticalAlignmentValues.Bottom,
+                                Justification = JustificationValues.Right,
+                                ChildElements = new List<BaseElement>()
+                                {
+                                    new Label() { Text = "celluleX" }
+                                }
+                            }
+                        }
+                    }
+                },
+                RowModel = new Row()
+                {
+                    Cells = new List<Cell>()
+                    {
+                        new Cell()
+                        {
+                            Shading = "FFA2FF",
+                            ChildElements = new List<BaseElement>()
+                            {
+                                new Label() { Text = "Cell : #Cell1#" }
+                            }
+                        },
+                        new Cell()
+                        {
+                            ChildElements = new List<BaseElement>()
+                            {
+                                new Label() { Text = "Cell : #Cell2#" }
+                            }
+                        }
+                    }
+                },
+                DataSourceKey = "#Datasource#"
+            };
+
+            page.ChildElements.Add(tableDataSourceWithBeforeAfter);
+
+            return page;
+        }
+
+        private static Page Generate2ColmunOnSamePage()
+        {
+            var page = new Page();
+
+            // Define Paragraph
+            var p2 = new Paragraph
+            {
+                SpacingBefore = 800,
+                SpacingAfter = 800,
+                Justification = JustificationValues.Both
+            };
+            string wideText = Lorem_Ipsum;
+            wideText += "\n\n" + Lorem_Ipsum;
+            wideText += "\n\n" + Lorem_Ipsum;
+            wideText += "\n\n";
+            p2.ChildElements.Add(new Label() { Text = wideText + wideText });
+            page.ChildElements.Add(p2);
+
+            // Define 2 Columns
+            var col = new Column
+            {
+                Number = ColumnCountValues.Two,
+                MarkSection = MarkSectionValues.Continuous
+            };
+            page.Column = col;
+
+            return page;
+        }
+
+        #endregion Multiple columns 
     }
 }

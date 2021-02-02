@@ -43,6 +43,22 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 sectionProps.AppendChild(pageMargins);
             }
 
+            // If Columns are defined on the page we split page in columns
+            if (page.Column != null)
+            {
+                    SectionType sectionType = new SectionType() { Val = (SectionMarkValues)page.Column.MarkSection };
+                    sectionProps.AppendChild(sectionType);
+
+                    var columns = new Columns
+                    {
+                        EqualWidth = page.Column.EqualWidth,
+                        ColumnCount = (Int16)page.Column.Number
+                    };
+
+                    // Add columns in section
+                    sectionProps.Append(columns);
+            }
+
             var p = new DocumentFormat.OpenXml.Wordprocessing.Paragraph();
             var ppr = new ParagraphProperties();
             p.AppendChild(ppr);
