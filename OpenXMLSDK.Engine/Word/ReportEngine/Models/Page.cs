@@ -23,6 +23,16 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models
         public Column Column { get; set; }
 
         /// <summary>
+        /// Column Number key (from 1 to 3)
+        /// </summary>
+        public string ColumnNumberKey { get; set; }
+
+        /// <summary>
+        /// Section Mark Values
+        /// </summary>
+        public MarkSectionValues MarkSection { get; set; }
+
+        /// <summary>
         /// Internal constructor used for ForEachPage
         /// </summary>
         internal Page(string type)

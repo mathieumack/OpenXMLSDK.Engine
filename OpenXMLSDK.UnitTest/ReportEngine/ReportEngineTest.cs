@@ -511,6 +511,8 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
 
             GenerateCombineGraphContext(context);
 
+            context.AddDouble("#ColumnNumber#", 1.0, null);
+
             return context;
         }
 
@@ -2162,6 +2164,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
         private static Page Generate2ColmunOnSamePage()
         {
             var page = new Page();
+            page.ColumnNumberKey = "#ColumnNumber#";
 
             // Define Paragraph
             var p2 = new Paragraph
@@ -2176,14 +2179,6 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             wideText += "\n\n";
             p2.ChildElements.Add(new Label() { Text = wideText + wideText });
             page.ChildElements.Add(p2);
-
-            // Define 2 Columns
-            var col = new Column
-            {
-                Number = ColumnCountValues.Two,
-                MarkSection = MarkSectionValues.Continuous
-            };
-            page.Column = col;
 
             return page;
         }

@@ -11,11 +11,6 @@
         public bool EqualWidth { get; set; }
 
         /// <summary>
-        /// Section Mark Values
-        /// </summary>
-        public MarkSectionValues MarkSection { get; set; }
-
-        /// <summary>
         /// Number of column 
         /// </summary>
         public ColumnCountValues Number { get; set; }

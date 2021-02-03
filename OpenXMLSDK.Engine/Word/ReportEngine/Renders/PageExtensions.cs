@@ -44,19 +44,24 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             }
 
             // If Columns are defined on the page we split page in columns
-            if (page.Column != null)
+            if (context.TryGetItem(page.ColumnNumberKey, out DoubleModel ColumnNumberKey))
             {
-                    SectionType sectionType = new SectionType() { Val = (SectionMarkValues)page.Column.MarkSection };
+                // Try to convert double to ColumnCountValues : 1, 2 or 3
+                if (int.TryParse(ColumnNumberKey.Value.ToString(), out int columnNumber) && Enum.IsDefined(typeof(ColumnCountValues), columnNumber))
+                {
+                    // By default sectionType is Continuous
+                    SectionType sectionType = new SectionType() { Val = (SectionMarkValues)MarkSectionValues.Continuous };
                     sectionProps.AppendChild(sectionType);
 
                     var columns = new Columns
                     {
-                        EqualWidth = page.Column.EqualWidth,
-                        ColumnCount = (Int16)page.Column.Number
+                        EqualWidth = true,
+                        ColumnCount = (Int16)columnNumber
                     };
 
                     // Add columns in section
                     sectionProps.Append(columns);
+                }
             }
 
             var p = new DocumentFormat.OpenXml.Wordprocessing.Paragraph();
