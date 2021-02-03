@@ -42,10 +42,14 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                    || contextModel.ChartContent.Series is null)
                     return runItem;
 
+                if (contextModel.ChartContent.CategoryType != null)
+                    combineChartModel.CategoryType = (D.CategoryTypes)contextModel.ChartContent.CategoryType;
+
                 // Update categories object :
                 combineChartModel.Categories = contextModel.ChartContent.Categories.Select(e => new ChartCategory()
                 {
                     Name = e.Name,
+                    Value = e.Value,
                     Color = e.Color
                 }).ToList();
 

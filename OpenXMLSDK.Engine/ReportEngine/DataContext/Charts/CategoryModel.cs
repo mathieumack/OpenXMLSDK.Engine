@@ -8,6 +8,11 @@
         public string Name { get; set; }
 
         /// <summary>
+        /// Value category name
+        /// </summary>
+        public double? Value { get; set; }
+
+        /// <summary>
         /// Category color
         /// </summary>
         public string Color { get; set; }

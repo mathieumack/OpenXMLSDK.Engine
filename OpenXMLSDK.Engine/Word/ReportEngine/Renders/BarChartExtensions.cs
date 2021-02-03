@@ -65,10 +65,14 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                      || multipleSeriesContextModel.ChartContent.Series is null)
                         return runItem;
 
+                    if (multipleSeriesContextModel.ChartContent.CategoryType != null)
+                        barChart.CategoryType = (Engine.ReportEngine.DataContext.Charts.CategoryTypes)multipleSeriesContextModel.ChartContent.CategoryType;
+
                     // Update barChart object :
                     barChart.Categories = multipleSeriesContextModel.ChartContent.Categories.Select(e => new BarCategory()
                     {
                         Name = e.Name,
+                        Value = e.Value,
                         Color = e.Color
                     }).ToList();
 
@@ -122,7 +126,6 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     new BarDirection() { Val = new EnumValue<DC.BarDirectionValues>((DC.BarDirectionValues)(int)chartModel.BarDirectionValues) },
                     new BarGrouping() { Val = new EnumValue<DC.BarGroupingValues>((DC.BarGroupingValues)(int)chartModel.BarGroupingValues) }));
 
-            uint p = 0;
             // Iterate through each key in the Dictionary collection and add the key to the chart Series
             // and add the corresponding value to the chart Values.
             foreach (var serie in chartModel.Series)
@@ -168,18 +171,10 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     barChartSeries.AppendChild(shapeProperties);
 
                 // Categories.
-                StringReference strLit = barChartSeries.AppendChild(new CategoryAxisData()).AppendChild(new StringReference());
-                strLit.AppendChild(new StringCache());
-                strLit.StringCache.AppendChild(new PointCount() { Val = (uint)chartModel.Categories.Count });
-                // Category list.
-                foreach (var categorie in chartModel.Categories)
-                {
-                    strLit.StringCache.AppendChild(new StringPoint() { Index = p, NumericValue = new NumericValue(categorie.Name) });
-                    p++;
-                }
-                p = 0;
+                ManageCategories(chartModel, barChartSeries);
 
                 // Values.
+                uint p = 0;
                 NumberReference numLit = barChartSeries.AppendChild(new Values()).AppendChild(new NumberReference());
                 numLit.AppendChild(new NumberingCache());
                 numLit.NumberingCache.AppendChild(new FormatCode("General"));
@@ -228,6 +223,8 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     catAxis.AppendChild(new CrossesAt() { Val = new DoubleValue(chartModel.CategoriesAxisModel.CrossesAt) });
                 else
                     catAxis.AppendChild(new Crosses() { Val = new EnumValue<CrossesValues>(CrossesValues.AutoZero) });
+                if (chartModel.CategoryType.Equals(Engine.ReportEngine.DataContext.Charts.CategoryTypes.NumberReference))
+                    catAxis.AppendChild(new DC.NumberingFormat { FormatCode = "#,##0.00", SourceLinked = false });
                 plotArea.AppendChild(catAxis);
 
                 // Add the Value Axis.
@@ -362,6 +359,43 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             Run element = SaveChart(chartModel, documentPart, chartPart);
 
             return element;
+        }
+
+        /// <summary>
+        /// Create categories
+        /// </summary>
+        /// <param name="chartModel"></param>
+        /// <param name="barChartSeries"></param>
+        private static void ManageCategories(BarModel chartModel, BarChartSeries barChartSeries)
+        {
+            uint p = 0;
+
+            switch (chartModel.CategoryType)
+            {
+                case Engine.ReportEngine.DataContext.Charts.CategoryTypes.StringReference:
+                    StringReference strLit = barChartSeries.AppendChild(new CategoryAxisData()).AppendChild(new StringReference());
+                    strLit.AppendChild(new StringCache());
+                    strLit.StringCache.AppendChild(new PointCount() { Val = (uint)chartModel.Categories.Count });
+                    // Category list.
+                    foreach (var categorie in chartModel.Categories)
+                    {
+                        strLit.StringCache.AppendChild(new StringPoint() { Index = p, NumericValue = new NumericValue(categorie.Name) });
+                        p++;
+                    }
+                    break;
+                case Engine.ReportEngine.DataContext.Charts.CategoryTypes.NumberReference:
+                    NumberReference numRef = barChartSeries.AppendChild(new CategoryAxisData()).AppendChild(new NumberReference());
+                    numRef.AppendChild(new NumberingCache());
+                    numRef.NumberingCache.AppendChild(new FormatCode("General"));
+                    numRef.NumberingCache.AppendChild(new PointCount() { Val = (uint)chartModel.Categories.Count });
+                    // Category list.
+                    foreach (var categorie in chartModel.Categories)
+                    {
+                        numRef.NumberingCache.AppendChild(new NumericPoint() { Index = p, NumericValue = new NumericValue(categorie.Value != null ? categorie.Value.Value.ToString(CultureInfo.InvariantCulture) : string.Empty) });
+                        p++;
+                    }
+                    break;
+            }
         }
 
         /// <summary>

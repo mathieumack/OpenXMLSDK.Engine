@@ -229,237 +229,6 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                 Items = cellsContext
             });
 
-            context.AddItem("#OldBarGraphSampleData#", new BarChartModel()
-            {
-                BarChartContent = new Engine.ReportEngine.DataContext.Charts.BarModel()
-                {
-                    Categories = new List<BarCategoryModel>()
-                    {
-                        new BarCategoryModel()
-                        {
-                            Name = "Category 1"
-                        },
-                        new BarCategoryModel()
-                        {
-                            Name = "Category 2"
-                        },
-                        new BarCategoryModel()
-                        {
-                            Name = "Category 3"
-                        },
-                        new BarCategoryModel()
-                        {
-                            Name = "Category 4"
-                        },
-                        new BarCategoryModel()
-                        {
-                            Name = "Category 5"
-                        },
-                        new BarCategoryModel()
-                        {
-                            Name = "Category 6"
-                        }
-                    },
-                    Series = new List<BarSerieModel>()
-                    {
-                        new BarSerieModel()
-                        {
-                            Values = new List<double?>()
-                            {
-                                0, 1, 2, 3, 6, null
-                            },
-                            Name = "Bar serie 1",
-                            Color = "9FA0A4"
-                        },
-                        new BarSerieModel()
-                        {
-                            Values = new List<double?>()
-                            {
-                                5, null, 7, 8, 0, 10
-                            },
-                            Name = "Bar serie 2",
-                            Color = "32AD3C"
-                        },
-                        new BarSerieModel()
-                        {
-                            Values = new List<double?>()
-                            {
-                                9, 10, 11, 12, 13, 14
-                            },
-                            Name = "Bar serie 3",
-                            Color = "E47F00"
-                        },
-                        new BarSerieModel()
-                        {
-                            Values = new List<double?>()
-                            {
-                                9, 10, 11, 12, 15, 25
-                            },
-                            Name = "Bar serie 4",
-                            Color = "DC0A0A"
-                        }
-                    }
-                }
-            });
-
-            context.AddItem("#BarGraphSampleData#", new MultipleSeriesChartModel()
-            {
-                ChartContent = new MultipleSeriesModel()
-                {
-                    Categories = new List<CategoryModel>()
-                    {
-                        new CategoryModel()
-                        {
-                            Name = "Category 1"
-                        },
-                        new CategoryModel()
-                        {
-                            Name = "Category 2"
-                        },
-                        new CategoryModel()
-                        {
-                            Name = "Category 3"
-                        },
-                        new CategoryModel()
-                        {
-                            Name = "Category 4"
-                        },
-                        new CategoryModel()
-                        {
-                            Name = "Category 5"
-                        },
-                        new CategoryModel()
-                        {
-                            Name = "Category 6"
-                        }
-                    },
-                    Series = new List<SerieModel>()
-                    {
-                        new SerieModel()
-                        {
-                            Values = new List<double?>()
-                            {
-                                0, 1, 2, 3, 6, null
-                            },
-                            Name = "Bar serie 1",
-                            Color = "9FA0A4",
-                            HasBorder = true,
-                            BorderColor = "#FF00FF",
-                            BorderWidth = 63500
-                        },
-                        new SerieModel()
-                        {
-                            Values = new List<double?>()
-                            {
-                                5, null, 7, 8, 0, 10
-                            },
-                            Name = "Bar serie 2",
-                            Color = "32AD3C",
-                            HasBorder = true,
-                            BorderColor = "#0000FF",
-                            BorderWidth = 63500
-                        },
-                        new SerieModel()
-                        {
-                            Values = new List<double?>()
-                            {
-                                9, 10, 11, 12, 13, 14
-                            },
-                            Name = "Bar serie 3",
-                            Color = "E47F00"
-                        },
-                        new SerieModel()
-                        {
-                            Values = new List<double?>()
-                            {
-                                9, 10, 11, 12, 15, 25
-                            },
-                            Name = "Bar serie 4",
-                            Color = "DC0A0A"
-                        }
-                    }
-                }
-            });
-
-            context.AddItem("#PieGraphSampleData#", new SingleSerieChartModel()
-            {
-                ChartContent = new OpenXMLSDK.Engine.Word.ReportEngine.BatchModels.Charts.SingleSeriesModel()
-                {
-                    Categories = new List<CategoryModel>()
-                    {
-                        new CategoryModel()
-                        {
-                            Name = "A Category",
-                            Color = "9FA0A4"
-                        },
-                        new CategoryModel()
-                        {
-                            Name = "B Category",
-                            Color = "32AD3C"
-                        },
-                        new CategoryModel()
-                        {
-                            Name = "C Category",
-                            Color = "E47F00"
-                        },
-                        new CategoryModel()
-                        {
-                            Name = "D Category",
-                            Color = "DC0A0A"
-                        },
-                        new CategoryModel()
-                        {
-                            Name = "E Category"
-                        },
-                        new CategoryModel()
-                        {
-                            Name = "F Category"
-                        }
-                    },
-                    Serie = new SerieModel()
-                    {
-                        Values = new List<double?>()
-                        {
-                            10, 20, 5, 50, 15, null
-                        },
-                        Name = "Serie 1",
-                        HasBorder = true,
-                        BorderColor = "#FFFFFF",
-                        Color = "#000000",
-                        BorderWidth = 63500
-                    }
-                }
-            });
-
-            context.AddItem("#SingleStackedBarGraphSampleData#", new MultipleSeriesChartModel()
-            {
-                ChartContent = new MultipleSeriesModel()
-                {
-                    Categories = new List<CategoryModel>()
-                    {
-                        new CategoryModel()
-                        {
-                            Name = "Cat name"
-                        }
-                    },
-                    Series = new List<SerieModel>()
-                    {
-                        new SerieModel()
-                        {
-                            Name = "Serie 1",
-                            Color = "9FA0A4",
-                            Values = new List<double?>{ 98 }
-                        },
-                        new SerieModel()
-                        {
-                            Name = "Serie 2",
-                            Color = "E47F00",
-                            Values = new List<double?>{ 2 }
-                        }
-                    }
-                }
-            });
-
             byte[] numbers = { 0, 16, 104, 213 };
 
             string textToDisplay = "Base64ContentModel : {0}\n BooleanModel : {1}\n ByteContentModel : {2}\n DateTimeModel : {3}\n DoubleModel : {4}\n StringModel : {5}\n";
@@ -502,6 +271,10 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             );
 
             context.AddCollection("#SubstitutableStringDataSourceModel#", rowSubstitutable);
+
+            GeneratePieChartContext(context);
+
+            GenerateBarGraphContext(context);
 
             GenerateLineGraphContext(context);
 
@@ -1225,96 +998,8 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
 
             doc.Pages.Add(page5);
 
-            // page 6 -> BarChart
+            // page 6
             var page6 = new Page();
-
-            var oldpr = new Paragraph()
-            {
-                ChildElements = new List<BaseElement>() {
-                    new OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts.BarModel()
-                    {
-                        Title = "Graph test",
-                        ShowTitle = true,
-                        ShowBarBorder = true,
-                        BarChartType = BarChartType.BarChart,
-                        BarDirectionValues = BarDirectionValues.Column,
-                        BarGroupingValues = BarGroupingValues.PercentStacked,
-                        DataSourceKey = "#OldBarGraphSampleData#",
-                        ShowMajorGridlines = true,
-                        MaxHeight = 320
-                    }
-                }
-            };
-
-            page6.ChildElements.Add(oldpr);
-
-            var pr = new Paragraph()
-            {
-                ChildElements = new List<BaseElement>() {
-                    new OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts.BarModel()
-                    {
-                        Title = "Graph test",
-                        ShowTitle = true,
-                        FontSize = "23",
-                        BarChartType = BarChartType.BarChart,
-                        BarDirectionValues = BarDirectionValues.Column,
-                        BarGroupingValues = BarGroupingValues.PercentStacked,
-                        DataSourceKey = "#BarGraphSampleData#",
-                        ShowMajorGridlines = true,
-                        MaxHeight = 320
-                    }
-                }
-            };
-
-            page6.ChildElements.Add(pr);
-
-            var singleStackedBarGraph = new Paragraph()
-            {
-                ChildElements = new List<BaseElement>() {
-                    new OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts.BarModel()
-                    {
-                        Title = "Single stacked Graph without min-max",
-                        ShowTitle = true,
-                        MaxHeight = 100,
-                        DeleteAxeCategory = true,
-                        DeleteAxeValue = true,
-                        ShowLegend = false,
-                        HasBorder = false,
-                        DataSourceKey = "#SingleStackedBarGraphSampleData#"
-                    }
-                }
-            };
-
-            page6.ChildElements.Add(singleStackedBarGraph);
-
-            var singleStackedBarGraphWithMinMax = new Paragraph()
-            {
-                ChildElements = new List<BaseElement>() {
-                    new OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts.BarModel()
-                    {
-                        Title = "Single stacked Graph with min-max",
-                        ShowTitle = true,
-                        MaxHeight = 100,
-                        DeleteAxeCategory = true,
-                        DeleteAxeValue = true,
-                        ShowLegend = false,
-                        HasBorder = false,
-                        DataSourceKey = "#SingleStackedBarGraphSampleData#",
-                        ValuesAxisScaling = new BarChartScalingModel()
-                        {
-                            MinAxisValue = 0,
-                            MaxAxisValue = 100
-                        }
-                    }
-                }
-            };
-
-            page6.ChildElements.Add(singleStackedBarGraphWithMinMax);
-
-            doc.Pages.Add(page6);
-
-            // page 7
-            var page7 = new Page();
 
             var tableDataSourceWithCellFusion = new Table()
             {
@@ -1359,18 +1044,17 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                 DataSourceKey = "#DatasourceTableFusion#"
             };
 
-            page7.ChildElements.Add(tableDataSourceWithCellFusion);
+            page6.ChildElements.Add(tableDataSourceWithCellFusion);
 
-            doc.Pages.Add(page7);
+            doc.Pages.Add(page6);
 
-            // page 8
+            // page 7
+            var page7 = new Page();
+            var p7 = new Paragraph() { FontColor = "FF0000", FontSize = "26" };
+            p7.ChildElements.Add(new Label() { Text = "Label with" + Environment.NewLine + Environment.NewLine + "A new line" });
+            page7.ChildElements.Add(p7);
 
-            var page8 = new Page();
-            var p8 = new Paragraph() { FontColor = "FF0000", FontSize = "26" };
-            p8.ChildElements.Add(new Label() { Text = "Label with" + Environment.NewLine + Environment.NewLine + "A new line" });
-            page8.ChildElements.Add(p8);
-
-            page8.ChildElements.Add(
+            page7.ChildElements.Add(
                 new Paragraph
                 {
                     ChildElements = new List<BaseElement>
@@ -1385,39 +1069,6 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                 }
             );
 
-            doc.Pages.Add(page8);
-
-            // page 9 -> PieChart
-            var page9 = new Page();
-
-            var pieChartPr = new Paragraph()
-            {
-                ChildElements = new List<BaseElement>() {
-                    new OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts.PieModel()
-                    {
-                        Title = "Pie Chart test",
-                        ShowTitle = true,
-                        ShowChartBorder = true,
-                        PieChartType = PieChartType.PieChart,
-                        DataSourceKey = "#PieGraphSampleData#",
-                        ShowMajorGridlines = true,
-                        DataLabel = new DataLabelModel()
-                        {
-                            //ShowDataLabel = true,
-                            ShowCatName = true,
-                            ShowPercent = true,
-                            Separator = "\n",
-                            FontSize = 8
-                        }
-                        ,
-                        DataLabelColor = "#FFFF00"//Yellow
-                        //DataLabelColor = "#000000"//Black
-                    }
-                }
-            };
-
-            page9.ChildElements.Add(pieChartPr);
-
             // Substitutable string
             var pargraphTitle = new Paragraph
             {
@@ -1425,7 +1076,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                 ParagraphStyleId = "Red"
             };
             pargraphTitle.ChildElements.Add(new Label() { Text = "Substitutable string", FontName = "Arial" });
-            page9.ChildElements.Add(pargraphTitle);
+            page7.ChildElements.Add(pargraphTitle);
 
             var substitutableTableDataSource = new Table()
             {
@@ -1458,9 +1109,15 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                 DataSourceKey = "#SubstitutableStringDataSourceModel#"
             };
 
-            page9.ChildElements.Add(substitutableTableDataSource);
+            page7.ChildElements.Add(substitutableTableDataSource);
 
-            doc.Pages.Add(page9);
+            doc.Pages.Add(page7);
+
+            // page 8 -> PieChart
+            doc.Pages.Add(GeneratePieChartPage());
+
+            // page 9 -> BarChart
+            doc.Pages.Add(GenerateBarChartPage());
 
             // Page 10 Curve graphs
             doc.Pages.Add(GenerateLineGraphsPage());
@@ -1507,13 +1164,466 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             return doc;
         }
 
+        #region Charts
+
+        #region Pie chart
+
+        /// <summary>
+        /// Generate context for pie charts
+        /// </summary>
+        /// <param name="context"></param>
+        private static void GeneratePieChartContext(ContextModel context)
+        {
+            context.AddItem("#PieGraphSampleData#", new SingleSerieChartModel()
+            {
+                ChartContent = new SingleSeriesModel()
+                {
+                    Categories = new List<CategoryModel>()
+                    {
+                        new CategoryModel()
+                        {
+                            Name = "A Category",
+                            Color = "9FA0A4"
+                        },
+                        new CategoryModel()
+                        {
+                            Name = "B Category",
+                            Color = "32AD3C"
+                        },
+                        new CategoryModel()
+                        {
+                            Name = "C Category",
+                            Color = "E47F00"
+                        },
+                        new CategoryModel()
+                        {
+                            Name = "D Category",
+                            Color = "DC0A0A"
+                        },
+                        new CategoryModel()
+                        {
+                            Name = "E Category"
+                        },
+                        new CategoryModel()
+                        {
+                            Name = "F Category"
+                        }
+                    },
+                    Serie = new SerieModel()
+                    {
+                        Values = new List<double?>()
+                        {
+                            10, 20, 5, 50, 15, null
+                        },
+                        Name = "Serie 1",
+                        HasBorder = true,
+                        BorderColor = "#FFFFFF",
+                        Color = "#000000",
+                        BorderWidth = 63500
+                    }
+                }
+            });
+        }
+
+        /// <summary>
+        /// Generate Pie graph page templates
+        /// </summary>
+        /// <returns></returns>
+        private static Page GeneratePieChartPage()
+        {
+            var page = new Page();
+
+            var pieChartPr = new Paragraph()
+            {
+                ChildElements = new List<BaseElement>() {
+                    new PieModel()
+                    {
+                        Title = "Pie Chart test",
+                        ShowTitle = true,
+                        ShowChartBorder = true,
+                        PieChartType = PieChartType.PieChart,
+                        DataSourceKey = "#PieGraphSampleData#",
+                        ShowMajorGridlines = true,
+                        DataLabel = new DataLabelModel()
+                        {
+                            //ShowDataLabel = true,
+                            ShowCatName = true,
+                            ShowPercent = true,
+                            Separator = "\n",
+                            FontSize = 8
+                        }
+                        ,
+                        DataLabelColor = "#FFFF00"//Yellow
+                    }
+                }
+            };
+
+            page.ChildElements.Add(pieChartPr);
+
+            return page;
+        }
+
+        #endregion
+
+        #region Bar chart
+
+        /// <summary>
+        /// Generate context for Bar Graphs
+        /// </summary>
+        /// <param name="context"></param>
+        private static void GenerateBarGraphContext(ContextModel context)
+        {
+            context.AddItem("#OldBarGraphSampleData#", new BarChartModel()
+            {
+                BarChartContent = new Engine.ReportEngine.DataContext.Charts.BarModel()
+                {
+                    Categories = new List<BarCategoryModel>()
+                    {
+                        new BarCategoryModel()
+                        {
+                            Name = "Category 1"
+                        },
+                        new BarCategoryModel()
+                        {
+                            Name = "Category 2"
+                        },
+                        new BarCategoryModel()
+                        {
+                            Name = "Category 3"
+                        },
+                        new BarCategoryModel()
+                        {
+                            Name = "Category 4"
+                        },
+                        new BarCategoryModel()
+                        {
+                            Name = "Category 5"
+                        },
+                        new BarCategoryModel()
+                        {
+                            Name = "Category 6"
+                        }
+                    },
+                    Series = new List<BarSerieModel>()
+                    {
+                        new BarSerieModel()
+                        {
+                            Values = new List<double?>()
+                            {
+                                0, 1, 2, 3, 6, null
+                            },
+                            Name = "Bar serie 1",
+                            Color = "9FA0A4"
+                        },
+                        new BarSerieModel()
+                        {
+                            Values = new List<double?>()
+                            {
+                                5, null, 7, 8, 0, 10
+                            },
+                            Name = "Bar serie 2",
+                            Color = "32AD3C"
+                        },
+                        new BarSerieModel()
+                        {
+                            Values = new List<double?>()
+                            {
+                                9, 10, 11, 12, 13, 14
+                            },
+                            Name = "Bar serie 3",
+                            Color = "E47F00"
+                        },
+                        new BarSerieModel()
+                        {
+                            Values = new List<double?>()
+                            {
+                                9, 10, 11, 12, 15, 25
+                            },
+                            Name = "Bar serie 4",
+                            Color = "DC0A0A"
+                        }
+                    }
+                }
+            });
+
+            context.AddItem("#BarGraphSampleData#", new MultipleSeriesChartModel()
+            {
+                ChartContent = new MultipleSeriesModel()
+                {
+                    Categories = new List<CategoryModel>()
+                    {
+                        new CategoryModel()
+                        {
+                            Name = "Category 1"
+                        },
+                        new CategoryModel()
+                        {
+                            Name = "Category 2"
+                        },
+                        new CategoryModel()
+                        {
+                            Name = "Category 3"
+                        },
+                        new CategoryModel()
+                        {
+                            Name = "Category 4"
+                        },
+                        new CategoryModel()
+                        {
+                            Name = "Category 5"
+                        },
+                        new CategoryModel()
+                        {
+                            Name = "Category 6"
+                        }
+                    },
+                    Series = new List<SerieModel>()
+                    {
+                        new SerieModel()
+                        {
+                            Values = new List<double?>()
+                            {
+                                0, 1, 2, 3, 6, null
+                            },
+                            Name = "Bar serie 1",
+                            Color = "9FA0A4",
+                            HasBorder = true,
+                            BorderColor = "#FF00FF",
+                            BorderWidth = 63500
+                        },
+                        new SerieModel()
+                        {
+                            Values = new List<double?>()
+                            {
+                                5, null, 7, 8, 0, 10
+                            },
+                            Name = "Bar serie 2",
+                            Color = "32AD3C",
+                            HasBorder = true,
+                            BorderColor = "#0000FF",
+                            BorderWidth = 63500
+                        },
+                        new SerieModel()
+                        {
+                            Values = new List<double?>()
+                            {
+                                9, 10, 11, 12, 13, 14
+                            },
+                            Name = "Bar serie 3",
+                            Color = "E47F00"
+                        },
+                        new SerieModel()
+                        {
+                            Values = new List<double?>()
+                            {
+                                9, 10, 11, 12, 15, 25
+                            },
+                            Name = "Bar serie 4",
+                            Color = "DC0A0A"
+                        }
+                    }
+                }
+            });
+
+            context.AddItem("#SingleStackedBarGraphSampleData#", new MultipleSeriesChartModel()
+            {
+                ChartContent = new MultipleSeriesModel()
+                {
+                    Categories = new List<CategoryModel>()
+                    {
+                        new CategoryModel()
+                        {
+                            Name = "Cat name"
+                        }
+                    },
+                    Series = new List<SerieModel>()
+                    {
+                        new SerieModel()
+                        {
+                            Name = "Serie 1",
+                            Color = "9FA0A4",
+                            Values = new List<double?>{ 98 }
+                        },
+                        new SerieModel()
+                        {
+                            Name = "Serie 2",
+                            Color = "E47F00",
+                            Values = new List<double?>{ 2 }
+                        }
+                    }
+                }
+            });
+
+            context.AddItem("#BarGraphNumericCategoriesSampleData#", new MultipleSeriesChartModel()
+            {
+                ChartContent = new MultipleSeriesModel()
+                {
+                    CategoryType = CategoryTypes.NumberReference,
+                    Categories = new List<CategoryModel>()
+                    {
+                        new CategoryModel() { Value = 1.24680135790987654321 },
+                        new CategoryModel() { Value = 2.24680135790987654321 },
+                        new CategoryModel() { Value = 3.24680135790987654321 },
+                        new CategoryModel() { Value = 4.24680135790987654321 },
+                        new CategoryModel() { Value = 5.24680135790987654321 },
+                        new CategoryModel() { Value = 6.24680135790987654321 }
+                    },
+                    Series = new List<SerieModel>()
+                    {
+                        new SerieModel()
+                        {
+                            Values = new List<double?>()
+                            {
+                                0, 1, 2, 3, 6, null
+                            },
+                            Name = "Bar serie 1",
+                            Color = "F5E642",
+                        },
+                        new SerieModel()
+                        {
+                            Values = new List<double?>()
+                            {
+                                5, null, 7, 8, 0, 10
+                            },
+                            Name = "Bar serie 2",
+                            Color = "75F23F",
+                        },
+                        new SerieModel()
+                        {
+                            Values = new List<double?>()
+                            {
+                                9, 10, 11, 12, 13, 14
+                            },
+                            Name = "Bar serie 3",
+                            Color = "28C7BC"
+                        },
+                        new SerieModel()
+                        {
+                            Values = new List<double?>()
+                            {
+                                9, 10, 11, 12, 15, 25
+                            },
+                            Name = "Bar serie 4",
+                            Color = "C728C7"
+                        }
+                    }
+                }
+            });
+        }
+
+        /// <summary>
+        /// Generate Bar graph page templates
+        /// </summary>
+        /// <returns></returns>
+        private static Page GenerateBarChartPage()
+        {
+            var page = new Page();
+
+            page.ChildElements.Add(new Paragraph()
+            {
+                ChildElements = new List<BaseElement>()
+                {
+                    new Engine.Word.ReportEngine.Models.Charts.BarModel()
+                    {
+                        Title = "Graph test",
+                        ShowTitle = true,
+                        ShowBarBorder = true,
+                        BarChartType = BarChartType.BarChart,
+                        BarDirectionValues = BarDirectionValues.Column,
+                        BarGroupingValues = BarGroupingValues.PercentStacked,
+                        DataSourceKey = "#OldBarGraphSampleData#",
+                        ShowMajorGridlines = true,
+                        MaxHeight = 320
+                    }
+                }
+            });
+
+            page.ChildElements.Add(new Paragraph()
+            {
+                ChildElements = new List<BaseElement>() {
+                    new Engine.Word.ReportEngine.Models.Charts.BarModel()
+                    {
+                        Title = "Graph test",
+                        ShowTitle = true,
+                        FontSize = "23",
+                        BarChartType = BarChartType.BarChart,
+                        BarDirectionValues = BarDirectionValues.Column,
+                        BarGroupingValues = BarGroupingValues.PercentStacked,
+                        DataSourceKey = "#BarGraphSampleData#",
+                        ShowMajorGridlines = true,
+                        MaxHeight = 320
+                    }
+                }
+            });
+
+            page.ChildElements.Add(new Paragraph()
+            {
+                ChildElements = new List<BaseElement>() {
+                    new Engine.Word.ReportEngine.Models.Charts.BarModel()
+                    {
+                        Title = "Single stacked Graph without min-max",
+                        ShowTitle = true,
+                        MaxHeight = 100,
+                        DeleteAxeCategory = true,
+                        DeleteAxeValue = true,
+                        ShowLegend = false,
+                        HasBorder = false,
+                        DataSourceKey = "#SingleStackedBarGraphSampleData#"
+                    }
+                }
+            });
+
+            page.ChildElements.Add(new Paragraph()
+            {
+                ChildElements = new List<BaseElement>() {
+                    new Engine.Word.ReportEngine.Models.Charts.BarModel()
+                    {
+                        Title = "Single stacked Graph with min-max",
+                        ShowTitle = true,
+                        MaxHeight = 100,
+                        DeleteAxeCategory = true,
+                        DeleteAxeValue = true,
+                        ShowLegend = false,
+                        HasBorder = false,
+                        DataSourceKey = "#SingleStackedBarGraphSampleData#",
+                        ValuesAxisScaling = new BarChartScalingModel()
+                        {
+                            MinAxisValue = 0,
+                            MaxAxisValue = 100
+                        }
+                    }
+                }
+            });
+
+            page.ChildElements.Add(new Paragraph()
+            {
+                ChildElements = new List<BaseElement>() {
+                    new Engine.Word.ReportEngine.Models.Charts.BarModel()
+                    {
+                        Title = "Graph with numeric categories test",
+                        ShowTitle = true,
+                        FontSize = "23",
+                        BarChartType = BarChartType.BarChart,
+                        BarDirectionValues = BarDirectionValues.Column,
+                        BarGroupingValues = BarGroupingValues.PercentStacked,
+                        DataSourceKey = "#BarGraphNumericCategoriesSampleData#",
+                        MaxHeight = 320
+                    }
+                }
+            });
+
+            return page;
+        }
+
+        #endregion
+
         #region Line Graph
 
         /// <summary>
         /// Generate context for line graphs
         /// </summary>
         /// <param name="context"></param>
-        public static void GenerateLineGraphContext(ContextModel context)
+        private static void GenerateLineGraphContext(ContextModel context)
         {
             context.AddItem("#LineGraphStandardSampleData#", new MultipleSeriesChartModel()
             {
@@ -1586,6 +1696,35 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                     }
                 }
             });
+
+            context.AddItem("#LineGraphWithNumericCategoriesSampleData#", new MultipleSeriesChartModel()
+            {
+                ChartContent = new MultipleSeriesModel()
+                {
+                    Categories = new List<CategoryModel>()
+                    {
+                        new CategoryModel() { Value = 1.1234567890 },
+                        new CategoryModel() { Value = 3.1234567890 },
+                        new CategoryModel() { Value = 5.1234567890 },
+                        new CategoryModel() { Value = 7.1234567890 },
+                        new CategoryModel() { Value = 9.1234567890 }
+                    },
+                    Series = new List<SerieModel>
+                    {
+                        new SerieModel()
+                        {
+                            Name = "Multiple of two",
+                            Color = "9FA0A4",
+                            Values = new List<double?> { 2, 4, 6, 8, 10 }
+                        }
+                    },
+                    CategoriesAxisModel = new AxisModel
+                    {
+                        Title = "From context",
+                        Color = "9FA0A4"
+                    }
+                }
+            });
         }
 
         /// <summary>
@@ -1645,6 +1784,29 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                 }
             });
 
+            page.ChildElements.Add(new Paragraph
+            {
+                ChildElements = new List<BaseElement> {
+                    new LineModel
+                    {
+                        CategoryType = CategoryTypes.NumberReference,
+                        Title = "Line graph with numeric categories test",
+                        ShowTitle = true,
+                        FontSize = "23",
+                        DataSourceKey = "#LineGraphWithNumericCategoriesSampleData#",
+                        MaxHeight = 320,
+                        DataLabel = new DataLabelModel { ShowDataLabel = false },
+                        ShowLegend = true,
+                        LegendPosition = LegendPositionValues.Bottom,
+                        ValuesAxisModel = new ChartAxisModel
+                        {
+                            ShowMajorGridlines = true,
+                            MajorGridlinesColor = "151515"
+                        }
+                    }
+                }
+            });
+
             return page;
         }
 
@@ -1656,7 +1818,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
         /// Generate context for scatter graphs
         /// </summary>
         /// <param name="context"></param>
-        public static void GenerateScatterGraphContext(ContextModel context)
+        private static void GenerateScatterGraphContext(ContextModel context)
         {
             context.AddItem("#ScatterGraphStandardSampleData#", new MultipleSeriesChartModel()
             {
@@ -1856,7 +2018,11 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
 
         #region Combine Graph
 
-        public static void GenerateCombineGraphContext(ContextModel context)
+        /// <summary>
+        /// Generate context for Combined graphs
+        /// </summary>
+        /// <param name="context"></param>
+        private static void GenerateCombineGraphContext(ContextModel context)
         {
             context.AddItem("#CombineGraphOnlyLineSampleData#", new MultipleSeriesChartModel()
             {
@@ -1865,10 +2031,10 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                     Categories = new List<CategoryModel>()
                     {
                         new CategoryModel() { Name = "1" },
-                        new CategoryModel() { Name = "2" },
                         new CategoryModel() { Name = "3" },
-                        new CategoryModel() { Name = "4" },
-                        new CategoryModel() { Name = "5" }
+                        new CategoryModel() { Name = "5" },
+                        new CategoryModel() { Name = "7" },
+                        new CategoryModel() { Name = "9" }
                     },
                     Series = new List<SerieModel>
                     {
@@ -1986,8 +2152,60 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                     }
                 }
             });
+
+            context.AddItem("#CombineGraphNumericFrankensteinSampleData#", new MultipleSeriesChartModel()
+            {
+                ChartContent = new MultipleSeriesModel()
+                {
+                    CategoryType = CategoryTypes.NumberReference,
+                    Categories = new List<CategoryModel>()
+                    {
+                        new CategoryModel() { Value = 1.24680135790987654321 },
+                        new CategoryModel() { Value = 2.24680135790987654321 },
+                        new CategoryModel() { Value = 3.24680135790987654321 },
+                        new CategoryModel() { Value = 4.24680135790987654321 },
+                        new CategoryModel() { Value = 5.24680135790987654321 },
+                        new CategoryModel() { Value = 6.24680135790987654321 }
+                    },
+                    Series = new List<SerieModel>
+                    {
+                        new SerieModel()
+                        {
+                            Name = "Multiple of two",
+                            Color = "EB4934",
+                            Values = new List<double?> { 2, 4, 6, 8, 10, 12 },
+                            SerieChartType = SerieChartType.Line
+                        },
+                        new SerieModel()
+                        {
+                            Name = "Second Line",
+                            Color = "16979C",
+                            Values = new List<double?> { 2, 3, 5, 9, 10, 15 },
+                            SerieChartType = SerieChartType.Line
+                        },
+                        new SerieModel()
+                        {
+                            Name = "Multiple of two",
+                            Color = "D80DDB",
+                            Values = new List<double?> { 2, 4, -6, 8, 10, 12 },
+                            SerieChartType = SerieChartType.Bar
+                        }
+                    },
+                    CategoriesAxisModel = new AxisModel
+                    {
+                        Title = "From context",
+                        LabelFormat = "{0} with 'unit'",
+                        Color = "9FA0A4",
+                        CrossesAt = 2.3
+                    }
+                }
+            });
         }
 
+        /// <summary>
+        /// Generate Combined graph templates
+        /// </summary>
+        /// <returns></returns>
         private static Page GenerateCombineGraphsPage()
         {
             var page = new Page();
@@ -2042,13 +2260,33 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                         DataLabel = new DataLabelModel { ShowDataLabel = false },
                         ShowLegend = true,
                         FontFamilyLegend = "Arial",
-                        LegendPosition = LegendPositionValues.Top,
+                        LegendPosition = LegendPositionValues.Top
+                    }
+                }
+            });
+
+            page.ChildElements.Add(new Paragraph
+            {
+                ChildElements = new List<BaseElement>
+                {
+                    new CombineChartModel
+                    {
+                        Title = "Combine Chart Model - Numeric Frankenstein",
+                        ShowTitle = true,
+                        DataSourceKey = "#CombineGraphNumericFrankensteinSampleData#",
+                        MaxHeight = 320,
+                        DataLabel = new DataLabelModel { ShowDataLabel = false },
+                        ShowLegend = true,
+                        FontFamilyLegend = "Arial",
+                        LegendPosition = LegendPositionValues.Right
                     }
                 }
             });
 
             return page;
         }
+
+        #endregion
 
         #endregion
     }
