@@ -172,7 +172,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts
         /// <summary>
         /// Indicate the category value type
         /// </summary>
-        public CategoryTypes CategoryType { get; set; }
+        public CategoryType CategoryType { get; set; }
 
         /// <summary>
         /// Ctor

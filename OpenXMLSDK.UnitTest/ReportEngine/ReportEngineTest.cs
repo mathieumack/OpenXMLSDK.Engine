@@ -1458,7 +1458,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             {
                 ChartContent = new MultipleSeriesModel()
                 {
-                    CategoryType = CategoryTypes.NumberReference,
+                    CategoryType = CategoryType.NumberReference,
                     Categories = new List<CategoryModel>()
                     {
                         new CategoryModel() { Value = 1.24680135790987654321 },
@@ -1789,7 +1789,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                 ChildElements = new List<BaseElement> {
                     new LineModel
                     {
-                        CategoryType = CategoryTypes.NumberReference,
+                        CategoryType = CategoryType.NumberReference,
                         Title = "Line graph with numeric categories test",
                         ShowTitle = true,
                         FontSize = "23",
@@ -2157,7 +2157,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             {
                 ChartContent = new MultipleSeriesModel()
                 {
-                    CategoryType = CategoryTypes.NumberReference,
+                    CategoryType = CategoryType.NumberReference,
                     Categories = new List<CategoryModel>()
                     {
                         new CategoryModel() { Value = 1.24680135790987654321 },

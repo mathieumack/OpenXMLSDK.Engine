@@ -3,7 +3,7 @@
     /// <summary>
     /// Define the category values type
     /// </summary>
-    public enum CategoryTypes
+    public enum CategoryType
     {
         /// <summary>
         /// Indicate that categories values will be a string

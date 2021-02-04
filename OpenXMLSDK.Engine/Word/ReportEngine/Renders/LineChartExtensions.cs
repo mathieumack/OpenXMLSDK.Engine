@@ -45,7 +45,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     return runItem;
 
                 if (contextModel.ChartContent.CategoryType != null)
-                    lineModel.CategoryType = (CategoryTypes)contextModel.ChartContent.CategoryType;
+                    lineModel.CategoryType = (CategoryType)contextModel.ChartContent.CategoryType;
 
                 // Update categories object :
                 lineModel.Categories = contextModel.ChartContent.Categories.Select(e => new LineCategory()
@@ -190,7 +190,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     catAxis.AppendChild(new CrossesAt() { Val = new DoubleValue(chartModel.CategoriesAxisModel.CrossesAt) });
                 else
                     catAxis.AppendChild(new Crosses() { Val = new EnumValue<CrossesValues>(CrossesValues.AutoZero) });
-                if (chartModel.CategoryType.Equals(CategoryTypes.NumberReference))
+                if (chartModel.CategoryType.Equals(CategoryType.NumberReference))
                     catAxis.AppendChild(new DC.NumberingFormat { FormatCode = "#,##0.00", SourceLinked = false });
                 plotArea.AppendChild(catAxis);
             }
@@ -330,7 +330,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 
             switch (chartModel.CategoryType)
             {
-                case CategoryTypes.StringReference:
+                case CategoryType.StringReference:
                     StringReference strLit = lineChartSeries.AppendChild(new CategoryAxisData()).AppendChild(new StringReference());
                     strLit.AppendChild(new StringCache());
                     strLit.StringCache.AppendChild(new PointCount() { Val = (uint)chartModel.Categories.Count });
@@ -341,7 +341,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                         p++;
                     }
                     break;
-                case CategoryTypes.NumberReference:
+                case CategoryType.NumberReference:
                     NumberReference numRef = lineChartSeries.AppendChild(new CategoryAxisData()).AppendChild(new NumberReference());
                     numRef.AppendChild(new NumberingCache());
                     numRef.NumberingCache.AppendChild(new FormatCode("General"));
@@ -353,6 +353,8 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                         p++;
                     }
                     break;
+                default:
+                    throw new ChartModelException("Error in model. CategoryType is unknown.", "004-002");
             }
         }
 

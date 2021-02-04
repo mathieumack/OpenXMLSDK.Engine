@@ -8,7 +8,7 @@
         public string Name { get; set; }
 
         /// <summary>
-        /// Value category name
+        /// Category value
         /// </summary>
         public double? Value { get; set; }
 

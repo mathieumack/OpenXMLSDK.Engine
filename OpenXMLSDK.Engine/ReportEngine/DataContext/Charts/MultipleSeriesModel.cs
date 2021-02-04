@@ -8,7 +8,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.BatchModels.Charts
         /// <summary>
         /// Indicate the category value type
         /// </summary>
-        public CategoryTypes? CategoryType { get; set; }
+        public CategoryType? CategoryType { get; set; }
 
         /// <summary>
         /// Categories

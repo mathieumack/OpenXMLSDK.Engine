@@ -66,7 +66,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                         return runItem;
 
                     if (multipleSeriesContextModel.ChartContent.CategoryType != null)
-                        barChart.CategoryType = (Engine.ReportEngine.DataContext.Charts.CategoryTypes)multipleSeriesContextModel.ChartContent.CategoryType;
+                        barChart.CategoryType = (Engine.ReportEngine.DataContext.Charts.CategoryType)multipleSeriesContextModel.ChartContent.CategoryType;
 
                     // Update barChart object :
                     barChart.Categories = multipleSeriesContextModel.ChartContent.Categories.Select(e => new BarCategory()
@@ -223,7 +223,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     catAxis.AppendChild(new CrossesAt() { Val = new DoubleValue(chartModel.CategoriesAxisModel.CrossesAt) });
                 else
                     catAxis.AppendChild(new Crosses() { Val = new EnumValue<CrossesValues>(CrossesValues.AutoZero) });
-                if (chartModel.CategoryType.Equals(Engine.ReportEngine.DataContext.Charts.CategoryTypes.NumberReference))
+                if (chartModel.CategoryType.Equals(Engine.ReportEngine.DataContext.Charts.CategoryType.NumberReference))
                     catAxis.AppendChild(new DC.NumberingFormat { FormatCode = "#,##0.00", SourceLinked = false });
                 plotArea.AppendChild(catAxis);
 
@@ -372,7 +372,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 
             switch (chartModel.CategoryType)
             {
-                case Engine.ReportEngine.DataContext.Charts.CategoryTypes.StringReference:
+                case Engine.ReportEngine.DataContext.Charts.CategoryType.StringReference:
                     StringReference strLit = barChartSeries.AppendChild(new CategoryAxisData()).AppendChild(new StringReference());
                     strLit.AppendChild(new StringCache());
                     strLit.StringCache.AppendChild(new PointCount() { Val = (uint)chartModel.Categories.Count });
@@ -383,7 +383,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                         p++;
                     }
                     break;
-                case Engine.ReportEngine.DataContext.Charts.CategoryTypes.NumberReference:
+                case Engine.ReportEngine.DataContext.Charts.CategoryType.NumberReference:
                     NumberReference numRef = barChartSeries.AppendChild(new CategoryAxisData()).AppendChild(new NumberReference());
                     numRef.AppendChild(new NumberingCache());
                     numRef.NumberingCache.AppendChild(new FormatCode("General"));
@@ -395,6 +395,8 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                         p++;
                     }
                     break;
+                default:
+                    throw new ChartModelException("Error in model. CategoryType is unknown.", "004-002");
             }
         }
 

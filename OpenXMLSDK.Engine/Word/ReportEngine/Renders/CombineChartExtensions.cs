@@ -43,7 +43,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     return runItem;
 
                 if (contextModel.ChartContent.CategoryType != null)
-                    combineChartModel.CategoryType = (D.CategoryTypes)contextModel.ChartContent.CategoryType;
+                    combineChartModel.CategoryType = (D.CategoryType)contextModel.ChartContent.CategoryType;
 
                 // Update categories object :
                 combineChartModel.Categories = contextModel.ChartContent.Categories.Select(e => new ChartCategory()
