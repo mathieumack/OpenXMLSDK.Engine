@@ -2104,7 +2104,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                     Categories = new List<CategoryModel>()
                     {
                         new CategoryModel() { Name = "1" },
-                        new CategoryModel() { Name = "2" },
+                        new CategoryModel() { Name = "2.2" },
                         new CategoryModel() { Name = "3" },
                         new CategoryModel() { Name = "4" },
                         new CategoryModel() { Name = "5" },

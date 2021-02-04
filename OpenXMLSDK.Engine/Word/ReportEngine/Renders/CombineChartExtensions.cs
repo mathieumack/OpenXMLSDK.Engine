@@ -203,9 +203,11 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 GroupingValues = chartModel.GroupingValues,
                 VaryColors = chartModel.VaryColors,
                 Series = chartModel.LineSeries,
+                CategoryType = chartModel.CategoryType,
                 Categories = chartModel.Categories.Select(c => new LineCategory
                 {
                     Name = c.Name,
+                    Value = c.Value,
                     Color = c.Color
                 }).ToList(),
                 DataLabel = chartModel.DataLabel,
@@ -230,9 +232,11 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 BarDirectionValues = Models.Charts.BarDirectionValues.Column,
                 BarGroupingValues = Models.Charts.BarGroupingValues.Standard,
                 Series = chartModel.BarSeries,
+                CategoryType = chartModel.CategoryType,
                 Categories = chartModel.Categories.Select(c => new BarCategory
                 {
                     Name = c.Name,
+                    Value = c.Value,
                     Color = c.Color
                 }).ToList(),
                 DataLabel = chartModel.DataLabel,

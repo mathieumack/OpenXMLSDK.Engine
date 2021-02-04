@@ -8,11 +8,11 @@
         /// <summary>
         /// Indicate that categories values will be a string
         /// </summary>
-        StringReference = 1,
+        StringReference = 0,
 
         /// <summary>
         /// Indicate that categories values will be a number
         /// </summary>
-        NumberReference = 2,
+        NumberReference = 1,
     }
 }
