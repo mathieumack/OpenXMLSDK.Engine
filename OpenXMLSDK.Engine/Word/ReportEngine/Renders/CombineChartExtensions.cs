@@ -42,10 +42,14 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                    || contextModel.ChartContent.Series is null)
                     return runItem;
 
+                if (contextModel.ChartContent.CategoryType != null)
+                    combineChartModel.CategoryType = (D.CategoryType)contextModel.ChartContent.CategoryType;
+
                 // Update categories object :
                 combineChartModel.Categories = contextModel.ChartContent.Categories.Select(e => new ChartCategory()
                 {
                     Name = e.Name,
+                    Value = e.Value,
                     Color = e.Color
                 }).ToList();
 
@@ -199,9 +203,11 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 GroupingValues = chartModel.GroupingValues,
                 VaryColors = chartModel.VaryColors,
                 Series = chartModel.LineSeries,
+                CategoryType = chartModel.CategoryType,
                 Categories = chartModel.Categories.Select(c => new LineCategory
                 {
                     Name = c.Name,
+                    Value = c.Value,
                     Color = c.Color
                 }).ToList(),
                 DataLabel = chartModel.DataLabel,
@@ -226,9 +232,11 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 BarDirectionValues = Models.Charts.BarDirectionValues.Column,
                 BarGroupingValues = Models.Charts.BarGroupingValues.Standard,
                 Series = chartModel.BarSeries,
+                CategoryType = chartModel.CategoryType,
                 Categories = chartModel.Categories.Select(c => new BarCategory
                 {
                     Name = c.Name,
+                    Value = c.Value,
                     Color = c.Color
                 }).ToList(),
                 DataLabel = chartModel.DataLabel,

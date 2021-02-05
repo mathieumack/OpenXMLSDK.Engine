@@ -6,6 +6,11 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.BatchModels.Charts
     public class MultipleSeriesModel
     {
         /// <summary>
+        /// Indicate the category value type
+        /// </summary>
+        public CategoryType? CategoryType { get; set; }
+
+        /// <summary>
         /// Categories
         /// </summary>
         public List<CategoryModel> Categories { get; set; }

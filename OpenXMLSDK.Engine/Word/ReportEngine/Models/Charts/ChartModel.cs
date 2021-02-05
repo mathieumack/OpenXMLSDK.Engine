@@ -1,4 +1,5 @@
 ﻿using System;
+using OpenXMLSDK.Engine.ReportEngine.DataContext.Charts;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts
 {
@@ -167,6 +168,11 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts
         /// Indicate the overlap of bar series in percent, Min = -100, Max = 100
         /// </summary>
         public sbyte Overlap { get; set; } = 100;
+
+        /// <summary>
+        /// Indicate the category value type
+        /// </summary>
+        public CategoryType CategoryType { get; set; }
 
         /// <summary>
         /// Ctor
