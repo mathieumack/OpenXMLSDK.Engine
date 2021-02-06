@@ -44,10 +44,14 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                    || contextModel.ChartContent.Series is null)
                     return runItem;
 
+                if (contextModel.ChartContent.CategoryType != null)
+                    lineModel.CategoryType = (CategoryType)contextModel.ChartContent.CategoryType;
+
                 // Update categories object :
                 lineModel.Categories = contextModel.ChartContent.Categories.Select(e => new LineCategory()
                 {
                     Name = e.Name,
+                    Value = e.Value,
                     Color = e.Color
                 }).ToList();
 
@@ -96,7 +100,6 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     new Grouping { Val = new EnumValue<DC.GroupingValues>((DC.GroupingValues)(int)chartModel.GroupingValues) },
                     new VaryColors { Val = new BooleanValue(chartModel.VaryColors) }));
 
-            uint p = 0;
             // Iterate through each key in the Dictionary collection and add the key to the chart Series
             // and add the corresponding value to the chart Values.
             foreach (var serie in chartModel.Series.Where(s => s.UseSecondaryAxis.Equals(secondaryAxis)))
@@ -133,18 +136,10 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 }
 
                 // Categories.
-                StringReference strLit = lineChartSeries.AppendChild(new CategoryAxisData()).AppendChild(new StringReference());
-                strLit.AppendChild(new StringCache());
-                strLit.StringCache.AppendChild(new PointCount() { Val = (uint)chartModel.Categories.Count });
-                // Category list.
-                foreach (var categorie in chartModel.Categories)
-                {
-                    strLit.StringCache.AppendChild(new StringPoint() { Index = p, NumericValue = new NumericValue(categorie.Name) });
-                    p++;
-                }
-                p = 0;
+                ManageCategories(chartModel, lineChartSeries);
 
                 // Values.
+                uint p = 0;
                 NumberReference numLit = lineChartSeries.AppendChild(new Values()).AppendChild(new NumberReference());
                 numLit.AppendChild(new NumberingCache());
                 numLit.NumberingCache.AppendChild(new FormatCode("General"));
@@ -195,6 +190,8 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     catAxis.AppendChild(new CrossesAt() { Val = new DoubleValue(chartModel.CategoriesAxisModel.CrossesAt) });
                 else
                     catAxis.AppendChild(new Crosses() { Val = new EnumValue<CrossesValues>(CrossesValues.AutoZero) });
+                if (chartModel.CategoryType.Equals(CategoryType.NumberReference))
+                    catAxis.AppendChild(new DC.NumberingFormat { FormatCode = "#,##0.00", SourceLinked = false });
                 plotArea.AppendChild(catAxis);
             }
 
@@ -320,6 +317,45 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             Run element = SaveChart(chartModel, documentPart, chartPart);
 
             return element;
+        }
+
+        /// <summary>
+        /// Create categories
+        /// </summary>
+        /// <param name="chartModel"></param>
+        /// <param name="lineChartSeries"></param>
+        private static void ManageCategories(LineModel chartModel, LineChartSeries lineChartSeries)
+        {
+            uint p = 0;
+
+            switch (chartModel.CategoryType)
+            {
+                case CategoryType.StringReference:
+                    StringReference strLit = lineChartSeries.AppendChild(new CategoryAxisData()).AppendChild(new StringReference());
+                    strLit.AppendChild(new StringCache());
+                    strLit.StringCache.AppendChild(new PointCount() { Val = (uint)chartModel.Categories.Count });
+                    // Category list.
+                    foreach (var categorie in chartModel.Categories)
+                    {
+                        strLit.StringCache.AppendChild(new StringPoint() { Index = p, NumericValue = new NumericValue(categorie.Name) });
+                        p++;
+                    }
+                    break;
+                case CategoryType.NumberReference:
+                    NumberReference numRef = lineChartSeries.AppendChild(new CategoryAxisData()).AppendChild(new NumberReference());
+                    numRef.AppendChild(new NumberingCache());
+                    numRef.NumberingCache.AppendChild(new FormatCode("General"));
+                    numRef.NumberingCache.AppendChild(new PointCount() { Val = (uint)chartModel.Categories.Count });
+                    // Category list.
+                    foreach (var categorie in chartModel.Categories)
+                    {
+                        numRef.NumberingCache.AppendChild(new NumericPoint() { Index = p, NumericValue = new NumericValue(categorie.Value != null ? categorie.Value.Value.ToString(CultureInfo.InvariantCulture) : string.Empty) });
+                        p++;
+                    }
+                    break;
+                default:
+                    throw new ChartModelException("Error in model. CategoryType is unknown.", "004-002");
+            }
         }
 
         /// <summary>
