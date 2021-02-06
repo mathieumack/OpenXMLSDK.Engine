@@ -284,7 +284,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
 
             GenerateCombineGraphContext(context);
 
-            context.AddDouble("#ColumnNumber#", 1.0, null);
+            context.AddDouble("#ColumnNumber#", 2.0, null);
 
             return context;
         }
@@ -890,9 +890,9 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                 }
             };
 
-            //page4.ChildElements.Add(uniformGrid);
+            page4.ChildElements.Add(uniformGrid);
 
-            //doc.Pages.Add(page4);
+            doc.Pages.Add(page4);
 
             // page 5
             var page5 = new Page();
@@ -2296,6 +2296,8 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
         }
 
         #endregion
+
+        #endregion Charts
 
         #region Multiple columns 
 
