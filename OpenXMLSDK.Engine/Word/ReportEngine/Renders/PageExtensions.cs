@@ -43,25 +43,25 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 sectionProps.AppendChild(pageMargins);
             }
 
-            // If Columns are defined on the page we split page in columns
-            if (context.TryGetItem(page.ColumnNumberKey, out DoubleModel ColumnNumberKey))
+            if (
+                    // If Columns are defined on the page we split page in columns
+                    context.TryGetItem(page.ColumnNumberKey, out DoubleModel columnNumberKey)
+                    // and we Try to convert double to ColumnCountValues : 1, 2 or 3
+                    && int.TryParse(columnNumberKey.Value.ToString(), out int columnNumber) && Enum.IsDefined(typeof(ColumnCountValues), columnNumber)
+                )
             {
-                // Try to convert double to ColumnCountValues : 1, 2 or 3
-                if (int.TryParse(ColumnNumberKey.Value.ToString(), out int columnNumber) && Enum.IsDefined(typeof(ColumnCountValues), columnNumber))
+                // By default sectionType is Continuous
+                SectionType sectionType = new SectionType() { Val = (SectionMarkValues)MarkSectionValues.Continuous };
+                sectionProps.AppendChild(sectionType);
+
+                var columns = new Columns
                 {
-                    // By default sectionType is Continuous
-                    SectionType sectionType = new SectionType() { Val = (SectionMarkValues)MarkSectionValues.Continuous };
-                    sectionProps.AppendChild(sectionType);
+                    EqualWidth = true,
+                    ColumnCount = (Int16)columnNumber
+                };
 
-                    var columns = new Columns
-                    {
-                        EqualWidth = true,
-                        ColumnCount = (Int16)columnNumber
-                    };
-
-                    // Add columns in section
-                    sectionProps.Append(columns);
-                }
+                // Add columns in section
+                sectionProps.Append(columns);
             }
 
             var p = new DocumentFormat.OpenXml.Wordprocessing.Paragraph();
