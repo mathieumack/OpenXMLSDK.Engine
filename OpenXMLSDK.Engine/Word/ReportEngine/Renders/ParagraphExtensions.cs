@@ -20,6 +20,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 Justification = new DocumentFormat.OpenXml.Wordprocessing.Justification() { Val = paragraph.Justification.ToOOxml() },
                 SpacingBetweenLines = new DocumentFormat.OpenXml.Wordprocessing.SpacingBetweenLines()
             };
+
             if (paragraph.SpacingBefore.HasValue)
                 openXmlPar.ParagraphProperties.SpacingBetweenLines.Before = paragraph.SpacingBefore.ToString();
             if (paragraph.SpacingAfter.HasValue)

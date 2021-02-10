@@ -42,6 +42,28 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 };
                 sectionProps.AppendChild(pageMargins);
             }
+
+            if (
+                    // If Columns are defined on the page we split page in columns
+                    context.TryGetItem(page.ColumnNumberKey, out DoubleModel columnNumberKey)
+                    // and we Try to convert double to ColumnCountValues : 1, 2 or 3
+                    && int.TryParse(columnNumberKey.Value.ToString(), out int columnNumber) && Enum.IsDefined(typeof(ColumnCountValues), columnNumber)
+                )
+            {
+                // By default sectionType is Continuous
+                SectionType sectionType = new SectionType() { Val = (SectionMarkValues)MarkSectionValues.Continuous };
+                sectionProps.AppendChild(sectionType);
+
+                var columns = new Columns
+                {
+                    EqualWidth = true,
+                    ColumnCount = (Int16)columnNumber
+                };
+
+                // Add columns in section
+                sectionProps.Append(columns);
+            }
+
             var p = new DocumentFormat.OpenXml.Wordprocessing.Paragraph();
             var ppr = new ParagraphProperties();
             p.AppendChild(ppr);
