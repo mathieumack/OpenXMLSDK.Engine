@@ -157,6 +157,8 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                 }
             });
 
+            GenerateForeachPageContext(context);
+
             GenerateUniformGridContext(context);
 
             GenerateTableContext(context);
@@ -178,24 +180,6 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             return context;
         }
 
-        private static Paragraph CreateTableofContentItem()
-        {
-            return new Paragraph
-            {
-                ParagraphStyleId = "TableOfContent",
-                SpacingAfter = 0,
-                SpacingBefore = 0,
-                ChildElements = new List<BaseElement>()
-                {
-                    new Label()
-                    {
-                        Text ="Table of content simply",
-                        SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve
-                    }
-                }
-            };
-        }
-
         private static SimpleField PageCrossReference(string anchor)
         {
             return new SimpleField()
@@ -213,52 +197,12 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             var doc = new Document();
             doc.Styles.Add(new Style() { StyleId = "Red", FontColor = "FF0050", FontSize = "42" });
             doc.Styles.Add(new Style() { StyleId = "Yellow", FontColor = "FFFF00", FontSize = "40" });
-            doc.Styles.Add(new Style()
-            {
-                StyleId = "TableOfContent",
-                Type = StyleValues.Paragraph,
-                CustomStyle = true,
-                FontName = "Arial",
-                FontSize = "20",
-                //PrimaryStyle = true,
-                FontColor = "FFFF00",
-            });
-            doc.Styles.Add(new Style()
-            {
-                StyleId = "TOC 1",
-                Type = StyleValues.Paragraph,
-                PrimaryStyle = false,
-                CustomStyle = false,
-                FontName = "Arial",
-                FontSize = "30",
-                FontColor = "FF0050",
-            });
+            doc.Styles.Add(new Style() { StyleId = "TOC1", FontColor = "8A3459", FontSize = "30", FontName = "Arial" });
+            doc.Styles.Add(new Style() { StyleId = "TOC2", FontColor = "8A7934", FontSize = "20", FontName = "Arial" });
 
             var page1 = new Page();
             page1.Margin = new SpacingModel() { Top = 845, Bottom = 1418, Left = 567, Right = 567, Header = 709, Footer = 709 };
             doc.Pages.Add(page1);
-
-            // Template 1 :
-            page1.ChildElements.Add(
-                new Paragraph
-                {
-                    SpacingAfter = 0,
-                    SpacingBefore = 0,
-                    ChildElements = new List<BaseElement>
-                    {
-                           new SimpleField()
-                            {
-                                Instruction = @"TOC \t TableOfContent;1;",
-                                IsDirty = true,
-                                HintText = new Label()
-                                {
-                                    FontColor = "0000FF",
-                                    Text = "Default text"
-                                }
-                            }
-                    }
-                }
-            );
 
             page1.ChildElements.Add(
                 new Paragraph
@@ -270,8 +214,6 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                     }
                 }
             );
-
-            page1.ChildElements.Add(CreateTableofContentItem());
 
             var paragraph = new Paragraph();
             paragraph.ChildElements.Add(new Label() { Text = "Label without special character (éèàù).", FontSize = "30", FontName = "Arial" });
@@ -498,20 +440,6 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             p23.ChildElements.Add(new Label() { Text = Lorem_Ipsum });
             page2.ChildElements.Add(p23);
 
-            // Adding a foreach page :
-            var foreachPage = new ForEachPage();
-            foreachPage.DataSourceKey = "#TableWithFusedCellsInContext#";
-
-            foreachPage.Margin = new SpacingModel() { Top = 1418, Left = 845, Header = 709, Footer = 709 };
-            var paragraph21 = new Paragraph();
-            paragraph21.ChildElements.Add(new Label() { Text = "Page label : #Label#" });
-            foreachPage.ChildElements.Add(paragraph21);
-            var p223 = new Paragraph();
-            p223.Shading = "#ParagraphShading#";
-            p223.ChildElements.Add(new Label() { Text = "Texte paragraph2 avec espace avant", FontSize = "20", SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve });
-            foreachPage.ChildElements.Add(p223);
-            doc.Pages.Add(foreachPage);
-
             // page 3
             var page3 = new Page();
             var p31 = new Paragraph() { FontColor = "FF0000", FontSize = "26" };
@@ -536,20 +464,6 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                 }
             });
 
-            TableOfContents tableOfContents = new TableOfContents()
-            {
-                StylesAndLevels = new List<Tuple<string, string>>()
-                {
-                    new Tuple<string, string>("Red", "1"),
-                    new Tuple<string, string>("Yellow", "2"),
-                },
-                Title = "Tessssssst !",
-                TitleStyleId = "Yellow",
-                ToCStylesId = new List<string>() { "Red" },
-                LeaderCharValue = TabStopLeaderCharValues.underscore
-            };
-            page3.ChildElements.Add(tableOfContents);
-
             paragraph = new Paragraph()
             {
                 ParagraphStyleId = "#ParagraphStyleIdTestYellow#"
@@ -562,6 +476,12 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             page3.ChildElements.Add(p7);
 
             doc.Pages.Add(page3);
+
+            // Foreach page
+            doc.Pages.Add(GenerateForeachPagePage());
+
+            // Table of content
+            doc.Pages.Add(GenerateTableOfContent());
 
             // Uniform grid
             doc.Pages.Add(GenerateUniformGridPage());
@@ -596,6 +516,82 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
 
             return doc;
         }
+
+        #region Foreach page
+
+        /// <summary>
+        /// Generate foreach page context
+        /// </summary>
+        /// <param name="context"></param>
+        public static void GenerateForeachPageContext(ContextModel context)
+        {
+            ContextModel page1 = new ContextModel().AddString("#Label#", "Foreach page First page");
+            ContextModel page2 = new ContextModel().AddString("#Label#", "Foreach page Second page");
+
+            context.AddCollection("#ForeachPageDataSource#", page1, page2);
+        }
+
+        /// <summary>
+        /// Generate foreach page page
+        /// </summary>
+        /// <returns></returns>
+        public static ForEachPage GenerateForeachPagePage()
+        {
+            return new ForEachPage
+            {
+                DataSourceKey = "#ForeachPageDataSource#",
+                Margin = new SpacingModel() { Top = 1418, Left = 845, Header = 709, Footer = 709 },
+                ChildElements = new List<BaseElement>
+                {
+                    new Paragraph
+                    {
+                        ParagraphStyleId = "Red",
+                        ChildElements = new List<BaseElement>
+                        {
+                            new Label() { Text = "#Label#" }
+                        }
+                    },
+                    new Paragraph
+                    {
+                        ChildElements = new List<BaseElement>
+                        {
+                            new Label() { Text = "           Text with space before", FontSize = "20", SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve }
+                        }
+                    }
+                }
+            };
+        }
+
+        #endregion
+
+        #region Table of content
+
+        /// <summary>
+        /// Generate table of content
+        /// </summary>
+        /// <returns></returns>
+        public static Page GenerateTableOfContent()
+        {
+            var page = new Page();
+
+            TableOfContents tableOfContents = new TableOfContents()
+            {
+                StylesAndLevels = new List<Tuple<string, string>>()
+                {
+                    new Tuple<string, string>("Red", "1"),
+                    new Tuple<string, string>("Yellow", "2"),
+                },
+                Title = "Table of content!",
+                TitleStyleId = "Red",
+                ToCStylesId = new List<string>() { "TOC1", "TOC2" },
+                LeaderCharValue = TabStopLeaderCharValues.underscore
+            };
+            page.ChildElements.Add(tableOfContents);
+
+            return page;
+        }
+
+        #endregion
 
         #region Uniform grid
 
