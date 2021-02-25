@@ -245,6 +245,10 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
 
         #region Paragraphs and labels
 
+        /// <summary>
+        /// Generate paragraphs page
+        /// </summary>
+        /// <returns></returns>
         private static Page GenerateParagraphPage()
         {
             var page = new Page();
@@ -537,6 +541,10 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             return page;
         }
 
+        /// <summary>
+        /// Generate paragraphs page with different page margin
+        /// </summary>
+        /// <returns></returns>
         private static Page GenerateParagraphSecondPage()
         {
             var page = new Page
