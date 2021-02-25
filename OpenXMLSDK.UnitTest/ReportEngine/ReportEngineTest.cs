@@ -147,15 +147,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                         .AddString("#FontColorTestRed#", "993333")
                         .AddString("#ParagraphStyleIdTestYellow#", "Yellow");
 
-            // For each with template model
-            context.AddItem("#ForEachParagraph#", new DataSourceModel()
-            {
-                Items = new List<ContextModel>()
-                {
-                    new ContextModel().AddString("#TemplateKey#", "Template 1").AddString("#KeyTest1#", "foreach"),
-                    new ContextModel().AddString("#TemplateKey#", "Template 1").AddString("#KeyTest1#", "foreach")
-                }
-            });
+            GenerateForeachContext(context);
 
             GenerateForeachPageContext(context);
 
@@ -209,7 +201,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                 {
                     ChildElements = new List<BaseElement>
                     {
-                       new Hyperlink(){Anchor = "bmk", Text = new Label(){Text = "link to bookmark with Page Ref : ", SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve } },
+                       new Hyperlink(){Anchor = "bmk", Text = new Label(){Text = "Link to the table of content at page: ", SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve } },
                        PageCrossReference("PAGEREF bmk")
                     }
                 }
@@ -269,28 +261,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                 BorderBottomColor = "FF1234"
             };
 
-            var templateDefinition = new TemplateDefinition()
-            {
-                TemplateId = "Template 1",
-                Note = "Sample paragraph",
-                ChildElements = new List<BaseElement>() { paragraph }
-            };
-            doc.TemplateDefinitions.Add(templateDefinition);
-
             page1.ChildElements.Add(paragraph);
-            page1.ChildElements.Add(new TemplateModel() { TemplateId = "Template 1" });
-
-            // Foreach with template model
-            var forEach = new ForEach()
-            {
-                DataSourceKey = "#ForEachParagraph#",
-                ItemTemplate = new List<BaseElement>()
-                {
-                    new TemplateModel() { TemplateId = "#TemplateKey#" }
-                }
-            };
-
-            page1.ChildElements.Add(forEach);
 
             page1.ChildElements.Add(new Paragraph()
             {
@@ -449,21 +420,6 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             p31.ChildElements.Add(p311);
             page3.ChildElements.Add(p31);
 
-            page3.ChildElements.Add(new Paragraph
-            {
-                ChildElements = new List<BaseElement>
-                {
-                    new Label()
-                    {
-                        Shading = "2B3C4F",
-                        FontSize = "26",
-                        Text = "Table of content bookmark",
-                    },
-                    new BookmarkStart() {Id = "bmk", Name = "bmk" },
-                    new BookmarkEnd(){Id = "bmk"}
-                }
-            });
-
             paragraph = new Paragraph()
             {
                 ParagraphStyleId = "#ParagraphStyleIdTestYellow#"
@@ -476,6 +432,9 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             page3.ChildElements.Add(p7);
 
             doc.Pages.Add(page3);
+
+            // Foreach
+            doc.Pages.Add(GenerateForeachPage(doc));
 
             // Foreach page
             doc.Pages.Add(GenerateForeachPagePage());
@@ -516,6 +475,106 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
 
             return doc;
         }
+
+        #region Foreach
+
+        /// <summary>
+        /// Generate foreach context
+        /// </summary>
+        /// <param name="context"></param>
+        public static void GenerateForeachContext(ContextModel context)
+        {
+            context.AddItem("#ForEachParagraph#", new DataSourceModel()
+            {
+                Items = new List<ContextModel>()
+                {
+                    new ContextModel().AddString("#TemplateKey#", "Template 1").AddString("#ForeachKeyTemplate1#", "This is the first template"),
+                    new ContextModel().AddString("#TemplateKey#", "Template 2").AddString("#ForeachKeyTemplate2#", "This is the second template"),
+                    new ContextModel().AddString("#TemplateKey#", "Template 1").AddString("#ForeachKeyTemplate1#", "This is the first template again")
+                }
+            });
+        }
+
+        /// <summary>
+        /// Generate foreach and templates
+        /// </summary>
+        /// <param name="document"></param>
+        /// <returns></returns>
+        public static Page GenerateForeachPage(Document document)
+        {
+            var page = new Page();
+
+            page.ChildElements.Add(new Paragraph
+            {
+                Justification = JustificationValues.Center,
+                ParagraphStyleId = "Red",
+                ChildElements = new List<BaseElement>
+                {
+                    new Label
+                    {
+                        Text = "foreach test page"
+                    }
+                }
+            });
+
+            page.ChildElements.Add(new Paragraph
+            {
+                ChildElements = new List<BaseElement>
+                {
+                    new Label
+                    {
+                        Text = "This is an example of a list of template used in a foreach"
+                    }
+                }
+            });
+
+            document.TemplateDefinitions.Add(new TemplateDefinition()
+            {
+                TemplateId = "Template 1",
+                Note = "Sample paragraph",
+                ChildElements = new List<BaseElement>()
+                {
+                    new Paragraph
+                    {
+                        ChildElements = new List<BaseElement>
+                        {
+                            new Label { Text = "#ForeachKeyTemplate1#" }
+                        }
+                    }
+                }
+            });
+            document.TemplateDefinitions.Add(new TemplateDefinition()
+            {
+                TemplateId = "Template 2",
+                Note = "Sample paragraph",
+                ChildElements = new List<BaseElement>()
+                {
+                    new Paragraph
+                    {
+                        Shading = "9EB5BA",
+                        FontName = "Chiller",
+                        ChildElements = new List<BaseElement>
+                        {
+                            new Label { Text = "#ForeachKeyTemplate2#" }
+                        }
+                    }
+                }
+            });
+
+            // Foreach with template model
+            page.ChildElements.Add(new ForEach()
+            {
+                DataSourceKey = "#ForEachParagraph#",
+                ItemTemplate = new List<BaseElement>()
+                {
+                    new TemplateModel() { TemplateId = "#TemplateKey#" }
+                }
+            });
+
+            return page;
+        }
+
+        #endregion
 
         #region Foreach page
 
@@ -573,6 +632,21 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
         public static Page GenerateTableOfContent()
         {
             var page = new Page();
+
+            page.ChildElements.Add(new Paragraph
+            {
+                ChildElements = new List<BaseElement>
+                {
+                    new Label()
+                    {
+                        Shading = "2B3C4F",
+                        FontSize = "26",
+                        Text = "Table of content bookmark",
+                    },
+                    new BookmarkStart() {Id = "bmk", Name = "bmk" },
+                    new BookmarkEnd(){Id = "bmk"}
+                }
+            });
 
             TableOfContents tableOfContents = new TableOfContents()
             {
