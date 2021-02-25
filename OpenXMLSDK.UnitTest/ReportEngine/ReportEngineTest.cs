@@ -186,252 +186,19 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
         /// <returns></returns>
         private static Document GetTemplateDocument()
         {
-            var doc = new Document();
+            var doc = new Document
+            {
+                Margin = new SpacingModel() { Top = 845, Bottom = 1418, Left = 567, Right = 567, Header = 709, Footer = 709 }
+            };
             doc.Styles.Add(new Style() { StyleId = "Red", FontColor = "FF0050", FontSize = "42" });
             doc.Styles.Add(new Style() { StyleId = "Yellow", FontColor = "FFFF00", FontSize = "40" });
             doc.Styles.Add(new Style() { StyleId = "TOC1", FontColor = "8A3459", FontSize = "30", FontName = "Arial" });
             doc.Styles.Add(new Style() { StyleId = "TOC2", FontColor = "8A7934", FontSize = "20", FontName = "Arial" });
 
-            var page1 = new Page();
-            page1.Margin = new SpacingModel() { Top = 845, Bottom = 1418, Left = 567, Right = 567, Header = 709, Footer = 709 };
-            doc.Pages.Add(page1);
-
-            page1.ChildElements.Add(
-                new Paragraph
-                {
-                    ChildElements = new List<BaseElement>
-                    {
-                       new Hyperlink(){Anchor = "bmk", Text = new Label(){Text = "Link to the table of content at page: ", SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve } },
-                       PageCrossReference("PAGEREF bmk")
-                    }
-                }
-            );
-
-            var paragraph = new Paragraph();
-            paragraph.ChildElements.Add(new Label() { Text = "Label without special character (éèàù).", FontSize = "30", FontName = "Arial" });
-            paragraph.ChildElements.Add(new Hyperlink()
-            {
-                Text = new Label()
-                {
-                    Text = "Go to github.",
-                    FontSize = "20",
-                    FontName = "Arial"
-                },
-                WebSiteUri = "https://www.github.com/"
-            });
-            paragraph.Indentation = new ParagraphIndentationModel()
-            {
-                Left = "300",
-                Right = "6000"
-            };
-            paragraph.ChildElements.Add(new Label() { Text = "Ceci est un texte avec accents (éèàù)", FontSize = "30", FontName = "Arial" });
-            paragraph.ChildElements.Add(new Label()
-            {
-                Text = "#KeyTest1#",
-                FontSize = "40",
-                TransformOperations = new List<LabelTransformOperation>()
-                {
-                    new LabelTransformOperation()
-                    {
-                        TransformOperationType = LabelTransformOperationType.ToUpper
-                    }
-                },
-                FontColor = "#FontColorTestRed#",
-                Shading = "9999FF",
-                BoldKey = "#BoldKey#",
-                Bold = false
-            });
-            paragraph.ChildElements.Add(new Label()
-            {
-                Text = "#KeyTest2#",
-                Show = false
-            });
-            paragraph.Borders = new BorderModel()
-            {
-                BorderPositions = BorderPositions.BOTTOM | BorderPositions.TOP | BorderPositions.LEFT,
-                BorderWidthBottom = 3,
-                BorderWidthLeft = 10,
-                BorderWidthTop = 20,
-                BorderWidthInsideVertical = 1,
-                UseVariableBorders = true,
-                BorderColor = "FF0000",
-                BorderLeftColor = "CCCCCC",
-                BorderTopColor = "123456",
-                BorderRightColor = "FFEEDD",
-                BorderBottomColor = "FF1234"
-            };
-
-            page1.ChildElements.Add(paragraph);
-
-            page1.ChildElements.Add(new Paragraph()
-            {
-                ParagraphStyleId = "Red",
-                ChildElements = new List<BaseElement>()
-                {
-                    new Label()
-                    {
-                        Text = "Tabulation 1"
-                    },
-                    new Label()
-                    {
-                        TabulationProperties = new TabulationPropertiesModel()
-                        {
-                            TabStopPosition = 2500,
-                            Leader = TabStopLeaderCharValues.dot,
-                            Alignment = TabAlignmentValues.Right
-                        }
-                    },
-                    new Label()
-                    {
-                        TabulationProperties = new TabulationPropertiesModel()
-                        {
-                            TabStopPosition = 5000,
-                            Leader = TabStopLeaderCharValues.underscore,
-                            Alignment = TabAlignmentValues.Right
-                        }
-                    }
-                }
-            });
-
-            page1.ChildElements.Add(new Paragraph()
-            {
-                ParagraphStyleId = "Red",
-                ChildElements = new List<BaseElement>()
-                {
-                    new Label(){Text = "Tabulation 2" },
-                    new Label()
-                    {
-                        TabulationProperties = new TabulationPropertiesModel()
-                    },
-                    new Label(){Text = "After tabulation"}
-                }
-            });
-
-            page1.ChildElements.Add(new Paragraph()
-            {
-                ParagraphStyleId = "Red",
-                ChildElements = new List<BaseElement>()
-                {
-                    new Label(){ Text = "Tabulation 3"},
-                    new Label(){Text = "test",FontColor = "FFFF00"},
-                    new Label()
-                    {
-                        TabulationProperties = new TabulationPropertiesModel()
-                        {
-                            TabStopPosition = 5000,
-                            Leader = TabStopLeaderCharValues.dot,
-                            Alignment = TabAlignmentValues.Right
-                        },
-                        FontColor = "FFFF00"
-                    },
-                    new Label()
-                    {
-                        TabulationProperties = new TabulationPropertiesModel()
-                        {
-                            TabStopPosition = 10000,
-                            Leader = TabStopLeaderCharValues.middleDot,
-                            Alignment = TabAlignmentValues.Right
-                        },
-                        FontColor = "0000FF"
-                    },
-                    new Label(){ Text = "After 2 Tabulations"}
-                }
-            });
-
-            page1.ChildElements.Add(new Paragraph()
-            {
-                ParagraphStyleId = "Red",
-                ChildElements = new List<BaseElement>()
-                {
-                    new Label()
-                    {
-                        TabulationProperties = new TabulationPropertiesModel()
-                        {
-                            TabStopPosition = 10000,
-                            Leader = TabStopLeaderCharValues.underscore,
-                            Alignment = TabAlignmentValues.Right,
-                        },
-                        FontColor = "FFFF00"
-                    },
-                    new Label(){Text = "Tabulation 4"}
-                }
-            });
-
-            var p2 = new Paragraph();
-            p2.Shading = "#ParagraphShading#";
-            p2.ChildElements.Add(new Label() { Text = "   texte paragraph2 avec espace avant", FontSize = "20", SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve });
-            p2.ChildElements.Add(new Label() { Text = "texte2 paragraph2 avec espace après   ", SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve });
-            p2.ChildElements.Add(new Label() { Text = "   texte3 paragraph2 avec espace avant et après   ", SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve });
-            page1.ChildElements.Add(p2);
-
-            if (File.Exists(@"Resources\Desert.jpg"))
-                page1.ChildElements.Add(
-                    new Paragraph()
-                    {
-                        ChildElements = new List<BaseElement>()
-                        {
-                        new Image()
-                        {
-                            MaxHeight = 100,
-                            MaxWidth = 100,
-                            Path = @"Resources\Desert.jpg",
-                            ImagePartType = Engine.Packaging.ImagePartType.Jpeg
-                        }
-                        }
-                    }
-                );
-
-            // page 2
-            var page2 = new Page();
-            page2.Margin = new SpacingModel() { Top = 1418, Left = 845, Header = 709, Footer = 709 };
-            doc.Pages.Add(page2);
-
-            var p21 = new Paragraph();
-            p21.Justification = JustificationValues.Center;
-            p21.ParagraphStyleId = "Red";
-            p21.ChildElements.Add(new Label() { Text = "texte page2", FontName = "Arial" });
-            page2.ChildElements.Add(p21);
-
-            var p22 = new Paragraph();
-            p22.SpacingBefore = 800;
-            p22.SpacingAfter = 800;
-            p22.Justification = JustificationValues.Both;
-            p22.ParagraphStyleId = "Yellow";
-            p22.ChildElements.Add(new Label() { Text = Lorem_Ipsum });
-            page2.ChildElements.Add(p22);
-
-            var p23 = new Paragraph();
-            p23.Borders = new BorderModel()
-            {
-                BorderPositions = (BorderPositions)13,
-                BorderWidth = 20,
-                BorderColor = "#ParagraphBorderColor#"
-            };
-            p23.SpacingBetweenLines = 360;
-            p23.ChildElements.Add(new Label() { Text = Lorem_Ipsum });
-            page2.ChildElements.Add(p23);
-
-            // page 3
-            var page3 = new Page();
-            var p31 = new Paragraph() { FontColor = "FF0000", FontSize = "26" };
-            p31.ChildElements.Add(new Label() { Text = "Test the HeritFromParent" });
-            var p311 = new Paragraph() { FontSize = "16" };
-            p311.ChildElements.Add(new Label() { Text = " Success (not the same size)" });
-            p31.ChildElements.Add(p311);
-            page3.ChildElements.Add(p31);
-
-            paragraph = new Paragraph()
-            {
-                ParagraphStyleId = "#ParagraphStyleIdTestYellow#"
-            };
-            paragraph.ChildElements.Add(new Label() { Text = "Ceci est un test de paragraph avec Style", FontSize = "30", FontName = "Arial" });
-            page3.ChildElements.Add(paragraph);
-
-            var p7 = new Paragraph() { FontColor = "FF0000", FontSize = "26" };
-            p7.ChildElements.Add(new Label() { Text = "Label with" + Environment.NewLine + Environment.NewLine + "A new line" });
-            page3.ChildElements.Add(p7);
-
-            doc.Pages.Add(page3);
+            // Paragraphs
+            doc.Pages.Add(GenerateParagraphPage());
+            // Second page to have different margins
+            doc.Pages.Add(GenerateParagraphSecondPage());
 
             // Foreach
             doc.Pages.Add(GenerateForeachPage(doc));
@@ -476,6 +243,336 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             return doc;
         }
 
+        #region Paragraphs and labels
+
+        private static Page GenerateParagraphPage()
+        {
+            var page = new Page();
+
+            // Paragraph with space inside labels and Shading
+            page.ChildElements.Add(new Paragraph
+            {
+                Shading = "#ParagraphShading#",
+                ChildElements = new List<BaseElement>
+                {
+                    new Label() { Text = "   Paragraph with space before", FontSize = "20", SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve },
+                    new Label() { Text = Environment.NewLine },
+                    new Label() { Text = "Paragraph with space after   ", SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve },
+                    new Label() { Text = Environment.NewLine },
+                    new Label() { Text = "   Paragraph2 with space before and after   ", SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve }
+                }
+            });
+
+            // Paragraph with text from context
+            page.ChildElements.Add(new Paragraph
+            {
+                ChildElements = new List<BaseElement>
+                {
+                    new Label()
+                    {
+                        Text = "#KeyTest1#",
+                        FontSize = "40",
+                        TransformOperations = new List<LabelTransformOperation>()
+                        {
+                            new LabelTransformOperation()
+                            {
+                                TransformOperationType = LabelTransformOperationType.ToUpper
+                            }
+                        },
+                        FontColor = "#FontColorTestRed#",
+                        Shading = "9999FF",
+                        BoldKey = "#BoldKey#",
+                        Bold = false
+                    },
+                    // This label will not be displayed
+                    new Label()
+                    {
+                        Text = "#KeyTest2#",
+                        Show = false
+                    }
+                }
+            });
+
+            // Paragraph with style heritage
+            page.ChildElements.Add(new Paragraph
+            {
+                FontColor = "FF0000",
+                FontSize = "26",
+                ChildElements = new List<BaseElement>
+                {
+                    new Label { Text = "Test the HeritFromParent" },
+                    new Paragraph
+                    {
+                        FontSize = "16",
+                        ChildElements = new List<BaseElement>
+                        {
+                            new Label
+                            {
+                                Text = " Success (not the same size)",
+                                SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Bookmark
+            page.ChildElements.Add(new Paragraph
+            {
+                ChildElements = new List<BaseElement>
+                {
+                    new Hyperlink
+                    {
+                        Anchor = "bmk",
+                        Text = new Label
+                        {
+                            Text = "Link to the table of content ",
+                            SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve
+                        }
+                    },
+                    PageCrossReference("PAGEREF bmk")
+                }
+            });
+
+            // Some specials characters
+            page.ChildElements.Add(new Paragraph
+            {
+                ChildElements = new List<BaseElement>
+                {
+                    new Label() { Text = "Label with special character (éèàù).", FontSize = "30", FontName = "Arial" }
+                }
+            });
+
+            //hyperlink
+            page.ChildElements.Add(new Paragraph
+            {
+                ChildElements = new List<BaseElement>
+                {
+                    new Hyperlink()
+                    {
+                        Text = new Label()
+                        {
+                            Text = "Go to github.",
+                            FontSize = "30",
+                            FontName = "Arial",
+                            FontColor = "40A6DB",
+                            Underline = new UnderlineModel
+                            {
+                                Color = "40A6DB",
+                                Val = UnderlineValues.DashedHeavy
+                            }
+                        },
+                        WebSiteUri = "https://www.github.com/"
+                    }
+                }
+            });
+
+            // Indentation
+            page.ChildElements.Add(new Paragraph
+            {
+                ChildElements = new List<BaseElement>
+                {
+                    new Label() { Text = "This paragraph is indent from the left and the right", FontSize = "30", FontName = "Arial" }
+                },
+                Indentation = new ParagraphIndentationModel()
+                {
+                    Left = "300",
+                    Right = "6000"
+                }
+            });
+
+            // Paragraph with borders 1/2
+            page.ChildElements.Add(new Paragraph
+            {
+                ChildElements = new List<BaseElement>
+                {
+                    new Label() { Text = "This paragraph has borders", FontSize = "30", FontName = "Arial" }
+                },
+                Borders = new BorderModel()
+                {
+                    BorderPositions = BorderPositions.BOTTOM | BorderPositions.TOP | BorderPositions.LEFT,
+                    BorderWidthBottom = 3,
+                    BorderWidthLeft = 10,
+                    BorderWidthTop = 20,
+                    BorderWidthInsideVertical = 1,
+                    UseVariableBorders = true,
+                    BorderColor = "FF0000",
+                    BorderLeftColor = "CCCCCC",
+                    BorderTopColor = "123456",
+                    BorderRightColor = "FFEEDD",
+                    BorderBottomColor = "FF1234"
+                }
+            });
+
+            // Paragraph with borders 2/2 and space between lines
+            page.ChildElements.Add(new Paragraph
+            {
+                ChildElements = new List<BaseElement>
+                {
+                    new Label() { Text = Lorem_Ipsum }
+                },
+                Borders = new BorderModel()
+                {
+                    BorderPositions = (BorderPositions)13,
+                    BorderWidth = 20,
+                    BorderColor = "#ParagraphBorderColor#"
+                },
+                SpacingBetweenLines = 360
+            });
+
+            // Paragraph with tabulation and style 1/4
+            page.ChildElements.Add(new Paragraph()
+            {
+                ParagraphStyleId = "Red",
+                ChildElements = new List<BaseElement>()
+                {
+                    new Label()
+                    {
+                        Text = "Tabulation 1"
+                    },
+                    new Label()
+                    {
+                        TabulationProperties = new TabulationPropertiesModel()
+                        {
+                            TabStopPosition = 2500,
+                            Leader = TabStopLeaderCharValues.dot,
+                            Alignment = TabAlignmentValues.Right
+                        }
+                    },
+                    new Label()
+                    {
+                        TabulationProperties = new TabulationPropertiesModel()
+                        {
+                            TabStopPosition = 5000,
+                            Leader = TabStopLeaderCharValues.underscore,
+                            Alignment = TabAlignmentValues.Right
+                        }
+                    }
+                }
+            });
+
+            // Paragraph with tabulation and style 2/4
+            page.ChildElements.Add(new Paragraph()
+            {
+                ParagraphStyleId = "Red",
+                ChildElements = new List<BaseElement>()
+                {
+                    new Label(){Text = "Tabulation 2" },
+                    new Label()
+                    {
+                        TabulationProperties = new TabulationPropertiesModel()
+                    },
+                    new Label(){Text = "After tabulation"}
+                }
+            });
+
+            // Paragraph with tabulation and style 3/4
+            page.ChildElements.Add(new Paragraph()
+            {
+                ParagraphStyleId = "Red",
+                ChildElements = new List<BaseElement>()
+                {
+                    new Label(){ Text = "Tabulation 3"},
+                    new Label(){Text = "test",FontColor = "FFFF00"},
+                    new Label()
+                    {
+                        TabulationProperties = new TabulationPropertiesModel()
+                        {
+                            TabStopPosition = 5000,
+                            Leader = TabStopLeaderCharValues.dot,
+                            Alignment = TabAlignmentValues.Right
+                        },
+                        FontColor = "FFFF00"
+                    },
+                    new Label()
+                    {
+                        TabulationProperties = new TabulationPropertiesModel()
+                        {
+                            TabStopPosition = 10000,
+                            Leader = TabStopLeaderCharValues.middleDot,
+                            Alignment = TabAlignmentValues.Right
+                        },
+                        FontColor = "0000FF"
+                    },
+                    new Label(){ Text = "After 2 Tabulations"}
+                }
+            });
+
+            // Paragraph with tabulation and style 4/4
+            page.ChildElements.Add(new Paragraph()
+            {
+                ParagraphStyleId = "Red",
+                ChildElements = new List<BaseElement>()
+                {
+                    new Label()
+                    {
+                        TabulationProperties = new TabulationPropertiesModel()
+                        {
+                            TabStopPosition = 10000,
+                            Leader = TabStopLeaderCharValues.underscore,
+                            Alignment = TabAlignmentValues.Right,
+                        },
+                        FontColor = "FFFF00"
+                    },
+                    new Label(){Text = "Tabulation 4"}
+                }
+            });
+
+            // Image
+            if (File.Exists(@"Resources\Desert.jpg"))
+                page.ChildElements.Add(new Paragraph()
+                {
+                    ChildElements = new List<BaseElement>()
+                    {
+                        new Image()
+                        {
+                            MaxHeight = 100,
+                            MaxWidth = 100,
+                            Path = @"Resources\Desert.jpg",
+                            ImagePartType = Engine.Packaging.ImagePartType.Jpeg
+                        }
+                    }
+                });
+
+            return page;
+        }
+
+        private static Page GenerateParagraphSecondPage()
+        {
+            var page = new Page
+            {
+                Margin = new SpacingModel() { Top = 2500, Left = 845, Header = 1500, Footer = 709 }
+            };
+
+            // Paragraph with justification
+            page.ChildElements.Add(new Paragraph
+            {
+                Justification = JustificationValues.Center,
+                ParagraphStyleId = "Red",
+                ChildElements = new List<BaseElement>
+                {
+                    new Label() { Text = "Text page 2", FontName = "Arial" }
+                }
+            });
+
+            // Paragraphs with spacing before, after and a style
+            page.ChildElements.Add(new Paragraph
+            {
+                SpacingBefore = 800,
+                SpacingAfter = 800,
+                Justification = JustificationValues.Both,
+                ParagraphStyleId = "Yellow",
+                ChildElements = new List<BaseElement>
+                {
+                    new Label() { Text = Lorem_Ipsum }
+                }
+            });
+
+            return page;
+        }
+
+        #endregion
+
         #region Foreach
 
         /// <summary>
@@ -512,7 +609,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                 {
                     new Label
                     {
-                        Text = "foreach test page"
+                        Text = "Foreach test page"
                     }
                 }
             });
