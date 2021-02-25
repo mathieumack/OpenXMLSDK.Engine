@@ -157,17 +157,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                 }
             });
 
-            List<ContextModel> cellsContext = new List<ContextModel>();
-            for (int i = 0; i < DateTime.Now.Day; i++)
-            {
-                ContextModel uniformGridContext = new ContextModel();
-                uniformGridContext.AddItem("#CellUniformGridTitle#", new StringModel("Item number " + (i + 1)));
-                cellsContext.Add(uniformGridContext);
-            }
-            context.AddItem("#UniformGridSample#", new DataSourceModel()
-            {
-                Items = cellsContext
-            });
+            GenerateUniformGridContext(context);
 
             GenerateTableContext(context);
 
@@ -573,58 +563,6 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
 
             doc.Pages.Add(page3);
 
-            // page 4
-            var page4 = new Page();
-            // New page to manage UniformGrid:
-            var uniformGrid = new UniformGrid()
-            {
-                DataSourceKey = "#UniformGridSample#",
-                ColsWidth = new int[2] { 2500, 2500 },
-                TableWidth = new TableWidthModel() { Width = "5000", Type = TableWidthUnitValues.Pct },
-                CellModel = new Cell()
-                {
-                    VerticalAlignment = TableVerticalAlignmentValues.Center,
-                    Justification = JustificationValues.Center,
-                    ChildElements = new List<BaseElement>()
-                        {
-                            new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "#CellUniformGridTitle#" } } },
-                            new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "Cell 1 - Second paragraph" } } }
-                        }
-                },
-                HeaderRow = new Row()
-                {
-                    Cells = new List<Cell>()
-                    {
-                        new Cell()
-                        {
-                            ChildElements = new List<BaseElement>()
-                            {
-                                new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "header1" } } }
-                            }
-                        },
-                        new Cell()
-                        {
-                            ChildElements = new List<BaseElement>()
-                            {
-                                new Label() { Text = "header2" }
-                            }
-                        }
-                    }
-                },
-                Borders = new BorderModel()
-                {
-                    BorderPositions = BorderPositions.BOTTOM | BorderPositions.INSIDEVERTICAL,
-                    BorderWidthBottom = 50,
-                    BorderWidthInsideVertical = 1,
-                    UseVariableBorders = true,
-                    BorderColor = "FF0000"
-                }
-            };
-
-            page4.ChildElements.Add(uniformGrid);
-
-            doc.Pages.Add(page4);
-
             // Uniform grid
             doc.Pages.Add(GenerateUniformGridPage());
 
@@ -667,7 +605,17 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
         /// <param name="context"></param>
         private static void GenerateUniformGridContext(ContextModel context)
         {
-
+            List<ContextModel> cellsContext = new List<ContextModel>();
+            for (int i = 0; i < DateTime.Now.Day; i++)
+            {
+                ContextModel uniformGridContext = new ContextModel();
+                uniformGridContext.AddItem("#CellUniformGridTitle#", new StringModel("Item number " + (i + 1)));
+                cellsContext.Add(uniformGridContext);
+            }
+            context.AddItem("#UniformGridSample#", new DataSourceModel()
+            {
+                Items = cellsContext
+            });
         }
 
         /// <summary>
@@ -688,6 +636,62 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                     {
                         Text = "Uniform grid test page"
                     }
+                }
+            });
+
+            page.ChildElements.Add(new Paragraph
+            {
+                ChildElements = new List<BaseElement>
+                {
+                    new Label
+                    {
+                        Text = "For this uniform grid, the number of cells is defined by the actual day from the beginning of the month"
+                    }
+                }
+            });
+
+            page.ChildElements.Add(new UniformGrid()
+            {
+                DataSourceKey = "#UniformGridSample#",
+                ColsWidth = new int[2] { 2500, 2500 },
+                TableWidth = new TableWidthModel() { Width = "5000", Type = TableWidthUnitValues.Pct },
+                CellModel = new Cell()
+                {
+                    VerticalAlignment = TableVerticalAlignmentValues.Center,
+                    Justification = JustificationValues.Center,
+                    ChildElements = new List<BaseElement>()
+                        {
+                            new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "#CellUniformGridTitle#" } } },
+                            new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "Cell 1 - Second paragraph" } } }
+                        }
+                },
+                HeaderRow = new Row()
+                {
+                    Cells = new List<Cell>()
+                    {
+                        new Cell()
+                        {
+                            ChildElements = new List<BaseElement>()
+                            {
+                                new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "Header 1" } } }
+                            }
+                        },
+                        new Cell()
+                        {
+                            ChildElements = new List<BaseElement>()
+                            {
+                                new Label() { Text = "Header 2" }
+                            }
+                        }
+                    }
+                },
+                Borders = new BorderModel()
+                {
+                    BorderPositions = BorderPositions.BOTTOM | BorderPositions.INSIDEVERTICAL,
+                    BorderWidthBottom = 50,
+                    BorderWidthInsideVertical = 1,
+                    UseVariableBorders = true,
+                    BorderColor = "FF0000"
                 }
             });
 
