@@ -231,48 +231,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                 Items = cellsContext
             });
 
-            byte[] numbers = { 0, 16, 104, 213 };
-
-            string textToDisplay = "Base64ContentModel : {0}\n BooleanModel : {1}\n ByteContentModel : {2}\n DateTimeModel : {3}\n DoubleModel : {4}\n StringModel : {5}\n";
-            ContextModel rowSubstitutable = new ContextModel();
-            rowSubstitutable.AddItem("#SubstitutableStringData#",
-                new SubstitutableStringModel(
-                    textToDisplay,
-                    new ContextModel()
-                        .AddBase64Content("#Val1#", "OBFZDTcPCxlCKhdXCQ0kMQhKPh9uIgYIAQxALBtZAwUeOzcdcUEeW0dMO1kbPElWCV1ISFFKZ0kdWFlLAURPZhEFQVseXVtPOUUICVhMAzcfZ14AVEdIVVgfAUIBWVpOUlAeaUVMXFlKIy9rGUN0VF08Oz1POxFfTCcVFw1LMQNbBQYWAQ==")
-                        .AddBoolean("#Val2#", false)
-                        .AddByteContent("#Val3#", numbers)
-                        .AddDateTime("#Val4#", DateTime.Now, null)
-                        .AddDouble("#Val5#", 5.4, null)
-                        .AddString("#Val6#", "TestString")
-                )
-            );
-            rowSubstitutable.AddItem("#SubstitutableStringDataWithLessParameters#",
-                new SubstitutableStringModel(
-                    textToDisplay,
-                    new ContextModel()
-                        .AddBase64Content("#Val1#", "OBFZDTcPCxlCKhdXCQ0kMQhKPh9uIgYIAQxALBtZAwUeOzcdcUEeW0dMO1kbPElWCV1ISFFKZ0kdWFlLAURPZhEFQVseXVtPOUUICVhMAzcfZ14AVEdIVVgfAUIBWVpOUlAeaUVMXFlKIy9rGUN0VF08Oz1POxFfTCcVFw1LMQNbBQYWAQ==")
-                        .AddBoolean("#Val2#", false)
-                        .AddByteContent("#Val3#", numbers)
-                        .AddDateTime("#Val4#", DateTime.Now, null)
-                )
-            );
-            rowSubstitutable.AddItem("#SubstitutableStringDataWithMoreParameters#",
-                new SubstitutableStringModel(
-                    textToDisplay,
-                    new ContextModel()
-                        .AddBase64Content("#Val1#", "OBFZDTcPCxlCKhdXCQ0kMQhKPh9uIgYIAQxALBtZAwUeOzcdcUEeW0dMO1kbPElWCV1ISFFKZ0kdWFlLAURPZhEFQVseXVtPOUUICVhMAzcfZ14AVEdIVVgfAUIBWVpOUlAeaUVMXFlKIy9rGUN0VF08Oz1POxFfTCcVFw1LMQNbBQYWAQ==")
-                        .AddBoolean("#Val2#", false)
-                        .AddByteContent("#Val3#", numbers)
-                        .AddDateTime("#Val4#", DateTime.Now, null)
-                        .AddDouble("#Val5#", 5.4, null)
-                        .AddString("#Val6#", "TestString")
-                        .AddDouble("#Val7#", 5.4, null)
-                        .AddString("#Val8#", "TestString")
-                )
-            );
-
-            context.AddCollection("#SubstitutableStringDataSourceModel#", rowSubstitutable);
+            GenerateSubstitutableStringContext(context);
 
             GeneratePieChartContext(context);
 
@@ -284,7 +243,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
 
             GenerateCombineGraphContext(context);
 
-            context.AddDouble("#ColumnNumber#", 2.0, null);
+            GenerateMultipleColumnsContext(context);
 
             return context;
         }
@@ -819,6 +778,21 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             p31.ChildElements.Add(p311);
             page3.ChildElements.Add(p31);
 
+            page3.ChildElements.Add(new Paragraph
+            {
+                ChildElements = new List<BaseElement>
+                {
+                    new Label()
+                    {
+                        Shading = "2B3C4F",
+                        FontSize = "26",
+                        Text = "Table of content bookmark",
+                    },
+                    new BookmarkStart() {Id = "bmk", Name = "bmk" },
+                    new BookmarkEnd(){Id = "bmk"}
+                }
+            });
+
             TableOfContents tableOfContents = new TableOfContents()
             {
                 StylesAndLevels = new List<Tuple<string, string>>()
@@ -1059,20 +1033,83 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             p7.ChildElements.Add(new Label() { Text = "Label with" + Environment.NewLine + Environment.NewLine + "A new line" });
             page7.ChildElements.Add(p7);
 
-            page7.ChildElements.Add(
-                new Paragraph
-                {
-                    ChildElements = new List<BaseElement>
-                        {
-                           new Label()
-                           {
-                               Text = "Page Ref bookmark",
-                           },
-                           new BookmarkStart() {Id = "bmk", Name = "bmk" },
-                           new BookmarkEnd(){Id = "bmk"}
-                        }
-                }
+            doc.Pages.Add(page7);
+
+            doc.Pages.Add(GenerateSubstitutableStringPage());
+
+            // PieChart
+            doc.Pages.Add(GeneratePieChartPage());
+
+            // BarChart
+            doc.Pages.Add(GenerateBarChartPage());
+
+            // Curve graphs
+            doc.Pages.Add(GenerateLineGraphsPage());
+
+            // Scatter graphs
+            doc.Pages.Add(GenerateScatterGraphsPage());
+
+            // Combine graphs (Line and Bar)
+            doc.Pages.Add(GenerateCombineGraphsPage());
+
+            // Split page on 2 columns
+            doc.Pages.Add(GenerateTableOn1stPage());
+            doc.Pages.Add(Generate2ColmunOnSamePage());
+
+            // Manage headers and footers
+            ManageHeadersAndFooters(doc);
+
+            return doc;
+        }
+
+        #region Substitutable string
+
+        /// <summary>
+        /// Generate substitutable string context
+        /// </summary>
+        /// <param name="context"></param>
+        private static void GenerateSubstitutableStringContext(ContextModel context)
+        {
+            string textToDisplay = "DateTimeModel : {0}\n DoubleModel : {1}\n StringModel : {2}\n";
+            ContextModel rowSubstitutable = new ContextModel();
+            rowSubstitutable.AddItem("#SubstitutableStringData#",
+                new SubstitutableStringModel(
+                    textToDisplay,
+                    new ContextModel()
+                        .AddDateTime("#Val1#", DateTime.Now, "D")
+                        .AddDouble("#Val2#", 5.4, "This number is displayed with a render pattern : {0}")
+                        .AddString("#Val3#", "This text is substituted")
+                )
             );
+            rowSubstitutable.AddItem("#SubstitutableStringDataWithLessParameters#",
+                new SubstitutableStringModel(
+                    textToDisplay,
+                    new ContextModel()
+                        .AddDateTime("#Val1#", DateTime.Now, null)
+                )
+            );
+            rowSubstitutable.AddItem("#SubstitutableStringDataWithMoreParameters#",
+                new SubstitutableStringModel(
+                    textToDisplay,
+                    new ContextModel()
+                        .AddDateTime("#Val1#", DateTime.Now, null)
+                        .AddDouble("#Val2#", 5.4, null)
+                        .AddString("#Val3#", "This text is substituted")
+                        .AddDouble("#Val4#", 75, null)
+                        .AddString("#Val5#", "Not displayed string")
+                )
+            );
+
+            context.AddCollection("#SubstitutableStringDataSourceModel#", rowSubstitutable);
+        }
+
+        /// <summary>
+        /// Generate substitutable string page
+        /// </summary>
+        /// <returns></returns>
+        private static Page GenerateSubstitutableStringPage()
+        {
+            var page = new Page();
 
             // Substitutable string
             var pargraphTitle = new Paragraph
@@ -1081,9 +1118,9 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                 ParagraphStyleId = "Red"
             };
             pargraphTitle.ChildElements.Add(new Label() { Text = "Substitutable string", FontName = "Arial" });
-            page7.ChildElements.Add(pargraphTitle);
+            page.ChildElements.Add(pargraphTitle);
 
-            var substitutableTableDataSource = new Table()
+            page.ChildElements.Add(new Table()
             {
                 RowModel = new Row()
                 {
@@ -1093,85 +1130,42 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                         {
                             ChildElements = new List<BaseElement>()
                             {
-                                new Label() { Text = "Matching of supplied parameters and expected parameters : \n"
-                                            , Bold = true, Underline = new UnderlineModel () { Val = UnderlineValues.Single } },
+                                new Label()
+                                {
+                                    Text = "Matching of supplied parameters and expected parameters: \n",
+                                    Bold = true,
+                                    Underline = new UnderlineModel () { Val = UnderlineValues.Single }
+                                },
                                 new Label() { Text = "#SubstitutableStringData#" },
 
-                                new Label() { Text = "\n" },
-                                new Label() { Text = "Less supplied parameters than expected parameters : \n"
-                                            , Bold = true, Underline = new UnderlineModel () { Val = UnderlineValues.Single } },
+                                new Label() { Text = Environment.NewLine },
+                                new Label()
+                                {
+                                    Text = "Less supplied parameters than expected parameters: \n",
+                                    Bold = true,
+                                    Underline = new UnderlineModel () { Val = UnderlineValues.Single }
+                                },
                                 new Label() { Text = "#SubstitutableStringDataWithLessParameters#" },
 
-                                new Label() { Text = "\n" },
-                                new Label() { Text = "More supplied parameters than expected parameters : \n"
-                                            , Bold = true, Underline = new UnderlineModel () { Val = UnderlineValues.Single } },
+                                new Label() { Text = Environment.NewLine },
+                                new Label()
+                                {
+                                    Text = "More supplied parameters than expected parameters: \n",
+                                    Bold = true,
+                                    Underline = new UnderlineModel () { Val = UnderlineValues.Single }
+                                },
                                 new Label() { Text = "#SubstitutableStringDataWithMoreParameters#" }
                             }
                         }
                     }
-                }
-                ,
+                },
                 DataSourceKey = "#SubstitutableStringDataSourceModel#"
-            };
+            });
 
-            page7.ChildElements.Add(substitutableTableDataSource);
-
-            doc.Pages.Add(page7);
-
-            // page 8 -> PieChart
-            doc.Pages.Add(GeneratePieChartPage());
-
-            // page 9 -> BarChart
-            doc.Pages.Add(GenerateBarChartPage());
-
-            // Page 10 Curve graphs
-            doc.Pages.Add(GenerateLineGraphsPage());
-
-            // Page 11 Scatter graphs
-            doc.Pages.Add(GenerateScatterGraphsPage());
-
-            // Page 12 Combine graphs (Line and Bar)
-            doc.Pages.Add(GenerateCombineGraphsPage());
-
-            // Page 13 and 14 Split page on 2 columns
-            doc.Pages.Add(GenerateTableOn1stPage());
-            doc.Pages.Add(Generate2ColmunOnSamePage());
-
-            // Header
-            var header = new Header();
-            header.Type = HeaderFooterValues.Default;
-            var ph = new Paragraph();
-            ph.ChildElements.Add(new Label() { Text = "Header Text" });
-            if (File.Exists(@"Resources\Desert.jpg"))
-                ph.ChildElements.Add(new Image()
-                {
-                    MaxHeight = 100,
-                    MaxWidth = 100,
-                    Path = @"Resources\Desert.jpg",
-                    ImagePartType = OpenXMLSDK.Engine.Packaging.ImagePartType.Jpeg
-                });
-            header.ChildElements.Add(ph);
-            doc.Headers.Add(header);
-
-            // first header
-            var firstHeader = new Header();
-            firstHeader.Type = HeaderFooterValues.First;
-            var fph = new Paragraph();
-            fph.ChildElements.Add(new Label() { Text = "first header Text" });
-            firstHeader.ChildElements.Add(fph);
-            doc.Headers.Add(firstHeader);
-
-            // Footer
-            var footer = new Footer();
-            footer.Type = HeaderFooterValues.Default;
-            var pf = new Paragraph();
-            pf.ChildElements.Add(new Label() { Text = "Footer Text" });
-            pf.ChildElements.Add(new Label() { IsPageNumber = true });
-            footer.ChildElements.Add(pf);
-            doc.Footers.Add(footer);
-
-            return doc;
+            return page;
         }
+
+        #endregion
 
         #region Charts
 
@@ -1242,6 +1236,19 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
         {
             var page = new Page();
 
+            page.ChildElements.Add(new Paragraph
+            {
+                Justification = JustificationValues.Center,
+                ParagraphStyleId = "Red",
+                ChildElements = new List<BaseElement>
+                {
+                    new Label
+                    {
+                        Text = "Pie graphs test page"
+                    }
+                }
+            });
+
             var pieChartPr = new Paragraph()
             {
                 ChildElements = new List<BaseElement>() {
@@ -1252,17 +1259,14 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                         ShowChartBorder = true,
                         PieChartType = PieChartType.PieChart,
                         DataSourceKey = "#PieGraphSampleData#",
-                        ShowMajorGridlines = true,
                         DataLabel = new DataLabelModel()
                         {
-                            //ShowDataLabel = true,
                             ShowCatName = true,
                             ShowPercent = true,
                             Separator = "\n",
                             FontSize = 8
-                        }
-                        ,
-                        DataLabelColor = "#FFFF00"//Yellow
+                        },
+                        DataLabelColor = "#FFFF00"
                     }
                 }
             };
@@ -1282,6 +1286,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
         /// <param name="context"></param>
         private static void GenerateBarGraphContext(ContextModel context)
         {
+            // Old bar graph objects
             context.AddItem("#OldBarGraphSampleData#", new BarChartModel()
             {
                 BarChartContent = new Engine.ReportEngine.DataContext.Charts.BarModel()
@@ -1528,20 +1533,36 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
         {
             var page = new Page();
 
+            page.ChildElements.Add(new Paragraph
+            {
+                Justification = JustificationValues.Center,
+                ParagraphStyleId = "Red",
+                ChildElements = new List<BaseElement>
+                {
+                    new Label
+                    {
+                        Text = "Bar graphs test page"
+                    }
+                }
+            });
+
+            // Old bar graph objects
             page.ChildElements.Add(new Paragraph()
             {
                 ChildElements = new List<BaseElement>()
                 {
                     new Engine.Word.ReportEngine.Models.Charts.BarModel()
                     {
-                        Title = "Graph test",
+                        Title = "Bar test",
                         ShowTitle = true,
-                        ShowBarBorder = true,
                         BarChartType = BarChartType.BarChart,
                         BarDirectionValues = BarDirectionValues.Column,
                         BarGroupingValues = BarGroupingValues.PercentStacked,
+                        ValuesAxisModel = new ChartAxisModel
+                        {
+                            ShowMajorGridlines = true
+                        },
                         DataSourceKey = "#OldBarGraphSampleData#",
-                        ShowMajorGridlines = true,
                         MaxHeight = 320
                     }
                 }
@@ -1552,14 +1573,17 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                 ChildElements = new List<BaseElement>() {
                     new Engine.Word.ReportEngine.Models.Charts.BarModel()
                     {
-                        Title = "Graph test",
+                        Title = "Bordered serie bar test",
                         ShowTitle = true,
                         FontSize = "23",
                         BarChartType = BarChartType.BarChart,
                         BarDirectionValues = BarDirectionValues.Column,
                         BarGroupingValues = BarGroupingValues.PercentStacked,
                         DataSourceKey = "#BarGraphSampleData#",
-                        ShowMajorGridlines = true,
+                        ValuesAxisModel = new ChartAxisModel
+                        {
+                            ShowMajorGridlines = true
+                        },
                         MaxHeight = 320
                     }
                 }
@@ -1573,8 +1597,14 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                         Title = "Single stacked Graph without min-max",
                         ShowTitle = true,
                         MaxHeight = 100,
-                        DeleteAxeCategory = true,
-                        DeleteAxeValue = true,
+                        CategoriesAxisModel = new ChartAxisModel
+                        {
+                            DeleteAxis = true
+                        },
+                        ValuesAxisModel = new ChartAxisModel
+                        {
+                            DeleteAxis = true
+                        },
                         ShowLegend = false,
                         HasBorder = false,
                         DataSourceKey = "#SingleStackedBarGraphSampleData#"
@@ -1590,8 +1620,14 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                         Title = "Single stacked Graph with min-max",
                         ShowTitle = true,
                         MaxHeight = 100,
-                        DeleteAxeCategory = true,
-                        DeleteAxeValue = true,
+                        CategoriesAxisModel = new ChartAxisModel
+                        {
+                            DeleteAxis = true
+                        },
+                        ValuesAxisModel = new ChartAxisModel
+                        {
+                            DeleteAxis = true
+                        },
                         ShowLegend = false,
                         HasBorder = false,
                         DataSourceKey = "#SingleStackedBarGraphSampleData#",
@@ -1743,6 +1779,19 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
         private static Page GenerateLineGraphsPage()
         {
             var page = new Page();
+
+            page.ChildElements.Add(new Paragraph
+            {
+                Justification = JustificationValues.Center,
+                ParagraphStyleId = "Red",
+                ChildElements = new List<BaseElement>
+                {
+                    new Label
+                    {
+                        Text = "Line graphs test page"
+                    }
+                }
+            });
 
             page.ChildElements.Add(new Paragraph
             {
@@ -2221,6 +2270,19 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
 
             page.ChildElements.Add(new Paragraph
             {
+                Justification = JustificationValues.Center,
+                ParagraphStyleId = "Red",
+                ChildElements = new List<BaseElement>
+                {
+                    new Label
+                    {
+                        Text = "Combine graphs test page"
+                    }
+                }
+            });
+
+            page.ChildElements.Add(new Paragraph
+            {
                 ChildElements = new List<BaseElement>
                 {
                     new CombineChartModel
@@ -2301,97 +2363,89 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
 
         #region Multiple columns 
 
+        /// <summary>
+        /// Generate the multiple columns context
+        /// </summary>
+        /// <param name="context"></param>
+        private static void GenerateMultipleColumnsContext(ContextModel context)
+        {
+            context.AddDouble("#ColumnNumber#", 2.0, null);
+        }
+
+        /// <summary>
+        /// Create table on the first page for the multiple columns example
+        /// </summary>
+        /// <returns></returns>
         private static Page GenerateTableOn1stPage()
         {
             var page = new Page();
 
+            page.ChildElements.Add(new Paragraph
+            {
+                Justification = JustificationValues.Center,
+                ParagraphStyleId = "Red",
+                ChildElements = new List<BaseElement>
+                {
+                    new Label
+                    {
+                        Text = "Multiple columns test page"
+                    }
+                }
+            });
+
             var tableDataSourceWithBeforeAfter = new Table()
             {
                 TableWidth = new TableWidthModel() { Width = "5000", Type = TableWidthUnitValues.Pct },
-                ColsWidth = new int[2] { 750, 4250 },
+                ColsWidth = new int[2] { 1500, 3400 },
                 Borders = new BorderModel()
                 {
                     BorderPositions = (BorderPositions)63,
                     BorderColor = "328864",
-                    BorderWidth = 20,
+                    BorderWidth = 8,
                 },
-                BeforeRows = new List<Row>()
+                HeaderRow = new Row
                 {
-                    new Row()
+                    Cells = new List<Cell>
                     {
-                        Cells = new List<Cell>()
+                        new Cell
                         {
-                            new Cell()
-                            {
-                                VerticalAlignment = TableVerticalAlignmentValues.Bottom,
-                                Justification = JustificationValues.Left,
-                                ChildElements = new List<BaseElement>()
-                                {
-                                    new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "Cell 1 - A small paragraph" } }, ParagraphStyleId = "Yellow" },
-                                    new Label() { Text = "Custom header" },
-                                    new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "Cell 1 - an other paragraph" } } }
-                                },
-                                Fusion = true
-                            },
-                            new Cell()
-                            {
-                                ChildElements = new List<BaseElement>()
-                                {
-                                    new Label() { Text = "Cell 2 - an other label" },
-                                    new Label() { Text = "Cell 2 - an other other label" }
-                                },
-                                Borders = new BorderModel()
-                                {
-                                    BorderColor = "00FF22",
-                                    BorderWidth = 15,
-                                    BorderPositions = BorderPositions.RIGHT | BorderPositions.TOP
-                                }
-                            }
-                        }
-                    },
-                    new Row()
-                    {
-                        Cells = new List<Cell>()
-                        {
-                            new Cell()
-                            {
-                                Fusion = true,
-                                FusionChild = true
-                            },
-                            new Cell()
-                            {
-                                VerticalAlignment = TableVerticalAlignmentValues.Bottom,
-                                Justification = JustificationValues.Right,
-                                ChildElements = new List<BaseElement>()
-                                {
-                                    new Label() { Text = "celluleX" }
-                                }
-                            }
-                        }
-                    }
-                },
-                RowModel = new Row()
-                {
-                    Cells = new List<Cell>()
-                    {
-                        new Cell()
-                        {
-                            Shading = "FFA2FF",
+                            Margin = new MarginModel { Left = 100 },
                             ChildElements = new List<BaseElement>()
                             {
-                                new Label() { Text = "Cell : #Cell1#" }
+                                new Label() { Text = "Multiple columns Header table" }
                             }
                         },
-                        new Cell()
+                        new Cell
                         {
+                            Margin = new MarginModel { Left = 100 },
                             ChildElements = new List<BaseElement>()
                             {
-                                new Label() { Text = "Cell : #Cell2#" }
+                                new Label() { Text = "This table will be full width" }
                             }
                         }
                     }
                 },
-                DataSourceKey = "#Datasource#"
+                Rows = new List<Row>()
+                {
+                    new Row
+                    {
+                        Cells = new List<Cell>
+                        {
+                            new Cell
+                            {
+                                Shading = "BCF5F3"
+                            },
+                            new Cell
+                            {
+                                Margin = new MarginModel { Left = 100 },
+                                ChildElements = new List<BaseElement>()
+                                {
+                                    new Label() { Text = "The text after this table will be splited on multiple columns" }
+                                }
+                            }
+                        }
+                    }
+                }
             };
 
             page.ChildElements.Add(tableDataSourceWithBeforeAfter);
@@ -2399,10 +2453,16 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             return page;
         }
 
+        /// <summary>
+        /// Create paragraph on second page merged with the previous one for multiple columns example
+        /// </summary>
+        /// <returns></returns>
         private static Page Generate2ColmunOnSamePage()
         {
-            var page = new Page();
-            page.ColumnNumberKey = "#ColumnNumber#";
+            var page = new Page
+            {
+                ColumnNumberKey = "#ColumnNumber#"
+            };
 
             // Define Paragraph
             var p2 = new Paragraph
@@ -2422,5 +2482,60 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
         }
 
         #endregion Multiple columns 
+
+        /// <summary>
+        /// Manage headers and footers
+        /// </summary>
+        /// <param name="doc"></param>
+        private static void ManageHeadersAndFooters(Document doc)
+        {
+            // Header
+            var header = new Header
+            {
+                Type = HeaderFooterValues.Default
+            };
+            var ph = new Paragraph
+            {
+                ChildElements = new List<BaseElement>()
+                {
+                    new Label()
+                    {
+                        Text = "Header Text ",
+                        SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve
+                    }
+                }
+            };
+            if (File.Exists(@"Resources\Desert.jpg"))
+                ph.ChildElements.Add(new Image()
+                {
+                    MaxHeight = 100,
+                    MaxWidth = 100,
+                    Path = @"Resources\Desert.jpg",
+                    ImagePartType = Engine.Packaging.ImagePartType.Jpeg
+                });
+            header.ChildElements.Add(ph);
+            doc.Headers.Add(header);
+
+            // first header
+            var firstHeader = new Header
+            {
+                Type = HeaderFooterValues.First
+            };
+            var fph = new Paragraph();
+            fph.ChildElements.Add(new Label() { Text = "First header Text" });
+            firstHeader.ChildElements.Add(fph);
+            doc.Headers.Add(firstHeader);
+
+            // Footer
+            var footer = new Footer
+            {
+                Type = HeaderFooterValues.Default
+            };
+            var pf = new Paragraph();
+            pf.ChildElements.Add(new Label() { Text = "Footer Text" });
+            pf.ChildElements.Add(new Label() { IsPageNumber = true });
+            footer.ChildElements.Add(pf);
+            doc.Footers.Add(footer);
+        }
     }
 }
