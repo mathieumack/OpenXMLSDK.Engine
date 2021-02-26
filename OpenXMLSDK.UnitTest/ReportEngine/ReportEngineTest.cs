@@ -136,27 +136,6 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
         /// <returns></returns>
         private static ContextModel GetContext()
         {
-            // Classic generation
-            ContextModel row2 = new ContextModel();
-            row2.AddItem("#Cell1#", new StringModel("Col 2 Row 1"));
-            row2.AddItem("#Cell2#", new StringModel("Col 2 Row 2"));
-            row2.AddItem("#Label#", new StringModel("Label 2"));
-            ContextModel row3 = new ContextModel();
-            row3.AddItem("#Cell1#", new StringModel("Col 1 Row 3"));
-            row3.AddItem("#Cell2#", new StringModel("Col 2 Row 3"));
-            row3.AddItem("#Label#", new StringModel("Label 1"));
-            ContextModel row4 = new ContextModel();
-            row4.AddItem("#Cell1#", new StringModel("Col 2 Row 4"));
-            row4.AddItem("#Cell2#", new StringModel("Col 2 Row 4"));
-            row4.AddItem("#Label#", new StringModel("Label 2"));
-
-            // Fluent samples
-            ContextModel row1 = new ContextModel()
-                        .AddString("#Cell1#", "Col 1 Row 1")
-                        .AddString("#Cell2#", "Col 2 Row 1")
-                        .AddString("#Label#", "Label 1")
-                        .AddDouble("#ColSpan#", 2, "{0}");
-
             ContextModel context = new ContextModel()
                         .AddBoolean("#NoRow#", false)
                         .AddString("#ParagraphShading#", "00FF00")
@@ -166,113 +145,17 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                         .AddString("#KeyTest2#", "Key 2")
                         .AddBoolean("#BoldKey#", true)
                         .AddString("#FontColorTestRed#", "993333")
-                        .AddString("#ParagraphStyleIdTestYellow#", "Yellow")
-                        .AddCollection("#Datasource#", row1, row2)
-                        .AddCollection("#DatasourcePrefix#", row1, row2, row3, row4);
+                        .AddString("#ParagraphStyleIdTestYellow#", "Yellow");
 
-            // For each with template model
-            context.AddItem("#ForEachParagraph#", new DataSourceModel()
-            {
-                Items = new List<ContextModel>()
-                {
-                    new ContextModel().AddString("#TemplateKey#", "Template 1").AddString("#KeyTest1#", "foreach"),
-                    new ContextModel().AddString("#TemplateKey#", "Template 1").AddString("#KeyTest1#", "foreach")
-                }
-            });
+            GenerateForeachContext(context);
 
-            ContextModel row11 = new ContextModel();
-            row11.AddItem("#IsInGroup#", new BooleanModel(true));
-            row11.AddItem("#IsNotFirstLineGroup#", new BooleanModel(false));
-            row11.AddItem("#Cell1#", new StringModel("Col 1 Row 1"));
-            row11.AddItem("#Cell2#", new StringModel("Col 2 Row 1"));
-            row11.AddItem("#Label#", new StringModel("Label 1"));
-            ContextModel row12 = new ContextModel();
-            row12.AddItem("#IsInGroup#", new BooleanModel(true));
-            row12.AddItem("#IsNotFirstLineGroup#", new BooleanModel(true));
-            row12.AddItem("#Cell1#", new StringModel("Col 1 Row 1"));
-            row12.AddItem("#Cell2#", new StringModel("Col 2 Row 1"));
-            row12.AddItem("#Label#", new StringModel("Label 1"));
-            ContextModel row13 = new ContextModel();
-            row13.AddItem("#IsInGroup#", new BooleanModel(true));
-            row13.AddItem("#IsNotFirstLineGroup#", new BooleanModel(true));
-            row13.AddItem("#Cell1#", new StringModel("Col 1 Row 1"));
-            row13.AddItem("#Cell2#", new StringModel("Col 2 Row 1"));
-            row13.AddItem("#Label#", new StringModel("Label 1"));
-            ContextModel row22 = new ContextModel();
-            row22.AddItem("#IsInGroup#", new BooleanModel(true));
-            row22.AddItem("#IsNotFirstLineGroup#", new BooleanModel(false));
-            row22.AddItem("#Cell1#", new StringModel("Col 2 Row 1"));
-            row22.AddItem("#Cell2#", new StringModel("Col 2 Row 2"));
-            row22.AddItem("#Label#", new StringModel("Label 2"));
-            ContextModel row23 = new ContextModel();
-            row23.AddItem("#IsInGroup#", new BooleanModel(true));
-            row23.AddItem("#IsNotFirstLineGroup#", new BooleanModel(true));
-            row23.AddItem("#Cell1#", new StringModel("Col 2 Row 1"));
-            row23.AddItem("#Cell2#", new StringModel("Col 2 Row 2"));
-            row23.AddItem("#Label#", new StringModel("Label 2"));
+            GenerateForeachPageContext(context);
 
-            context.AddItem("#DatasourceTableFusion#", new DataSourceModel()
-            {
-                Items = new List<ContextModel>()
-                    {
-                        row11, row12, row13, row22, row23
-                    }
-            });
+            GenerateUniformGridContext(context);
 
-            List<ContextModel> cellsContext = new List<ContextModel>();
-            for (int i = 0; i < DateTime.Now.Day; i++)
-            {
-                ContextModel uniformGridContext = new ContextModel();
-                uniformGridContext.AddItem("#CellUniformGridTitle#", new StringModel("Item number " + (i + 1)));
-                cellsContext.Add(uniformGridContext);
-            }
-            context.AddItem("#UniformGridSample#", new DataSourceModel()
-            {
-                Items = cellsContext
-            });
+            GenerateTableContext(context);
 
-            byte[] numbers = { 0, 16, 104, 213 };
-
-            string textToDisplay = "Base64ContentModel : {0}\n BooleanModel : {1}\n ByteContentModel : {2}\n DateTimeModel : {3}\n DoubleModel : {4}\n StringModel : {5}\n";
-            ContextModel rowSubstitutable = new ContextModel();
-            rowSubstitutable.AddItem("#SubstitutableStringData#",
-                new SubstitutableStringModel(
-                    textToDisplay,
-                    new ContextModel()
-                        .AddBase64Content("#Val1#", "OBFZDTcPCxlCKhdXCQ0kMQhKPh9uIgYIAQxALBtZAwUeOzcdcUEeW0dMO1kbPElWCV1ISFFKZ0kdWFlLAURPZhEFQVseXVtPOUUICVhMAzcfZ14AVEdIVVgfAUIBWVpOUlAeaUVMXFlKIy9rGUN0VF08Oz1POxFfTCcVFw1LMQNbBQYWAQ==")
-                        .AddBoolean("#Val2#", false)
-                        .AddByteContent("#Val3#", numbers)
-                        .AddDateTime("#Val4#", DateTime.Now, null)
-                        .AddDouble("#Val5#", 5.4, null)
-                        .AddString("#Val6#", "TestString")
-                )
-            );
-            rowSubstitutable.AddItem("#SubstitutableStringDataWithLessParameters#",
-                new SubstitutableStringModel(
-                    textToDisplay,
-                    new ContextModel()
-                        .AddBase64Content("#Val1#", "OBFZDTcPCxlCKhdXCQ0kMQhKPh9uIgYIAQxALBtZAwUeOzcdcUEeW0dMO1kbPElWCV1ISFFKZ0kdWFlLAURPZhEFQVseXVtPOUUICVhMAzcfZ14AVEdIVVgfAUIBWVpOUlAeaUVMXFlKIy9rGUN0VF08Oz1POxFfTCcVFw1LMQNbBQYWAQ==")
-                        .AddBoolean("#Val2#", false)
-                        .AddByteContent("#Val3#", numbers)
-                        .AddDateTime("#Val4#", DateTime.Now, null)
-                )
-            );
-            rowSubstitutable.AddItem("#SubstitutableStringDataWithMoreParameters#",
-                new SubstitutableStringModel(
-                    textToDisplay,
-                    new ContextModel()
-                        .AddBase64Content("#Val1#", "OBFZDTcPCxlCKhdXCQ0kMQhKPh9uIgYIAQxALBtZAwUeOzcdcUEeW0dMO1kbPElWCV1ISFFKZ0kdWFlLAURPZhEFQVseXVtPOUUICVhMAzcfZ14AVEdIVVgfAUIBWVpOUlAeaUVMXFlKIy9rGUN0VF08Oz1POxFfTCcVFw1LMQNbBQYWAQ==")
-                        .AddBoolean("#Val2#", false)
-                        .AddByteContent("#Val3#", numbers)
-                        .AddDateTime("#Val4#", DateTime.Now, null)
-                        .AddDouble("#Val5#", 5.4, null)
-                        .AddString("#Val6#", "TestString")
-                        .AddDouble("#Val7#", 5.4, null)
-                        .AddString("#Val8#", "TestString")
-                )
-            );
-
-            context.AddCollection("#SubstitutableStringDataSourceModel#", rowSubstitutable);
+            GenerateSubstitutableStringContext(context);
 
             GeneratePieChartContext(context);
 
@@ -284,27 +167,9 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
 
             GenerateCombineGraphContext(context);
 
-            context.AddDouble("#ColumnNumber#", 2.0, null);
+            GenerateMultipleColumnsContext(context);
 
             return context;
-        }
-
-        private static Paragraph CreateTableofContentItem()
-        {
-            return new Paragraph
-            {
-                ParagraphStyleId = "TableOfContent",
-                SpacingAfter = 0,
-                SpacingBefore = 0,
-                ChildElements = new List<BaseElement>()
-                {
-                    new Label()
-                    {
-                        Text ="Table of content simply",
-                        SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve
-                    }
-                }
-            };
         }
 
         private static SimpleField PageCrossReference(string anchor)
@@ -321,147 +186,246 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
         /// <returns></returns>
         private static Document GetTemplateDocument()
         {
-            var doc = new Document();
+            var doc = new Document
+            {
+                Margin = new SpacingModel() { Top = 845, Bottom = 1418, Left = 567, Right = 567, Header = 709, Footer = 709 }
+            };
             doc.Styles.Add(new Style() { StyleId = "Red", FontColor = "FF0050", FontSize = "42" });
             doc.Styles.Add(new Style() { StyleId = "Yellow", FontColor = "FFFF00", FontSize = "40" });
-            doc.Styles.Add(new Style()
-            {
-                StyleId = "TableOfContent",
-                Type = StyleValues.Paragraph,
-                CustomStyle = true,
-                FontName = "Arial",
-                FontSize = "20",
-                //PrimaryStyle = true,
-                FontColor = "FFFF00",
-            });
-            doc.Styles.Add(new Style()
-            {
-                StyleId = "TOC 1",
-                Type = StyleValues.Paragraph,
-                PrimaryStyle = false,
-                CustomStyle = false,
-                FontName = "Arial",
-                FontSize = "30",
-                FontColor = "FF0050",
-            });
+            doc.Styles.Add(new Style() { StyleId = "TOC1", FontColor = "8A3459", FontSize = "30", FontName = "Arial" });
+            doc.Styles.Add(new Style() { StyleId = "TOC2", FontColor = "8A7934", FontSize = "20", FontName = "Arial" });
 
-            var page1 = new Page();
-            page1.Margin = new SpacingModel() { Top = 845, Bottom = 1418, Left = 567, Right = 567, Header = 709, Footer = 709 };
-            doc.Pages.Add(page1);
+            // Paragraphs
+            doc.Pages.Add(GenerateParagraphPage());
+            // Second page to have different margins
+            doc.Pages.Add(GenerateParagraphSecondPage());
 
-            // Template 1 :
-            page1.ChildElements.Add(
-                new Paragraph
+            // Foreach
+            doc.Pages.Add(GenerateForeachPage(doc));
+
+            // Foreach page
+            doc.Pages.Add(GenerateForeachPagePage());
+
+            // Table of content
+            doc.Pages.Add(GenerateTableOfContent());
+
+            // Uniform grid
+            doc.Pages.Add(GenerateUniformGridPage());
+
+            // Tables
+            doc.Pages.Add(GenerateTablesPage());
+
+            // substitutable strings
+            doc.Pages.Add(GenerateSubstitutableStringPage());
+
+            // Pie charts
+            doc.Pages.Add(GeneratePieChartPage());
+
+            // Bar graphs
+            doc.Pages.Add(GenerateBarChartPage());
+
+            // Curve graphs
+            doc.Pages.Add(GenerateLineGraphsPage());
+
+            // Scatter graphs
+            doc.Pages.Add(GenerateScatterGraphsPage());
+
+            // Combine graphs (Line and Bar)
+            doc.Pages.Add(GenerateCombineGraphsPage());
+
+            // Split page on 2 columns
+            doc.Pages.Add(GenerateTableOn1stPage());
+            doc.Pages.Add(Generate2ColmunOnSamePage());
+
+            // Manage headers and footers
+            ManageHeadersAndFooters(doc);
+
+            return doc;
+        }
+
+        #region Paragraphs and labels
+
+        /// <summary>
+        /// Generate paragraphs page
+        /// </summary>
+        /// <returns></returns>
+        private static Page GenerateParagraphPage()
+        {
+            var page = new Page();
+
+            // Paragraph with space inside labels and Shading
+            page.ChildElements.Add(new Paragraph
+            {
+                Shading = "#ParagraphShading#",
+                ChildElements = new List<BaseElement>
                 {
-                    SpacingAfter = 0,
-                    SpacingBefore = 0,
-                    ChildElements = new List<BaseElement>
+                    new Label() { Text = "   Paragraph with space before", FontSize = "20", SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve },
+                    new Label() { Text = Environment.NewLine },
+                    new Label() { Text = "Paragraph with space after   ", SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve },
+                    new Label() { Text = Environment.NewLine },
+                    new Label() { Text = "   Paragraph2 with space before and after   ", SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve }
+                }
+            });
+
+            // Paragraph with text from context
+            page.ChildElements.Add(new Paragraph
+            {
+                ChildElements = new List<BaseElement>
+                {
+                    new Label()
                     {
-                           new SimpleField()
+                        Text = "#KeyTest1#",
+                        FontSize = "40",
+                        TransformOperations = new List<LabelTransformOperation>()
+                        {
+                            new LabelTransformOperation()
                             {
-                                Instruction = @"TOC \t TableOfContent;1;",
-                                IsDirty = true,
-                                HintText = new Label()
-                                {
-                                    FontColor = "0000FF",
-                                    Text = "Default text"
-                                }
+                                TransformOperationType = LabelTransformOperationType.ToUpper
                             }
-                    }
-                }
-            );
-
-            page1.ChildElements.Add(
-                new Paragraph
-                {
-                    ChildElements = new List<BaseElement>
+                        },
+                        FontColor = "#FontColorTestRed#",
+                        Shading = "9999FF",
+                        BoldKey = "#BoldKey#",
+                        Bold = false
+                    },
+                    // This label will not be displayed
+                    new Label()
                     {
-                       new Hyperlink(){Anchor = "bmk", Text = new Label(){Text = "link to bookmark with Page Ref : ", SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve } },
-                       PageCrossReference("PAGEREF bmk")
+                        Text = "#KeyTest2#",
+                        Show = false
                     }
                 }
-            );
-
-            page1.ChildElements.Add(CreateTableofContentItem());
-
-            var paragraph = new Paragraph();
-            paragraph.ChildElements.Add(new Label() { Text = "Label without special character (éèàù).", FontSize = "30", FontName = "Arial" });
-            paragraph.ChildElements.Add(new Hyperlink()
-            {
-                Text = new Label()
-                {
-                    Text = "Go to github.",
-                    FontSize = "20",
-                    FontName = "Arial"
-                },
-                WebSiteUri = "https://www.github.com/"
             });
-            paragraph.Indentation = new ParagraphIndentationModel()
+
+            // Paragraph with style heritage
+            page.ChildElements.Add(new Paragraph
             {
-                Left = "300",
-                Right = "6000"
-            };
-            paragraph.ChildElements.Add(new Label() { Text = "Ceci est un texte avec accents (éèàù)", FontSize = "30", FontName = "Arial" });
-            paragraph.ChildElements.Add(new Label()
-            {
-                Text = "#KeyTest1#",
-                FontSize = "40",
-                TransformOperations = new List<LabelTransformOperation>()
+                FontColor = "FF0000",
+                FontSize = "26",
+                ChildElements = new List<BaseElement>
                 {
-                    new LabelTransformOperation()
+                    new Label { Text = "Test the HeritFromParent" },
+                    new Paragraph
                     {
-                        TransformOperationType = LabelTransformOperationType.ToUpper
+                        FontSize = "16",
+                        ChildElements = new List<BaseElement>
+                        {
+                            new Label
+                            {
+                                Text = " Success (not the same size)",
+                                SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve
+                            }
+                        }
                     }
-                },
-                FontColor = "#FontColorTestRed#",
-                Shading = "9999FF",
-                BoldKey = "#BoldKey#",
-                Bold = false
-            });
-            paragraph.ChildElements.Add(new Label()
-            {
-                Text = "#KeyTest2#",
-                Show = false
-            });
-            paragraph.Borders = new BorderModel()
-            {
-                BorderPositions = BorderPositions.BOTTOM | BorderPositions.TOP | BorderPositions.LEFT,
-                BorderWidthBottom = 3,
-                BorderWidthLeft = 10,
-                BorderWidthTop = 20,
-                BorderWidthInsideVertical = 1,
-                UseVariableBorders = true,
-                BorderColor = "FF0000",
-                BorderLeftColor = "CCCCCC",
-                BorderTopColor = "123456",
-                BorderRightColor = "FFEEDD",
-                BorderBottomColor = "FF1234"
-            };
-
-            var templateDefinition = new TemplateDefinition()
-            {
-                TemplateId = "Template 1",
-                Note = "Sample paragraph",
-                ChildElements = new List<BaseElement>() { paragraph }
-            };
-            doc.TemplateDefinitions.Add(templateDefinition);
-
-            page1.ChildElements.Add(paragraph);
-            page1.ChildElements.Add(new TemplateModel() { TemplateId = "Template 1" });
-
-            // Foreach with template model
-            var forEach = new ForEach()
-            {
-                DataSourceKey = "#ForEachParagraph#",
-                ItemTemplate = new List<BaseElement>()
-                {
-                    new TemplateModel() { TemplateId = "#TemplateKey#" }
                 }
-            };
+            });
 
-            page1.ChildElements.Add(forEach);
+            // Bookmark
+            page.ChildElements.Add(new Paragraph
+            {
+                ChildElements = new List<BaseElement>
+                {
+                    new Hyperlink
+                    {
+                        Anchor = "bmk",
+                        Text = new Label
+                        {
+                            Text = "Link to the table of content ",
+                            SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve
+                        }
+                    },
+                    PageCrossReference("PAGEREF bmk")
+                }
+            });
 
-            page1.ChildElements.Add(new Paragraph()
+            // Some specials characters
+            page.ChildElements.Add(new Paragraph
+            {
+                ChildElements = new List<BaseElement>
+                {
+                    new Label() { Text = "Label with special character (éèàù).", FontSize = "30", FontName = "Arial" }
+                }
+            });
+
+            //hyperlink
+            page.ChildElements.Add(new Paragraph
+            {
+                ChildElements = new List<BaseElement>
+                {
+                    new Hyperlink()
+                    {
+                        Text = new Label()
+                        {
+                            Text = "Go to github.",
+                            FontSize = "30",
+                            FontName = "Arial",
+                            FontColor = "40A6DB",
+                            Underline = new UnderlineModel
+                            {
+                                Color = "40A6DB",
+                                Val = UnderlineValues.DashedHeavy
+                            }
+                        },
+                        WebSiteUri = "https://www.github.com/"
+                    }
+                }
+            });
+
+            // Indentation
+            page.ChildElements.Add(new Paragraph
+            {
+                ChildElements = new List<BaseElement>
+                {
+                    new Label() { Text = "This paragraph is indent from the left and the right", FontSize = "30", FontName = "Arial" }
+                },
+                Indentation = new ParagraphIndentationModel()
+                {
+                    Left = "300",
+                    Right = "6000"
+                }
+            });
+
+            // Paragraph with borders 1/2
+            page.ChildElements.Add(new Paragraph
+            {
+                ChildElements = new List<BaseElement>
+                {
+                    new Label() { Text = "This paragraph has borders", FontSize = "30", FontName = "Arial" }
+                },
+                Borders = new BorderModel()
+                {
+                    BorderPositions = BorderPositions.BOTTOM | BorderPositions.TOP | BorderPositions.LEFT,
+                    BorderWidthBottom = 3,
+                    BorderWidthLeft = 10,
+                    BorderWidthTop = 20,
+                    BorderWidthInsideVertical = 1,
+                    UseVariableBorders = true,
+                    BorderColor = "FF0000",
+                    BorderLeftColor = "CCCCCC",
+                    BorderTopColor = "123456",
+                    BorderRightColor = "FFEEDD",
+                    BorderBottomColor = "FF1234"
+                }
+            });
+
+            // Paragraph with borders 2/2 and space between lines
+            page.ChildElements.Add(new Paragraph
+            {
+                ChildElements = new List<BaseElement>
+                {
+                    new Label() { Text = Lorem_Ipsum }
+                },
+                Borders = new BorderModel()
+                {
+                    BorderPositions = (BorderPositions)13,
+                    BorderWidth = 20,
+                    BorderColor = "#ParagraphBorderColor#"
+                },
+                SpacingBetweenLines = 360
+            });
+
+            // Paragraph with tabulation and style 1/4
+            page.ChildElements.Add(new Paragraph()
             {
                 ParagraphStyleId = "Red",
                 ChildElements = new List<BaseElement>()
@@ -491,7 +455,8 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                 }
             });
 
-            page1.ChildElements.Add(new Paragraph()
+            // Paragraph with tabulation and style 2/4
+            page.ChildElements.Add(new Paragraph()
             {
                 ParagraphStyleId = "Red",
                 ChildElements = new List<BaseElement>()
@@ -505,7 +470,8 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                 }
             });
 
-            page1.ChildElements.Add(new Paragraph()
+            // Paragraph with tabulation and style 3/4
+            page.ChildElements.Add(new Paragraph()
             {
                 ParagraphStyleId = "Red",
                 ChildElements = new List<BaseElement>()
@@ -536,7 +502,8 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                 }
             });
 
-            page1.ChildElements.Add(new Paragraph()
+            // Paragraph with tabulation and style 4/4
+            page.ChildElements.Add(new Paragraph()
             {
                 ParagraphStyleId = "Red",
                 ChildElements = new List<BaseElement>()
@@ -555,16 +522,451 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                 }
             });
 
-            var p2 = new Paragraph();
-            p2.Shading = "#ParagraphShading#";
-            p2.ChildElements.Add(new Label() { Text = "   texte paragraph2 avec espace avant", FontSize = "20", SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve });
-            p2.ChildElements.Add(new Label() { Text = "texte2 paragraph2 avec espace après   ", SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve });
-            p2.ChildElements.Add(new Label() { Text = "   texte3 paragraph2 avec espace avant et après   ", SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve });
-            page1.ChildElements.Add(p2);
+            // Image
+            if (File.Exists(@"Resources\Desert.jpg"))
+                page.ChildElements.Add(new Paragraph()
+                {
+                    ChildElements = new List<BaseElement>()
+                    {
+                        new Image()
+                        {
+                            MaxHeight = 100,
+                            MaxWidth = 100,
+                            Path = @"Resources\Desert.jpg",
+                            ImagePartType = Engine.Packaging.ImagePartType.Jpeg
+                        }
+                    }
+                });
 
-            var table = new Table()
+            return page;
+        }
+
+        /// <summary>
+        /// Generate paragraphs page with different page margin
+        /// </summary>
+        /// <returns></returns>
+        private static Page GenerateParagraphSecondPage()
+        {
+            var page = new Page
             {
+                Margin = new SpacingModel() { Top = 2500, Left = 845, Header = 1500, Footer = 709 }
+            };
+
+            // Paragraph with justification
+            page.ChildElements.Add(new Paragraph
+            {
+                Justification = JustificationValues.Center,
+                ParagraphStyleId = "Red",
+                ChildElements = new List<BaseElement>
+                {
+                    new Label() { Text = "Text page 2", FontName = "Arial" }
+                }
+            });
+
+            // Paragraphs with spacing before, after and a style
+            page.ChildElements.Add(new Paragraph
+            {
+                SpacingBefore = 800,
+                SpacingAfter = 800,
+                Justification = JustificationValues.Both,
+                ParagraphStyleId = "Yellow",
+                ChildElements = new List<BaseElement>
+                {
+                    new Label() { Text = Lorem_Ipsum }
+                }
+            });
+
+            return page;
+        }
+
+        #endregion
+
+        #region Foreach
+
+        /// <summary>
+        /// Generate foreach context
+        /// </summary>
+        /// <param name="context"></param>
+        public static void GenerateForeachContext(ContextModel context)
+        {
+            context.AddItem("#ForEachParagraph#", new DataSourceModel()
+            {
+                Items = new List<ContextModel>()
+                {
+                    new ContextModel().AddString("#TemplateKey#", "Template 1").AddString("#ForeachKeyTemplate1#", "This is the first template"),
+                    new ContextModel().AddString("#TemplateKey#", "Template 2").AddString("#ForeachKeyTemplate2#", "This is the second template"),
+                    new ContextModel().AddString("#TemplateKey#", "Template 1").AddString("#ForeachKeyTemplate1#", "This is the first template again")
+                }
+            });
+        }
+
+        /// <summary>
+        /// Generate foreach and templates
+        /// </summary>
+        /// <param name="document"></param>
+        /// <returns></returns>
+        public static Page GenerateForeachPage(Document document)
+        {
+            var page = new Page();
+
+            page.ChildElements.Add(new Paragraph
+            {
+                Justification = JustificationValues.Center,
+                ParagraphStyleId = "Red",
+                ChildElements = new List<BaseElement>
+                {
+                    new Label
+                    {
+                        Text = "Foreach test page"
+                    }
+                }
+            });
+
+            page.ChildElements.Add(new Paragraph
+            {
+                ChildElements = new List<BaseElement>
+                {
+                    new Label
+                    {
+                        Text = "This is an example of a list of template used in a foreach"
+                    }
+                }
+            });
+
+            document.TemplateDefinitions.Add(new TemplateDefinition()
+            {
+                TemplateId = "Template 1",
+                Note = "Sample paragraph",
+                ChildElements = new List<BaseElement>()
+                {
+                    new Paragraph
+                    {
+                        ChildElements = new List<BaseElement>
+                        {
+                            new Label { Text = "#ForeachKeyTemplate1#" }
+                        }
+                    }
+                }
+            });
+            document.TemplateDefinitions.Add(new TemplateDefinition()
+            {
+                TemplateId = "Template 2",
+                Note = "Sample paragraph",
+                ChildElements = new List<BaseElement>()
+                {
+                    new Paragraph
+                    {
+                        Shading = "9EB5BA",
+                        FontName = "Chiller",
+                        ChildElements = new List<BaseElement>
+                        {
+                            new Label { Text = "#ForeachKeyTemplate2#" }
+                        }
+                    }
+                }
+            });
+
+            // Foreach with template model
+            page.ChildElements.Add(new ForEach()
+            {
+                DataSourceKey = "#ForEachParagraph#",
+                ItemTemplate = new List<BaseElement>()
+                {
+                    new TemplateModel() { TemplateId = "#TemplateKey#" }
+                }
+            });
+
+            return page;
+        }
+
+        #endregion
+
+        #region Foreach page
+
+        /// <summary>
+        /// Generate foreach page context
+        /// </summary>
+        /// <param name="context"></param>
+        public static void GenerateForeachPageContext(ContextModel context)
+        {
+            ContextModel page1 = new ContextModel().AddString("#Label#", "Foreach page First page");
+            ContextModel page2 = new ContextModel().AddString("#Label#", "Foreach page Second page");
+
+            context.AddCollection("#ForeachPageDataSource#", page1, page2);
+        }
+
+        /// <summary>
+        /// Generate foreach page page
+        /// </summary>
+        /// <returns></returns>
+        public static ForEachPage GenerateForeachPagePage()
+        {
+            return new ForEachPage
+            {
+                DataSourceKey = "#ForeachPageDataSource#",
+                Margin = new SpacingModel() { Top = 1418, Left = 845, Header = 709, Footer = 709 },
+                ChildElements = new List<BaseElement>
+                {
+                    new Paragraph
+                    {
+                        ParagraphStyleId = "Red",
+                        ChildElements = new List<BaseElement>
+                        {
+                            new Label() { Text = "#Label#" }
+                        }
+                    },
+                    new Paragraph
+                    {
+                        ChildElements = new List<BaseElement>
+                        {
+                            new Label() { Text = "           Text with space before", FontSize = "20", SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve }
+                        }
+                    }
+                }
+            };
+        }
+
+        #endregion
+
+        #region Table of content
+
+        /// <summary>
+        /// Generate table of content
+        /// </summary>
+        /// <returns></returns>
+        public static Page GenerateTableOfContent()
+        {
+            var page = new Page();
+
+            page.ChildElements.Add(new Paragraph
+            {
+                ChildElements = new List<BaseElement>
+                {
+                    new Label()
+                    {
+                        Shading = "2B3C4F",
+                        FontSize = "26",
+                        Text = "Table of content bookmark",
+                    },
+                    new BookmarkStart() {Id = "bmk", Name = "bmk" },
+                    new BookmarkEnd(){Id = "bmk"}
+                }
+            });
+
+            TableOfContents tableOfContents = new TableOfContents()
+            {
+                StylesAndLevels = new List<Tuple<string, string>>()
+                {
+                    new Tuple<string, string>("Red", "1"),
+                    new Tuple<string, string>("Yellow", "2"),
+                },
+                Title = "Table of content!",
+                TitleStyleId = "Red",
+                ToCStylesId = new List<string>() { "TOC1", "TOC2" },
+                LeaderCharValue = TabStopLeaderCharValues.underscore
+            };
+            page.ChildElements.Add(tableOfContents);
+
+            return page;
+        }
+
+        #endregion
+
+        #region Uniform grid
+
+        /// <summary>
+        /// Generate uniform grid context
+        /// </summary>
+        /// <param name="context"></param>
+        private static void GenerateUniformGridContext(ContextModel context)
+        {
+            List<ContextModel> cellsContext = new List<ContextModel>();
+            for (int i = 0; i < DateTime.Now.Day; i++)
+            {
+                ContextModel uniformGridContext = new ContextModel();
+                uniformGridContext.AddItem("#CellUniformGridTitle#", new StringModel("Item number " + (i + 1)));
+                cellsContext.Add(uniformGridContext);
+            }
+            context.AddItem("#UniformGridSample#", new DataSourceModel()
+            {
+                Items = cellsContext
+            });
+        }
+
+        /// <summary>
+        /// Generate uniform gid page
+        /// </summary>
+        /// <returns></returns>
+        private static Page GenerateUniformGridPage()
+        {
+            var page = new Page();
+
+            page.ChildElements.Add(new Paragraph
+            {
+                Justification = JustificationValues.Center,
+                ParagraphStyleId = "Red",
+                ChildElements = new List<BaseElement>
+                {
+                    new Label
+                    {
+                        Text = "Uniform grid test page"
+                    }
+                }
+            });
+
+            page.ChildElements.Add(new Paragraph
+            {
+                ChildElements = new List<BaseElement>
+                {
+                    new Label
+                    {
+                        Text = "For this uniform grid, the number of cells is defined by the actual day from the beginning of the month"
+                    }
+                }
+            });
+
+            page.ChildElements.Add(new UniformGrid()
+            {
+                DataSourceKey = "#UniformGridSample#",
+                ColsWidth = new int[2] { 2500, 2500 },
                 TableWidth = new TableWidthModel() { Width = "5000", Type = TableWidthUnitValues.Pct },
+                CellModel = new Cell()
+                {
+                    VerticalAlignment = TableVerticalAlignmentValues.Center,
+                    Justification = JustificationValues.Center,
+                    ChildElements = new List<BaseElement>()
+                        {
+                            new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "#CellUniformGridTitle#" } } },
+                            new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "Cell 1 - Second paragraph" } } }
+                        }
+                },
+                HeaderRow = new Row()
+                {
+                    Cells = new List<Cell>()
+                    {
+                        new Cell()
+                        {
+                            ChildElements = new List<BaseElement>()
+                            {
+                                new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "Header 1" } } }
+                            }
+                        },
+                        new Cell()
+                        {
+                            ChildElements = new List<BaseElement>()
+                            {
+                                new Label() { Text = "Header 2" }
+                            }
+                        }
+                    }
+                },
+                Borders = new BorderModel()
+                {
+                    BorderPositions = BorderPositions.BOTTOM | BorderPositions.INSIDEVERTICAL,
+                    BorderWidthBottom = 50,
+                    BorderWidthInsideVertical = 1,
+                    UseVariableBorders = true,
+                    BorderColor = "FF0000"
+                }
+            });
+
+            return page;
+        }
+
+        #endregion
+
+        #region Tables
+
+        /// <summary>
+        /// Generate table context
+        /// </summary>
+        /// <param name="context"></param>
+        private static void GenerateTableContext(ContextModel context)
+        {
+            // Classic generation
+            ContextModel row2 = new ContextModel();
+            row2.AddItem("#Cell1#", new StringModel("Col 2 Row 1"));
+            row2.AddItem("#Cell2#", new StringModel("Col 2 Row 2"));
+            row2.AddItem("#Label#", new StringModel("Label 2"));
+            ContextModel row3 = new ContextModel();
+            row3.AddItem("#Cell1#", new StringModel("Col 1 Row 3"));
+            row3.AddItem("#Cell2#", new StringModel("Col 2 Row 3"));
+            row3.AddItem("#Label#", new StringModel("Label 1"));
+            ContextModel row4 = new ContextModel();
+            row4.AddItem("#Cell1#", new StringModel("Col 2 Row 4"));
+            row4.AddItem("#Cell2#", new StringModel("Col 2 Row 4"));
+            row4.AddItem("#Label#", new StringModel("Label 2"));
+
+            // Fluent samples
+            ContextModel row1 = new ContextModel()
+                        .AddString("#Cell1#", "Col 1 Row 1")
+                        .AddString("#Cell2#", "Col 2 Row 1")
+                        .AddString("#Label#", "Label 1")
+                        .AddDouble("#ColSpan#", 2, "{0}");
+
+            context.AddCollection("#TableDataSource#", row1, row2)
+                   .AddCollection("#DatasourcePrefix#", row1, row2, row3, row4);
+
+
+            ContextModel row11 = new ContextModel()
+                         .AddBoolean("#IsInGroup#", true)
+                         .AddBoolean("#IsNotFirstLineGroup#", false)
+                         .AddString("#Cell1#", "Col 1 Row 1")
+                         .AddString("#Cell2#", "Col 2 Row 1")
+                         .AddString("#Label#", "Label 1");
+            ContextModel row12 = new ContextModel()
+                         .AddBoolean("#IsInGroup#", true)
+                         .AddBoolean("#IsNotFirstLineGroup#", true)
+                         .AddString("#Cell1#", "Col 1 Row 1")
+                         .AddString("#Cell2#", "Col 2 Row 1")
+                         .AddString("#Label#", "Label 1");
+            ContextModel row13 = new ContextModel()
+                         .AddBoolean("#IsInGroup#", true)
+                         .AddBoolean("#IsNotFirstLineGroup#", true)
+                         .AddString("#Cell1#", "Col 1 Row 1")
+                         .AddString("#Cell2#", "Col 2 Row 1")
+                         .AddString("#Label#", "Label 1");
+            ContextModel row22 = new ContextModel()
+                         .AddBoolean("#IsInGroup#", true)
+                         .AddBoolean("#IsNotFirstLineGroup#", false)
+                         .AddString("#Cell1#", "Col 2 Row 1")
+                         .AddString("#Cell2#", "Col 2 Row 2")
+                         .AddString("#Label#", "Label 2");
+            ContextModel row23 = new ContextModel()
+                         .AddBoolean("#IsInGroup#", true)
+                         .AddBoolean("#IsNotFirstLineGroup#", true)
+                         .AddString("#Cell1#", "Col 2 Row 1")
+                         .AddString("#Cell2#", "Col 2 Row 2")
+                         .AddString("#Label#", "Label 2");
+
+            context.AddCollection("#TableWithFusedCellsInContext#", row11, row12, row13, row22, row23);
+        }
+
+        /// <summary>
+        /// Generate table page
+        /// </summary>
+        /// <returns></returns>
+        private static Page GenerateTablesPage()
+        {
+            var page = new Page();
+
+            page.ChildElements.Add(new Paragraph
+            {
+                Justification = JustificationValues.Center,
+                ParagraphStyleId = "Red",
+                ChildElements = new List<BaseElement>
+                {
+                    new Label
+                    {
+                        Text = "Table test page"
+                    }
+                }
+            });
+
+            // Table
+            page.ChildElements.Add(new Table()
+            {
+                TableWidth = new TableWidthModel() { Width = "4000", Type = TableWidthUnitValues.Pct },
                 TableIndentation = new TableIndentation() { Width = 1000 },
                 Rows = new List<Row>()
                 {
@@ -584,7 +986,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                                     {
                                         Width = 50,
                                         Path = @"Resources\Desert.jpg",
-                                        ImagePartType = OpenXMLSDK.Engine.Packaging.ImagePartType.Jpeg
+                                        ImagePartType = Engine.Packaging.ImagePartType.Jpeg
                                     },
                                     new Label() { Text = "Cell 1 No Wrap - Label in a cell" },
                                     new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "Cell 1 - Second paragraph" } } }
@@ -600,7 +1002,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                                     {
                                         Height = 10,
                                         Path = @"Resources\Desert.jpg",
-                                        ImagePartType = OpenXMLSDK.Engine.Packaging.ImagePartType.Jpeg
+                                        ImagePartType = Engine.Packaging.ImagePartType.Jpeg
                                     },
                                     new Label() { Text = "Cell 2 - Second label" }
                                 },
@@ -634,60 +1036,42 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                             }
                         }
                     }
-                }
-            };
-
-            table.HeaderRow = new Row()
-            {
-                Cells = new List<Cell>()
+                },
+                HeaderRow = new Row()
                 {
+                    Cells = new List<Cell>()
+                    {
                         new Cell()
                         {
                             ChildElements = new List<BaseElement>()
                             {
-                                new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "header1" } } }
+                                new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "Header from paragraph" } } }
                             }
                         },
                         new Cell()
                         {
                             ChildElements = new List<BaseElement>()
                             {
-                                new Label() { Text = "header2" }
+                                new Label() { Text = "Header from label" }
                             }
                         }
-                }
-            };
-
-            table.Borders = new BorderModel()
-            {
-                BorderPositions = BorderPositions.BOTTOM | BorderPositions.INSIDEVERTICAL,
-                BorderWidthBottom = 50,
-                BorderWidthInsideVertical = 1,
-                UseVariableBorders = true,
-                BorderColor = "FF0000"
-            };
-
-            page1.ChildElements.Add(table);
-            page1.ChildElements.Add(new Paragraph());
-
-            if (File.Exists(@"Resources\Desert.jpg"))
-                page1.ChildElements.Add(
-                    new Paragraph()
-                    {
-                        ChildElements = new List<BaseElement>()
-                        {
-                        new Image()
-                        {
-                            MaxHeight = 100,
-                            MaxWidth = 100,
-                            Path = @"Resources\Desert.jpg",
-                            ImagePartType = OpenXMLSDK.Engine.Packaging.ImagePartType.Jpeg
-                        }
-                        }
                     }
-                );
+                },
+                Borders = new BorderModel()
+                {
+                    BorderPositions = BorderPositions.BOTTOM | BorderPositions.INSIDEVERTICAL,
+                    BorderWidthBottom = 50,
+                    BorderWidthInsideVertical = 1,
+                    UseVariableBorders = true,
+                    BorderColor = "FF0000"
+                }
+            });
 
-            var tableDataSource = new Table()
+            // Add a paragraph to avoid Word merging tables  
+            page.ChildElements.Add(new Paragraph { ChildElements = new List<BaseElement>() { new Label() { Text = "Table with ColSpan in context ⏬" } } });
+
+            // Table with ColSpan in context
+            page.ChildElements.Add(new Table()
             {
                 TableWidth = new TableWidthModel() { Width = "5000", Type = TableWidthUnitValues.Pct },
                 ColsWidth = new int[2] { 750, 4250 },
@@ -720,10 +1104,14 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                         }
                     }
                 },
-                DataSourceKey = "#Datasource#"
-            };
+                DataSourceKey = "#TableDataSource#"
+            });
 
-            var tableDataSourceWithPrefix = new Table()
+            // Add a paragraph to avoid Word merging tables 
+            page.ChildElements.Add(new Paragraph { ChildElements = new List<BaseElement>() { new Label { Text = "Table with datasource with prefixs ⏬" } } });
+
+            // Table with datasource with prefixs
+            page.ChildElements.Add(new Table()
             {
                 TableWidth = new TableWidthModel() { Width = "5000", Type = TableWidthUnitValues.Pct },
                 ColsWidth = new int[2] { 750, 4250 },
@@ -738,165 +1126,41 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                 RowModel = new Row()
                 {
                     Cells = new List<Cell>()
-    {
-        new Cell()
-        {
-            Shading = "FFA0FF",
-            ChildElements = new List<BaseElement>()
-            {
-                new Label() { Text = "Item Datasource (0 index) #DataSourcePrefix_TableRow_IndexBaseZero# - ",
-                                ShowKey = "#DataSourcePrefix_TableRow_IsFirstItem#" },
-                new Label() { Text = "#Cell1#" }
-            }
-        },
-        new Cell()
-        {
-            ChildElements = new List<BaseElement>()
-            {
-                new Label() { Text = "Item Datasource (1 index) #DataSourcePrefix_TableRow_IndexBaseOne# - ",
-                                ShowKey = "#DataSourcePrefix_TableRow_IsLastItem#" },
-                new Label() { Text = "#Cell2#" }
-            }
-        }
-    }
-                }
-            };
-
-            page1.ChildElements.Add(tableDataSource);
-
-            page1.ChildElements.Add(tableDataSourceWithPrefix);
-
-            // page 2
-            var page2 = new Page();
-            page2.Margin = new SpacingModel() { Top = 1418, Left = 845, Header = 709, Footer = 709 };
-            doc.Pages.Add(page2);
-
-            var p21 = new Paragraph();
-            p21.Justification = JustificationValues.Center;
-            p21.ParagraphStyleId = "Red";
-            p21.ChildElements.Add(new Label() { Text = "texte page2", FontName = "Arial" });
-            page2.ChildElements.Add(p21);
-
-            var p22 = new Paragraph();
-            p22.SpacingBefore = 800;
-            p22.SpacingAfter = 800;
-            p22.Justification = JustificationValues.Both;
-            p22.ParagraphStyleId = "Yellow";
-            p22.ChildElements.Add(new Label() { Text = Lorem_Ipsum });
-            page2.ChildElements.Add(p22);
-
-            var p23 = new Paragraph();
-            p23.Borders = new BorderModel()
-            {
-                BorderPositions = (BorderPositions)13,
-                BorderWidth = 20,
-                BorderColor = "#ParagraphBorderColor#"
-            };
-            p23.SpacingBetweenLines = 360;
-            p23.ChildElements.Add(new Label() { Text = Lorem_Ipsum });
-            page2.ChildElements.Add(p23);
-
-            // Adding a foreach page :
-            var foreachPage = new ForEachPage();
-            foreachPage.DataSourceKey = "#DatasourceTableFusion#";
-
-            foreachPage.Margin = new SpacingModel() { Top = 1418, Left = 845, Header = 709, Footer = 709 };
-            var paragraph21 = new Paragraph();
-            paragraph21.ChildElements.Add(new Label() { Text = "Page label : #Label#" });
-            foreachPage.ChildElements.Add(paragraph21);
-            var p223 = new Paragraph();
-            p223.Shading = "#ParagraphShading#";
-            p223.ChildElements.Add(new Label() { Text = "Texte paragraph2 avec espace avant", FontSize = "20", SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve });
-            foreachPage.ChildElements.Add(p223);
-            doc.Pages.Add(foreachPage);
-
-            // page 3
-            var page3 = new Page();
-            var p31 = new Paragraph() { FontColor = "FF0000", FontSize = "26" };
-            p31.ChildElements.Add(new Label() { Text = "Test the HeritFromParent" });
-            var p311 = new Paragraph() { FontSize = "16" };
-            p311.ChildElements.Add(new Label() { Text = " Success (not the same size)" });
-            p31.ChildElements.Add(p311);
-            page3.ChildElements.Add(p31);
-
-            TableOfContents tableOfContents = new TableOfContents()
-            {
-                StylesAndLevels = new List<Tuple<string, string>>()
-                {
-                    new Tuple<string, string>("Red", "1"),
-                    new Tuple<string, string>("Yellow", "2"),
-                },
-                Title = "Tessssssst !",
-                TitleStyleId = "Yellow",
-                ToCStylesId = new List<string>() { "Red" },
-                LeaderCharValue = TabStopLeaderCharValues.underscore
-            };
-            page3.ChildElements.Add(tableOfContents);
-
-            paragraph = new Paragraph()
-            {
-                ParagraphStyleId = "#ParagraphStyleIdTestYellow#"
-            };
-            paragraph.ChildElements.Add(new Label() { Text = "Ceci est un test de paragraph avec Style", FontSize = "30", FontName = "Arial" });
-            page3.ChildElements.Add(paragraph);
-
-            doc.Pages.Add(page3);
-
-            // page 4
-            var page4 = new Page();
-            // New page to manage UniformGrid:
-            var uniformGrid = new UniformGrid()
-            {
-                DataSourceKey = "#UniformGridSample#",
-                ColsWidth = new int[2] { 2500, 2500 },
-                TableWidth = new TableWidthModel() { Width = "5000", Type = TableWidthUnitValues.Pct },
-                CellModel = new Cell()
-                {
-                    VerticalAlignment = TableVerticalAlignmentValues.Center,
-                    Justification = JustificationValues.Center,
-                    ChildElements = new List<BaseElement>()
-                        {
-                            new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "#CellUniformGridTitle#" } } },
-                            new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "Cell 1 - Second paragraph" } } }
-                        }
-                },
-                HeaderRow = new Row()
-                {
-                    Cells = new List<Cell>()
                     {
                         new Cell()
                         {
+                            Shading = "FFA0FF",
                             ChildElements = new List<BaseElement>()
                             {
-                                new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "header1" } } }
+                                new Label()
+                                {
+                                    Text = "Item Datasource (0 index) #DataSourcePrefix_TableRow_IndexBaseZero# - ",
+                                    ShowKey = "#DataSourcePrefix_TableRow_IsFirstItem#"
+                                },
+                                new Label() { Text = "#Cell1#" }
                             }
                         },
                         new Cell()
                         {
                             ChildElements = new List<BaseElement>()
                             {
-                                new Label() { Text = "header2" }
+                                new Label()
+                                {
+                                    Text = "Item Datasource (1 index) #DataSourcePrefix_TableRow_IndexBaseOne# - ",
+                                    ShowKey = "#DataSourcePrefix_TableRow_IsLastItem#"
+                                },
+                                new Label() { Text = "#Cell2#" }
                             }
                         }
                     }
-                },
-                Borders = new BorderModel()
-                {
-                    BorderPositions = BorderPositions.BOTTOM | BorderPositions.INSIDEVERTICAL,
-                    BorderWidthBottom = 50,
-                    BorderWidthInsideVertical = 1,
-                    UseVariableBorders = true,
-                    BorderColor = "FF0000"
                 }
-            };
+            });
 
-            page4.ChildElements.Add(uniformGrid);
+            // Add a paragraph to avoid Word merging tables 
+            page.ChildElements.Add(new Paragraph { ChildElements = new List<BaseElement>() { new Label { Text = "Table with before and after rows ⏬" } } });
 
-            doc.Pages.Add(page4);
-
-            // page 5
-            var page5 = new Page();
-            var tableDataSourceWithBeforeAfter = new Table()
+            // Table with before and after rows
+            page.ChildElements.Add(new Table()
             {
                 TableWidth = new TableWidthModel() { Width = "5000", Type = TableWidthUnitValues.Pct },
                 ColsWidth = new int[2] { 750, 4250 },
@@ -918,16 +1182,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                                 Justification = JustificationValues.Left,
                                 ChildElements = new List<BaseElement>()
                                 {
-                                    new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "Cell 1 - A small paragraph" } }, ParagraphStyleId = "Yellow" },
-                                    new Image()
-                                    {
-                                        MaxHeight = 100,
-                                        MaxWidth = 100,
-                                        Path = @"Resources\Desert.jpg",
-                                        ImagePartType = OpenXMLSDK.Engine.Packaging.ImagePartType.Jpeg
-                                    },
-                                    new Label() { Text = "Custom header" },
-                                    new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "Cell 1 - an other paragraph" } } }
+                                    new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "Merged with below" } }, ParagraphStyleId = "Yellow" },
                                 },
                                 Fusion = true
                             },
@@ -935,15 +1190,15 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                             {
                                 ChildElements = new List<BaseElement>()
                                 {
-                                    new Label() { Text = "Cell 2 - an other label" },
+                                    new Label() { Text = "A label ", SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve },
                                     new Image()
                                     {
-                                        MaxHeight = 100,
-                                        MaxWidth = 100,
+                                        MaxHeight = 75,
+                                        MaxWidth = 75,
                                         Path = @"Resources\Desert.jpg",
-                                        ImagePartType = OpenXMLSDK.Engine.Packaging.ImagePartType.Jpeg
+                                        ImagePartType = Engine.Packaging.ImagePartType.Jpeg
                                     },
-                                    new Label() { Text = "Cell 2 - an other other label" }
+                                    new Label() { Text = " with an image", SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve }
                                 },
                                 Borders = new BorderModel()
                                 {
@@ -969,7 +1224,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                                 Justification = JustificationValues.Right,
                                 ChildElements = new List<BaseElement>()
                                 {
-                                    new Label() { Text = "celluleX" }
+                                    new Label() { Text = "Text set at bottom right position" }
                                 }
                             }
                         }
@@ -984,29 +1239,44 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                             Shading = "FFA2FF",
                             ChildElements = new List<BaseElement>()
                             {
-                                new Label() { Text = "Cell : #Cell1#" }
+                                new Label() { Text = "Cell: #Cell1#" }
                             }
                         },
                         new Cell()
                         {
                             ChildElements = new List<BaseElement>()
                             {
-                                new Label() { Text = "Cell : #Cell2#" }
+                                new Label() { Text = "Cell: #Cell2#" }
                             }
                         }
                     }
                 },
-                DataSourceKey = "#Datasource#"
-            };
+                AfterRows = new List<Row>()
+                {
+                    new Row()
+                    {
+                        Cells = new List<Cell>()
+                        {
+                            new Cell()
+                            {
+                                ColSpan = 2,
+                                Justification = JustificationValues.Center,
+                                ChildElements = new List<BaseElement>()
+                                {
+                                    new Label() { Text = "After row" }
+                                }
+                            }
+                        }
+                    }
+                },
+                DataSourceKey = "#TableDataSource#"
+            });
 
-            page5.ChildElements.Add(tableDataSourceWithBeforeAfter);
+            // Add a paragraph to avoid Word merging tables  
+            page.ChildElements.Add(new Paragraph { ChildElements = new List<BaseElement>() { new Label { Text = "Fused table ⏬" } } });
 
-            doc.Pages.Add(page5);
-
-            // page 6
-            var page6 = new Page();
-
-            var tableDataSourceWithCellFusion = new Table()
+            // Fused table
+            page.ChildElements.Add(new Table()
             {
                 TableWidth = new TableWidthModel() { Width = "5000", Type = TableWidthUnitValues.Pct },
                 ColsWidth = new int[3] { 1200, 1200, 1200 },
@@ -1046,33 +1316,62 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                         }
                     }
                 },
-                DataSourceKey = "#DatasourceTableFusion#"
-            };
+                DataSourceKey = "#TableWithFusedCellsInContext#"
+            });
 
-            page6.ChildElements.Add(tableDataSourceWithCellFusion);
+            return page;
+        }
 
-            doc.Pages.Add(page6);
+        #endregion
 
-            // page 7
-            var page7 = new Page();
-            var p7 = new Paragraph() { FontColor = "FF0000", FontSize = "26" };
-            p7.ChildElements.Add(new Label() { Text = "Label with" + Environment.NewLine + Environment.NewLine + "A new line" });
-            page7.ChildElements.Add(p7);
+        #region Substitutable string
 
-            page7.ChildElements.Add(
-                new Paragraph
-                {
-                    ChildElements = new List<BaseElement>
-                        {
-                           new Label()
-                           {
-                               Text = "Page Ref bookmark",
-                           },
-                           new BookmarkStart() {Id = "bmk", Name = "bmk" },
-                           new BookmarkEnd(){Id = "bmk"}
-                        }
-                }
+        /// <summary>
+        /// Generate substitutable string context
+        /// </summary>
+        /// <param name="context"></param>
+        private static void GenerateSubstitutableStringContext(ContextModel context)
+        {
+            string textToDisplay = "DateTimeModel : {0}\n DoubleModel : {1}\n StringModel : {2}\n";
+            ContextModel rowSubstitutable = new ContextModel();
+            rowSubstitutable.AddItem("#SubstitutableStringData#",
+                new SubstitutableStringModel(
+                    textToDisplay,
+                    new ContextModel()
+                        .AddDateTime("#Val1#", DateTime.Now, "D")
+                        .AddDouble("#Val2#", 5.4, "This number is displayed with a render pattern : {0}")
+                        .AddString("#Val3#", "This text is substituted")
+                )
             );
+            rowSubstitutable.AddItem("#SubstitutableStringDataWithLessParameters#",
+                new SubstitutableStringModel(
+                    textToDisplay,
+                    new ContextModel()
+                        .AddDateTime("#Val1#", DateTime.Now, null)
+                )
+            );
+            rowSubstitutable.AddItem("#SubstitutableStringDataWithMoreParameters#",
+                new SubstitutableStringModel(
+                    textToDisplay,
+                    new ContextModel()
+                        .AddDateTime("#Val1#", DateTime.Now, null)
+                        .AddDouble("#Val2#", 5.4, null)
+                        .AddString("#Val3#", "This text is substituted")
+                        .AddDouble("#Val4#", 75, null)
+                        .AddString("#Val5#", "Not displayed string")
+                )
+            );
+
+            context.AddCollection("#SubstitutableStringDataSourceModel#", rowSubstitutable);
+        }
+
+        /// <summary>
+        /// Generate substitutable string page
+        /// </summary>
+        /// <returns></returns>
+        private static Page GenerateSubstitutableStringPage()
+        {
+            var page = new Page();
 
             // Substitutable string
             var pargraphTitle = new Paragraph
@@ -1081,9 +1380,9 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                 ParagraphStyleId = "Red"
             };
             pargraphTitle.ChildElements.Add(new Label() { Text = "Substitutable string", FontName = "Arial" });
-            page7.ChildElements.Add(pargraphTitle);
+            page.ChildElements.Add(pargraphTitle);
 
-            var substitutableTableDataSource = new Table()
+            page.ChildElements.Add(new Table()
             {
                 RowModel = new Row()
                 {
@@ -1093,85 +1392,42 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                         {
                             ChildElements = new List<BaseElement>()
                             {
-                                new Label() { Text = "Matching of supplied parameters and expected parameters : \n"
-                                            , Bold = true, Underline = new UnderlineModel () { Val = UnderlineValues.Single } },
+                                new Label()
+                                {
+                                    Text = "Matching of supplied parameters and expected parameters: \n",
+                                    Bold = true,
+                                    Underline = new UnderlineModel () { Val = UnderlineValues.Single }
+                                },
                                 new Label() { Text = "#SubstitutableStringData#" },
 
-                                new Label() { Text = "\n" },
-                                new Label() { Text = "Less supplied parameters than expected parameters : \n"
-                                            , Bold = true, Underline = new UnderlineModel () { Val = UnderlineValues.Single } },
+                                new Label() { Text = Environment.NewLine },
+                                new Label()
+                                {
+                                    Text = "Less supplied parameters than expected parameters: \n",
+                                    Bold = true,
+                                    Underline = new UnderlineModel () { Val = UnderlineValues.Single }
+                                },
                                 new Label() { Text = "#SubstitutableStringDataWithLessParameters#" },
 
-                                new Label() { Text = "\n" },
-                                new Label() { Text = "More supplied parameters than expected parameters : \n"
-                                            , Bold = true, Underline = new UnderlineModel () { Val = UnderlineValues.Single } },
+                                new Label() { Text = Environment.NewLine },
+                                new Label()
+                                {
+                                    Text = "More supplied parameters than expected parameters: \n",
+                                    Bold = true,
+                                    Underline = new UnderlineModel () { Val = UnderlineValues.Single }
+                                },
                                 new Label() { Text = "#SubstitutableStringDataWithMoreParameters#" }
                             }
                         }
                     }
-                }
-                ,
+                },
                 DataSourceKey = "#SubstitutableStringDataSourceModel#"
-            };
+            });
 
-            page7.ChildElements.Add(substitutableTableDataSource);
-
-            doc.Pages.Add(page7);
-
-            // page 8 -> PieChart
-            doc.Pages.Add(GeneratePieChartPage());
-
-            // page 9 -> BarChart
-            doc.Pages.Add(GenerateBarChartPage());
-
-            // Page 10 Curve graphs
-            doc.Pages.Add(GenerateLineGraphsPage());
-
-            // Page 11 Scatter graphs
-            doc.Pages.Add(GenerateScatterGraphsPage());
-
-            // Page 12 Combine graphs (Line and Bar)
-            doc.Pages.Add(GenerateCombineGraphsPage());
-
-            // Page 13 and 14 Split page on 2 columns
-            doc.Pages.Add(GenerateTableOn1stPage());
-            doc.Pages.Add(Generate2ColmunOnSamePage());
-
-            // Header
-            var header = new Header();
-            header.Type = HeaderFooterValues.Default;
-            var ph = new Paragraph();
-            ph.ChildElements.Add(new Label() { Text = "Header Text" });
-            if (File.Exists(@"Resources\Desert.jpg"))
-                ph.ChildElements.Add(new Image()
-                {
-                    MaxHeight = 100,
-                    MaxWidth = 100,
-                    Path = @"Resources\Desert.jpg",
-                    ImagePartType = OpenXMLSDK.Engine.Packaging.ImagePartType.Jpeg
-                });
-            header.ChildElements.Add(ph);
-            doc.Headers.Add(header);
-
-            // first header
-            var firstHeader = new Header();
-            firstHeader.Type = HeaderFooterValues.First;
-            var fph = new Paragraph();
-            fph.ChildElements.Add(new Label() { Text = "first header Text" });
-            firstHeader.ChildElements.Add(fph);
-            doc.Headers.Add(firstHeader);
-
-            // Footer
-            var footer = new Footer();
-            footer.Type = HeaderFooterValues.Default;
-            var pf = new Paragraph();
-            pf.ChildElements.Add(new Label() { Text = "Footer Text" });
-            pf.ChildElements.Add(new Label() { IsPageNumber = true });
-            footer.ChildElements.Add(pf);
-            doc.Footers.Add(footer);
-
-            return doc;
+            return page;
         }
+
+        #endregion
 
         #region Charts
 
@@ -1242,6 +1498,19 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
         {
             var page = new Page();
 
+            page.ChildElements.Add(new Paragraph
+            {
+                Justification = JustificationValues.Center,
+                ParagraphStyleId = "Red",
+                ChildElements = new List<BaseElement>
+                {
+                    new Label
+                    {
+                        Text = "Pie graphs test page"
+                    }
+                }
+            });
+
             var pieChartPr = new Paragraph()
             {
                 ChildElements = new List<BaseElement>() {
@@ -1252,17 +1521,14 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                         ShowChartBorder = true,
                         PieChartType = PieChartType.PieChart,
                         DataSourceKey = "#PieGraphSampleData#",
-                        ShowMajorGridlines = true,
                         DataLabel = new DataLabelModel()
                         {
-                            //ShowDataLabel = true,
                             ShowCatName = true,
                             ShowPercent = true,
                             Separator = "\n",
                             FontSize = 8
-                        }
-                        ,
-                        DataLabelColor = "#FFFF00"//Yellow
+                        },
+                        DataLabelColor = "#FFFF00"
                     }
                 }
             };
@@ -1282,6 +1548,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
         /// <param name="context"></param>
         private static void GenerateBarGraphContext(ContextModel context)
         {
+            // Old bar graph objects
             context.AddItem("#OldBarGraphSampleData#", new BarChartModel()
             {
                 BarChartContent = new Engine.ReportEngine.DataContext.Charts.BarModel()
@@ -1528,20 +1795,36 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
         {
             var page = new Page();
 
+            page.ChildElements.Add(new Paragraph
+            {
+                Justification = JustificationValues.Center,
+                ParagraphStyleId = "Red",
+                ChildElements = new List<BaseElement>
+                {
+                    new Label
+                    {
+                        Text = "Bar graphs test page"
+                    }
+                }
+            });
+
+            // Old bar graph objects
             page.ChildElements.Add(new Paragraph()
             {
                 ChildElements = new List<BaseElement>()
                 {
                     new Engine.Word.ReportEngine.Models.Charts.BarModel()
                     {
-                        Title = "Graph test",
+                        Title = "Bar test",
                         ShowTitle = true,
-                        ShowBarBorder = true,
                         BarChartType = BarChartType.BarChart,
                         BarDirectionValues = BarDirectionValues.Column,
                         BarGroupingValues = BarGroupingValues.PercentStacked,
+                        ValuesAxisModel = new ChartAxisModel
+                        {
+                            ShowMajorGridlines = true
+                        },
                         DataSourceKey = "#OldBarGraphSampleData#",
-                        ShowMajorGridlines = true,
                         MaxHeight = 320
                     }
                 }
@@ -1552,14 +1835,17 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                 ChildElements = new List<BaseElement>() {
                     new Engine.Word.ReportEngine.Models.Charts.BarModel()
                     {
-                        Title = "Graph test",
+                        Title = "Bordered serie bar test",
                         ShowTitle = true,
                         FontSize = "23",
                         BarChartType = BarChartType.BarChart,
                         BarDirectionValues = BarDirectionValues.Column,
                         BarGroupingValues = BarGroupingValues.PercentStacked,
                         DataSourceKey = "#BarGraphSampleData#",
-                        ShowMajorGridlines = true,
+                        ValuesAxisModel = new ChartAxisModel
+                        {
+                            ShowMajorGridlines = true
+                        },
                         MaxHeight = 320
                     }
                 }
@@ -1573,8 +1859,14 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                         Title = "Single stacked Graph without min-max",
                         ShowTitle = true,
                         MaxHeight = 100,
-                        DeleteAxeCategory = true,
-                        DeleteAxeValue = true,
+                        CategoriesAxisModel = new ChartAxisModel
+                        {
+                            DeleteAxis = true
+                        },
+                        ValuesAxisModel = new ChartAxisModel
+                        {
+                            DeleteAxis = true
+                        },
                         ShowLegend = false,
                         HasBorder = false,
                         DataSourceKey = "#SingleStackedBarGraphSampleData#"
@@ -1590,8 +1882,14 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                         Title = "Single stacked Graph with min-max",
                         ShowTitle = true,
                         MaxHeight = 100,
-                        DeleteAxeCategory = true,
-                        DeleteAxeValue = true,
+                        CategoriesAxisModel = new ChartAxisModel
+                        {
+                            DeleteAxis = true
+                        },
+                        ValuesAxisModel = new ChartAxisModel
+                        {
+                            DeleteAxis = true
+                        },
                         ShowLegend = false,
                         HasBorder = false,
                         DataSourceKey = "#SingleStackedBarGraphSampleData#",
@@ -1743,6 +2041,19 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
         private static Page GenerateLineGraphsPage()
         {
             var page = new Page();
+
+            page.ChildElements.Add(new Paragraph
+            {
+                Justification = JustificationValues.Center,
+                ParagraphStyleId = "Red",
+                ChildElements = new List<BaseElement>
+                {
+                    new Label
+                    {
+                        Text = "Line graphs test page"
+                    }
+                }
+            });
 
             page.ChildElements.Add(new Paragraph
             {
@@ -2221,6 +2532,19 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
 
             page.ChildElements.Add(new Paragraph
             {
+                Justification = JustificationValues.Center,
+                ParagraphStyleId = "Red",
+                ChildElements = new List<BaseElement>
+                {
+                    new Label
+                    {
+                        Text = "Combine graphs test page"
+                    }
+                }
+            });
+
+            page.ChildElements.Add(new Paragraph
+            {
                 ChildElements = new List<BaseElement>
                 {
                     new CombineChartModel
@@ -2301,97 +2625,89 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
 
         #region Multiple columns 
 
+        /// <summary>
+        /// Generate the multiple columns context
+        /// </summary>
+        /// <param name="context"></param>
+        private static void GenerateMultipleColumnsContext(ContextModel context)
+        {
+            context.AddDouble("#ColumnNumber#", 2.0, null);
+        }
+
+        /// <summary>
+        /// Create table on the first page for the multiple columns example
+        /// </summary>
+        /// <returns></returns>
         private static Page GenerateTableOn1stPage()
         {
             var page = new Page();
 
+            page.ChildElements.Add(new Paragraph
+            {
+                Justification = JustificationValues.Center,
+                ParagraphStyleId = "Red",
+                ChildElements = new List<BaseElement>
+                {
+                    new Label
+                    {
+                        Text = "Multiple columns test page"
+                    }
+                }
+            });
+
             var tableDataSourceWithBeforeAfter = new Table()
             {
                 TableWidth = new TableWidthModel() { Width = "5000", Type = TableWidthUnitValues.Pct },
-                ColsWidth = new int[2] { 750, 4250 },
+                ColsWidth = new int[2] { 1500, 3400 },
                 Borders = new BorderModel()
                 {
                     BorderPositions = (BorderPositions)63,
                     BorderColor = "328864",
-                    BorderWidth = 20,
+                    BorderWidth = 8,
                 },
-                BeforeRows = new List<Row>()
+                HeaderRow = new Row
                 {
-                    new Row()
+                    Cells = new List<Cell>
                     {
-                        Cells = new List<Cell>()
+                        new Cell
                         {
-                            new Cell()
-                            {
-                                VerticalAlignment = TableVerticalAlignmentValues.Bottom,
-                                Justification = JustificationValues.Left,
-                                ChildElements = new List<BaseElement>()
-                                {
-                                    new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "Cell 1 - A small paragraph" } }, ParagraphStyleId = "Yellow" },
-                                    new Label() { Text = "Custom header" },
-                                    new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "Cell 1 - an other paragraph" } } }
-                                },
-                                Fusion = true
-                            },
-                            new Cell()
-                            {
-                                ChildElements = new List<BaseElement>()
-                                {
-                                    new Label() { Text = "Cell 2 - an other label" },
-                                    new Label() { Text = "Cell 2 - an other other label" }
-                                },
-                                Borders = new BorderModel()
-                                {
-                                    BorderColor = "00FF22",
-                                    BorderWidth = 15,
-                                    BorderPositions = BorderPositions.RIGHT | BorderPositions.TOP
-                                }
-                            }
-                        }
-                    },
-                    new Row()
-                    {
-                        Cells = new List<Cell>()
-                        {
-                            new Cell()
-                            {
-                                Fusion = true,
-                                FusionChild = true
-                            },
-                            new Cell()
-                            {
-                                VerticalAlignment = TableVerticalAlignmentValues.Bottom,
-                                Justification = JustificationValues.Right,
-                                ChildElements = new List<BaseElement>()
-                                {
-                                    new Label() { Text = "celluleX" }
-                                }
-                            }
-                        }
-                    }
-                },
-                RowModel = new Row()
-                {
-                    Cells = new List<Cell>()
-                    {
-                        new Cell()
-                        {
-                            Shading = "FFA2FF",
+                            Margin = new MarginModel { Left = 100 },
                             ChildElements = new List<BaseElement>()
                             {
-                                new Label() { Text = "Cell : #Cell1#" }
+                                new Label() { Text = "Multiple columns Header table" }
                             }
                         },
-                        new Cell()
+                        new Cell
                         {
+                            Margin = new MarginModel { Left = 100 },
                             ChildElements = new List<BaseElement>()
                             {
-                                new Label() { Text = "Cell : #Cell2#" }
+                                new Label() { Text = "This table will be full width" }
                             }
                         }
                     }
                 },
-                DataSourceKey = "#Datasource#"
+                Rows = new List<Row>()
+                {
+                    new Row
+                    {
+                        Cells = new List<Cell>
+                        {
+                            new Cell
+                            {
+                                Shading = "BCF5F3"
+                            },
+                            new Cell
+                            {
+                                Margin = new MarginModel { Left = 100 },
+                                ChildElements = new List<BaseElement>()
+                                {
+                                    new Label() { Text = "The text after this table will be splited on multiple columns" }
+                                }
+                            }
+                        }
+                    }
+                }
             };
 
             page.ChildElements.Add(tableDataSourceWithBeforeAfter);
@@ -2399,10 +2715,16 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             return page;
         }
 
+        /// <summary>
+        /// Create paragraph on second page merged with the previous one for multiple columns example
+        /// </summary>
+        /// <returns></returns>
         private static Page Generate2ColmunOnSamePage()
         {
-            var page = new Page();
-            page.ColumnNumberKey = "#ColumnNumber#";
+            var page = new Page
+            {
+                ColumnNumberKey = "#ColumnNumber#"
+            };
 
             // Define Paragraph
             var p2 = new Paragraph
@@ -2422,5 +2744,60 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
         }
 
         #endregion Multiple columns 
+
+        /// <summary>
+        /// Manage headers and footers
+        /// </summary>
+        /// <param name="doc"></param>
+        private static void ManageHeadersAndFooters(Document doc)
+        {
+            // Header
+            var header = new Header
+            {
+                Type = HeaderFooterValues.Default
+            };
+            var ph = new Paragraph
+            {
+                ChildElements = new List<BaseElement>()
+                {
+                    new Label()
+                    {
+                        Text = "Header Text ",
+                        SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve
+                    }
+                }
+            };
+            if (File.Exists(@"Resources\Desert.jpg"))
+                ph.ChildElements.Add(new Image()
+                {
+                    MaxHeight = 100,
+                    MaxWidth = 100,
+                    Path = @"Resources\Desert.jpg",
+                    ImagePartType = Engine.Packaging.ImagePartType.Jpeg
+                });
+            header.ChildElements.Add(ph);
+            doc.Headers.Add(header);
+
+            // first header
+            var firstHeader = new Header
+            {
+                Type = HeaderFooterValues.First
+            };
+            var fph = new Paragraph();
+            fph.ChildElements.Add(new Label() { Text = "First header Text" });
+            firstHeader.ChildElements.Add(fph);
+            doc.Headers.Add(firstHeader);
+
+            // Footer
+            var footer = new Footer
+            {
+                Type = HeaderFooterValues.Default
+            };
+            var pf = new Paragraph();
+            pf.ChildElements.Add(new Label() { Text = "Footer Text" });
+            pf.ChildElements.Add(new Label() { IsPageNumber = true });
+            footer.ChildElements.Add(pf);
+            doc.Footers.Add(footer);
+        }
     }
 }
