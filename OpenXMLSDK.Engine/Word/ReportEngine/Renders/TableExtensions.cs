@@ -109,6 +109,37 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 wordTableProperties.AppendChild(borders);
             }
 
+            string tableWidth = string.Empty;
+            if (table.TableWidth != null)
+            {
+                tableWidth = table.TableWidth.Width;
+                wordTable.AppendChild(new TableWidth() { Width = tableWidth, Type = table.TableWidth.Type.ToOOxml() });
+
+                // If : 
+                // - table is a UniformGrid 
+                // - no ColsWidth are defined 
+                // - tableWidth is an int 
+                if (table.GetType() == typeof(Models.UniformGrid)
+                    && table.ColsWidth is null
+                    && int.TryParse(tableWidth, out int tableWidthValue)
+                    )
+                {
+                    // If Columns are defined on the UniformGrid 
+                    if (context.TryGetItem(((Models.UniformGrid)table).ColumnNumber, out DoubleModel columnNumberKey)
+                        && int.TryParse(columnNumberKey.Value.ToString(), out int columnNumber))
+                    {
+                        int columnWidth = tableWidthValue / columnNumber;
+                        // build ColsWidth before add them
+                        table.ColsWidth = new int[columnNumber];
+                        for (int i = 0; i < columnNumber; i++)
+                        {
+                            table.ColsWidth[i] = columnWidth;
+                        }
+
+                    }
+                }
+            }
+
             // add column width definitions
             if (table.ColsWidth != null)
             {
@@ -120,11 +151,6 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     tableGrid.AppendChild(new GridColumn() { Width = width.ToString(CultureInfo.InvariantCulture) });
                 }
                 wordTable.AppendChild(tableGrid);
-            }
-
-            if (table.TableWidth != null)
-            {
-                wordTable.AppendChild(new TableWidth() { Width = table.TableWidth.Width, Type = table.TableWidth.Type.ToOOxml() });
             }
 
             // add header row

@@ -16,6 +16,11 @@
         public bool CantSplitRows { get; set; }
 
         /// <summary>
+        /// Indicate the number of column for spliting the grid 
+        /// </summary>
+        public string ColumnNumber { get; set; }
+
+        /// <summary>
         /// Constructor
         /// </summary>
         public UniformGrid()

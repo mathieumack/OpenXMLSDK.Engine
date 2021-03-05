@@ -153,6 +153,8 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
 
             GenerateUniformGridContext(context);
 
+            GenerateUniformGridAutoWidthContext(context);
+
             GenerateTableContext(context);
 
             GenerateSubstitutableStringContext(context);
@@ -211,6 +213,9 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
 
             // Uniform grid
             doc.Pages.Add(GenerateUniformGridPage());
+
+            // Uniform grid with automatic columns
+            doc.Pages.Add(GenerateUniformGridAutoWidthPage());
 
             // Tables
             doc.Pages.Add(GenerateTablesPage());
@@ -794,7 +799,27 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
         }
 
         /// <summary>
-        /// Generate uniform gid page
+        /// Generate uniform grid with autowidth column context
+        /// </summary>
+        /// <param name="context"></param>
+        private static void GenerateUniformGridAutoWidthContext(ContextModel context)
+        {
+            List<ContextModel> cellsContext = new List<ContextModel>();
+            for (int i = 0; i < DateTime.Now.Day + 10; i++)
+            {
+                ContextModel uniformGridContext = new ContextModel();
+                uniformGridContext.AddItem("#CellUniformGridTitle#", new StringModel("Item number " + (i + 1)));
+                cellsContext.Add(uniformGridContext);
+            }
+            context.AddItem("#UniformGridAutoWidthSample#", new DataSourceModel()
+            {
+                Items = cellsContext
+            });
+            context.AddDouble("#UniformGridColNumber#", 7.0, null);
+        }
+
+        /// <summary>
+        /// Generate uniform grid page
         /// </summary>
         /// <returns></returns>
         private static Page GenerateUniformGridPage()
@@ -873,6 +898,129 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             return page;
         }
 
+        /// <summary>
+        /// Generate uniform grid with autowidth column page
+        /// </summary>
+        /// <returns></returns>
+        private static Page GenerateUniformGridAutoWidthPage()
+        {
+            //int columnNumber = 6;
+            var page = new Page();
+
+            page.ChildElements.Add(new Paragraph
+            {
+                Justification = JustificationValues.Center,
+                ParagraphStyleId = "Red",
+                ChildElements = new List<BaseElement>
+                {
+                    new Label { Text = "Uniform grid with AutoWidth columns test page" }
+                    //new Label { Text = "Uniform grid with " + columnNumber + " AutoWidth columns test page" }
+                }
+            });
+
+            page.ChildElements.Add(
+                new Paragraph()
+                {
+                    ChildElements = new List<BaseElement>()
+                    {
+                        new Label()
+                        {
+                            Text = "This uniform grid is built with number of columns in parameter ",
+                            SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve
+                        },
+                        //new Label()
+                        //{
+                        //    Text = " (here it's : " + columnNumber + ")",
+                        //    Bold = true,
+                        //    SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve
+                        //},
+                        new Label()
+                        {
+                            Text = ", each columns have the same width. ",
+                            SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve
+                        }
+                    }
+                }
+             );
+
+            page.ChildElements.Add(
+                new Paragraph()
+                {
+                    ChildElements = new List<BaseElement>()
+                    {
+                        new Label()
+                        {
+                            Text = "For this uniform grid, the number of cells is defined by the actual day + 10 from the beginning of the month"
+                        }
+                    }
+                }
+            );
+
+            page.ChildElements.Add(new UniformGrid()
+            {
+                DataSourceKey = "#UniformGridAutoWidthSample#",
+                ColumnNumber = "#UniformGridColNumber#",
+                //ColsWidth = new int[4] { 1250, 1250, 1250, 1250 },
+                TableWidth = new TableWidthModel() { Width = "5000", Type = TableWidthUnitValues.Pct },
+                CellModel = new Cell()
+                {
+                    VerticalAlignment = TableVerticalAlignmentValues.Center,
+                    Justification = JustificationValues.Center,
+                    ChildElements = new List<BaseElement>()
+                        {
+                            new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "#CellUniformGridTitle#" } } },
+                            new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "Cell 1 - Second paragraph" } } }
+                        }
+                },
+                /*
+                HeaderRow = new Row()
+                {
+                    Cells = BuildColumnHeader("#UniformGridColNumber#")
+                },
+                */
+                Borders = new BorderModel()
+                {
+                    BorderPositions = BorderPositions.BOTTOM
+                                     | BorderPositions.TOP
+                                     | BorderPositions.LEFT
+                                     | BorderPositions.RIGHT
+                                     | BorderPositions.INSIDEHORIZONTAL
+                                     | BorderPositions.INSIDEVERTICAL,
+                    BorderWidthInsideHorizontal = 50,
+                    BorderWidthBottom = 50,
+                    BorderBottomColor = "00ff00",
+                    BorderWidthInsideVertical = 1,
+                    UseVariableBorders = true,
+                    BorderColor = "FF0000"
+                }
+            });
+
+            return page;
+        }
+        /*
+        private static List<Cell> BuildColumnHeader(string columnNumber)
+        {
+            List<Cell> columnHeaders = new List<Cell>();
+
+            if (!int.TryParse(columnNumber, out int colNumber))
+                return columnHeaders;
+
+            for (int i = 1; i <= colNumber; i++)
+            {
+                columnHeaders.Add(
+                    new Cell()
+                    {
+                        ChildElements = new List<BaseElement>()
+                        {
+                            new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "Header " + i } } }
+                        }
+                    }
+                );
+            }
+
+            return columnHeaders;
+        }
+        */
         #endregion
 
         #region Tables
