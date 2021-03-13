@@ -13,7 +13,7 @@
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     
     <IsTestProject>$(MSBuildProjectName.Contains('UnitTest'))</IsTestProject>
-    <IsLibraryProject>$(MSBuildProjectName.Contains('MvvX.Plugins.Open-XML-SDK'))</IsLibraryProject>
+    <IsLibraryProject>$(MSBuildProjectName.Contains('OpenXMLSDK.Engine'))</IsLibraryProject>
   </PropertyGroup>
   
 </Project>
