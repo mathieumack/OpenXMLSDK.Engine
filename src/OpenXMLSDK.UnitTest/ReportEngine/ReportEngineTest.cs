@@ -568,19 +568,27 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                 }
             });
 
+            // Yellow style to have sub-title in table of content.
+            page.ChildElements.Add(new Paragraph
+            {
+                ParagraphStyleId = "Yellow",
+                ChildElements = new List<BaseElement>
+                {
+                    new Label() { Text = "Lorem Ipsum" }
+                }
+            });
+
             // Paragraphs with spacing before, after and a style
             page.ChildElements.Add(new Paragraph
             {
                 SpacingBefore = 800,
                 SpacingAfter = 800,
                 Justification = JustificationValues.Both,
-                ParagraphStyleId = "Yellow",
                 ChildElements = new List<BaseElement>
                 {
                     new Label() { Text = Lorem_Ipsum }
                 }
             });
-
             return page;
         }
 
@@ -816,6 +824,8 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                 Items = cellsContext
             });
             context.AddDouble("#UniformGridColNumber#", 7.0, null);
+            context.AddBoolean("#UniformGridAreColumnHeaders#", false);
+            context.AddBoolean("#UniformGridAreRowHeaders#", true);
         }
 
         /// <summary>
@@ -952,6 +962,9 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             {
                 DataSourceKey = "#UniformGridAutoWidthSample#",
                 ColumnNumberKey = "#UniformGridColNumber#",
+                AreColumnHeadersKey = "#UniformGridAreColumnHeaders#",
+                AreRowHeadersKey = "#UniformGridAreRowHeaders#",
+                HeadersColor = "7FFF00", // Green chartreuse
                 TableWidth = new TableWidthModel() { Width = "5000", Type = TableWidthUnitValues.Pct },
                 CellModel = new Cell()
                 {

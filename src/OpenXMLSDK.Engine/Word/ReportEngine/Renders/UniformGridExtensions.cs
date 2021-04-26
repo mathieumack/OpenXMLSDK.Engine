@@ -64,6 +64,16 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     }
                 }
 
+                // Check if there are ColumnHeaders
+                bool areColumnHeaders = false;
+                if (!string.IsNullOrEmpty(uniformGrid.AreColumnHeadersKey) && context.TryGetItem(uniformGrid.AreColumnHeadersKey, out BooleanModel areColumnHeadersModel))
+                    areColumnHeaders = areColumnHeadersModel.Value;
+
+                // Check if there are RowHeaders
+                bool areRowHeaders = false;
+                if (!string.IsNullOrEmpty(uniformGrid.AreRowHeadersKey) && context.TryGetItem(uniformGrid.AreRowHeadersKey, out BooleanModel areRowHeadersModel))
+                    areRowHeaders = areRowHeadersModel.Value;
+
                 // Now we create all row :
                 i = 0;
                 foreach (var rowContentContext in rowsContentContexts)
@@ -72,9 +82,12 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     {
                         CantSplit = uniformGrid.CantSplitRows,
                     };
+                    // Change shading for column Header
+                    if (i == 0 && areColumnHeaders)
+                        row.Shading = uniformGrid.HeadersColor;
                     row.InheritFromParent(uniformGrid);
 
-                    wordTable.AppendChild(row.Render(document, wordTable, context, rowContentContext, uniformGrid.CellModel, documentPart, false, (i % 2 == 1), formatProvider));
+                    wordTable.AppendChild(row.Render(document, context, rowContentContext, uniformGrid.CellModel, documentPart, areRowHeaders, (i % 2 == 1), uniformGrid.HeadersColor, formatProvider));
 
                     i++;
                 }
