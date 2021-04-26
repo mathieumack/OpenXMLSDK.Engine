@@ -125,7 +125,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     )
                 {
                     // If Columns are defined on the UniformGrid 
-                    if (context.TryGetItem(((Models.UniformGrid)table).ColumnNumber, out DoubleModel columnNumberKey)
+                    if (context.TryGetItem(((Models.UniformGrid)table).ColumnNumberKey, out DoubleModel columnNumberKey)
                         && int.TryParse(columnNumberKey.Value.ToString(), out int columnNumber))
                     {
                         int columnWidth = tableWidthValue / columnNumber;

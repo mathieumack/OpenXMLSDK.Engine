@@ -16,9 +16,9 @@
         public bool CantSplitRows { get; set; }
 
         /// <summary>
-        /// Indicate the number of column for spliting the grid 
+        /// Key indicating the number of column for spliting the grid 
         /// </summary>
-        public string ColumnNumber { get; set; }
+        public string ColumnNumberKey { get; set; }
 
         /// <summary>
         /// Constructor

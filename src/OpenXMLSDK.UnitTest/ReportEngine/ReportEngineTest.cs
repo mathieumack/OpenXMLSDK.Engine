@@ -904,7 +904,6 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
         /// <returns></returns>
         private static Page GenerateUniformGridAutoWidthPage()
         {
-            //int columnNumber = 6;
             var page = new Page();
 
             page.ChildElements.Add(new Paragraph
@@ -914,7 +913,6 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                 ChildElements = new List<BaseElement>
                 {
                     new Label { Text = "Uniform grid with AutoWidth columns test page" }
-                    //new Label { Text = "Uniform grid with " + columnNumber + " AutoWidth columns test page" }
                 }
             });
 
@@ -928,12 +926,6 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                             Text = "This uniform grid is built with number of columns in parameter ",
                             SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve
                         },
-                        //new Label()
-                        //{
-                        //    Text = " (here it's : " + columnNumber + ")",
-                        //    Bold = true,
-                        //    SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve
-                        //},
                         new Label()
                         {
                             Text = ", each columns have the same width. ",
@@ -959,8 +951,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             page.ChildElements.Add(new UniformGrid()
             {
                 DataSourceKey = "#UniformGridAutoWidthSample#",
-                ColumnNumber = "#UniformGridColNumber#",
-                //ColsWidth = new int[4] { 1250, 1250, 1250, 1250 },
+                ColumnNumberKey = "#UniformGridColNumber#",
                 TableWidth = new TableWidthModel() { Width = "5000", Type = TableWidthUnitValues.Pct },
                 CellModel = new Cell()
                 {
@@ -972,12 +963,6 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                             new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "Cell 1 - Second paragraph" } } }
                         }
                 },
-                /*
-                HeaderRow = new Row()
-                {
-                    Cells = BuildColumnHeader("#UniformGridColNumber#")
-                },
-                */
                 Borders = new BorderModel()
                 {
                     BorderPositions = BorderPositions.BOTTOM
@@ -997,30 +982,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
 
             return page;
         }
-        /*
-        private static List<Cell> BuildColumnHeader(string columnNumber)
-        {
-            List<Cell> columnHeaders = new List<Cell>();
 
-            if (!int.TryParse(columnNumber, out int colNumber))
-                return columnHeaders;
-
-            for (int i = 1; i <= colNumber; i++)
-            {
-                columnHeaders.Add(
-                    new Cell()
-                    {
-                        ChildElements = new List<BaseElement>()
-                        {
-                            new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "Header " + i } } }
-                        }
-                    }
-                );
-            }
-
-            return columnHeaders;
-        }
-        */
         #endregion
 
         #region Tables
@@ -1236,7 +1198,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                         new Cell()
                         {
                             ColSpanKey = "#ColSpan#",
-                            Shading = "FFA0FF",
+                            Shading = "FFA0FF",// Pink
                             ChildElements = new List<BaseElement>()
                             {
                                 new Label() { Text = "#Cell1#" },
@@ -1277,7 +1239,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                     {
                         new Cell()
                         {
-                            Shading = "FFA0FF",
+                            Shading = "FFA0FF",// Pink
                             ChildElements = new List<BaseElement>()
                             {
                                 new Label()
@@ -1440,7 +1402,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                     {
                         new Cell()
                         {
-                            Shading = "FFA0FF",
+                            Shading = "FFA0FF",// Pink
                             ChildElements = new List<BaseElement>()
                             {
                                 new Label() { Text = "#Cell1#" }
