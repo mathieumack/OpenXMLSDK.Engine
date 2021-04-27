@@ -82,9 +82,12 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     {
                         CantSplit = uniformGrid.CantSplitRows,
                     };
-                    // Change shading for column Header
+                    // Change shading and bold font for column Header
                     if (i == 0 && areColumnHeaders)
+                    { 
+                        row.Bold = true;
                         row.Shading = uniformGrid.HeadersColor;
+                    }
                     row.InheritFromParent(uniformGrid);
 
                     wordTable.AppendChild(row.Render(document, context, rowContentContext, uniformGrid.CellModel, documentPart, areRowHeaders, (i % 2 == 1), uniformGrid.HeadersColor, formatProvider));

@@ -37,9 +37,12 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             foreach (var cellContext in cellsContext)
             {
                 var cell = cellModel.Clone();
-                // Change shading for row Header
+                // Change shading and bold font for row Header
                 if (i == 0 && isHeader)
+                {
+                    cell.Bold = true;
                     cell.Shading = headerColor;
+                }
                 cell.InheritFromParent(row);
                 wordRow.AppendChild(cell.Render(document, wordRow, cellContext, documentPart, isAlternateRow, formatProvider));
 
