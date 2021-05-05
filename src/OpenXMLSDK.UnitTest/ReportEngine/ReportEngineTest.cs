@@ -568,7 +568,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                 }
             });
 
-            // Yellow style to have sub-title in table of content.
+            // Yellow style to have sub-title in table of content
             page.ChildElements.Add(new Paragraph
             {
                 ParagraphStyleId = "Yellow",
@@ -578,7 +578,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                 }
             });
 
-            // Paragraphs with spacing before, after and a style
+            // Paragraphs with spacing before and after
             page.ChildElements.Add(new Paragraph
             {
                 SpacingBefore = 800,
