@@ -153,6 +153,8 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
 
             GenerateUniformGridContext(context);
 
+            GenerateUniformGridAutoWidthContext(context);
+
             GenerateTableContext(context);
 
             GenerateSubstitutableStringContext(context);
@@ -211,6 +213,9 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
 
             // Uniform grid
             doc.Pages.Add(GenerateUniformGridPage());
+
+            // Uniform grid with automatic columns
+            doc.Pages.Add(GenerateUniformGridAutoWidthPage());
 
             // Tables
             doc.Pages.Add(GenerateTablesPage());
@@ -563,19 +568,27 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                 }
             });
 
-            // Paragraphs with spacing before, after and a style
+            // Yellow style to have sub-title in table of content
+            page.ChildElements.Add(new Paragraph
+            {
+                ParagraphStyleId = "Yellow",
+                ChildElements = new List<BaseElement>
+                {
+                    new Label() { Text = "Lorem Ipsum" }
+                }
+            });
+
+            // Paragraphs with spacing before and after
             page.ChildElements.Add(new Paragraph
             {
                 SpacingBefore = 800,
                 SpacingAfter = 800,
                 Justification = JustificationValues.Both,
-                ParagraphStyleId = "Yellow",
                 ChildElements = new List<BaseElement>
                 {
                     new Label() { Text = Lorem_Ipsum }
                 }
             });
-
             return page;
         }
 
@@ -794,7 +807,29 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
         }
 
         /// <summary>
-        /// Generate uniform gid page
+        /// Generate uniform grid with autowidth column context
+        /// </summary>
+        /// <param name="context"></param>
+        private static void GenerateUniformGridAutoWidthContext(ContextModel context)
+        {
+            List<ContextModel> cellsContext = new List<ContextModel>();
+            for (int i = 0; i < DateTime.Now.Day + 10; i++)
+            {
+                ContextModel uniformGridContext = new ContextModel();
+                uniformGridContext.AddItem("#CellUniformGridTitle#", new StringModel("Item number " + (i + 1)));
+                cellsContext.Add(uniformGridContext);
+            }
+            context.AddItem("#UniformGridAutoWidthSample#", new DataSourceModel()
+            {
+                Items = cellsContext
+            });
+            context.AddDouble("#UniformGridColNumber#", 7.0, null);
+            context.AddBoolean("#UniformGridAreColumnHeaders#", false);
+            context.AddBoolean("#UniformGridAreRowHeaders#", true);
+        }
+
+        /// <summary>
+        /// Generate uniform grid page
         /// </summary>
         /// <returns></returns>
         private static Page GenerateUniformGridPage()
@@ -864,6 +899,94 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                 {
                     BorderPositions = BorderPositions.BOTTOM | BorderPositions.INSIDEVERTICAL,
                     BorderWidthBottom = 50,
+                    BorderWidthInsideVertical = 1,
+                    UseVariableBorders = true,
+                    BorderColor = "FF0000"
+                }
+            });
+
+            return page;
+        }
+
+        /// <summary>
+        /// Generate uniform grid with autowidth column page
+        /// </summary>
+        /// <returns></returns>
+        private static Page GenerateUniformGridAutoWidthPage()
+        {
+            var page = new Page();
+
+            page.ChildElements.Add(new Paragraph
+            {
+                Justification = JustificationValues.Center,
+                ParagraphStyleId = "Red",
+                ChildElements = new List<BaseElement>
+                {
+                    new Label { Text = "Uniform grid with AutoWidth columns test page" }
+                }
+            });
+
+            page.ChildElements.Add(
+                new Paragraph()
+                {
+                    ChildElements = new List<BaseElement>()
+                    {
+                        new Label()
+                        {
+                            Text = "This uniform grid is built with number of columns in parameter ",
+                            SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve
+                        },
+                        new Label()
+                        {
+                            Text = ", each columns have the same width. ",
+                            SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve
+                        }
+                    }
+                }
+             );
+
+            page.ChildElements.Add(
+                new Paragraph()
+                {
+                    ChildElements = new List<BaseElement>()
+                    {
+                        new Label()
+                        {
+                            Text = "For this uniform grid, the number of cells is defined by the actual day + 10 from the beginning of the month"
+                        }
+                    }
+                }
+            );
+
+            page.ChildElements.Add(new UniformGrid()
+            {
+                DataSourceKey = "#UniformGridAutoWidthSample#",
+                ColumnNumberKey = "#UniformGridColNumber#",
+                AreColumnHeadersKey = "#UniformGridAreColumnHeaders#",
+                AreRowHeadersKey = "#UniformGridAreRowHeaders#",
+                HeadersColor = "7FFF00", // Green chartreuse
+                TableWidth = new TableWidthModel() { Width = "5000", Type = TableWidthUnitValues.Pct },
+                CellModel = new Cell()
+                {
+                    VerticalAlignment = TableVerticalAlignmentValues.Center,
+                    Justification = JustificationValues.Center,
+                    ChildElements = new List<BaseElement>()
+                        {
+                            new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "#CellUniformGridTitle#" } } },
+                            new Paragraph() { ChildElements = new List<BaseElement>() { new Label() { Text = "Cell 1 - Second paragraph" } } }
+                        }
+                },
+                Borders = new BorderModel()
+                {
+                    BorderPositions = BorderPositions.BOTTOM
+                                     | BorderPositions.TOP
+                                     | BorderPositions.LEFT
+                                     | BorderPositions.RIGHT
+                                     | BorderPositions.INSIDEHORIZONTAL
+                                     | BorderPositions.INSIDEVERTICAL,
+                    BorderWidthInsideHorizontal = 50,
+                    BorderWidthBottom = 50,
+                    BorderBottomColor = "00ff00",
                     BorderWidthInsideVertical = 1,
                     UseVariableBorders = true,
                     BorderColor = "FF0000"
@@ -1088,7 +1211,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                         new Cell()
                         {
                             ColSpanKey = "#ColSpan#",
-                            Shading = "FFA0FF",
+                            Shading = "FFA0FF",// Pink
                             ChildElements = new List<BaseElement>()
                             {
                                 new Label() { Text = "#Cell1#" },
@@ -1129,7 +1252,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                     {
                         new Cell()
                         {
-                            Shading = "FFA0FF",
+                            Shading = "FFA0FF",// Pink
                             ChildElements = new List<BaseElement>()
                             {
                                 new Label()
@@ -1292,7 +1415,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                     {
                         new Cell()
                         {
-                            Shading = "FFA0FF",
+                            Shading = "FFA0FF",// Pink
                             ChildElements = new List<BaseElement>()
                             {
                                 new Label() { Text = "#Cell1#" }
