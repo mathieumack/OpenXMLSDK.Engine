@@ -28,6 +28,7 @@ namespace OpenXMLSDK.Engine.ReportEngine.DataContext
         /// Constructor
         /// </summary>
         /// <param name="value"></param>
+        /// <param name="renderPattern"></param>
         public DoubleModel(double value, string renderPattern)
             : base(typeof(DoubleModel).Name)
         {

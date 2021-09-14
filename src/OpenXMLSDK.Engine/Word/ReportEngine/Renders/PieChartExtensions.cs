@@ -5,6 +5,7 @@ using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using OpenXMLSDK.Engine.ReportEngine.DataContext;
+using OpenXMLSDK.Engine.ReportEngine.Validations;
 using OpenXMLSDK.Engine.Word.Charts;
 using OpenXMLSDK.Engine.Word.ReportEngine.BatchModels;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts;
@@ -94,7 +95,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             int countCategories = chartModel.Categories.Count;
 
             // Check that number of categories equals number of items in series
-            var ok = (chartModel.Serie.Values.Count() == countCategories);
+            var ok = chartModel.Serie.Values.Count == countCategories;
 
             if (!ok)
                 throw new ChartModelException("Error in series. Serie values must have same count as categories.", "004-001");
@@ -104,9 +105,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             chartPart.ChartSpace = new dc.ChartSpace();
             chartPart.ChartSpace.Append(new dc.EditingLanguage() { Val = new StringValue("en-US") });
             chartPart.ChartSpace.Append(new dc.RoundedCorners { Val = new BooleanValue(chartModel.RoundedCorner) });
-            dc.Chart chart = chartPart.ChartSpace.AppendChild
-                <DocumentFormat.OpenXml.Drawing.Charts.Chart>
-                (new dc.Chart());
+            dc.Chart chart = chartPart.ChartSpace.AppendChild(new dc.Chart());
 
             // Ajout du titre au graphique
             if (chartModel.ShowTitle)
@@ -128,7 +127,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             //        RotateY = new dc.RotateY() { Val = 0 }
             //    });
 
-            dc.Layout layout = plotArea.AppendChild<dc.Layout>(new dc.Layout());
+            plotArea.AppendChild<dc.Layout>(new dc.Layout());
             dc.PieChart pieChart = plotArea.AppendChild<dc.PieChart>(new dc.PieChart());
 
             uint i = 0;
@@ -147,8 +146,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             {
                 string color = serie.Color;
                 color = color.Replace("#", "");
-                if (!Regex.IsMatch(color, "^[0-9-A-F]{6}$"))
-                    throw new Exception("Error in color of serie.");
+                color.CheckColorFormat();
 
                 shapeProperties.AppendChild(new A.SolidFill() { RgbColorModelHex = new A.RgbColorModelHex() { Val = color } });
             }
@@ -160,8 +158,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 
                 serie.BorderColor = !string.IsNullOrEmpty(serie.BorderColor) ? serie.BorderColor : "000000";
                 serie.BorderColor = serie.BorderColor.Replace("#", "");
-                if (!Regex.IsMatch(serie.BorderColor, "^[0-9-A-F]{6}$"))
-                    throw new Exception("Error in color of serie.");
+                serie.BorderColor.CheckColorFormat();
 
                 shapeProperties.AppendChild(new A.Outline(new A.SolidFill(new A.RgbColorModelHex() { Val = serie.BorderColor })) { Width = serie.BorderWidth.Value });
             }
@@ -184,8 +181,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 {
                     string color = categorie.Color;
                     color = color.Replace("#", "");
-                    if (!Regex.IsMatch(color, "^[0-9-A-F]{6}$"))
-                        throw new Exception("Error in color of serie.");
+                    color.CheckColorFormat();
 
                     A.ShapeProperties shapeProp = new A.ShapeProperties();
 
@@ -217,7 +213,6 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 numLit.NumberingCache.AppendChild<dc.NumericPoint>(new dc.NumericPoint() { Index = p, NumericValue = new dc.NumericValue(value != null ? value.ToString() : string.Empty) });
                 p++;
             }
-            i++;
 
             dc.DataLabels dLbls = new dc.DataLabels(
                 new dc.ShowLegendKey() { Val = false },
@@ -235,8 +230,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             if (!string.IsNullOrWhiteSpace(chartModel.DataLabelColor))
                 dataLabelColor = chartModel.DataLabelColor;
             dataLabelColor = dataLabelColor.Replace("#", "");
-            if (!Regex.IsMatch(dataLabelColor, "^[0-9-A-F]{6}$"))
-                throw new Exception("Error in dataLabel color.");
+            dataLabelColor.CheckColorFormat();
 
             var fontSize = chartModel.DataLabel.FontSize * 100; // word size x 100 for XML FontSize
             dc.TextProperties txtPr = new dc.TextProperties(
@@ -281,7 +275,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                         new A.ListStyle(),
                         new A.Paragraph(new A.ParagraphProperties(defaultRunProperties)));
 
-                dc.Legend legend = chart.AppendChild<dc.Legend>(new dc.Legend(new dc.LegendPosition() { Val = new DocumentFormat.OpenXml.EnumValue<dc.LegendPositionValues>(dc.LegendPositionValues.Right) },
+                chart.AppendChild<dc.Legend>(new dc.Legend(new dc.LegendPosition() { Val = new DocumentFormat.OpenXml.EnumValue<dc.LegendPositionValues>(dc.LegendPositionValues.Right) },
                 new dc.Overlay() { Val = false },
                 new dc.Layout(),
                 textProperty));

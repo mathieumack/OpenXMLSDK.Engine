@@ -8,6 +8,7 @@ using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using OpenXMLSDK.Engine.ReportEngine.DataContext;
 using OpenXMLSDK.Engine.ReportEngine.DataContext.Charts;
+using OpenXMLSDK.Engine.ReportEngine.Validations;
 using OpenXMLSDK.Engine.Word.Extensions;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts;
 using A = DocumentFormat.OpenXml.Drawing;
@@ -140,8 +141,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 {
                     string color = serie.Color;
                     color = color.Replace("#", "");
-                    if (!Regex.IsMatch(color, "^[0-9-A-F]{6}$"))
-                        throw new Exception("Error in color of serie.");
+                    color.CheckColorFormat();
 
                     if (serie.HideCurve.HasValue && serie.HideCurve.Value)
                     {
@@ -334,8 +334,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             if (!string.IsNullOrWhiteSpace(chartModel.DataLabelColor))
                 dataLabelColor = chartModel.DataLabelColor;
             dataLabelColor = dataLabelColor.Replace("#", "");
-            if (!Regex.IsMatch(dataLabelColor, "^[0-9-A-F]{6}$"))
-                throw new Exception("Error in dataLabel color.");
+            dataLabelColor.CheckColorFormat();
 
             var fontSize = chartModel.DataLabel.FontSize * 100; // word size x 100 for XML FontSize
             TextProperties txtPr = new TextProperties
@@ -380,8 +379,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             if (!string.IsNullOrWhiteSpace(color))
             {
                 color = color.Replace("#", "");
-                if (!Regex.IsMatch(color, "^[0-9-A-F]{6}$"))
-                    throw new Exception("Error in Title color.");
+                color.CheckColorFormat();
 
                 rpr.AppendChild(new A.SolidFill() { RgbColorModelHex = new A.RgbColorModelHex() { Val = color } });
             }
@@ -420,8 +418,8 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             if (!string.IsNullOrWhiteSpace(color))
             {
                 color = color.Replace("#", "");
-                if (!Regex.IsMatch(color, "^[0-9-A-F]{6}$"))
-                    throw new Exception("Error in color of grid lines.");
+                color.CheckColorFormat();
+
                 return new ChartShapeProperties(new A.Outline(new A.SolidFill() { RgbColorModelHex = new A.RgbColorModelHex() { Val = color } }));
             }
 
@@ -471,8 +469,8 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 if (!string.IsNullOrEmpty(chartModel.BorderColor))
                 {
                     var color = chartModel.BorderColor.Replace("#", "");
-                    if (!Regex.IsMatch(color, "^[0-9-A-F]{6}$"))
-                        throw new Exception("Error in color of chart borders.");
+                    color.CheckColorFormat();
+
                     chartPart.ChartSpace.AppendChild(new ChartShapeProperties(new A.Outline(new A.SolidFill(new A.RgbColorModelHex() { Val = color })) { Width = chartModel.BorderWidth.Value }));
                 }
                 else
