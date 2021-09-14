@@ -33,33 +33,31 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 
             Run runItem = null;
 
-            if (!string.IsNullOrWhiteSpace(barChart.DataSourceKey))
+            // We construct categories and series from the context object
+            if (context.TryGetItem(barChart.DataSourceKey, out BarChartModel contextModel))
             {
-                // We construct categories and series from the context object
-                if (context.TryGetItem(barChart.DataSourceKey, out BarChartModel contextModel))
+                if (contextModel.BarChartContent is null || contextModel.BarChartContent.Categories is null
+                    || contextModel.BarChartContent.Series is null)
+                    return runItem;
+
+                // Update barChart object :
+                barChart.Categories = contextModel.BarChartContent.Categories.Select(e => new BarCategory()
                 {
-                    if (contextModel.BarChartContent is null || contextModel.BarChartContent.Categories is null
-                       || contextModel.BarChartContent.Series is null)
-                        return runItem;
+                    Name = e.Name,
+                    Color = e.Color
+                }).ToList();
 
-                    // Update barChart object :
-                    barChart.Categories = contextModel.BarChartContent.Categories.Select(e => new BarCategory()
-                    {
-                        Name = e.Name,
-                        Color = e.Color
-                    }).ToList();
-
-                    // We update
-                    barChart.Series = contextModel.BarChartContent.Series.Select(e => new BarSerie()
-                    {
-                        LabelFormatString = e.LabelFormatString,
-                        Color = e.Color,
-                        DataLabelColor = e.DataLabelColor,
-                        Values = e.Values,
-                        Name = e.Name
-                    }).ToList();
-                }
-                else if (context.TryGetItem(barChart.DataSourceKey, out MultipleSeriesChartModel multipleSeriesContextModel))
+                // We update
+                barChart.Series = contextModel.BarChartContent.Series.Select(e => new BarSerie()
+                {
+                    LabelFormatString = e.LabelFormatString,
+                    Color = e.Color,
+                    DataLabelColor = e.DataLabelColor,
+                    Values = e.Values,
+                    Name = e.Name
+                }).ToList();
+            }
+            else if (context.TryGetItem(barChart.DataSourceKey, out MultipleSeriesChartModel multipleSeriesContextModel))
                 {
                     if (multipleSeriesContextModel.ChartContent is null || multipleSeriesContextModel.ChartContent.Categories is null
                      || multipleSeriesContextModel.ChartContent.Series is null)
@@ -94,7 +92,6 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     UpdateAxisFromcontext(barChart.ValuesAxisModel, multipleSeriesContextModel.ChartContent.ValuesAxisModel);
                     UpdateAxisFromcontext(barChart.SecondaryValuesAxisModel, multipleSeriesContextModel.ChartContent.SecondaryValuesAxisModel);
                 }
-            }
 
             switch (barChart.BarChartType)
             {

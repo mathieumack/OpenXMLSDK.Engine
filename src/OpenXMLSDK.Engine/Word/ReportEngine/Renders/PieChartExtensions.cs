@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Text.RegularExpressions;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
@@ -12,6 +11,7 @@ using OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts;
 using A = DocumentFormat.OpenXml.Drawing;
 using dc = DocumentFormat.OpenXml.Drawing.Charts;
 using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
+using OpenXMLSDK.Engine.ReportEngine.DataContext.Charts.Extensions;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 {
@@ -91,13 +91,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 throw new ArgumentNullException("categories of chartModel must not be null");
             if (chartModel.Serie == null)
                 throw new ArgumentNullException("Serie of chartModel must be not null");
-
-            int countCategories = chartModel.Categories.Count;
-
-            // Check that number of categories equals number of items in series
-            var ok = chartModel.Serie.Values.Count == countCategories;
-
-            if (!ok)
+            if (chartModel.Serie.Values.Count != chartModel.Categories.Count)
                 throw new ChartModelException("Error in series. Serie values must have same count as categories.", "004-001");
 
             // Add a new chart and set the chart language to English-US.
@@ -105,18 +99,8 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             chartPart.ChartSpace = new dc.ChartSpace();
             chartPart.ChartSpace.Append(new dc.EditingLanguage() { Val = new StringValue("en-US") });
             chartPart.ChartSpace.Append(new dc.RoundedCorners { Val = new BooleanValue(chartModel.RoundedCorner) });
-            dc.Chart chart = chartPart.ChartSpace.AppendChild(new dc.Chart());
-
-            // Ajout du titre au graphique
-            if (chartModel.ShowTitle)
-            {
-                dc.Title titleChart = chart.AppendChild<dc.Title>(new dc.Title());
-                titleChart.AppendChild(new dc.ChartText(new dc.RichText(
-                    new A.BodyProperties(),
-                    new A.ListStyle(),
-                    new A.Paragraph(new A.Run(new A.Text(chartModel.Title))))));
-                titleChart.AppendChild(new dc.Overlay() { Val = false });
-            }
+            dc.Chart chart = chartPart.ChartSpace.AppendChild(new dc.Chart())
+                                        .TryAddTitle(chartModel);
 
             // Create a new clustered column chart.
             dc.PlotArea plotArea = chart.AppendChild<dc.PlotArea>(new dc.PlotArea());
@@ -140,28 +124,9 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 new dc.StringPoint() { Index = (uint)0, NumericValue = new dc.NumericValue() { Text = serie.Name } })))));
 
             // Gestion de la couleur de la série
-            A.ShapeProperties shapeProperties = new A.ShapeProperties();
-
-            if (!string.IsNullOrWhiteSpace(serie.Color))
-            {
-                string color = serie.Color;
-                color = color.Replace("#", "");
-                color.CheckColorFormat();
-
-                shapeProperties.AppendChild(new A.SolidFill() { RgbColorModelHex = new A.RgbColorModelHex() { Val = color } });
-            }
-
-            // Border of all categories
-            if (serie.HasBorder)
-            {
-                serie.BorderWidth = serie.BorderWidth.HasValue ? serie.BorderWidth.Value : 12700;
-
-                serie.BorderColor = !string.IsNullOrEmpty(serie.BorderColor) ? serie.BorderColor : "000000";
-                serie.BorderColor = serie.BorderColor.Replace("#", "");
-                serie.BorderColor.CheckColorFormat();
-
-                shapeProperties.AppendChild(new A.Outline(new A.SolidFill(new A.RgbColorModelHex() { Val = serie.BorderColor })) { Width = serie.BorderWidth.Value });
-            }
+            var shapeProperties = new A.ShapeProperties()
+                                                        .TryAddSolidLine(serie)
+                                                        .TryAddBorder(serie);
 
             if (shapeProperties.HasChildren)
                 pieChartSeries.AppendChild(shapeProperties);
@@ -170,7 +135,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             dc.StringReference strLit = pieChartSeries.AppendChild<dc.CategoryAxisData>
                     (new dc.CategoryAxisData()).AppendChild<dc.StringReference>(new dc.StringReference());
             strLit.AppendChild(new dc.StringCache());
-            strLit.StringCache.AppendChild(new dc.PointCount() { Val = (uint)countCategories });
+            strLit.StringCache.AppendChild(new dc.PointCount() { Val = (uint)chartModel.Categories.Count });
             uint p = 0;
             // Liste catégorie
             foreach (var categorie in chartModel.Categories)
@@ -202,9 +167,8 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             p = 0;
 
             // Gestion des valeurs
-            dc.NumberReference numLit = pieChartSeries.AppendChild<DocumentFormat.OpenXml.Drawing.Charts.Values>
-                (new dc.Values())
-                    .AppendChild<dc.NumberReference>(new dc.NumberReference());
+            dc.NumberReference numLit = pieChartSeries.AppendChild(new dc.Values())
+                    .AppendChild(new dc.NumberReference());
             numLit.AppendChild(new dc.NumberingCache());
             numLit.NumberingCache.AppendChild(new dc.FormatCode("General"));
             numLit.NumberingCache.AppendChild(new dc.PointCount() { Val = (uint)serie.Values.Count });
@@ -289,15 +253,9 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             if (chartModel.HasBorder)
             {
                 chartModel.BorderWidth = chartModel.BorderWidth.HasValue ? chartModel.BorderWidth.Value : 12700;
+                var color = !string.IsNullOrEmpty(chartModel.BorderColor) ? chartModel.BorderColor : "000000";
 
-                if (!string.IsNullOrEmpty(chartModel.BorderColor))
-                {
-                    chartPart.ChartSpace.Append(new dc.ChartShapeProperties(new A.Outline(new A.SolidFill(new A.RgbColorModelHex() { Val = chartModel.BorderColor })) { Width = chartModel.BorderWidth.Value }));
-                }
-                else
-                {
-                    chartPart.ChartSpace.Append(new dc.ChartShapeProperties(new A.Outline(new A.SolidFill(new A.RgbColorModelHex() { Val = "000000" })) { Width = chartModel.BorderWidth.Value }));
-                }
+                chartPart.ChartSpace.Append(new dc.ChartShapeProperties(new A.Outline(new A.SolidFill(new A.RgbColorModelHex() { Val = color })) { Width = chartModel.BorderWidth.Value }));
             }
             else
             {

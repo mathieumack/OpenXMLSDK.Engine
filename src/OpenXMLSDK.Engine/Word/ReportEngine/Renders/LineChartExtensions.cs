@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
-using System.Text.RegularExpressions;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Drawing.Charts;
 using DocumentFormat.OpenXml.Packaging;
@@ -459,14 +458,12 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             if (!show)
                 return new ChartShapeProperties(new A.Outline(new A.NoFill()));
 
-            if (!string.IsNullOrWhiteSpace(color))
-            {
-                color = color.Replace("#", "");
-                color.CheckColorFormat();
-                return new ChartShapeProperties(new A.Outline(new A.SolidFill() { RgbColorModelHex = new A.RgbColorModelHex() { Val = color } }));
-            }
+            if (string.IsNullOrWhiteSpace(color))
+                return new ChartShapeProperties();
 
-            return new ChartShapeProperties();
+            color = color.Replace("#", "");
+            color.CheckColorFormat();
+            return new ChartShapeProperties(new A.Outline(new A.SolidFill() { RgbColorModelHex = new A.RgbColorModelHex() { Val = color } }));
         }
 
         /// <summary>
@@ -477,24 +474,24 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         private static void ManageLegend(LineModel chartModel, Chart chart)
         {
             // Add the chart Legend.
-            if (chartModel.ShowLegend)
-            {
-                var defaultRunProperties = new A.DefaultRunProperties { Baseline = 0 };
-                if (!string.IsNullOrEmpty(chartModel.FontFamilyLegend))
-                    defaultRunProperties.AppendChild(new A.LatinFont { CharacterSet = 0, Typeface = chartModel.FontFamilyLegend });
+            if (!chartModel.ShowLegend)
+                return;
 
-                var textProperty = new TextProperties
-                    (
-                        new A.BodyProperties(),
-                        new A.ListStyle(),
-                        new A.Paragraph(new A.ParagraphProperties(defaultRunProperties)));
+            var defaultRunProperties = new A.DefaultRunProperties { Baseline = 0 };
+            if (!string.IsNullOrEmpty(chartModel.FontFamilyLegend))
+                defaultRunProperties.AppendChild(new A.LatinFont { CharacterSet = 0, Typeface = chartModel.FontFamilyLegend });
 
-                chart.AppendChild(
-                    new Legend(new LegendPosition() { Val = new EnumValue<DC.LegendPositionValues>((DC.LegendPositionValues)(int)chartModel.LegendPosition) },
-                    new Overlay() { Val = false },
-                    new Layout(),
-                    textProperty));
-            }
+            var textProperty = new TextProperties
+                (
+                    new A.BodyProperties(),
+                    new A.ListStyle(),
+                    new A.Paragraph(new A.ParagraphProperties(defaultRunProperties)));
+
+            chart.AppendChild(
+                new Legend(new LegendPosition() { Val = new EnumValue<DC.LegendPositionValues>((DC.LegendPositionValues)(int)chartModel.LegendPosition) },
+                new Overlay() { Val = false },
+                new Layout(),
+                textProperty));
         }
 
         /// <summary>
@@ -505,7 +502,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         private static void ManageGraphBorders(LineModel chartModel, ChartPart chartPart)
         {
             // Graph borders.
-            if (chartModel.HasBorder)
+            if (!chartModel.HasBorder)
             {
                 chartModel.BorderWidth ??= 12700;
 
