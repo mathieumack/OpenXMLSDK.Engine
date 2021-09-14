@@ -6,6 +6,7 @@ using DocumentFormat.OpenXml.Drawing.Charts;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using OpenXMLSDK.Engine.ReportEngine.DataContext;
+using OpenXMLSDK.Engine.ReportEngine.Validations;
 using OpenXMLSDK.Engine.Word.Charts;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts;
 using A = DocumentFormat.OpenXml.Drawing;
@@ -293,8 +294,8 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 if (!string.IsNullOrEmpty(chartModel.BorderColor))
                 {
                     var color = chartModel.BorderColor.Replace("#", "");
-                    if (!Regex.IsMatch(color, "^[0-9-A-F]{6}$"))
-                        throw new Exception("Error in color of chart borders.");
+                    color.CheckColorFormat();
+
                     chartPart.ChartSpace.AppendChild(new ChartShapeProperties(new A.Outline(new A.SolidFill(new A.RgbColorModelHex() { Val = color })) { Width = chartModel.BorderWidth.Value }));
                 }
                 else
