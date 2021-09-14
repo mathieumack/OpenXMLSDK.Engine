@@ -2,7 +2,7 @@
 using OpenXMLSDK.Engine.ReportEngine.Validations;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts;
 
-namespace OpenXMLSDK.Engine.ReportEngine.DataContext.Charts.Extensions
+namespace OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts.Extensions
 {
     public static class ShapePropertiesExtensions
     {

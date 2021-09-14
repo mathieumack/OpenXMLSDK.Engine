@@ -11,7 +11,7 @@ using OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts;
 using A = DocumentFormat.OpenXml.Drawing;
 using dc = DocumentFormat.OpenXml.Drawing.Charts;
 using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
-using OpenXMLSDK.Engine.ReportEngine.DataContext.Charts.Extensions;
+using OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts.Extensions;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 {
