@@ -48,11 +48,6 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models
         public string ContextKey { get; set; }
 
         /// <summary>
-        /// The link in case of image link
-        /// </summary>
-        public Link Hyperlink { get; set; }
-
-        /// <summary>
         /// Constructor
         /// </summary>
         public Image()

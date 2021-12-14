@@ -533,13 +533,16 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                 {
                     ChildElements = new List<BaseElement>()
                     {
-                        new Image()
+                        new Hyperlink 
                         {
-                            MaxHeight = 100,
-                            MaxWidth = 100,
-                            Path = @"Resources\Desert.jpg",
-                            ImagePartType = Engine.Packaging.ImagePartType.Jpeg,
-                            Hyperlink = new Link { HyperlinkUrl = "https://github.com/mathieumack/OpenXMLSDK.Engine/issues/234", IsExternalUrl = true },
+                            WebSiteUri = "https://github.com/mathieumack/OpenXMLSDK.Engine/issues/234",
+                            Image = new Image
+                            {
+                                MaxHeight = 100,
+                                MaxWidth = 100,
+                                Path = @"Resources\Desert.jpg",
+                                ImagePartType = Engine.Packaging.ImagePartType.Jpeg,
+                            }
                         }
                     }
                 });

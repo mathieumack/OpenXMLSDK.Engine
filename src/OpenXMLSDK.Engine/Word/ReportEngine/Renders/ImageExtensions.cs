@@ -24,7 +24,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// <param name="context">Context</param>
         /// <param name="documentPart">MainDocumentPart</param>
         /// <returns></returns>
-        public static OpenXmlElement Render(this Models.Image image, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart)
+        public static OpenXmlElement Render(this Models.Image image, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart, string hyperlinkRelationShipId = null)
         {
             context.ReplaceItem(image);
             ImagePart imagePart;
@@ -56,7 +56,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             }
             if (isNotEmpty)
             {
-                OpenXmlElement result = CreateImage(imagePart, image, documentPart);
+                OpenXmlElement result = CreateImage(imagePart, image, documentPart, hyperlinkRelationShipId);
                 parent.Append(result);
 
                 return result;
@@ -74,14 +74,12 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// <param name="model"></param>
         /// <param name="mainDocumentPart"></param>
         /// <returns></returns>
-        private static OpenXmlElement CreateImage(ImagePart imagePart, Models.Image model, OpenXmlPart mainDocumentPart)
+        private static OpenXmlElement CreateImage(ImagePart imagePart, Models.Image model, OpenXmlPart mainDocumentPart, string hyperlinkRelationShipId)
         {
             string relationshipId = mainDocumentPart.GetIdOfPart(imagePart);
 
             long imageWidth;
             long imageHeight;
-
-            var hyperlink = GetHyperlinkRelationShip(mainDocumentPart, model);
 
             using (var image = SixLabors.ImageSharp.Image.Load(imagePart.GetStream()))
             {
@@ -157,7 +155,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                                          {
                                              Id = 0U,
                                              Name = "New Bitmap Image.jpg",
-                                             HyperlinkOnClick = GetHyperlinkOnClick(hyperlink),
+                                             HyperlinkOnClick = GetHyperlinkOnClick(hyperlinkRelationShipId),
                                          },
                                          new PIC.NonVisualPictureDrawingProperties()),
                                      new PIC.BlipFill(
@@ -194,7 +192,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                          {
                              Id = 1U,
                              Name = "Picture 1",
-                             HyperlinkOnClick = GetHyperlinkOnClick(hyperlink),
+                             HyperlinkOnClick = GetHyperlinkOnClick(hyperlinkRelationShipId),
                          },
                          new DW.NonVisualGraphicFrameDrawingProperties(graphicFrameLocks),
                          graphic
@@ -210,18 +208,10 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             return result;
         }
 
-        private static HyperlinkRelationship GetHyperlinkRelationShip(OpenXmlPart part, Models.Image model)
+        private static A.HyperlinkOnClick GetHyperlinkOnClick(string hyperlinkRelationShipId)
         {
-            if (model.Hyperlink != null)
-                return part.AddHyperlinkRelationship(new Uri(model.Hyperlink.HyperlinkUrl), model.Hyperlink.IsExternalUrl);
-
-            return null;
-        }
-
-        private static A.HyperlinkOnClick GetHyperlinkOnClick(HyperlinkRelationship hyperlink)
-        {
-            if (hyperlink != null && !string.IsNullOrEmpty(hyperlink.Id))
-                return new A.HyperlinkOnClick { Id = hyperlink.Id };
+            if (!string.IsNullOrEmpty(hyperlinkRelationShipId))
+                return new A.HyperlinkOnClick { Id = hyperlinkRelationShipId };
 
             return null;
         }
