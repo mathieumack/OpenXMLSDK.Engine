@@ -30,17 +30,21 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 
             var fieldCodeXmlelement = new DocumentFormat.OpenXml.Wordprocessing.Hyperlink();
 
-            if(!string.IsNullOrWhiteSpace(hyperlink.Anchor))
+            if (!string.IsNullOrWhiteSpace(hyperlink.Anchor))
                 fieldCodeXmlelement.Anchor = hyperlink.Anchor;
-            else if(!string.IsNullOrWhiteSpace(hyperlink.WebSiteUri))
+            else if (!string.IsNullOrWhiteSpace(hyperlink.WebSiteUri))
             {
-                HyperlinkRelationship hyperlinkPart = documentPart.AddHyperlinkRelationship(new Uri(hyperlink.WebSiteUri), true);
+                var hyperlinkPart = documentPart.AddHyperlinkRelationship(new Uri(hyperlink.WebSiteUri), true);
                 fieldCodeXmlelement.Id = hyperlinkPart.Id;
             }
 
-            parent.AppendChild(fieldCodeXmlelement);
-
-            hyperlink.Text.Render(fieldCodeXmlelement, context, documentPart, formatProvider);
+            if (hyperlink.Text != null)
+            {
+                parent.AppendChild(fieldCodeXmlelement);
+                hyperlink.Text.Render(fieldCodeXmlelement, context, documentPart, formatProvider);
+            }
+            else if (hyperlink.Image != null)
+                hyperlink.Image.Render(parent, context, documentPart, fieldCodeXmlelement.Id);
 
             return fieldCodeXmlelement;
         }

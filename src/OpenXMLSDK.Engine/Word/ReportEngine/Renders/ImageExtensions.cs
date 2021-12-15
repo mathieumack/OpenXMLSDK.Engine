@@ -23,7 +23,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// <param name="context">Context</param>
         /// <param name="documentPart">MainDocumentPart</param>
         /// <returns></returns>
-        public static OpenXmlElement Render(this Models.Image image, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart)
+        public static OpenXmlElement Render(this Models.Image image, OpenXmlElement parent, ContextModel context, OpenXmlPart documentPart, string hyperlinkRelationShipId = null)
         {
             context.ReplaceItem(image);
             ImagePart imagePart;
@@ -55,8 +55,9 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             }
             if (isNotEmpty)
             {
-                OpenXmlElement result = CreateImage(imagePart, image, documentPart);
-                parent.AppendChild(result);
+                OpenXmlElement result = CreateImage(imagePart, image, documentPart, hyperlinkRelationShipId);
+                parent.Append(result);
+
                 return result;
             }
             else
@@ -72,7 +73,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         /// <param name="model"></param>
         /// <param name="mainDocumentPart"></param>
         /// <returns></returns>
-        private static OpenXmlElement CreateImage(ImagePart imagePart, Models.Image model, OpenXmlPart mainDocumentPart)
+        private static OpenXmlElement CreateImage(ImagePart imagePart, Models.Image model, OpenXmlPart mainDocumentPart, string hyperlinkRelationShipId)
         {
             string relationshipId = mainDocumentPart.GetIdOfPart(imagePart);
 
@@ -147,21 +148,20 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 
             var graphicFrameLocks = new A.GraphicFrameLocks() { NoChangeAspect = true };
             graphicFrameLocks.AddNamespaceDeclaration("a", "http://schemas.openxmlformats.org/drawingml/2006/main");
-
             var picture = new PIC.Picture(
                                      new PIC.NonVisualPictureProperties(
                                          new PIC.NonVisualDrawingProperties()
                                          {
                                              Id = 0U,
-                                             Name = "New Bitmap Image.jpg"
+                                             Name = "New Bitmap Image.jpg",
+                                             HyperlinkOnClick = GetHyperlinkOnClick(hyperlinkRelationShipId),
                                          },
                                          new PIC.NonVisualPictureDrawingProperties()),
                                      new PIC.BlipFill(
                                          new A.Blip()
                                          {
                                              Embed = relationshipId,
-                                             CompressionState =
-                                             A.BlipCompressionValues.Print
+                                             CompressionState = A.BlipCompressionValues.Print,
                                          },
                                          new A.Stretch(new A.FillRectangle())),
                                      new PIC.ShapeProperties(
@@ -170,7 +170,6 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                                              new A.Extents() { Cx = imageWidth, Cy = imageHeight }),
                                          new A.PresetGeometry(new A.AdjustValueList()) { Preset = A.ShapeTypeValues.Rectangle }));
             picture.AddNamespaceDeclaration("pic", "http://schemas.openxmlformats.org/drawingml/2006/picture");
-
             var graphic = new A.Graphic(
                              new A.GraphicData(
                                  picture
@@ -178,7 +177,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                              { Uri = "http://schemas.openxmlformats.org/drawingml/2006/picture" });
             graphic.AddNamespaceDeclaration("a", "http://schemas.openxmlformats.org/drawingml/2006/main");
 
-            result.Append(new DocumentFormat.OpenXml.Wordprocessing.Drawing(
+            var drawing = new Drawing(
                      new DW.Inline(
                          new DW.Extent() { Cx = imageWidth, Cy = imageHeight },
                          new DW.EffectExtent()
@@ -191,7 +190,8 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                          new DW.DocProperties()
                          {
                              Id = 1U,
-                             Name = "Picture 1"
+                             Name = "Picture 1",
+                             HyperlinkOnClick = GetHyperlinkOnClick(hyperlinkRelationShipId),
                          },
                          new DW.NonVisualGraphicFrameDrawingProperties(graphicFrameLocks),
                          graphic
@@ -201,8 +201,23 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                          DistanceFromBottom = 0U,
                          DistanceFromLeft = 0U,
                          DistanceFromRight = 0U
-                     }));
+                     });
+            result.Append(drawing);
+
             return result;
+        }
+
+        /// <summary>
+        /// Generate an hyperlinkonclick to use in drawing nodes
+        /// </summary>
+        /// <param name="hyperlinkRelationShipId"></param>
+        /// <returns></returns>
+        private static A.HyperlinkOnClick GetHyperlinkOnClick(string hyperlinkRelationShipId)
+        {
+            if (!string.IsNullOrEmpty(hyperlinkRelationShipId))
+                return new A.HyperlinkOnClick { Id = hyperlinkRelationShipId };
+
+            return null;
         }
     }
 }

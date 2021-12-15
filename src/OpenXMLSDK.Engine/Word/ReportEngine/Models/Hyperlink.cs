@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace OpenXMLSDK.Engine.Word.ReportEngine.Models
+﻿namespace OpenXMLSDK.Engine.Word.ReportEngine.Models
 {
     /// <summary>
     /// Model for an hyperlink
@@ -23,6 +21,11 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Models
         /// Content text
         /// </summary>
         public Label Text { get; set; }
+
+        /// <summary>
+        /// Image linked to the hyperlink
+        /// </summary>
+        public Image Image { get; set; }
 
         /// <summary>
         /// Constructor
