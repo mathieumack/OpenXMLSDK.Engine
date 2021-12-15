@@ -45,9 +45,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 hyperlink.Text.Render(fieldCodeXmlelement, context, documentPart, formatProvider);
             }
             else if (hyperlink.Image != null)
-            {
                 hyperlink.Image.Render(parent, context, documentPart, fieldCodeXmlelement.Id);
-            }
 
             return fieldCodeXmlelement;
         }

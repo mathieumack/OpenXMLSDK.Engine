@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
@@ -208,6 +207,11 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             return result;
         }
 
+        /// <summary>
+        /// Generate an hyperlinkonclick to use in drawing nodes
+        /// </summary>
+        /// <param name="hyperlinkRelationShipId"></param>
+        /// <returns></returns>
         private static A.HyperlinkOnClick GetHyperlinkOnClick(string hyperlinkRelationShipId)
         {
             if (!string.IsNullOrEmpty(hyperlinkRelationShipId))
