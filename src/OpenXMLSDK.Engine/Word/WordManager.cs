@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -56,6 +57,70 @@ namespace OpenXMLSDK.Engine.Word
         {
             if (wdDoc != null)
                 wdDoc.Dispose();
+        }
+
+        public void AppendSubDocument(List<Report> reportList, bool mergeStyles, CultureInfo formatProvider)
+        {
+            // add styles in document
+            StyleDefinitionsPart spart = wdDoc.MainDocumentPart.StyleDefinitionsPart;
+            IList<string> stylesId = null;
+            if (wdDoc.MainDocumentPart.StyleDefinitionsPart == null)
+            {
+                spart = wdDoc.MainDocumentPart.AddNewPart<StyleDefinitionsPart>();
+                spart.Styles = new Styles();
+                if (mergeStyles)
+                {
+                    stylesId = reportList.Where(report => report.Document.Styles != null)
+                                        .SelectMany(r => r.Document.Styles)
+                                        .Select(style => style.StyleId)?.Distinct()?.ToList();
+                }
+            }
+
+            foreach (Report report in reportList)
+            {
+                if (report.Document.Styles != null)
+                {
+                    foreach (var style in report.Document.Styles)
+                    {
+                        if (!mergeStyles)
+                        {
+                            style.Render(spart, report.ContextModel);
+                        }
+                        else if (stylesId != null && stylesId.Count > 0 && stylesId.Contains(style.StyleId))
+                        {
+                            stylesId.Remove(style.StyleId);
+                            style.Render(spart, report.ContextModel);
+                        }
+                    }
+                }
+
+                // Document render
+                report.Document.Render(wdDoc, report.ContextModel, report.AddPageBreak, formatProvider);
+
+                // footers
+                foreach (var footer in report.Document.Footers)
+                {
+                    footer.Render(report.Document, wdDoc.MainDocumentPart, report.ContextModel, formatProvider);
+                }
+                // headers
+                foreach (var header in report.Document.Headers)
+                {
+                    header.Render(report.Document, wdDoc.MainDocumentPart, report.ContextModel, formatProvider);
+                }
+            }
+
+            //Replace Last page Break
+            if (wdDoc.MainDocumentPart.Document.Body.LastChild != null &&
+                wdDoc.MainDocumentPart.Document.Body.LastChild is Paragraph &&
+                wdDoc.MainDocumentPart.Document.Body.LastChild.FirstChild != null &&
+                wdDoc.MainDocumentPart.Document.Body.LastChild.FirstChild is ParagraphProperties &&
+                wdDoc.MainDocumentPart.Document.Body.LastChild.FirstChild.FirstChild != null &&
+                wdDoc.MainDocumentPart.Document.Body.LastChild.FirstChild.FirstChild is SectionProperties)
+            {
+                Paragraph lastChild = (Paragraph)wdDoc.MainDocumentPart.Document.Body.LastChild;
+                SectionProperties sectionPropertie = (SectionProperties)lastChild.FirstChild.FirstChild.Clone();
+                wdDoc.MainDocumentPart.Document.Body.ReplaceChild(sectionPropertie, wdDoc.MainDocumentPart.Document.Body.LastChild);
+            }
         }
 
         /// <summary>
