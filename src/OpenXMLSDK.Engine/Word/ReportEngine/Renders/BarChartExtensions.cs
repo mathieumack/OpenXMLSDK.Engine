@@ -130,7 +130,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 // Series.
                 BarChartSeries barChartSeries = barChart.AppendChild(
                     new BarChartSeries(
-                        new Index() { Val = i },
+                        new DC.Index() { Val = i },
                         new Order() { Val = i },
                         new InvertIfNegative() { Val = new BooleanValue(false) },
                         new SeriesText(
@@ -154,7 +154,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 // Serie borders.
                 if (serie.HasBorder)
                 {
-                    serie.BorderWidth ??= 12700;
+                    serie.BorderWidth = serie.BorderWidth ?? 12700;
                     serie.BorderColor = !string.IsNullOrEmpty(serie.BorderColor) ? serie.BorderColor : "000000";
                     serie.BorderColor = serie.BorderColor.Replace("#", "");
                     serie.BorderColor.CheckColorFormat();
@@ -536,7 +536,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             // Graph borders.
             if (chartModel.HasBorder)
             {
-                chartModel.BorderWidth = chartModel.BorderWidth.HasValue ? chartModel.BorderWidth.Value : 12700;
+                chartModel.BorderWidth = chartModel.BorderWidth ?? 12700;
 
                 if (!string.IsNullOrEmpty(chartModel.BorderColor))
                 {
