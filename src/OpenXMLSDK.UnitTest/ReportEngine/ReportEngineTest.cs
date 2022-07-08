@@ -84,16 +84,14 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
 
             // Generate report
             byte[] res;
-            using (var word = new WordManager())
+            var word = new WordManager();
+            if (useSeveralReports)
             {
-                if (useSeveralReports)
-                {
-                    res = word.GenerateReport(reports, true, new CultureInfo("en-US"));
-                }
-                else
-                {
-                    res = word.GenerateReport(reportDocument, reportContext, new CultureInfo("en-US"));
-                }
+                res = word.GenerateReport(reports, true, new CultureInfo("en-US"));
+            }
+            else
+            {
+                res = word.GenerateReport(reportDocument, reportContext, new CultureInfo("en-US"));
             }
 
             // Write test file
