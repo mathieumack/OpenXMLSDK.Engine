@@ -526,7 +526,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
             });
 
             // Image
-            if (File.Exists(@"Resources\Desert.jpg"))
+            if (File.Exists(@"Resources/Desert.jpg"))
                 page.ChildElements.Add(new Paragraph()
                 {
                     ChildElements = new List<BaseElement>()
@@ -538,7 +538,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                             {
                                 MaxHeight = 100,
                                 MaxWidth = 100,
-                                Path = @"Resources\Desert.jpg",
+                                Path = "Resources/Desert.jpg",
                                 ImagePartType = Engine.Packaging.ImagePartType.Jpeg,
                             }
                         }
@@ -1110,7 +1110,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                                     new Image()
                                     {
                                         Width = 50,
-                                        Path = @"Resources\Desert.jpg",
+                                        Path = "Resources/Desert.jpg",
                                         ImagePartType = Engine.Packaging.ImagePartType.Jpeg
                                     },
                                     new Label() { Text = "Cell 1 No Wrap - Label in a cell" },
@@ -1126,7 +1126,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                                     new Image()
                                     {
                                         Height = 10,
-                                        Path = @"Resources\Desert.jpg",
+                                        Path = "Resources/Desert.jpg",
                                         ImagePartType = Engine.Packaging.ImagePartType.Jpeg
                                     },
                                     new Label() { Text = "Cell 2 - Second label" }
@@ -1320,7 +1320,7 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                                     {
                                         MaxHeight = 75,
                                         MaxWidth = 75,
-                                        Path = @"Resources\Desert.jpg",
+                                        Path = "Resources/Desert.jpg",
                                         ImagePartType = Engine.Packaging.ImagePartType.Jpeg
                                     },
                                     new Label() { Text = " with an image", SpaceProcessingModeValue = SpaceProcessingModeValues.Preserve }
@@ -2892,12 +2892,12 @@ namespace OpenXMLSDK.UnitTest.ReportEngine
                     }
                 }
             };
-            if (File.Exists(@"Resources\Desert.jpg"))
+            if (File.Exists("Resources/Desert.jpg"))
                 ph.ChildElements.Add(new Image()
                 {
                     MaxHeight = 100,
                     MaxWidth = 100,
-                    Path = @"Resources\Desert.jpg",
+                    Path = "Resources/Desert.jpg",
                     ImagePartType = Engine.Packaging.ImagePartType.Jpeg
                 });
             header.ChildElements.Add(ph);
