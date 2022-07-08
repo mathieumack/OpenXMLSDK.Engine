@@ -6,10 +6,9 @@ Each resolve to IWordManager from the Mvx.Resolve<IWordManager>() will create a 
 
 ## Quality and packaging
 
-[![Build status](https://dev.azure.com/mackmathieu/Github/_apis/build/status/OpenXML.Engine)](https://dev.azure.com/mackmathieu/Github/_build/latest?definitionId=5)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=github-OpenXMLSDK.Engine&metric=alert_status)](https://sonarcloud.io/dashboard?id=github-OpenXMLSDK.Engine)
-
-![Nuget](https://img.shields.io/nuget/dt/OpenXMLSDK.Engine.svg?label=OpenXMLSDK.Engine&logo=nuget)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=mathieumack_OpenXMLSDK.Engine&metric=alert_status)](https://sonarcloud.io/dashboard?id=mathieumack_OpenXMLSDK.Engine)
+[![.NET](https://github.com/mathieumack/OpenXMLSDK.Engine/actions/workflows/ci.yml/badge.svg)](https://github.com/mathieumack/OpenXMLSDK.Engine/actions/workflows/ci.yml)
+[![NuGet package](https://buildstats.info/nuget/OpenXMLSDK.Engine?includePreReleases=true)](https://nuget.org/packages/OpenXMLSDK.Engine)
 
 
 ### API

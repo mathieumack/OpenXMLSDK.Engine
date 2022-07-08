@@ -123,7 +123,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 // Series.
                 ScatterChartSeries scatterChartSeries = chart.AppendChild(
                     new ScatterChartSeries(
-                        new Index() { Val = i },
+                        new DC.Index() { Val = i },
                         new Order() { Val = i },
                         new Marker
                         {
@@ -464,7 +464,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             // Graph borders.
             if (chartModel.HasBorder)
             {
-                chartModel.BorderWidth ??= 12700;
+                chartModel.BorderWidth = chartModel.BorderWidth ?? 12700;
 
                 if (!string.IsNullOrEmpty(chartModel.BorderColor))
                 {

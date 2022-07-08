@@ -107,7 +107,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 // Series.
                 LineChartSeries lineChartSeries = lineChart.AppendChild(
                     new LineChartSeries(
-                        new Index() { Val = i },
+                        new DC.Index() { Val = i },
                         new Order() { Val = i },
                         new Marker
                         {
@@ -504,7 +504,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             // Graph borders.
             if (!chartModel.HasBorder)
             {
-                chartModel.BorderWidth ??= 12700;
+                chartModel.BorderWidth = chartModel.BorderWidth ?? 12700;
 
                 if (!string.IsNullOrEmpty(chartModel.BorderColor))
                 {
