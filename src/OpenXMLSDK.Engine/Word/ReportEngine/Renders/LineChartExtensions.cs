@@ -198,7 +198,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             var axisModel = secondaryAxis ? chartModel.SecondaryValuesAxisModel : chartModel.ValuesAxisModel;
             var valueAxis = new ValueAxis(
                 new AxisId() { Val = valuesAxisId },
-                chartModel.ValuesAxisScaling?.GetScaling() ?? new Scaling() { Orientation = new Orientation() { Val = new EnumValue<OrientationValues>(OrientationValues.MinMax) } },
+                chartModel.ValuesAxisModel.ScalingModel?.GetScaling() ?? new Scaling() { Orientation = new Orientation() { Val = new EnumValue<OrientationValues>(OrientationValues.MinMax) } },
                 new Delete() { Val = axisModel.DeleteAxis },
                 new AxisPosition() { Val = secondaryAxis ? new EnumValue<AxisPositionValues>(AxisPositionValues.Right) : new EnumValue<AxisPositionValues>(AxisPositionValues.Left) },
                 new DC.NumberingFormat()
