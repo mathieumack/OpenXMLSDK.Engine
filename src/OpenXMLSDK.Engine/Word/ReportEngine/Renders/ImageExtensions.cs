@@ -1,9 +1,9 @@
-﻿using System.IO;
+﻿using System.Drawing;
+using System.IO;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using OpenXMLSDK.Engine.ReportEngine.DataContext;
-using SixLabors.ImageSharp.Metadata;
 using A = DocumentFormat.OpenXml.Drawing;
 using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
 using PIC = DocumentFormat.OpenXml.Drawing.Pictures;
@@ -80,7 +80,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             long imageWidth;
             long imageHeight;
 
-            using (var image = SixLabors.ImageSharp.Image.Load(imagePart.GetStream()))
+            using (var image = Image.FromStream(imagePart.GetStream()))
             {
                 long bmWidth = image.Width;
                 long bmHeight = image.Height;
@@ -120,24 +120,10 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     bmWidth = (long)(bmWidth * (ratio / 100D));
                     bmHeight = (long)(bmHeight * (ratio / 100D));
                 }
+                
 
-                var xResolution = image.Metadata.HorizontalResolution;
-                var yResolution = image.Metadata.VerticalResolution;
-
-                // The resolution may come in differents units, convert it to pixels per inch
-                if (image.Metadata.ResolutionUnits == PixelResolutionUnit.PixelsPerMeter)
-                {
-                    xResolution *= 0.0254;
-                    yResolution *= 0.0254;
-                }
-                else if (image.Metadata.ResolutionUnits == PixelResolutionUnit.PixelsPerCentimeter)
-                {
-                    xResolution *= 2.54;
-                    yResolution *= 2.54;
-                }
-
-                imageWidth = bmWidth * (long)(914400 / xResolution);
-                imageHeight = bmHeight * (long)(914400 / yResolution);
+                imageWidth = bmWidth * (long)(914400 / image.HorizontalResolution);
+                imageHeight = bmHeight * (long)(914400 / image.VerticalResolution);
             }
 
             var result = new Run();
@@ -206,7 +192,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 
             return result;
         }
-
+        
         /// <summary>
         /// Generate an hyperlinkonclick to use in drawing nodes
         /// </summary>
