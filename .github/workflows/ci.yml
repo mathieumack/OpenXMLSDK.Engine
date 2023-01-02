@@ -25,7 +25,9 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 6.0.x
+        dotnet-version: |
+          6.0.x
+          7.0.x
     - name: Restore dependencies
       run: dotnet restore
       working-directory: src
@@ -64,6 +66,6 @@ jobs:
       working-directory: src
     # Publish a new version only for new features :
     - name: Push Package to NuGet.org
-      if: startswith(github.ref,'refs/heads/feature') || startswith(github.head_ref,'refs/heads/feature') || inputs.publishToNuget
+      if: startswith(github.ref,'refs/heads/feature') || startswith(github.head_ref,'feature/') || inputs.publishToNuget
       run: dotnet nuget push **.nupkg -k ${{ secrets.NUGETAPIKEY }} -s https://api.nuget.org/v3/index.json
       working-directory: src

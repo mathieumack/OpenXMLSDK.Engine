@@ -1,12 +1,13 @@
-# MvvX.Plugins.Open-XML-SDK
+# OpenXMLSDK.Engine
 
-Using the Open-XML-SDK-Plugin for MvvmCross is quite simple. The plugin injects the IWordManager interface into the IoC container.
-Each resolve to IWordManager from the Mvx.Resolve<IWordManager>() will create a new instance of the service.
+This library let you to create quickly some docx documents, based on the ooxml sdk of Microsoft.
+
+By using the WordManager object, you will be able to geneate quickly your documents.
 
 
 ## Quality and packaging
 
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=mathieumack_OpenXMLSDK.Engine&metric=alert_status)](https://sonarcloud.io/dashboard?id=mathieumack_OpenXMLSDK.Engine)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=mathieumack_OpenXMLSDK.Engine&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=mathieumack_OpenXMLSDK.Engine)
 [![.NET](https://github.com/mathieumack/OpenXMLSDK.Engine/actions/workflows/ci.yml/badge.svg)](https://github.com/mathieumack/OpenXMLSDK.Engine/actions/workflows/ci.yml)
 [![NuGet package](https://buildstats.info/nuget/OpenXMLSDK.Engine?includePreReleases=true)](https://nuget.org/packages/OpenXMLSDK.Engine)
 
@@ -23,7 +24,7 @@ In order to open a template, call the OpenDocFromTemplate method
     var resourceName = "<Set full template file path here>"; // ex : C:\temp\template.dotx
     var finalFilePath = "<Set saved new document file path here>"; // ex : C:\temp\createdDoc.docx
 	
-    using (var word = Mvx.Resolve<WordManager>())
+    using (var word = new WordManager())
     {
         word.OpenDocFromTemplate(resourceName, finalFilePath, true);
 
@@ -41,7 +42,7 @@ Using the name of the database and the folder on the client device where to stor
     var resourceName = "<Set full template file path here>"; // ex : C:\temp\template.dotx
     var finalFilePath = "<Set saved new document file path here>"; // ex : C:\temp\createdDoc.docx
 	
-    using (var word = Mvx.Resolve<WordManager>())
+    using (var word = new WordManager())
     {
         word.OpenDocFromTemplate(resourceName, finalFilePath, true);
 
@@ -51,5 +52,12 @@ Using the name of the database and the folder on the client device where to stor
 	
 ```
 
-To be complete...
+# Contribute
 
+## How to contribute
+
+If you want to contribute to this project, you can do it in several ways:
+
+- [Submit bugs and feature requests]
+- [Review source code changes]
+- [Review the documentation and make pull requests for anything from typos to new content]
