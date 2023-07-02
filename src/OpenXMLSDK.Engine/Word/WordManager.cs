@@ -17,6 +17,8 @@ namespace OpenXMLSDK.Engine.Word
     {
         #region Fields
 
+        private MemoryStream streamFile;
+
         private string filePath;
 
         /// <summary>
@@ -121,6 +123,19 @@ namespace OpenXMLSDK.Engine.Word
             }
         }
 
+        /// <summary>
+        /// Permet de renvoyer le MemoryStream associé au document en cours
+        /// </summary>
+        /// <returns>MemoryStream en cours, null sinon</returns>
+        public MemoryStream GetMemoryStream()
+        {
+            var memoryStream = new MemoryStream();
+            streamFile.Position = 0;
+            streamFile.CopyTo(memoryStream);
+            memoryStream.Position = 0;
+            return memoryStream;
+        }
+
         #endregion
 
         #region Settings
@@ -221,9 +236,11 @@ namespace OpenXMLSDK.Engine.Word
             if (templateFileStream is null || templateFileStream == Stream.Null)
                 throw new ArgumentNullException(nameof(templateFileStream), "templateFilePath must not be null");
 
+            streamFile = new MemoryStream();
             try
             {
-                wdDoc = WordprocessingDocument.Open(templateFileStream, true);
+                // We copy the template file into the memory stream
+                templateFileStream.CopyTo(streamFile);
 
                 // Change the document type to Document
                 wdDoc.ChangeDocumentType(DocumentFormat.OpenXml.WordprocessingDocumentType.Document);
@@ -251,7 +268,7 @@ namespace OpenXMLSDK.Engine.Word
             if (!File.Exists(templateFilePath))
                 throw new FileNotFoundException("file not found");
 
-            using var streamFile = new MemoryStream();
+            streamFile = new MemoryStream();
             try
             {
                 byte[] byteArray = File.ReadAllBytes(templateFilePath);
