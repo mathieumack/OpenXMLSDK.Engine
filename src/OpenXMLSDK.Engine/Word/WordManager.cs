@@ -243,6 +243,7 @@ namespace OpenXMLSDK.Engine.Word
                 templateFileStream.CopyTo(streamFile);
 
                 // Change the document type to Document
+                wdDoc = WordprocessingDocument.Open(streamFile, true);
                 wdDoc.ChangeDocumentType(DocumentFormat.OpenXml.WordprocessingDocumentType.Document);
 
                 wdMainDocumentPart = wdDoc.MainDocumentPart;
