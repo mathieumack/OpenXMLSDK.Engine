@@ -17,8 +17,6 @@ namespace OpenXMLSDK.Engine.Word
     {
         #region Fields
 
-        private MemoryStream streamFile;
-
         private string filePath;
 
         /// <summary>
@@ -123,19 +121,6 @@ namespace OpenXMLSDK.Engine.Word
             }
         }
 
-        /// <summary>
-        /// Permet de renvoyer le MemoryStream associé au document en cours
-        /// </summary>
-        /// <returns>MemoryStream en cours, null sinon</returns>
-        public MemoryStream GetMemoryStream()
-        {
-            var memoryStream = new MemoryStream();
-            streamFile.Position = 0;
-            streamFile.CopyTo(memoryStream);
-            memoryStream.Position = 0;
-            return memoryStream;
-        }
-
         #endregion
 
         #region Settings
@@ -229,8 +214,35 @@ namespace OpenXMLSDK.Engine.Word
         /// <summary>
         /// Ouverture d'un document depuis un template dotx
         /// </summary>
-        /// <param name="streamTemplateFile">Chemin et nom complet du template</param>
-        /// <param name="newFilePath">Chemin et nom complet du fichier qui sera sauvegardé</param>
+        /// <param name="templateFileStream">Chemin et nom complet du template</param>
+        /// <returns>True si le document a bien été ouvert</returns>
+        public bool OpenDocFromTemplate(Stream templateFileStream)
+        {
+            if (templateFileStream is null || templateFileStream == Stream.Null)
+                throw new ArgumentNullException(nameof(templateFileStream), "templateFilePath must not be null");
+
+            try
+            {
+                wdDoc = WordprocessingDocument.Open(templateFileStream, true);
+
+                // Change the document type to Document
+                wdDoc.ChangeDocumentType(DocumentFormat.OpenXml.WordprocessingDocumentType.Document);
+
+                wdMainDocumentPart = wdDoc.MainDocumentPart;
+
+                return true;
+            }
+            catch
+            {
+                wdDoc = null;
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Ouverture d'un document depuis un template dotx
+        /// </summary>
+        /// <param name="templateFilePath">Chemin et nom complet du template</param>
         /// <returns>True si le document a bien été ouvert</returns>
         public bool OpenDocFromTemplate(string templateFilePath)
         {
@@ -239,7 +251,7 @@ namespace OpenXMLSDK.Engine.Word
             if (!File.Exists(templateFilePath))
                 throw new FileNotFoundException("file not found");
 
-            streamFile = new MemoryStream();
+            using var streamFile = new MemoryStream();
             try
             {
                 byte[] byteArray = File.ReadAllBytes(templateFilePath);
