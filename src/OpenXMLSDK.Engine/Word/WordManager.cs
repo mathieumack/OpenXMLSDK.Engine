@@ -229,8 +229,38 @@ namespace OpenXMLSDK.Engine.Word
         /// <summary>
         /// Ouverture d'un document depuis un template dotx
         /// </summary>
-        /// <param name="streamTemplateFile">Chemin et nom complet du template</param>
-        /// <param name="newFilePath">Chemin et nom complet du fichier qui sera sauvegardé</param>
+        /// <param name="templateFileStream">Chemin et nom complet du template</param>
+        /// <returns>True si le document a bien été ouvert</returns>
+        public bool OpenDocFromTemplate(Stream templateFileStream)
+        {
+            if (templateFileStream is null || templateFileStream == Stream.Null)
+                throw new ArgumentNullException(nameof(templateFileStream), "templateFilePath must not be null");
+
+            streamFile = new MemoryStream();
+            try
+            {
+                // We copy the template file into the memory stream
+                templateFileStream.CopyTo(streamFile);
+
+                // Change the document type to Document
+                wdDoc = WordprocessingDocument.Open(streamFile, true);
+                wdDoc.ChangeDocumentType(DocumentFormat.OpenXml.WordprocessingDocumentType.Document);
+
+                wdMainDocumentPart = wdDoc.MainDocumentPart;
+
+                return true;
+            }
+            catch
+            {
+                wdDoc = null;
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Ouverture d'un document depuis un template dotx
+        /// </summary>
+        /// <param name="templateFilePath">Chemin et nom complet du template</param>
         /// <returns>True si le document a bien été ouvert</returns>
         public bool OpenDocFromTemplate(string templateFilePath)
         {
