@@ -109,7 +109,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                         if (cell.Justification.HasValue)
                         {
                             var ppr = new ParagraphProperties();
-                            ppr.AppendChild(new Justification() { Val = cell.Justification.HasValue ? cell.Justification.Value.ToOOxml() : null });
+                            ppr.AppendChild(new Justification() { Val = cell.Justification.HasValue ? cell.Justification.Value.ToOOxml() : DocumentFormat.OpenXml.Wordprocessing.JustificationValues.Left });
                             paragraph.AppendChild(ppr);
                         }
                         wordCell.AppendChild(paragraph);
