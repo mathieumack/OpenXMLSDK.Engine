@@ -120,8 +120,8 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         {
             BarChart barChart = plotArea.AppendChild(
                 new BarChart(
-                    new BarDirection() { Val = new EnumValue<DC.BarDirectionValues>((DC.BarDirectionValues)(int)chartModel.BarDirectionValues) },
-                    new BarGrouping() { Val = new EnumValue<DC.BarGroupingValues>((DC.BarGroupingValues)(int)chartModel.BarGroupingValues) }));
+                    new BarDirection() { Val = new DC.BarDirectionValues(chartModel.BarDirectionValues.ToString().ToLower()).ToEnumValue() },
+                    new BarGrouping() { Val = new DC.BarGroupingValues(chartModel.BarGroupingValues.ToString().ToLower()).ToEnumValue() }));
 
             // Iterate through each key in the Dictionary collection and add the key to the chart Series
             // and add the corresponding value to the chart Values.
@@ -199,15 +199,15 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 // Add the Category Axis.
                 var catAxis = new CategoryAxis(
                     new AxisId() { Val = new UInt32Value(categoryAxisId) },
-                    new Scaling() { Orientation = new Orientation() { Val = new EnumValue<OrientationValues>(OrientationValues.MinMax) } },
+                    new Scaling() { Orientation = new Orientation() { Val = OrientationValues.MinMax } },
                     new Delete() { Val = chartModel.CategoriesAxisModel.DeleteAxis },
-                    new AxisPosition() { Val = new EnumValue<AxisPositionValues>(AxisPositionValues.Bottom) },
+                    new AxisPosition() { Val = AxisPositionValues.Bottom },
                     new MajorTickMark() { Val = TickMarkValues.None },
                     new MinorTickMark() { Val = TickMarkValues.None },
-                    new TickLabelPosition() { Val = chartModel.CategoriesAxisModel.TickLabelPosition.HasValue ? new EnumValue<DC.TickLabelPositionValues>((DC.TickLabelPositionValues)(int)chartModel.CategoriesAxisModel.TickLabelPosition) : new EnumValue<DC.TickLabelPositionValues>(DC.TickLabelPositionValues.NextTo) },
+                    new TickLabelPosition() { Val = chartModel.CategoriesAxisModel.TickLabelPosition.HasValue ? new DC.TickLabelPositionValues(chartModel.CategoriesAxisModel.TickLabelPosition.ToString().ToLower()) : DC.TickLabelPositionValues.NextTo },
                     new CrossingAxis() { Val = valuesAxisId },
                     new AutoLabeled() { Val = new BooleanValue(true) },
-                    new LabelAlignment() { Val = new EnumValue<LabelAlignmentValues>(LabelAlignmentValues.Center) },
+                    new LabelAlignment() { Val = LabelAlignmentValues.Center },
                     new LabelOffset() { Val = new UInt16Value((ushort)100) },
                     new NoMultiLevelLabels() { Val = false },
                     new MajorGridlines(ManageShapeProperties(chartModel.CategoriesAxisModel.ShowMajorGridlines, chartModel.CategoriesAxisModel.MajorGridlinesColor)),
@@ -217,7 +217,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 if (chartModel.CategoriesAxisModel.CrossesAt != null)
                     catAxis.AppendChild(new CrossesAt() { Val = new DoubleValue(chartModel.CategoriesAxisModel.CrossesAt) });
                 else
-                    catAxis.AppendChild(new Crosses() { Val = new EnumValue<CrossesValues>(CrossesValues.AutoZero) });
+                    catAxis.AppendChild(new Crosses() { Val = CrossesValues.AutoZero });
                 if (chartModel.CategoryType.Equals(Engine.ReportEngine.DataContext.Charts.CategoryType.NumberReference))
                     catAxis.AppendChild(new DC.NumberingFormat { FormatCode = "#,##0.00", SourceLinked = false });
                 plotArea.AppendChild(catAxis);
@@ -225,9 +225,9 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 // Add the Value Axis.
                 var valueAxis = new ValueAxis(
                     new AxisId() { Val = valuesAxisId },
-                    chartModel.ValuesAxisScaling?.GetScaling() ?? new Scaling() { Orientation = new Orientation() { Val = new EnumValue<OrientationValues>(OrientationValues.MinMax) } },
+                    chartModel.ValuesAxisScaling?.GetScaling() ?? new Scaling() { Orientation = new Orientation() { Val = OrientationValues.MinMax } },
                     new Delete() { Val = chartModel.ValuesAxisModel.DeleteAxis },
-                    new AxisPosition() { Val = new EnumValue<AxisPositionValues>(AxisPositionValues.Left) },
+                    new AxisPosition() { Val = AxisPositionValues.Left },
                     new DC.NumberingFormat()
                     {
                         FormatCode = new StringValue("General"),
@@ -235,9 +235,9 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     },
                     new MajorTickMark() { Val = TickMarkValues.None },
                     new MinorTickMark() { Val = TickMarkValues.None },
-                    new TickLabelPosition() { Val = chartModel.ValuesAxisModel.TickLabelPosition.HasValue ? new EnumValue<DC.TickLabelPositionValues>((DC.TickLabelPositionValues)(int)chartModel.ValuesAxisModel.TickLabelPosition) : new EnumValue<DC.TickLabelPositionValues>(DC.TickLabelPositionValues.NextTo) },
+                    new TickLabelPosition() { Val = chartModel.ValuesAxisModel.TickLabelPosition.HasValue ? new EnumValue<DC.TickLabelPositionValues>(new DC.TickLabelPositionValues(chartModel.ValuesAxisModel.TickLabelPosition.ToString().ToLower())) : new EnumValue<DC.TickLabelPositionValues>(DC.TickLabelPositionValues.NextTo) },
                     new CrossingAxis() { Val = categoryAxisId },
-                    new CrossBetween() { Val = new EnumValue<CrossBetweenValues>(CrossBetweenValues.Between) },
+                    new CrossBetween() { Val = CrossBetweenValues.Between },
                     new MajorGridlines(ManageShapeProperties(chartModel.ValuesAxisModel.ShowMajorGridlines, chartModel.ValuesAxisModel.MajorGridlinesColor)),
                     ManageShapeProperties(chartModel.ValuesAxisModel.ShowAxisCurve, chartModel.ValuesAxisModel.AxisCurveColor));
                 if (!string.IsNullOrWhiteSpace(chartModel.ValuesAxisModel.Title))
@@ -245,7 +245,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 if (chartModel.ValuesAxisModel.CrossesAt != null)
                     valueAxis.AppendChild(new CrossesAt() { Val = new DoubleValue(chartModel.ValuesAxisModel.CrossesAt) });
                 else
-                    valueAxis.AppendChild(new Crosses() { Val = new EnumValue<CrossesValues>(CrossesValues.AutoZero) });
+                    valueAxis.AppendChild(new Crosses() { Val = CrossesValues.AutoZero });
                 plotArea.AppendChild(valueAxis);
             }
         }
@@ -343,7 +343,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 
             chart.Append(
                 new PlotVisibleOnly() { Val = new BooleanValue(true) },
-                new DisplayBlanksAs() { Val = new EnumValue<DisplayBlanksAsValues>(DisplayBlanksAsValues.Gap) },
+                new DisplayBlanksAs() { Val = DisplayBlanksAsValues.Gap },
                 new ShowDataLabelsOverMaximum() { Val = false });
 
             ManageGraphBorders(chartModel, chartPart);
@@ -524,7 +524,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                         new A.Paragraph(new A.ParagraphProperties(defaultRunProperties)));
 
                 chart.AppendChild(
-                    new Legend(new LegendPosition() { Val = new EnumValue<DC.LegendPositionValues>((DC.LegendPositionValues)(int)chartModel.LegendPosition) },
+                    new Legend(new LegendPosition() { Val = new EnumValue<DC.LegendPositionValues>(new DC.LegendPositionValues(chartModel.LegendPosition.ToString().ToLower())) },
                     new Overlay() { Val = false },
                     new Layout(),
                     textProperty));

@@ -14,13 +14,13 @@ namespace OpenXMLSDK.Engine.Word.Extensions
         public static Scaling GetScaling(this ScalingModel model)
         {
             if (model is null)
-                return new Scaling() { Orientation = new Orientation() { Val = new EnumValue<OrientationValues>(OrientationValues.MinMax) } };
+                return new Scaling() { Orientation = new Orientation() { Val = OrientationValues.MinMax } };
 
             var scalingParams = new List<OpenXmlElement>()
             {
                 new Orientation()
                 {
-                    Val = new EnumValue<OrientationValues>((OrientationValues)(int)model.Orientation)
+                    Val = new OrientationValues(model.Orientation.ToString().ToLower()).ToEnumValue()
                 }
             };
 

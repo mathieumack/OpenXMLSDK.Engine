@@ -14,7 +14,7 @@ namespace OpenXMLSDK.Engine.Platform.Word.Extensions
         /// <returns></returns>
         public static DocumentFormat.OpenXml.Wordprocessing.StyleValues ToOOxml(this StyleValues value)
         {
-            return (DocumentFormat.OpenXml.Wordprocessing.StyleValues)(int)value;
+            return new DocumentFormat.OpenXml.Wordprocessing.StyleValues(value.ToString().ToLower());
         }
     }
 }

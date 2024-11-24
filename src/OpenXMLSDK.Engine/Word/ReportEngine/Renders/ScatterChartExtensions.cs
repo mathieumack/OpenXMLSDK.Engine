@@ -127,7 +127,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                         new Order() { Val = i },
                         new Marker
                         {
-                            Symbol = new Symbol { Val = new EnumValue<DC.MarkerStyleValues>((DC.MarkerStyleValues)(int)serie.SerieMarker.MarkerStyleValues) },
+                            Symbol = new Symbol { Val = new DC.MarkerStyleValues(serie.SerieMarker.MarkerStyleValues.ToString().ToLower()) },
                             Size = new Size { Val = serie.SerieMarker.Size }
                         },
                         new SeriesText(
@@ -149,14 +149,14 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                         scatterChartSeries.Marker.ChartShapeProperties = new ChartShapeProperties(
                                 new A.Outline(
                                     new A.SolidFill() { RgbColorModelHex = new A.RgbColorModelHex() { Val = color } },
-                                    new A.PresetDash() { Val = new EnumValue<A.PresetLineDashValues>((A.PresetLineDashValues)(int)serie.PresetLineDashValues) }));
+                                    new A.PresetDash() { Val = new A.PresetLineDashValues(serie.PresetLineDashValues.ToString().ToLower()) }));
                     }
                     else
                         scatterChartSeries.AppendChild(
                             new ChartShapeProperties(
                                 new A.Outline(
                                     new A.SolidFill() { RgbColorModelHex = new A.RgbColorModelHex() { Val = color } },
-                                    new A.PresetDash() { Val = new EnumValue<A.PresetLineDashValues>((A.PresetLineDashValues)(int)serie.PresetLineDashValues) })));
+                                    new A.PresetDash() { Val = new A.PresetLineDashValues(serie.PresetLineDashValues.ToString().ToLower()) })));
                 }
                 else if (serie.HideCurve.HasValue && serie.HideCurve.Value)
                     scatterChartSeries.AppendChild(new ChartShapeProperties(new A.Outline(new A.NoFill())));
@@ -204,7 +204,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 new AxisPosition() { Val = secondaryAxis ? new EnumValue<AxisPositionValues>(AxisPositionValues.Top) : new EnumValue<AxisPositionValues>(AxisPositionValues.Bottom) },
                 new MajorTickMark() { Val = TickMarkValues.None },
                 new MinorTickMark() { Val = TickMarkValues.None },
-                new TickLabelPosition() { Val = xAxixModel.TickLabelPosition.HasValue ? new EnumValue<DC.TickLabelPositionValues>((DC.TickLabelPositionValues)(int)xAxixModel.TickLabelPosition) : new EnumValue<DC.TickLabelPositionValues>(DC.TickLabelPositionValues.NextTo) },
+                new TickLabelPosition() { Val = xAxixModel.TickLabelPosition.HasValue ? new DC.TickLabelPositionValues(xAxixModel.TickLabelPosition.ToString().ToLower()) : new EnumValue<DC.TickLabelPositionValues>(DC.TickLabelPositionValues.NextTo) },
                 new CrossingAxis() { Val = valuesAxisId },
                 new AutoLabeled() { Val = new BooleanValue(true) },
                 new LabelAlignment() { Val = new EnumValue<LabelAlignmentValues>(LabelAlignmentValues.Center) },
@@ -238,7 +238,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 },
                 new MajorTickMark() { Val = TickMarkValues.None },
                 new MinorTickMark() { Val = TickMarkValues.None },
-                new TickLabelPosition() { Val = yAxixModel.TickLabelPosition.HasValue ? new EnumValue<DC.TickLabelPositionValues>((DC.TickLabelPositionValues)(int)yAxixModel.TickLabelPosition) : new EnumValue<DC.TickLabelPositionValues>(DC.TickLabelPositionValues.NextTo) },
+                new TickLabelPosition() { Val = yAxixModel.TickLabelPosition.HasValue ? new DC.TickLabelPositionValues(yAxixModel.TickLabelPosition.ToString().ToLower()) : new EnumValue<DC.TickLabelPositionValues>(DC.TickLabelPositionValues.NextTo) },
                 new CrossingAxis() { Val = categoryAxisId },
                 new CrossBetween() { Val = new EnumValue<CrossBetweenValues>(CrossBetweenValues.Between) },
                 ManageShapeProperties(yAxixModel.ShowAxisCurve, yAxixModel.AxisCurveColor));
@@ -447,7 +447,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                         new A.Paragraph(new A.ParagraphProperties(defaultRunProperties)));
 
                 chart.AppendChild(
-                    new Legend(new LegendPosition() { Val = new EnumValue<DC.LegendPositionValues>((DC.LegendPositionValues)(int)chartModel.LegendPosition) },
+                    new Legend(new LegendPosition() { Val = new DC.LegendPositionValues(chartModel.LegendPosition.ToString().ToLower()) },
                     new Overlay() { Val = false },
                     new Layout(),
                     textProperty));

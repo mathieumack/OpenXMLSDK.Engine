@@ -38,7 +38,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             }
             foreach (var section in mainDocumentPart.Document.Body.Descendants<SectionProperties>())
             {
-                section.PrependChild(new FooterReference() { Id = footerPartId, Type = (DocumentFormat.OpenXml.Wordprocessing.HeaderFooterValues)(int)footer.Type });
+                section.PrependChild(new FooterReference() { Id = footerPartId, Type = new DocumentFormat.OpenXml.Wordprocessing.HeaderFooterValues(footer.Type.ToString().ToLower()) });
             }
 
             if (footer.Type == HeaderFooterValues.First)

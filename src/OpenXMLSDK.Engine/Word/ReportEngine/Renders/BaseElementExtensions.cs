@@ -69,10 +69,10 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             {
                 createdElement = tableElement.Render(document, parent, context, documentPart, formatProvider);
             }
-            else if (element is TableOfContents tableOfContentsElement)
-            {
-                tableOfContentsElement.Render(documentPart, context);
-            }
+            //else if (element is TableOfContents tableOfContentsElement)
+            //{
+            //    tableOfContentsElement.Render(documentPart, context);
+            //}
             else if (element is BarModel barModelElement)
             {
                 barModelElement.Render(parent, context, documentPart, formatProvider);

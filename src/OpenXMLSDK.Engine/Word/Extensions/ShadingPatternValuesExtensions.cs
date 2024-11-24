@@ -7,7 +7,7 @@ namespace OpenXMLSDK.Engine.Platform.Word.Extensions
         public static DocumentFormat.OpenXml.Wordprocessing.ShadingPatternValues? ToOOxml(this ShadingPatternValues? value)
         {
             if (value.HasValue)
-                return (DocumentFormat.OpenXml.Wordprocessing.ShadingPatternValues)(int)value;
+                return new DocumentFormat.OpenXml.Wordprocessing.ShadingPatternValues(value.ToString().ToLower());
             else
                 return null;
         }

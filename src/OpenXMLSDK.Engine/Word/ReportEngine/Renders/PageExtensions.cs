@@ -23,7 +23,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             // add section to manage orientation. Last section is at the end of document
             var pageSize = new PageSize()
             {
-                Orient = page.PageOrientation.ToOOxml(),
+                Orient = new EnumValue<DocumentFormat.OpenXml.Wordprocessing.PageOrientationValues>(new DocumentFormat.OpenXml.Wordprocessing.PageOrientationValues(page.PageOrientation.ToString().ToLower())),
                 Width = UInt32Value.FromUInt32(page.PageOrientation == PageOrientationValues.Landscape ? (uint)16839 : 11907),
                 Height = UInt32Value.FromUInt32(page.PageOrientation == PageOrientationValues.Landscape ? (uint)11907 : 16839)
             };
@@ -51,7 +51,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 )
             {
                 // By default sectionType is Continuous
-                SectionType sectionType = new SectionType() { Val = (SectionMarkValues)MarkSectionValues.Continuous };
+                SectionType sectionType = new SectionType() { Val = SectionMarkValues.Continuous };
                 sectionProps.AppendChild(sectionType);
 
                 var columns = new Columns

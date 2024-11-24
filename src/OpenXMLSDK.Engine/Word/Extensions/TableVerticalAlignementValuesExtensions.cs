@@ -6,7 +6,7 @@ namespace OpenXMLSDK.Engine.Platform.Word.Extensions
     {
         public static DocumentFormat.OpenXml.Wordprocessing.TableVerticalAlignmentValues ToOOxml(this TableVerticalAlignmentValues value)
         {
-            return (DocumentFormat.OpenXml.Wordprocessing.TableVerticalAlignmentValues)(int)value;
+            return new DocumentFormat.OpenXml.Wordprocessing.TableVerticalAlignmentValues(value.ToString().ToLower());
         }
     }
 }

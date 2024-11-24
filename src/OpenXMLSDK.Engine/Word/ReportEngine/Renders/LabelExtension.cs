@@ -104,8 +104,8 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 var tabs = new Tabs();
                 tabs.AppendChild(new TabStop()
                 {
-                    Val = (TabStopValues)label.TabulationProperties.Alignment,
-                    Leader = (DocumentFormat.OpenXml.Wordprocessing.TabStopLeaderCharValues)label.TabulationProperties.Leader,
+                    Val = new TabStopValues(label.TabulationProperties.Alignment.ToString().ToLower()),
+                    Leader = new DocumentFormat.OpenXml.Wordprocessing.TabStopLeaderCharValues(label.TabulationProperties.Leader.ToString().ToLower()),
                     Position = label.TabulationProperties.TabStopPosition
                 });
 
@@ -119,7 +119,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             {
                 run.AppendChild(new Text(label.Text)
                 {
-                    Space = (DocumentFormat.OpenXml.SpaceProcessingModeValues)(int)label.SpaceProcessingModeValue
+                    Space = new DocumentFormat.OpenXml.SpaceProcessingModeValues(label.SpaceProcessingModeValue.ToString().ToLower())
                 });
             }
             else
@@ -130,7 +130,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 {
                     run.AppendChild(new Text(lines[i])
                     {
-                        Space = (DocumentFormat.OpenXml.SpaceProcessingModeValues)(int)label.SpaceProcessingModeValue
+                        Space = new DocumentFormat.OpenXml.SpaceProcessingModeValues(label.SpaceProcessingModeValue.ToString().ToLower())
                     });
                     if (i < lines.Length - 1)
                     {
@@ -179,7 +179,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             {
                 var underline = new Underline()
                 {
-                    Val = (UnderlineValues)(int)label.Underline.Val
+                    Val = new UnderlineValues(label.Underline.Val.ToString().ToLower())
                 };
 
                 if (!string.IsNullOrWhiteSpace(label.Underline.Color))

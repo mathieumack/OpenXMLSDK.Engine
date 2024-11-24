@@ -7,23 +7,23 @@ namespace OpenXMLSDK.Engine.Platform.Word.Extensions
     {
         public static DocumentFormat.OpenXml.EnumValue<DocumentFormat.OpenXml.SpaceProcessingModeValues> ToOOxml(this SpaceProcessingModeValues value)
         {
-            return (DocumentFormat.OpenXml.SpaceProcessingModeValues)(int)value;
+            return new DocumentFormat.OpenXml.SpaceProcessingModeValues(value.ToString().ToLower());
         }
 
         public static DocumentFormat.OpenXml.EnumValue<DocumentFormat.OpenXml.SpaceProcessingModeValues> ToOOxml(this SpaceProcessingModeValues? value)
         {
             if (value.HasValue)
-                return (DocumentFormat.OpenXml.SpaceProcessingModeValues)(int)value.Value;
+                return new DocumentFormat.OpenXml.SpaceProcessingModeValues(value.Value.ToString().ToLower());
             else
                 return null;
         }
 
         public static SpaceProcessingModeValues? ToPlatform(this DocumentFormat.OpenXml.EnumValue<DocumentFormat.OpenXml.SpaceProcessingModeValues> value)
         {
-            if (value.HasValue)
-                return (SpaceProcessingModeValues)(int)value.Value;
+            if (value.HasValue && value.Value == DocumentFormat.OpenXml.SpaceProcessingModeValues.Preserve)
+                return SpaceProcessingModeValues.Preserve;
             else
-                return null;
+                return SpaceProcessingModeValues.Default;
         }
     }
 }
