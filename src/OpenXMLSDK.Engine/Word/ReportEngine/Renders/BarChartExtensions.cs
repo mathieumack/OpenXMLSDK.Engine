@@ -120,8 +120,8 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         {
             BarChart barChart = plotArea.AppendChild(
                 new BarChart(
-                    new BarDirection() { Val = new DC.BarDirectionValues(chartModel.BarDirectionValues.ToString().ToLower()).ToEnumValue() },
-                    new BarGrouping() { Val = new DC.BarGroupingValues(chartModel.BarGroupingValues.ToString().ToLower()).ToEnumValue() }));
+                    new BarDirection() { Val = chartModel.BarDirectionValues.ToOOxml() },
+                    new BarGrouping() { Val = chartModel.BarGroupingValues.ToOOxml() }));
 
             // Iterate through each key in the Dictionary collection and add the key to the chart Series
             // and add the corresponding value to the chart Values.
@@ -235,7 +235,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     },
                     new MajorTickMark() { Val = TickMarkValues.None },
                     new MinorTickMark() { Val = TickMarkValues.None },
-                    new TickLabelPosition() { Val = chartModel.ValuesAxisModel.TickLabelPosition.HasValue ? new EnumValue<DC.TickLabelPositionValues>(new DC.TickLabelPositionValues(chartModel.ValuesAxisModel.TickLabelPosition.ToString().ToLower())) : new EnumValue<DC.TickLabelPositionValues>(DC.TickLabelPositionValues.NextTo) },
+                    new TickLabelPosition() { Val = chartModel.ValuesAxisModel.TickLabelPosition.HasValue ? chartModel.ValuesAxisModel.TickLabelPosition.Value.ToOOxml() : DC.TickLabelPositionValues.NextTo },
                     new CrossingAxis() { Val = categoryAxisId },
                     new CrossBetween() { Val = CrossBetweenValues.Between },
                     new MajorGridlines(ManageShapeProperties(chartModel.ValuesAxisModel.ShowMajorGridlines, chartModel.ValuesAxisModel.MajorGridlinesColor)),

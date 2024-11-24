@@ -20,7 +20,7 @@ namespace OpenXMLSDK.Engine.Word.Extensions
             {
                 new Orientation()
                 {
-                    Val = new OrientationValues(model.Orientation.ToString().ToLower()).ToEnumValue()
+                    Val = model.Orientation.ToOOxml()
                 }
             };
 

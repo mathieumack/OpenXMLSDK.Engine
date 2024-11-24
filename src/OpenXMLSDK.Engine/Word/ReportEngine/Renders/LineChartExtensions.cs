@@ -131,7 +131,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                         new ChartShapeProperties(
                             new A.Outline(
                                 new A.SolidFill() { RgbColorModelHex = new A.RgbColorModelHex() { Val = color } },
-                                new A.PresetDash() { Val = new A.PresetLineDashValues(serie.PresetLineDashValues.ToString().ToLower()) })));
+                                new A.PresetDash() { Val = serie.PresetLineDashValues.ToOOxml() })));
                 }
 
                 // Categories.
@@ -211,7 +211,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 new MajorTickMark() { Val = TickMarkValues.None },
                 new MinorTickMark() { Val = TickMarkValues.None },
                 new TickLabelPosition() { Val = axisModel.TickLabelPosition.HasValue ?
-                                                    new DC.TickLabelPositionValues(axisModel.TickLabelPosition.ToString().ToLower()) : 
+                                                    axisModel.TickLabelPosition.Value.ToOOxml() : 
                                                     DC.TickLabelPositionValues.NextTo },
                 new CrossingAxis() { Val = categoryAxisId },
                 new CrossBetween() { Val = CrossBetweenValues.Between },
@@ -492,8 +492,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                     new A.Paragraph(new A.ParagraphProperties(defaultRunProperties)));
 
             chart.AppendChild(
-                new Legend(new LegendPosition() { Val =
-                    new DC.LegendPositionValues(chartModel.LegendPosition.ToString().ToLower())
+                new Legend(new LegendPosition() { Val = chartModel.LegendPosition.ToOOxml()
                 },
                 new Overlay() { Val = false },
                 new Layout(),

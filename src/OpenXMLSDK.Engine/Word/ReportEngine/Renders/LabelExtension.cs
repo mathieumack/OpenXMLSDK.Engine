@@ -7,6 +7,7 @@ using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using OpenXMLSDK.Engine.interfaces.Word.ReportEngine.Models;
 using OpenXMLSDK.Engine.ReportEngine.DataContext;
+using OpenXMLSDK.Engine.Word.Extensions;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
@@ -104,8 +105,8 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 var tabs = new Tabs();
                 tabs.AppendChild(new TabStop()
                 {
-                    Val = new TabStopValues(label.TabulationProperties.Alignment.ToString().ToLower()),
-                    Leader = new DocumentFormat.OpenXml.Wordprocessing.TabStopLeaderCharValues(label.TabulationProperties.Leader.ToString().ToLower()),
+                    Val = label.TabulationProperties.Alignment.ToOOxml(),
+                    Leader = label.TabulationProperties.Leader.ToOOxml(),
                     Position = label.TabulationProperties.TabStopPosition
                 });
 
@@ -179,7 +180,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             {
                 var underline = new Underline()
                 {
-                    Val = new UnderlineValues(label.Underline.Val.ToString().ToLower())
+                    Val = label.Underline.Val.ToUnderlineValue()
                 };
 
                 if (!string.IsNullOrWhiteSpace(label.Underline.Color))

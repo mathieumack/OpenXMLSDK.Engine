@@ -1,5 +1,21 @@
 ﻿namespace OpenXMLSDK.Engine.Word
 {
+    /// <summary>
+    /// Values for Text directions :
+    /// 
+    ///    "lrTb" => true,
+    ///    "tb" => true,
+    ///    "tbRl" => true,
+    ///    "rl" => true,
+    ///    "btLr" => true,
+    ///    "lr" => true,
+    ///    "lrTbV" => true,
+    ///    "tbV" => true,
+    ///    "tbRlV" => true,
+    ///    "rlV" => true,
+    ///    "tbLrV" => true,
+    ///    "lrV" => true,
+    /// </summary>
     public enum TextDirectionValues
     {
         LefToRightTopToBottom = 0,

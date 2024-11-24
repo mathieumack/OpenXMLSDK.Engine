@@ -238,7 +238,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 },
                 new MajorTickMark() { Val = TickMarkValues.None },
                 new MinorTickMark() { Val = TickMarkValues.None },
-                new TickLabelPosition() { Val = yAxixModel.TickLabelPosition.HasValue ? new DC.TickLabelPositionValues(yAxixModel.TickLabelPosition.ToString().ToLower()) : new EnumValue<DC.TickLabelPositionValues>(DC.TickLabelPositionValues.NextTo) },
+                new TickLabelPosition() { Val = yAxixModel.TickLabelPosition.HasValue ? yAxixModel.TickLabelPosition.Value.ToOOxml() : DC.TickLabelPositionValues.NextTo },
                 new CrossingAxis() { Val = categoryAxisId },
                 new CrossBetween() { Val = new EnumValue<CrossBetweenValues>(CrossBetweenValues.Between) },
                 ManageShapeProperties(yAxixModel.ShowAxisCurve, yAxixModel.AxisCurveColor));
@@ -252,7 +252,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             if (yAxixModel.CrossesAt != null)
                 yAxis.AppendChild(new CrossesAt() { Val = new DoubleValue(yAxixModel.CrossesAt) });
             else
-                yAxis.AppendChild(new Crosses() { Val = new EnumValue<CrossesValues>(secondaryAxis ? new EnumValue<CrossesValues>(CrossesValues.Maximum) : new EnumValue<CrossesValues>(CrossesValues.AutoZero)) });
+                yAxis.AppendChild(new Crosses() { Val = secondaryAxis ? CrossesValues.Maximum : CrossesValues.AutoZero });
             plotArea.AppendChild(yAxis);
         }
 
@@ -447,7 +447,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                         new A.Paragraph(new A.ParagraphProperties(defaultRunProperties)));
 
                 chart.AppendChild(
-                    new Legend(new LegendPosition() { Val = new DC.LegendPositionValues(chartModel.LegendPosition.ToString().ToLower()) },
+                    new Legend(new LegendPosition() { Val = chartModel.LegendPosition.ToOOxml() },
                     new Overlay() { Val = false },
                     new Layout(),
                     textProperty));

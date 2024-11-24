@@ -21,7 +21,7 @@ namespace OpenXMLSDK.Engine.Word.Extensions
             {
                 new Orientation()
                 {
-                    Val = model.Orientation.ToOxmlEnumValue()
+                    Val = model.Orientation.ToOOxml()
                 }
             };
 
@@ -42,16 +42,6 @@ namespace OpenXMLSDK.Engine.Word.Extensions
             }
 
             return new Scaling(scalingParams);
-        }
-
-        private static OrientationValues ToOxmlEnumValue(this BarChartOrientationType orientation)
-        {
-            if(orientation == BarChartOrientationType.MaxMin)
-            {
-                return OrientationValues.MaxMin;
-            }
-
-            return OrientationValues.MinMax;
         }
     }
 }

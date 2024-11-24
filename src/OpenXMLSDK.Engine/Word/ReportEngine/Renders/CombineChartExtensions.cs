@@ -272,7 +272,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                         new A.Paragraph(new A.ParagraphProperties(defaultRunProperties)));
 
                 chart.AppendChild(
-                    new Legend(new LegendPosition() { Val = new DC.LegendPositionValues(chartModel.LegendPosition.ToString().ToLower()) },
+                    new Legend(new LegendPosition() { Val = chartModel.LegendPosition.ToOOxml() },
                     new Overlay() { Val = false },
                     new Layout(),
                     textProperty));
