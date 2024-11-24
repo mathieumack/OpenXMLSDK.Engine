@@ -3,20 +3,20 @@ using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Drawing.Charts;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts;
 
-namespace OpenXMLSDK.Engine.Word.Extensions;
-
-public static class ScalingModelExtensions
+namespace OpenXMLSDK.Engine.Word.Extensions
 {
-    /// <summary>
-    /// Construct a DocumentFormat.OpenXml.Drawing.Charts.Scaling object
-    /// </summary>
-    /// <returns></returns>
-    public static Scaling GetScaling(this ScalingModel model)
+    public static class ScalingModelExtensions
     {
-        if (model is null)
-            return new Scaling() { Orientation = new Orientation() { Val = OrientationValues.MinMax } };
+        /// <summary>
+        /// Construct a DocumentFormat.OpenXml.Drawing.Charts.Scaling object
+        /// </summary>
+        /// <returns></returns>
+        public static Scaling GetScaling(this ScalingModel model)
+        {
+            if (model is null)
+                return new Scaling() { Orientation = new Orientation() { Val = OrientationValues.MinMax } };
 
-        var scalingParams = new List<OpenXmlElement>()
+            var scalingParams = new List<OpenXmlElement>()
         {
             new Orientation()
             {
@@ -24,22 +24,23 @@ public static class ScalingModelExtensions
             }
         };
 
-        if (model.MinAxisValue.HasValue)
-        {
-            scalingParams.Add(new MinAxisValue()
+            if (model.MinAxisValue.HasValue)
             {
-                Val = new DoubleValue(model.MinAxisValue.Value)
-            });
-        }
+                scalingParams.Add(new MinAxisValue()
+                {
+                    Val = new DoubleValue(model.MinAxisValue.Value)
+                });
+            }
 
-        if (model.MaxAxisValue.HasValue)
-        {
-            scalingParams.Add(new MaxAxisValue()
+            if (model.MaxAxisValue.HasValue)
             {
-                Val = new DoubleValue(model.MaxAxisValue.Value)
-            });
-        }
+                scalingParams.Add(new MaxAxisValue()
+                {
+                    Val = new DoubleValue(model.MaxAxisValue.Value)
+                });
+            }
 
-        return new Scaling(scalingParams);
+            return new Scaling(scalingParams);
+        }
     }
 }

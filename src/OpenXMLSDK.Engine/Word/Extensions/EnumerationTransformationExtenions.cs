@@ -5,80 +5,80 @@ using System.Collections.Generic;
 using System.Linq;
 using D = DocumentFormat.OpenXml.Drawing;
 
-namespace OpenXMLSDK.Engine.Word.Extensions;
-
-/// <summary>
-/// Contains all mapping transformations for all enumerations
-/// </summary>
-internal static class EnumerationTransformationExtenions
+namespace OpenXMLSDK.Engine.Word.Extensions
 {
-    #region TableVerticalAlignmentValues
-
-    internal static TableVerticalAlignmentValues ToOOxml(this OpenXMLSDK.Engine.Word.Tables.TableVerticalAlignmentValues value)
-    {
-        if(value == OpenXMLSDK.Engine.Word.Tables.TableVerticalAlignmentValues.Top)
-            return TableVerticalAlignmentValues.Top;
-        if (value == OpenXMLSDK.Engine.Word.Tables.TableVerticalAlignmentValues.Center)
-            return TableVerticalAlignmentValues.Center;
-        return TableVerticalAlignmentValues.Bottom;
-    }
-
-    #endregion
-
-    #region TextDirectionValues?
-
     /// <summary>
-    /// Available values :
-    /// 
-    /// LefToRightTopToBottom = 0,
-    /// LeftToRightTopToBottom2010 = 1,
-    /// TopToBottomRightToLeft = 2,
-    /// TopToBottomRightToLeft2010 = 3,
-    ///  BottomToTopLeftToRight = 4,
-    /// BottomToTopLeftToRight2010 = 5,
-    /// LefttoRightTopToBottomRotated = 6,
-    /// LeftToRightTopToBottomRotated2010 = 7,
-    ///  TopToBottomRightToLeftRotated = 8,
-    /// TopToBottomRightToLeftRotated2010 = 9,
-    /// TopToBottomLeftToRightRotated = 10,
-    /// TopToBottomLeftToRightRotated2010 = 11
+    /// Contains all mapping transformations for all enumerations
     /// </summary>
-    /// <param name="value"></param>
-    /// <returns></returns>
-    internal static W.TextDirectionValues ToOOxml(this OpenXMLSDK.Engine.Word.TextDirectionValues? value)
+    internal static class EnumerationTransformationExtenions
     {
-        if (value == OpenXMLSDK.Engine.Word.TextDirectionValues.LefToRightTopToBottom)
+        #region TableVerticalAlignmentValues
+
+        internal static TableVerticalAlignmentValues ToOOxml(this OpenXMLSDK.Engine.Word.Tables.TableVerticalAlignmentValues value)
+        {
+            if (value == OpenXMLSDK.Engine.Word.Tables.TableVerticalAlignmentValues.Top)
+                return TableVerticalAlignmentValues.Top;
+            if (value == OpenXMLSDK.Engine.Word.Tables.TableVerticalAlignmentValues.Center)
+                return TableVerticalAlignmentValues.Center;
+            return TableVerticalAlignmentValues.Bottom;
+        }
+
+        #endregion
+
+        #region TextDirectionValues?
+
+        /// <summary>
+        /// Available values :
+        /// 
+        /// LefToRightTopToBottom = 0,
+        /// LeftToRightTopToBottom2010 = 1,
+        /// TopToBottomRightToLeft = 2,
+        /// TopToBottomRightToLeft2010 = 3,
+        ///  BottomToTopLeftToRight = 4,
+        /// BottomToTopLeftToRight2010 = 5,
+        /// LefttoRightTopToBottomRotated = 6,
+        /// LeftToRightTopToBottomRotated2010 = 7,
+        ///  TopToBottomRightToLeftRotated = 8,
+        /// TopToBottomRightToLeftRotated2010 = 9,
+        /// TopToBottomLeftToRightRotated = 10,
+        /// TopToBottomLeftToRightRotated2010 = 11
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        internal static W.TextDirectionValues ToOOxml(this OpenXMLSDK.Engine.Word.TextDirectionValues? value)
+        {
+            if (value == OpenXMLSDK.Engine.Word.TextDirectionValues.LefToRightTopToBottom)
+                return W.TextDirectionValues.LefToRightTopToBottom;
+            if (value == OpenXMLSDK.Engine.Word.TextDirectionValues.LeftToRightTopToBottom2010)
+                return W.TextDirectionValues.LeftToRightTopToBottom2010;
+            if (value == OpenXMLSDK.Engine.Word.TextDirectionValues.TopToBottomRightToLeft)
+                return W.TextDirectionValues.TopToBottomRightToLeft;
+            if (value == OpenXMLSDK.Engine.Word.TextDirectionValues.TopToBottomRightToLeft2010)
+                return W.TextDirectionValues.TopToBottomRightToLeft2010;
+            if (value == OpenXMLSDK.Engine.Word.TextDirectionValues.BottomToTopLeftToRight)
+                return W.TextDirectionValues.BottomToTopLeftToRight;
+            if (value == OpenXMLSDK.Engine.Word.TextDirectionValues.BottomToTopLeftToRight2010)
+                return W.TextDirectionValues.BottomToTopLeftToRight2010;
+            if (value == OpenXMLSDK.Engine.Word.TextDirectionValues.LefttoRightTopToBottomRotated)
+                return W.TextDirectionValues.LefttoRightTopToBottomRotated;
+            if (value == OpenXMLSDK.Engine.Word.TextDirectionValues.LeftToRightTopToBottomRotated2010)
+                return W.TextDirectionValues.LeftToRightTopToBottomRotated2010;
+            if (value == OpenXMLSDK.Engine.Word.TextDirectionValues.TopToBottomRightToLeftRotated)
+                return W.TextDirectionValues.TopToBottomRightToLeftRotated;
+            if (value == OpenXMLSDK.Engine.Word.TextDirectionValues.TopToBottomRightToLeftRotated2010)
+                return W.TextDirectionValues.TopToBottomRightToLeftRotated2010;
+            if (value == OpenXMLSDK.Engine.Word.TextDirectionValues.TopToBottomLeftToRightRotated)
+                return W.TextDirectionValues.TopToBottomLeftToRightRotated;
+            if (value == OpenXMLSDK.Engine.Word.TextDirectionValues.TopToBottomLeftToRightRotated2010)
+                return W.TextDirectionValues.TopToBottomLeftToRightRotated2010;
             return W.TextDirectionValues.LefToRightTopToBottom;
-        if (value == OpenXMLSDK.Engine.Word.TextDirectionValues.LeftToRightTopToBottom2010)
-            return W.TextDirectionValues.LeftToRightTopToBottom2010;
-        if (value == OpenXMLSDK.Engine.Word.TextDirectionValues.TopToBottomRightToLeft)
-            return W.TextDirectionValues.TopToBottomRightToLeft;
-        if (value == OpenXMLSDK.Engine.Word.TextDirectionValues.TopToBottomRightToLeft2010)
-            return W.TextDirectionValues.TopToBottomRightToLeft2010;
-        if (value == OpenXMLSDK.Engine.Word.TextDirectionValues.BottomToTopLeftToRight)
-            return W.TextDirectionValues.BottomToTopLeftToRight;
-        if (value == OpenXMLSDK.Engine.Word.TextDirectionValues.BottomToTopLeftToRight2010)
-            return W.TextDirectionValues.BottomToTopLeftToRight2010;
-        if (value == OpenXMLSDK.Engine.Word.TextDirectionValues.LefttoRightTopToBottomRotated)
-            return W.TextDirectionValues.LefttoRightTopToBottomRotated;
-        if (value == OpenXMLSDK.Engine.Word.TextDirectionValues.LeftToRightTopToBottomRotated2010)
-            return W.TextDirectionValues.LeftToRightTopToBottomRotated2010;
-        if (value == OpenXMLSDK.Engine.Word.TextDirectionValues.TopToBottomRightToLeftRotated)
-            return W.TextDirectionValues.TopToBottomRightToLeftRotated;
-        if (value == OpenXMLSDK.Engine.Word.TextDirectionValues.TopToBottomRightToLeftRotated2010)
-            return W.TextDirectionValues.TopToBottomRightToLeftRotated2010;
-        if (value == OpenXMLSDK.Engine.Word.TextDirectionValues.TopToBottomLeftToRightRotated)
-            return W.TextDirectionValues.TopToBottomLeftToRightRotated;
-        if (value == OpenXMLSDK.Engine.Word.TextDirectionValues.TopToBottomLeftToRightRotated2010)
-            return W.TextDirectionValues.TopToBottomLeftToRightRotated2010;
-        return W.TextDirectionValues.LefToRightTopToBottom;
-    }
+        }
 
-    #endregion
+        #endregion
 
-    #region StyleValues
+        #region StyleValues
 
-    internal static List<string> AvailableStyleValues { get; } = new List<string>()
+        internal static List<string> AvailableStyleValues { get; } = new List<string>()
     {
         "paragraph",
         "character",
@@ -86,19 +86,19 @@ internal static class EnumerationTransformationExtenions
         "numbering"
     };
 
-    internal static W.StyleValues ToOOxml(this OpenXMLSDK.Engine.Word.StyleValues value)
-    {
-        var oXmlValue = AvailableStyleValues.FirstOrDefault(e => value.ToString().ToLower().Equals(e.ToLower()));
-        if (string.IsNullOrWhiteSpace(oXmlValue))
-            return W.StyleValues.Paragraph;
-        return new W.StyleValues();
-    }
+        internal static W.StyleValues ToOOxml(this OpenXMLSDK.Engine.Word.StyleValues value)
+        {
+            var oXmlValue = AvailableStyleValues.FirstOrDefault(e => value.ToString().ToLower().Equals(e.ToLower()));
+            if (string.IsNullOrWhiteSpace(oXmlValue))
+                return W.StyleValues.Paragraph;
+            return new W.StyleValues();
+        }
 
-    #endregion
+        #endregion
 
-    #region TableWidthUnitValues
+        #region TableWidthUnitValues
 
-    internal static List<string> AvailableTableWidthUnitValues { get; } = new List<string>()
+        internal static List<string> AvailableTableWidthUnitValues { get; } = new List<string>()
     {
         "nil",
         "auto",
@@ -106,19 +106,19 @@ internal static class EnumerationTransformationExtenions
         "dxa"
     };
 
-    internal static TableWidthUnitValues ToOOxml(this OpenXMLSDK.Engine.Word.Tables.TableWidthUnitValues value)
-    {
-        var oXmlValue = AvailableTableWidthUnitValues.FirstOrDefault(e => value.ToString().ToLower().Equals(e.ToLower()));
-        if (string.IsNullOrWhiteSpace(oXmlValue))
-            return TableWidthUnitValues.Nil;
-        return new TableWidthUnitValues(oXmlValue);
-    }
+        internal static TableWidthUnitValues ToOOxml(this OpenXMLSDK.Engine.Word.Tables.TableWidthUnitValues value)
+        {
+            var oXmlValue = AvailableTableWidthUnitValues.FirstOrDefault(e => value.ToString().ToLower().Equals(e.ToLower()));
+            if (string.IsNullOrWhiteSpace(oXmlValue))
+                return TableWidthUnitValues.Nil;
+            return new TableWidthUnitValues(oXmlValue);
+        }
 
-    #endregion
+        #endregion
 
-    #region ShadingPatterns
+        #region ShadingPatterns
 
-    internal static List<string> AvailableShadingPatterns { get; } = new List<string>()
+        internal static List<string> AvailableShadingPatterns { get; } = new List<string>()
     {
         "nil",
         "clear",
@@ -160,35 +160,35 @@ internal static class EnumerationTransformationExtenions
         "pct95"
     };
 
-    internal static W.ShadingPatternValues ToOOxml(this OpenXMLSDK.Engine.Word.ShadingPatternValues value)
-    {
-        var oXmlValue = AvailableShadingPatterns.FirstOrDefault(e => value.ToString().ToLower().Equals(e.ToLower()));
-        if (string.IsNullOrWhiteSpace(oXmlValue))
-            return W.ShadingPatternValues.Clear;
-        return new W.ShadingPatternValues(oXmlValue);
-    }
+        internal static W.ShadingPatternValues ToOOxml(this OpenXMLSDK.Engine.Word.ShadingPatternValues value)
+        {
+            var oXmlValue = AvailableShadingPatterns.FirstOrDefault(e => value.ToString().ToLower().Equals(e.ToLower()));
+            if (string.IsNullOrWhiteSpace(oXmlValue))
+                return W.ShadingPatternValues.Clear;
+            return new W.ShadingPatternValues(oXmlValue);
+        }
 
-    #endregion
+        #endregion
 
-    #region BarDirectionValues
+        #region BarDirectionValues
 
-    internal static BarDirectionValues ToOOxml(this OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts.BarDirectionValues value)
-    {
-        if(value == OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts.BarDirectionValues.Column)
-            return BarDirectionValues.Column;
-        return BarDirectionValues.Bar;
-    }
+        internal static BarDirectionValues ToOOxml(this OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts.BarDirectionValues value)
+        {
+            if (value == OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts.BarDirectionValues.Column)
+                return BarDirectionValues.Column;
+            return BarDirectionValues.Bar;
+        }
 
-    #endregion
+        #endregion
 
-    internal static OrientationValues ToOOxml(this OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts.OrientationType orientation)
-    {
-        if (orientation == OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts.OrientationType.MaxMin)
-            return OrientationValues.MaxMin;
-        return OrientationValues.MinMax;
-    }
+        internal static OrientationValues ToOOxml(this OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts.OrientationType orientation)
+        {
+            if (orientation == OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts.OrientationType.MaxMin)
+                return OrientationValues.MaxMin;
+            return OrientationValues.MinMax;
+        }
 
-    internal static List<string> AvailableBarGroupingValue { get; } = new List<string>()
+        internal static List<string> AvailableBarGroupingValue { get; } = new List<string>()
     {
         "percentStacked",
         "clustered",
@@ -196,24 +196,24 @@ internal static class EnumerationTransformationExtenions
         "stacked"
     };
 
-    internal static BarGroupingValues ToOOxml(this OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts.BarGroupingValues value)
-    {
-        var oXmlValue = AvailableBarGroupingValue.FirstOrDefault(e => value.ToString().ToLower().Equals(e.ToLower()));
-        if (string.IsNullOrWhiteSpace(oXmlValue))
-            return BarGroupingValues.Standard;
-        return new BarGroupingValues(oXmlValue);
-    }
+        internal static BarGroupingValues ToOOxml(this OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts.BarGroupingValues value)
+        {
+            var oXmlValue = AvailableBarGroupingValue.FirstOrDefault(e => value.ToString().ToLower().Equals(e.ToLower()));
+            if (string.IsNullOrWhiteSpace(oXmlValue))
+                return BarGroupingValues.Standard;
+            return new BarGroupingValues(oXmlValue);
+        }
 
-    internal static OrientationValues ToOOxml(this OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts.BarChartOrientationType orientation)
-    {
-        if (orientation == OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts.BarChartOrientationType.MaxMin)
-            return OrientationValues.MaxMin;
-        return OrientationValues.MinMax;
-    }
+        internal static OrientationValues ToOOxml(this OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts.BarChartOrientationType orientation)
+        {
+            if (orientation == OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts.BarChartOrientationType.MaxMin)
+                return OrientationValues.MaxMin;
+            return OrientationValues.MinMax;
+        }
 
-    #region TabStopValues
+        #region TabStopValues
 
-    internal static List<string> AvailableTabStopValues { get; } = new List<string>()
+        internal static List<string> AvailableTabStopValues { get; } = new List<string>()
     {
         "clear",
         "left",
@@ -225,37 +225,37 @@ internal static class EnumerationTransformationExtenions
         "bar",
         "num"
     };
-    
-    internal static TabStopValues ToOOxml(this OpenXMLSDK.Engine.Word.TabAlignmentValues value)
-    {
-        var oXmlValue = AvailableTabStopValues.FirstOrDefault(e => value.ToString().ToLower().Equals(e.ToLower()));
-        if (string.IsNullOrWhiteSpace(oXmlValue))
-            return TabStopValues.Clear;
-        return new TabStopValues(oXmlValue);
-    }
 
-    #endregion
+        internal static TabStopValues ToOOxml(this OpenXMLSDK.Engine.Word.TabAlignmentValues value)
+        {
+            var oXmlValue = AvailableTabStopValues.FirstOrDefault(e => value.ToString().ToLower().Equals(e.ToLower()));
+            if (string.IsNullOrWhiteSpace(oXmlValue))
+                return TabStopValues.Clear;
+            return new TabStopValues(oXmlValue);
+        }
 
-    #region LegendPositionValues
+        #endregion
 
-    internal static LegendPositionValues ToOOxml(this OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts.LegendPositionValues value)
-    {
-        if(value == OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts.LegendPositionValues.Bottom)
-            return LegendPositionValues.Bottom;
-        if (value == OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts.LegendPositionValues.Left)
-            return LegendPositionValues.Left;
-        if (value == OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts.LegendPositionValues.Right)
-            return LegendPositionValues.Right;
-        if (value == OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts.LegendPositionValues.Top)
-            return LegendPositionValues.Top;
-        return LegendPositionValues.TopRight;
-    }
+        #region LegendPositionValues
 
-    #endregion
+        internal static LegendPositionValues ToOOxml(this OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts.LegendPositionValues value)
+        {
+            if (value == OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts.LegendPositionValues.Bottom)
+                return LegendPositionValues.Bottom;
+            if (value == OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts.LegendPositionValues.Left)
+                return LegendPositionValues.Left;
+            if (value == OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts.LegendPositionValues.Right)
+                return LegendPositionValues.Right;
+            if (value == OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts.LegendPositionValues.Top)
+                return LegendPositionValues.Top;
+            return LegendPositionValues.TopRight;
+        }
 
-    #region PresetLineDashValues
+        #endregion
 
-    internal static List<string> AvailablePresetLineDashValues { get; } = new List<string>()
+        #region PresetLineDashValues
+
+        internal static List<string> AvailablePresetLineDashValues { get; } = new List<string>()
     {
         "solid",
         "dot",
@@ -270,19 +270,19 @@ internal static class EnumerationTransformationExtenions
         "sysDashDotDot"
     };
 
-    internal static D.PresetLineDashValues ToOOxml(this OpenXMLSDK.Engine.ReportEngine.DataContext.Charts.PresetLineDashValues value)
-    {
-        var oXmlValue = AvailablePresetLineDashValues.FirstOrDefault(e => value.ToString().ToLower().Equals(e.ToLower()));
-        if (string.IsNullOrWhiteSpace(oXmlValue))
-            return D.PresetLineDashValues.Solid;
-        return new D.PresetLineDashValues(oXmlValue);
-    }
+        internal static D.PresetLineDashValues ToOOxml(this OpenXMLSDK.Engine.ReportEngine.DataContext.Charts.PresetLineDashValues value)
+        {
+            var oXmlValue = AvailablePresetLineDashValues.FirstOrDefault(e => value.ToString().ToLower().Equals(e.ToLower()));
+            if (string.IsNullOrWhiteSpace(oXmlValue))
+                return D.PresetLineDashValues.Solid;
+            return new D.PresetLineDashValues(oXmlValue);
+        }
 
-    #endregion
+        #endregion
 
-    #region TickLabelPositionValues
+        #region TickLabelPositionValues
 
-    internal static List<string> AvailableTickLabelPositionValues { get; } = new List<string>()
+        internal static List<string> AvailableTickLabelPositionValues { get; } = new List<string>()
     {
         "high",
         "low",
@@ -290,19 +290,19 @@ internal static class EnumerationTransformationExtenions
         "none"
     };
 
-    internal static TickLabelPositionValues ToOOxml(this OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts.TickLabelPositionValues value)
-    {
-        var oXmlValue = AvailableTickLabelPositionValues.FirstOrDefault(e => value.ToString().ToLower().Equals(e.ToLower()));
-        if (string.IsNullOrWhiteSpace(oXmlValue))
-            return TickLabelPositionValues.NextTo;
-        return new TickLabelPositionValues(oXmlValue);
-    }
+        internal static TickLabelPositionValues ToOOxml(this OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts.TickLabelPositionValues value)
+        {
+            var oXmlValue = AvailableTickLabelPositionValues.FirstOrDefault(e => value.ToString().ToLower().Equals(e.ToLower()));
+            if (string.IsNullOrWhiteSpace(oXmlValue))
+                return TickLabelPositionValues.NextTo;
+            return new TickLabelPositionValues(oXmlValue);
+        }
 
-    #endregion
+        #endregion
 
-    #region TabStopLeaderCharValues
+        #region TabStopLeaderCharValues
 
-    internal static List<string> AvailableTabStopLeaderCharValues { get; } = new List<string>()
+        internal static List<string> AvailableTabStopLeaderCharValues { get; } = new List<string>()
     {
         "none",
         "dot",
@@ -312,19 +312,19 @@ internal static class EnumerationTransformationExtenions
         "middleDot"
     };
 
-    internal static TabStopLeaderCharValues ToOOxml(this OpenXMLSDK.Engine.Word.ReportEngine.Models.TabStopLeaderCharValues value)
-    {
-        var oXmlValue = AvailableTabStopLeaderCharValues.FirstOrDefault(e => value.ToString().ToLower().Equals(e.ToLower()));
-        if (string.IsNullOrWhiteSpace(oXmlValue))
-            return TabStopLeaderCharValues.None;
-        return new TabStopLeaderCharValues(oXmlValue);
-    }
+        internal static TabStopLeaderCharValues ToOOxml(this OpenXMLSDK.Engine.Word.ReportEngine.Models.TabStopLeaderCharValues value)
+        {
+            var oXmlValue = AvailableTabStopLeaderCharValues.FirstOrDefault(e => value.ToString().ToLower().Equals(e.ToLower()));
+            if (string.IsNullOrWhiteSpace(oXmlValue))
+                return TabStopLeaderCharValues.None;
+            return new TabStopLeaderCharValues(oXmlValue);
+        }
 
-    #endregion
+        #endregion
 
-    #region BorderValues
+        #region BorderValues
 
-    internal static List<string> AvailableBorderValues { get; } = new List<string>()
+        internal static List<string> AvailableBorderValues { get; } = new List<string>()
 {
     "nil",
     "none",
@@ -525,19 +525,19 @@ internal static class EnumerationTransformationExtenions
     "zigZagStitch"
 };
 
-    internal static W.BorderValues ToOOxml(this OpenXMLSDK.Engine.Word.BorderValues? value)
-    {
-        var oXmlValue = AvailableBorderValues.FirstOrDefault(e => value.ToString().ToLower().Equals(e.ToLower()));
-        if(string.IsNullOrWhiteSpace(oXmlValue))
-            return W.BorderValues.None;
-        return new W.BorderValues(oXmlValue);
-    }
+        internal static W.BorderValues ToOOxml(this OpenXMLSDK.Engine.Word.BorderValues? value)
+        {
+            var oXmlValue = AvailableBorderValues.FirstOrDefault(e => value.ToString().ToLower().Equals(e.ToLower()));
+            if (string.IsNullOrWhiteSpace(oXmlValue))
+                return W.BorderValues.None;
+            return new W.BorderValues(oXmlValue);
+        }
 
-    #endregion
+        #endregion
 
-    #region JustificationValues
+        #region JustificationValues
 
-    internal static List<string> AvailableJustificationValues { get; } = new List<string>()
+        internal static List<string> AvailableJustificationValues { get; } = new List<string>()
 {
     "left",
     "start",
@@ -553,19 +553,19 @@ internal static class EnumerationTransformationExtenions
     "thaiDistribute"
 };
 
-    internal static W.JustificationValues ToOOxml(this OpenXMLSDK.Engine.Word.JustificationValues value)
-    {
-        var oXmlValue = AvailableJustificationValues.FirstOrDefault(e => value.ToString().ToLower().Equals(e.ToLower()));
-        if (string.IsNullOrWhiteSpace(oXmlValue))
-            return W.JustificationValues.Left;
-        return new W.JustificationValues(oXmlValue);
-    }
+        internal static W.JustificationValues ToOOxml(this OpenXMLSDK.Engine.Word.JustificationValues value)
+        {
+            var oXmlValue = AvailableJustificationValues.FirstOrDefault(e => value.ToString().ToLower().Equals(e.ToLower()));
+            if (string.IsNullOrWhiteSpace(oXmlValue))
+                return W.JustificationValues.Left;
+            return new W.JustificationValues(oXmlValue);
+        }
 
-    #endregion
+        #endregion
 
-    #region JustificationValues
+        #region JustificationValues
 
-    internal static List<string> AvailableUnderlineValues { get; } = new List<string>()
+        internal static List<string> AvailableUnderlineValues { get; } = new List<string>()
     {
         "single",
         "words",
@@ -587,14 +587,15 @@ internal static class EnumerationTransformationExtenions
         "none"
     };
 
-    internal static UnderlineValues ToUnderlineValue(this OpenXMLSDK.Engine.Word.ReportEngine.Models.ExtendedModels.UnderlineValues value)
-    {
-        var oXmlValue = AvailableUnderlineValues.FirstOrDefault(e => value.ToString().ToLower().Equals(e.ToLower()));
-        if (string.IsNullOrWhiteSpace(oXmlValue))
-            return UnderlineValues.None;
-        return new UnderlineValues(oXmlValue);
+        internal static UnderlineValues ToUnderlineValue(this OpenXMLSDK.Engine.Word.ReportEngine.Models.ExtendedModels.UnderlineValues value)
+        {
+            var oXmlValue = AvailableUnderlineValues.FirstOrDefault(e => value.ToString().ToLower().Equals(e.ToLower()));
+            if (string.IsNullOrWhiteSpace(oXmlValue))
+                return UnderlineValues.None;
+            return new UnderlineValues(oXmlValue);
+        }
+
+        #endregion
+
     }
-
-    #endregion
-
 }
