@@ -1,8 +1,11 @@
 ﻿using DocumentFormat.OpenXml.Drawing.Charts;
 using DocumentFormat.OpenXml.Wordprocessing;
+using W = DocumentFormat.OpenXml.Wordprocessing;
 using System.Collections.Generic;
 using System.Linq;
 using D = DocumentFormat.OpenXml.Drawing;
+
+namespace OpenXMLSDK.Engine.Word.Extensions;
 
 /// <summary>
 /// Contains all mapping transformations for all enumerations
@@ -42,35 +45,33 @@ internal static class EnumerationTransformationExtenions
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
-    internal static TextDirectionValues? ToOOxml(this OpenXMLSDK.Engine.Word.TextDirectionValues? value)
+    internal static W.TextDirectionValues ToOOxml(this OpenXMLSDK.Engine.Word.TextDirectionValues? value)
     {
         if (value == OpenXMLSDK.Engine.Word.TextDirectionValues.LefToRightTopToBottom)
-            return TextDirectionValues.LefToRightTopToBottom;
+            return W.TextDirectionValues.LefToRightTopToBottom;
         if (value == OpenXMLSDK.Engine.Word.TextDirectionValues.LeftToRightTopToBottom2010)
-            return TextDirectionValues.LeftToRightTopToBottom2010;
+            return W.TextDirectionValues.LeftToRightTopToBottom2010;
         if (value == OpenXMLSDK.Engine.Word.TextDirectionValues.TopToBottomRightToLeft)
-            return TextDirectionValues.TopToBottomRightToLeft;
+            return W.TextDirectionValues.TopToBottomRightToLeft;
         if (value == OpenXMLSDK.Engine.Word.TextDirectionValues.TopToBottomRightToLeft2010)
-            return TextDirectionValues.TopToBottomRightToLeft2010;
+            return W.TextDirectionValues.TopToBottomRightToLeft2010;
         if (value == OpenXMLSDK.Engine.Word.TextDirectionValues.BottomToTopLeftToRight)
-            return TextDirectionValues.BottomToTopLeftToRight;
+            return W.TextDirectionValues.BottomToTopLeftToRight;
         if (value == OpenXMLSDK.Engine.Word.TextDirectionValues.BottomToTopLeftToRight2010)
-            return TextDirectionValues.BottomToTopLeftToRight2010;
+            return W.TextDirectionValues.BottomToTopLeftToRight2010;
         if (value == OpenXMLSDK.Engine.Word.TextDirectionValues.LefttoRightTopToBottomRotated)
-            return TextDirectionValues.LefttoRightTopToBottomRotated;
+            return W.TextDirectionValues.LefttoRightTopToBottomRotated;
         if (value == OpenXMLSDK.Engine.Word.TextDirectionValues.LeftToRightTopToBottomRotated2010)
-            return TextDirectionValues.LeftToRightTopToBottomRotated2010;
+            return W.TextDirectionValues.LeftToRightTopToBottomRotated2010;
         if (value == OpenXMLSDK.Engine.Word.TextDirectionValues.TopToBottomRightToLeftRotated)
-            return TextDirectionValues.TopToBottomRightToLeftRotated;
+            return W.TextDirectionValues.TopToBottomRightToLeftRotated;
         if (value == OpenXMLSDK.Engine.Word.TextDirectionValues.TopToBottomRightToLeftRotated2010)
-            return TextDirectionValues.TopToBottomRightToLeftRotated2010;
+            return W.TextDirectionValues.TopToBottomRightToLeftRotated2010;
         if (value == OpenXMLSDK.Engine.Word.TextDirectionValues.TopToBottomLeftToRightRotated)
-            return TextDirectionValues.TopToBottomLeftToRightRotated;
+            return W.TextDirectionValues.TopToBottomLeftToRightRotated;
         if (value == OpenXMLSDK.Engine.Word.TextDirectionValues.TopToBottomLeftToRightRotated2010)
-            return TextDirectionValues.TopToBottomLeftToRightRotated2010;
-        return null;
-
-
+            return W.TextDirectionValues.TopToBottomLeftToRightRotated2010;
+        return W.TextDirectionValues.LefToRightTopToBottom;
     }
 
     #endregion
@@ -85,12 +86,12 @@ internal static class EnumerationTransformationExtenions
         "numbering"
     };
 
-    internal static StyleValues ToOOxml(this OpenXMLSDK.Engine.Word.StyleValues value)
+    internal static W.StyleValues ToOOxml(this OpenXMLSDK.Engine.Word.StyleValues value)
     {
         var oXmlValue = AvailableStyleValues.FirstOrDefault(e => value.ToString().ToLower().Equals(e.ToLower()));
         if (string.IsNullOrWhiteSpace(oXmlValue))
-            return StyleValues.Paragraph;
-        return new StyleValues(oXmlValue);
+            return W.StyleValues.Paragraph;
+        return new W.StyleValues();
     }
 
     #endregion
@@ -159,12 +160,12 @@ internal static class EnumerationTransformationExtenions
         "pct95"
     };
 
-    internal static ShadingPatternValues ToOOxml(this OpenXMLSDK.Engine.Word.ShadingPatternValues value)
+    internal static W.ShadingPatternValues ToOOxml(this OpenXMLSDK.Engine.Word.ShadingPatternValues value)
     {
         var oXmlValue = AvailableShadingPatterns.FirstOrDefault(e => value.ToString().ToLower().Equals(e.ToLower()));
         if (string.IsNullOrWhiteSpace(oXmlValue))
-            return ShadingPatternValues.Clear;
-        return new ShadingPatternValues(oXmlValue);
+            return W.ShadingPatternValues.Clear;
+        return new W.ShadingPatternValues(oXmlValue);
     }
 
     #endregion
@@ -524,12 +525,12 @@ internal static class EnumerationTransformationExtenions
     "zigZagStitch"
 };
 
-    internal static BorderValues ToOOxml(this OpenXMLSDK.Engine.Word.BorderValues value)
+    internal static W.BorderValues ToOOxml(this OpenXMLSDK.Engine.Word.BorderValues? value)
     {
         var oXmlValue = AvailableBorderValues.FirstOrDefault(e => value.ToString().ToLower().Equals(e.ToLower()));
         if(string.IsNullOrWhiteSpace(oXmlValue))
-            return BorderValues.None;
-        return new BorderValues(oXmlValue);
+            return W.BorderValues.None;
+        return new W.BorderValues(oXmlValue);
     }
 
     #endregion
@@ -552,12 +553,12 @@ internal static class EnumerationTransformationExtenions
     "thaiDistribute"
 };
 
-    internal static JustificationValues ToOOxml(this OpenXMLSDK.Engine.Word.JustificationValues value)
+    internal static W.JustificationValues ToOOxml(this OpenXMLSDK.Engine.Word.JustificationValues value)
     {
         var oXmlValue = AvailableJustificationValues.FirstOrDefault(e => value.ToString().ToLower().Equals(e.ToLower()));
         if (string.IsNullOrWhiteSpace(oXmlValue))
-            return JustificationValues.Left;
-        return new JustificationValues(oXmlValue);
+            return W.JustificationValues.Left;
+        return new W.JustificationValues(oXmlValue);
     }
 
     #endregion

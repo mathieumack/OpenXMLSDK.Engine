@@ -4,8 +4,8 @@ using System.Linq;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
-using OpenXMLSDK.Engine.Platform.Word.Extensions;
 using OpenXMLSDK.Engine.ReportEngine.DataContext;
+using OpenXMLSDK.Engine.Word.Extensions;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
@@ -109,7 +109,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                         if (cell.Justification.HasValue)
                         {
                             var ppr = new ParagraphProperties();
-                            ppr.AppendChild(new Justification() { Val = cell.Justification.Value.ToOOxml() });
+                            ppr.AppendChild(new Justification() { Val = cell.Justification.HasValue ? cell.Justification.Value.ToOOxml() : null });
                             paragraph.AppendChild(ppr);
                         }
                         wordCell.AppendChild(paragraph);

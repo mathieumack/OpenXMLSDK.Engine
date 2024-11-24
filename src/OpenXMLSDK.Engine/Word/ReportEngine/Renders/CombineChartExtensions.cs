@@ -8,6 +8,7 @@ using DocumentFormat.OpenXml.Wordprocessing;
 using OpenXMLSDK.Engine.ReportEngine.DataContext;
 using OpenXMLSDK.Engine.ReportEngine.Validations;
 using OpenXMLSDK.Engine.Word.Charts;
+using OpenXMLSDK.Engine.Word.Extensions;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts;
 using A = DocumentFormat.OpenXml.Drawing;
 using D = OpenXMLSDK.Engine.ReportEngine.DataContext.Charts;
