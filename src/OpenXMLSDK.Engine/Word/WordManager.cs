@@ -239,8 +239,8 @@ namespace OpenXMLSDK.Engine.Word
             streamFile = new MemoryStream();
             try
             {
-                var tempFilePath = Path.GetTempFileName();
-                using (var file = File.OpenWrite(tempFilePath))
+                var tempFilePath = Path.Combine(Environment.CurrentDirectory, Path.GetRandomFileName());
+                using (var file = File.Create(tempFilePath))
                 {
                     templateFileStream.Position = 0;
                     templateFileStream.CopyTo(file);
