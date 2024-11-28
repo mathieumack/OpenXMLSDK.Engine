@@ -161,7 +161,7 @@ namespace OpenXMLSDK.Engine.Word
             if (wdDoc == null)
                 throw new InvalidOperationException("Document not loaded");
 
-            wdMainDocumentPart.Document.Save();
+            wdDoc.Save();
         }
 
         /// <summary>
@@ -239,14 +239,20 @@ namespace OpenXMLSDK.Engine.Word
             streamFile = new MemoryStream();
             try
             {
-                // We copy the template file into the memory stream
-                templateFileStream.CopyTo(streamFile);
+                var tempFilePath = Path.GetTempFileName();
+                using (var file = File.OpenWrite(tempFilePath))
+                {
+                    templateFileStream.Position = 0;
+                    templateFileStream.CopyTo(file);
+                }
 
-                // Change the document type to Document
-                wdDoc = WordprocessingDocument.Open(streamFile, true);
-                wdDoc.ChangeDocumentType(DocumentFormat.OpenXml.WordprocessingDocumentType.Document);
+                var templateWdDoc = WordprocessingDocument.CreateFromTemplate(tempFilePath);
+
+                wdDoc = templateWdDoc.Clone(streamFile);
 
                 wdMainDocumentPart = wdDoc.MainDocumentPart;
+
+                File.Delete(tempFilePath);
 
                 return true;
             }
@@ -272,13 +278,9 @@ namespace OpenXMLSDK.Engine.Word
             streamFile = new MemoryStream();
             try
             {
-                byte[] byteArray = File.ReadAllBytes(templateFilePath);
-                streamFile.Write(byteArray, 0, byteArray.Length);
+                var templateWdDoc = WordprocessingDocument.CreateFromTemplate(templateFilePath);
 
-                wdDoc = WordprocessingDocument.Open(streamFile, true);
-
-                // Change the document type to Document
-                wdDoc.ChangeDocumentType(DocumentFormat.OpenXml.WordprocessingDocumentType.Document);
+                wdDoc = templateWdDoc.Clone(streamFile);
 
                 wdMainDocumentPart = wdDoc.MainDocumentPart;
 
