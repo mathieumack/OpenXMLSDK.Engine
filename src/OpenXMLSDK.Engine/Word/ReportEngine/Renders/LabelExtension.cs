@@ -120,7 +120,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             {
                 run.AppendChild(new Text(label.Text)
                 {
-                    Space = new DocumentFormat.OpenXml.SpaceProcessingModeValues(label.SpaceProcessingModeValue.ToString().ToLower())
+                    Space = label.SpaceProcessingModeValue.ToOxml()
                 });
             }
             else
@@ -131,7 +131,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 {
                     run.AppendChild(new Text(lines[i])
                     {
-                        Space = new DocumentFormat.OpenXml.SpaceProcessingModeValues(label.SpaceProcessingModeValue.ToString().ToLower())
+                        Space = label.SpaceProcessingModeValue.ToOxml()
                     });
                     if (i < lines.Length - 1)
                     {

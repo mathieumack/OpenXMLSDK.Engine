@@ -1,5 +1,6 @@
 ﻿using DocumentFormat.OpenXml.Drawing.Charts;
 using DocumentFormat.OpenXml.Wordprocessing;
+using O = DocumentFormat.OpenXml;
 using W = DocumentFormat.OpenXml.Wordprocessing;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,9 +13,96 @@ namespace OpenXMLSDK.Engine.Word.Extensions
     /// </summary>
     internal static class EnumerationTransformationExtenions
     {
+        #region GroupingValues
+
+        internal static List<string> AvailableGroupingValues { get; } = new List<string>()
+        {
+            "percentStacked",
+            "standard",
+            "stacked"
+        };
+
+        internal static GroupingValues ToOxml(this OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts.GroupingValues value)
+        {
+            var oXmlValue = AvailableGroupingValues.FirstOrDefault(e => value.ToString().ToLower().Equals(e.ToLower()));
+            if (string.IsNullOrWhiteSpace(oXmlValue))
+                return GroupingValues.Standard;
+            return new GroupingValues(oXmlValue);
+        }
+
+        #endregion
+
+        #region MarkerStyleValues
+
+        internal static List<string> AvailableMarkerStyleValues { get; } = new List<string>()
+        {
+            "auto",
+            "circle",
+            "dash",
+            "diamond",
+            "dot",
+            "none",
+            "picture",
+            "plus",
+            "square",
+            "star",
+            "triangle",
+            "x"
+        };
+
+        internal static MarkerStyleValues ToOxml(this OpenXMLSDK.Engine.ReportEngine.DataContext.Charts.MarkerStyleValues value)
+        {
+            var oXmlValue = AvailableMarkerStyleValues.FirstOrDefault(e => value.ToString().ToLower().Equals(e.ToLower()));
+            if (string.IsNullOrWhiteSpace(oXmlValue))
+                return MarkerStyleValues.None;
+            return new MarkerStyleValues(oXmlValue);
+        }
+
+        #endregion
+
+        #region PageOrientationValues
+
+        internal static W.PageOrientationValues ToOxml(this OpenXMLSDK.Engine.Word.PageOrientationValues value)
+        {
+            if (value == OpenXMLSDK.Engine.Word.PageOrientationValues.Landscape)
+                return W.PageOrientationValues.Landscape;
+            return W.PageOrientationValues.Portrait;
+        }
+
+        #endregion
+
+        #region SpaceProcessingModeValues
+
+        internal static O.SpaceProcessingModeValues ToOxml(this OpenXMLSDK.Engine.Word.SpaceProcessingModeValues value)
+        {
+            if (value == SpaceProcessingModeValues.Preserve)
+                return O.SpaceProcessingModeValues.Preserve;
+
+            return O.SpaceProcessingModeValues.Default;
+        }
+
+        #endregion
+
+        #region HeaderFooterValues
+
+        internal static W.HeaderFooterValues? ToOxml(this OpenXMLSDK.Engine.Word.HeaderFooterValues value)
+        {
+            if(value == HeaderFooterValues.Even)
+                return W.HeaderFooterValues.Even;
+            if(value == HeaderFooterValues.Default) 
+                return W.HeaderFooterValues.Default;
+            if(value == HeaderFooterValues.First)
+                return W.HeaderFooterValues.First;
+
+            return null;
+        }
+
+
+        #endregion
+
         #region TableVerticalAlignmentValues
 
-        internal static TableVerticalAlignmentValues ToOOxml(this OpenXMLSDK.Engine.Word.Tables.TableVerticalAlignmentValues value)
+        internal static TableVerticalAlignmentValues ToOxml(this OpenXMLSDK.Engine.Word.Tables.TableVerticalAlignmentValues value)
         {
             if (value == OpenXMLSDK.Engine.Word.Tables.TableVerticalAlignmentValues.Top)
                 return TableVerticalAlignmentValues.Top;
@@ -79,12 +167,12 @@ namespace OpenXMLSDK.Engine.Word.Extensions
         #region StyleValues
 
         internal static List<string> AvailableStyleValues { get; } = new List<string>()
-    {
-        "paragraph",
-        "character",
-        "table",
-        "numbering"
-    };
+        {
+            "paragraph",
+            "character",
+            "table",
+            "numbering"
+        };
 
         internal static W.StyleValues ToOOxml(this OpenXMLSDK.Engine.Word.StyleValues value)
         {

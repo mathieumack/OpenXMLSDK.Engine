@@ -97,7 +97,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         {
             LineChart lineChart = plotArea.AppendChild(
                 new LineChart(
-                    new Grouping { Val = new DC.GroupingValues(chartModel.GroupingValues.ToString().ToLower()) },
+                    new Grouping { Val = chartModel.GroupingValues.ToOxml() },
                     new VaryColors { Val = new BooleanValue(chartModel.VaryColors) }));
 
             // Iterate through each key in the Dictionary collection and add the key to the chart Series
@@ -111,7 +111,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                         new Order() { Val = i },
                         new Marker
                         {
-                            Symbol = new Symbol { Val = new DC.MarkerStyleValues(serie.LineSerieMarker.MarkerStyleValues.ToString().ToLower()) },
+                            Symbol = new Symbol { Val = serie.LineSerieMarker.MarkerStyleValues.ToOxml() },
                             Size = new Size { Val = serie.LineSerieMarker.Size }
                         },
                         new SeriesText(

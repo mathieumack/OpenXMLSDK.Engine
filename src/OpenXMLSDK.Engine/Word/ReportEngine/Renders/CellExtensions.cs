@@ -170,7 +170,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
         private static void AddJustifications(this TableCellProperties cellProp, Cell cell)
         {
             if (cell.VerticalAlignment.HasValue)
-                cellProp.AppendChild(new TableCellVerticalAlignment { Val = cell.VerticalAlignment.Value.ToOOxml() });
+                cellProp.AppendChild(new TableCellVerticalAlignment { Val = cell.VerticalAlignment.Value.ToOxml() });
 
             if (cell.TextDirection.HasValue)
                 cellProp.AppendChild(new TextDirection { Val = cell.TextDirection.ToOOxml() });
