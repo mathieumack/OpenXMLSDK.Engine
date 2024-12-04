@@ -7,6 +7,7 @@ using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using OpenXMLSDK.Engine.interfaces.Word.ReportEngine.Models;
 using OpenXMLSDK.Engine.ReportEngine.DataContext;
+using OpenXMLSDK.Engine.Word.Extensions;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
@@ -104,8 +105,8 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 var tabs = new Tabs();
                 tabs.AppendChild(new TabStop()
                 {
-                    Val = (TabStopValues)label.TabulationProperties.Alignment,
-                    Leader = (DocumentFormat.OpenXml.Wordprocessing.TabStopLeaderCharValues)label.TabulationProperties.Leader,
+                    Val = label.TabulationProperties.Alignment.ToOOxml(),
+                    Leader = label.TabulationProperties.Leader.ToOOxml(),
                     Position = label.TabulationProperties.TabStopPosition
                 });
 
@@ -119,7 +120,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             {
                 run.AppendChild(new Text(label.Text)
                 {
-                    Space = (DocumentFormat.OpenXml.SpaceProcessingModeValues)(int)label.SpaceProcessingModeValue
+                    Space = label.SpaceProcessingModeValue.ToOxml()
                 });
             }
             else
@@ -130,7 +131,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                 {
                     run.AppendChild(new Text(lines[i])
                     {
-                        Space = (DocumentFormat.OpenXml.SpaceProcessingModeValues)(int)label.SpaceProcessingModeValue
+                        Space = label.SpaceProcessingModeValue.ToOxml()
                     });
                     if (i < lines.Length - 1)
                     {
@@ -179,7 +180,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             {
                 var underline = new Underline()
                 {
-                    Val = (UnderlineValues)(int)label.Underline.Val
+                    Val = label.Underline.Val.ToUnderlineValue()
                 };
 
                 if (!string.IsNullOrWhiteSpace(label.Underline.Color))

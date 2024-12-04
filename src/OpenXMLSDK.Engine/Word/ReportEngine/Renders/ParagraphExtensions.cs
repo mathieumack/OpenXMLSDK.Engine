@@ -1,8 +1,8 @@
 ﻿using System;
 using DocumentFormat.OpenXml;
 using OpenXMLSDK.Engine.ReportEngine.DataContext;
+using OpenXMLSDK.Engine.Word.Extensions;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models;
-using OpenXMLSDK.Engine.Platform.Word.Extensions;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models.ExtendedModels;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders

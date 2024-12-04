@@ -1,11 +1,12 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
 using System.Text;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Wordprocessing;
 using OpenXMLSDK.Engine.ReportEngine.DataContext;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models;
+using Style = OpenXMLSDK.Engine.Word.ReportEngine.Models.Style;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 {
@@ -132,19 +133,14 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
               </w:sdtContent>
             </w:sdt>";
 
-            using (StreamWriter sw = new StreamWriter(new MemoryStream()))
-            {
-                sw.Write(xmlString);
-                sw.Flush();
-                sw.BaseStream.Seek(0, SeekOrigin.Begin);
+            AddXmlBlockFromString(documentPart, xmlString);
+        }
 
-                OpenXmlReader re = OpenXmlReader.Create(sw.BaseStream);
-
-                re.Read();
-                OpenXmlElement oxe = re.LoadCurrentElement();
-                documentPart.Document.Body.AppendChild(oxe);
-                re.Close();
-            }
+        private static void AddXmlBlockFromString(MainDocumentPart mainDocumentPart, string xmlString)
+        {
+            var sdtBlock = new SdtBlock();
+            sdtBlock.InnerXml = xmlString;
+            mainDocumentPart.Document.Body.AppendChild(sdtBlock);
         }
 
         /// <summary>
@@ -160,7 +156,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             {
                 for (int i = 0; i < tableOfContents.ToCStylesId.Count; i++)
                 {
-                    Style style = new Style()
+                    var style = new Style()
                     {
                         StyleId = string.Concat("toc ", i + 1),
                         StyleBasedOn = tableOfContents.ToCStylesId[i],

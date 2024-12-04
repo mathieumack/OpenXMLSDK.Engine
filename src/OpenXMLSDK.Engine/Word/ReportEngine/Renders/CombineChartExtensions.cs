@@ -8,6 +8,7 @@ using DocumentFormat.OpenXml.Wordprocessing;
 using OpenXMLSDK.Engine.ReportEngine.DataContext;
 using OpenXMLSDK.Engine.ReportEngine.Validations;
 using OpenXMLSDK.Engine.Word.Charts;
+using OpenXMLSDK.Engine.Word.Extensions;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts;
 using A = DocumentFormat.OpenXml.Drawing;
 using D = OpenXMLSDK.Engine.ReportEngine.DataContext.Charts;
@@ -182,7 +183,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 
             chart.Append(
                 new PlotVisibleOnly() { Val = new BooleanValue(true) },
-                new DisplayBlanksAs() { Val = new EnumValue<DisplayBlanksAsValues>(DisplayBlanksAsValues.Gap) },
+                new DisplayBlanksAs() { Val = DisplayBlanksAsValues.Gap },
                 new ShowDataLabelsOverMaximum() { Val = false });
 
             ManageGraphBorders(chartModel, chartPart);
@@ -272,7 +273,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
                         new A.Paragraph(new A.ParagraphProperties(defaultRunProperties)));
 
                 chart.AppendChild(
-                    new Legend(new LegendPosition() { Val = new EnumValue<DC.LegendPositionValues>((DC.LegendPositionValues)(int)chartModel.LegendPosition) },
+                    new Legend(new LegendPosition() { Val = chartModel.LegendPosition.ToOOxml() },
                     new Overlay() { Val = false },
                     new Layout(),
                     textProperty));

@@ -50,7 +50,7 @@ namespace OpenXMLSDK.Engine.Word
         public void CloseDoc()
         {
             this.SaveDoc();
-            wdDoc.Close();
+            wdDoc.Dispose();
         }
 
         public void Dispose()
@@ -161,7 +161,7 @@ namespace OpenXMLSDK.Engine.Word
             if (wdDoc == null)
                 throw new InvalidOperationException("Document not loaded");
 
-            wdMainDocumentPart.Document.Save();
+            wdDoc.Save();
         }
 
         /// <summary>
@@ -172,7 +172,7 @@ namespace OpenXMLSDK.Engine.Word
             if (wdDoc == null)
                 throw new InvalidOperationException("Document not loaded");
 
-            wdDoc.Close();
+            wdDoc.Dispose();
         }
 
         /// <summary>
@@ -239,14 +239,20 @@ namespace OpenXMLSDK.Engine.Word
             streamFile = new MemoryStream();
             try
             {
-                // We copy the template file into the memory stream
-                templateFileStream.CopyTo(streamFile);
+                var tempFilePath = Path.Combine(Environment.CurrentDirectory, Path.GetRandomFileName());
+                using (var file = File.Create(tempFilePath))
+                {
+                    templateFileStream.Position = 0;
+                    templateFileStream.CopyTo(file);
+                }
 
-                // Change the document type to Document
-                wdDoc = WordprocessingDocument.Open(streamFile, true);
-                wdDoc.ChangeDocumentType(DocumentFormat.OpenXml.WordprocessingDocumentType.Document);
+                var templateWdDoc = WordprocessingDocument.CreateFromTemplate(tempFilePath);
+
+                wdDoc = templateWdDoc.Clone(streamFile);
 
                 wdMainDocumentPart = wdDoc.MainDocumentPart;
+
+                File.Delete(tempFilePath);
 
                 return true;
             }
@@ -272,13 +278,9 @@ namespace OpenXMLSDK.Engine.Word
             streamFile = new MemoryStream();
             try
             {
-                byte[] byteArray = File.ReadAllBytes(templateFilePath);
-                streamFile.Write(byteArray, 0, byteArray.Length);
+                var templateWdDoc = WordprocessingDocument.CreateFromTemplate(templateFilePath);
 
-                wdDoc = WordprocessingDocument.Open(streamFile, true);
-
-                // Change the document type to Document
-                wdDoc.ChangeDocumentType(DocumentFormat.OpenXml.WordprocessingDocumentType.Document);
+                wdDoc = templateWdDoc.Clone(streamFile);
 
                 wdMainDocumentPart = wdDoc.MainDocumentPart;
 
@@ -609,9 +611,9 @@ namespace OpenXMLSDK.Engine.Word
         /// <param name="bookmark"></param>
         /// <param name="content"></param>
         /// <param name="importType"></param>
-        private void AddAltChunkOnBookmark(string bookmark, Stream content, AlternativeFormatImportPartType importType)
+        private void AddAltChunkOnBookmark(string bookmark, Stream content, PartTypeInfo importType)
         {
-            AlternativeFormatImportPart formatImportPart = wdMainDocumentPart.AddAlternativeFormatImportPart(importType);
+            var formatImportPart = wdMainDocumentPart.AddAlternativeFormatImportPart(importType);
 
             formatImportPart.FeedData(content);
 
@@ -691,7 +693,7 @@ namespace OpenXMLSDK.Engine.Word
                 document.Render(wdDoc, context, formatProvider);
 
                 wdDoc.MainDocumentPart.Document.Save();
-                wdDoc.Close();
+                wdDoc.Dispose();
                 return stream.ToArray();
             }
         }
@@ -767,7 +769,7 @@ namespace OpenXMLSDK.Engine.Word
                 }
 
                 wdDoc.MainDocumentPart.Document.Save();
-                wdDoc.Close();
+                wdDoc.Dispose();
                 return stream.ToArray();
             }
         }

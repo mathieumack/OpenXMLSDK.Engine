@@ -3,6 +3,7 @@ using System.Linq;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using OpenXMLSDK.Engine.ReportEngine.DataContext;
+using OpenXMLSDK.Engine.Word.Extensions;
 
 namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
 {
@@ -38,7 +39,7 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             }
             foreach (var section in mainDocumentPart.Document.Body.Descendants<SectionProperties>())
             {
-                section.PrependChild(new HeaderReference() { Id = headerPartId, Type = (DocumentFormat.OpenXml.Wordprocessing.HeaderFooterValues)(int)header.Type });
+                section.PrependChild(new HeaderReference() { Id = headerPartId, Type = header.Type.ToOxml() });
             }
 
             if (header.Type == HeaderFooterValues.First)

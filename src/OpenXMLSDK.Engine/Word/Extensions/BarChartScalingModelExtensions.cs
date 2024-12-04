@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Drawing.Charts;
 using OpenXMLSDK.Engine.Word.ReportEngine.Models.Charts;
@@ -14,13 +15,13 @@ namespace OpenXMLSDK.Engine.Word.Extensions
         public static Scaling GetScaling(this BarChartScalingModel model)
         {
             if (model is null)
-                return new Scaling() { Orientation = new Orientation() { Val = new EnumValue<OrientationValues>(OrientationValues.MinMax) } };
+                return new Scaling() { Orientation = new Orientation() { Val = OrientationValues.MinMax } };
 
             var scalingParams = new List<OpenXmlElement>()
             {
                 new Orientation()
                 {
-                    Val = new EnumValue<OrientationValues>((OrientationValues)(int)model.Orientation)
+                    Val = model.Orientation.ToOOxml()
                 }
             };
 

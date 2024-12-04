@@ -28,11 +28,11 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             context.ReplaceItem(image);
             ImagePart imagePart;
             if (documentPart is MainDocumentPart)
-                imagePart = (documentPart as MainDocumentPart).AddImagePart((ImagePartType)(int)image.ImagePartType);
+                imagePart = (documentPart as MainDocumentPart).AddImagePart(ToPartTypeInfo(image.ImagePartType));
             else if (documentPart is HeaderPart)
-                imagePart = (documentPart as HeaderPart).AddImagePart((ImagePartType)(int)image.ImagePartType);
+                imagePart = (documentPart as HeaderPart).AddImagePart(ToPartTypeInfo(image.ImagePartType));
             else if (documentPart is FooterPart)
-                imagePart = (documentPart as FooterPart).AddImagePart((ImagePartType)(int)image.ImagePartType);
+                imagePart = (documentPart as FooterPart).AddImagePart(ToPartTypeInfo(image.ImagePartType));
             else
                 return null;
 
@@ -64,6 +64,28 @@ namespace OpenXMLSDK.Engine.Word.ReportEngine.Renders
             {
                 return null;
             }
+        }
+
+        private static PartTypeInfo ToPartTypeInfo(OpenXMLSDK.Engine.Packaging.ImagePartType imagePartType)
+        {
+            if(imagePartType == Packaging.ImagePartType.Png)
+                return ImagePartType.Png;
+            else if(imagePartType == Packaging.ImagePartType.Jpeg)
+                return ImagePartType.Jpeg;
+            else if (imagePartType == Packaging.ImagePartType.Gif)
+                return ImagePartType.Gif;
+            else if (imagePartType == Packaging.ImagePartType.Bmp)
+                return ImagePartType.Bmp;
+            else if (imagePartType == Packaging.ImagePartType.Tiff)
+                return ImagePartType.Tiff;
+            else if (imagePartType == Packaging.ImagePartType.Icon)
+                return ImagePartType.Icon;
+            else if (imagePartType == Packaging.ImagePartType.Emf)
+                return ImagePartType.Emf;
+            else if (imagePartType == Packaging.ImagePartType.Wmf)
+                return ImagePartType.Wmf;
+            else
+                return ImagePartType.Png;
         }
 
         /// <summary>
