@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
-using OpenXMLSDK.Engine.ReportEngine.DataContext;
 using OpenXMLSDK.Engine.Word.ReportEngine;
 using OpenXMLSDK.Engine.Word.ReportEngine.Renders;
 
@@ -22,18 +20,34 @@ namespace OpenXMLSDK.Engine.Word
         private string filePath;
 
         /// <summary>
-        /// Objet Word courant
+        /// Current Word object
         /// </summary>
         private WordprocessingDocument wdDoc = null;
 
         /// <summary>
-        /// Page principale
+        /// Current Word object
+        /// </summary>
+        internal WordprocessingDocument WordprocessingDocument
+        {
+            get { return wdDoc; }
+        }
+
+        /// <summary>
+        /// Main page
         /// </summary>
         private MainDocumentPart wdMainDocumentPart = null;
 
+        /// <summary>
+        /// Main page
+        /// </summary>
+        internal MainDocumentPart MainDocumentPart
+        {
+            get { return wdMainDocumentPart; }
+        }
+
         #endregion
 
-        #region Constructeurs
+        #region Constructors
 
         /// <summary>
         /// 
@@ -45,7 +59,7 @@ namespace OpenXMLSDK.Engine.Word
 
         #endregion
 
-        #region Dispose / fin
+        #region Dispose / End
 
         public void CloseDoc()
         {
@@ -58,6 +72,243 @@ namespace OpenXMLSDK.Engine.Word
             if (wdDoc != null)
                 wdDoc.Dispose();
         }
+
+        /// <summary>
+        /// Allows to return the MemoryStream associated with the current document
+        /// </summary>
+        /// <returns>Current MemoryStream, null otherwise</returns>
+        public MemoryStream GetMemoryStream()
+        {
+            var memoryStream = new MemoryStream();
+            streamFile.Position = 0;
+            streamFile.CopyTo(memoryStream);
+            memoryStream.Position = 0;
+            return memoryStream;
+        }
+
+        #endregion
+
+        #region Settings
+
+        /// <summary>
+        /// Force or not the update of Table of Content when the document is opened
+        /// </summary>
+        /// <param name="updateToc"></param>
+        public void SetToCUpdate(bool updateToc)
+        {
+            wdMainDocumentPart?.DocumentSettingsPart?.Settings?.Append(new UpdateFieldsOnOpen() { Val = new OnOffValue(updateToc) });
+        }
+
+        #endregion
+
+        #region Private Functions - Open/Save/Create
+
+        /// <summary>
+        /// Save the current document
+        /// </summary>
+        public void SaveDoc()
+        {
+            if (wdDoc == null)
+                throw new InvalidOperationException("Document not loaded");
+
+            wdDoc.Save();
+        }
+
+        /// <summary>
+        /// Close the document with automatic save
+        /// </summary>
+        public void CloseDocNoSave()
+        {
+            if (wdDoc == null)
+                throw new InvalidOperationException("Document not loaded");
+
+            wdDoc.Dispose();
+        }
+
+        /// <summary>
+        /// Open a document
+        /// </summary>
+        /// <param name="filePath">Path and full name of the file to open</param>
+        /// <param name="isEditable">Indicates if the file should be opened in editable mode (Read/Write)</param>
+        /// <returns>True if the document was successfully opened</returns>
+        public bool OpenDoc(string filePath, bool isEditable)
+        {
+            if (string.IsNullOrWhiteSpace(filePath))
+                throw new ArgumentNullException(nameof(filePath), "filePath must be not null or white spaces");
+            if (!File.Exists(filePath))
+                throw new FileNotFoundException("file not found", filePath);
+
+            try
+            {
+                wdDoc = WordprocessingDocument.Open(filePath, isEditable);
+                wdMainDocumentPart = wdDoc.MainDocumentPart;
+
+                return true;
+            }
+            catch
+            {
+                wdDoc = null;
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Create a new empty document
+        /// </summary>
+        /// <returns></returns>
+        public bool New()
+        {
+            streamFile = new MemoryStream();
+            try
+            {
+                wdDoc = WordprocessingDocument.Create(streamFile, WordprocessingDocumentType.Document);
+                wdMainDocumentPart = wdDoc.AddMainDocumentPart();
+                wdMainDocumentPart.Document = new Document();
+
+                var body = new Body();
+                wdMainDocumentPart.Document.Append(body);
+
+                return true;
+            }
+            catch
+            {
+                wdDoc = null;
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Open a document in streaming mode
+        /// </summary>
+        /// <param name="streamFile">File stream</param>
+        /// <returns></returns>
+        public bool OpenDoc(Stream streamFile, bool isEditable)
+        {
+            if (streamFile == null)
+                throw new ArgumentNullException(nameof(streamFile), "streamFile must be not null");
+
+            try
+            {
+                wdDoc = WordprocessingDocument.Open(streamFile, isEditable);
+                wdMainDocumentPart = wdDoc.MainDocumentPart;
+
+                return true;
+            }
+            catch
+            {
+                wdDoc = null;
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Open a document from a dotx template
+        /// </summary>
+        /// <param name="templateFileStream">Path and full name of the template</param>
+        /// <returns>True if the document was successfully opened</returns>
+        public bool OpenDocFromTemplate(Stream templateFileStream)
+        {
+            if (templateFileStream is null || templateFileStream == Stream.Null)
+                throw new ArgumentNullException(nameof(templateFileStream), "templateFilePath must not be null");
+
+            streamFile = new MemoryStream();
+            try
+            {
+                var tempFilePath = Path.Combine(Environment.CurrentDirectory, Path.GetRandomFileName());
+                using (var file = File.Create(tempFilePath))
+                {
+                    templateFileStream.Position = 0;
+                    templateFileStream.CopyTo(file);
+                }
+
+                var templateWdDoc = WordprocessingDocument.CreateFromTemplate(tempFilePath);
+
+                wdDoc = templateWdDoc.Clone(streamFile);
+
+                wdMainDocumentPart = wdDoc.MainDocumentPart;
+
+                File.Delete(tempFilePath);
+
+                return true;
+            }
+            catch
+            {
+                wdDoc = null;
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Open a document from a dotx template
+        /// </summary>
+        /// <param name="templateFilePath">Path and full name of the template</param>
+        /// <returns>True if the document was successfully opened</returns>
+        public bool OpenDocFromTemplate(string templateFilePath)
+        {
+            if (string.IsNullOrWhiteSpace(templateFilePath))
+                throw new ArgumentNullException(nameof(templateFilePath), "templateFilePath must be not null or white spaces");
+            if (!File.Exists(templateFilePath))
+                throw new FileNotFoundException("file not found");
+
+            streamFile = new MemoryStream();
+            try
+            {
+                var templateWdDoc = WordprocessingDocument.CreateFromTemplate(templateFilePath);
+
+                wdDoc = templateWdDoc.Clone(streamFile);
+
+                wdMainDocumentPart = wdDoc.MainDocumentPart;
+
+                return true;
+            }
+            catch
+            {
+                wdDoc = null;
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Open a document from a dotx template
+        /// </summary>
+        /// <param name="templateFilePath">Path and full name of the template</param>
+        /// <param name="newFilePath">Path and full name of the file to be saved</param>
+        /// <param name="isEditable">Indicates if the file should be opened in editable mode (Read/Write)</param>
+        /// <returns>True if the document was successfully opened</returns>
+        public bool OpenDocFromTemplate(string templateFilePath, string newFilePath, bool isEditable)
+        {
+            if (string.IsNullOrWhiteSpace(templateFilePath))
+                throw new ArgumentNullException(nameof(templateFilePath), "templateFilePath must be not null or white spaces");
+            if (!File.Exists(templateFilePath))
+                throw new FileNotFoundException("file not found");
+
+            filePath = newFilePath;
+            try
+            {
+                System.IO.File.Copy(templateFilePath, newFilePath, true);
+
+                wdDoc = WordprocessingDocument.Open(filePath, isEditable);
+
+                // Change the document type to Document
+                wdDoc.ChangeDocumentType(DocumentFormat.OpenXml.WordprocessingDocumentType.Document);
+
+                wdMainDocumentPart = wdDoc.MainDocumentPart;
+
+                SaveDoc();
+                CloseDocNoSave();
+
+                return OpenDoc(newFilePath, isEditable);
+            }
+            catch
+            {
+                wdDoc = null;
+                return false;
+            }
+        }
+
+        #endregion
+
+        #region Appends
 
         public void AppendSubDocument(List<Report> reportList, bool mergeStyles, CultureInfo formatProvider)
         {
@@ -124,368 +375,6 @@ namespace OpenXMLSDK.Engine.Word
         }
 
         /// <summary>
-        /// Permet de renvoyer le MemoryStream associé au document en cours
-        /// </summary>
-        /// <returns>MemoryStream en cours, null sinon</returns>
-        public MemoryStream GetMemoryStream()
-        {
-            var memoryStream = new MemoryStream();
-            streamFile.Position = 0;
-            streamFile.CopyTo(memoryStream);
-            memoryStream.Position = 0;
-            return memoryStream;
-        }
-
-        #endregion
-
-        #region Settings
-
-        /// <summary>
-        /// Force or not the update of Table of Content when the document is opened
-        /// </summary>
-        /// <param name="updateToc"></param>
-        public void SetToCUpdate(bool updateToc)
-        {
-            wdMainDocumentPart?.DocumentSettingsPart?.Settings?.Append(new UpdateFieldsOnOpen() { Val = new OnOffValue(updateToc) });
-        }
-
-        #endregion
-
-        #region Fonctions privées - Open/Save/Create
-
-        /// <summary>
-        /// Sauvegarde du document courant
-        /// </summary>
-        public void SaveDoc()
-        {
-            if (wdDoc == null)
-                throw new InvalidOperationException("Document not loaded");
-
-            wdDoc.Save();
-        }
-
-        /// <summary>
-        /// Fermeture du document avec sauvegarde automatique
-        /// </summary>
-        public void CloseDocNoSave()
-        {
-            if (wdDoc == null)
-                throw new InvalidOperationException("Document not loaded");
-
-            wdDoc.Dispose();
-        }
-
-        /// <summary>
-        /// Ouverture d'un document
-        /// </summary>
-        /// <param name="filePath">Chemin et nom complet du fichier à ouvrir</param>
-        /// <param name="isEditable">Indique si le fichier doit être ouvert en mode éditable (Read/Write)</param>
-        /// <returns>True si le document a bien été ouvert</returns>
-        public bool OpenDoc(string filePath, bool isEditable)
-        {
-            if (string.IsNullOrWhiteSpace(filePath))
-                throw new ArgumentNullException(nameof(filePath), "filePath must be not null or white spaces");
-            if (!File.Exists(filePath))
-                throw new FileNotFoundException("file not found", filePath);
-
-            try
-            {
-                wdDoc = WordprocessingDocument.Open(filePath, isEditable);
-                wdMainDocumentPart = wdDoc.MainDocumentPart;
-
-                return true;
-            }
-            catch
-            {
-                wdDoc = null;
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Ouverture d'un document en mode streaming
-        /// </summary>
-        /// <param name="streamFile">Flux du fichier</param>
-        /// <returns></returns>
-        public bool OpenDoc(Stream streamFile, bool isEditable)
-        {
-            if (streamFile == null)
-                throw new ArgumentNullException(nameof(streamFile), "streamFile must be not null");
-
-            try
-            {
-                wdDoc = WordprocessingDocument.Open(streamFile, isEditable);
-                wdMainDocumentPart = wdDoc.MainDocumentPart;
-
-                return true;
-            }
-            catch
-            {
-                wdDoc = null;
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Ouverture d'un document depuis un template dotx
-        /// </summary>
-        /// <param name="templateFileStream">Chemin et nom complet du template</param>
-        /// <returns>True si le document a bien été ouvert</returns>
-        public bool OpenDocFromTemplate(Stream templateFileStream)
-        {
-            if (templateFileStream is null || templateFileStream == Stream.Null)
-                throw new ArgumentNullException(nameof(templateFileStream), "templateFilePath must not be null");
-
-            streamFile = new MemoryStream();
-            try
-            {
-                var tempFilePath = Path.Combine(Environment.CurrentDirectory, Path.GetRandomFileName());
-                using (var file = File.Create(tempFilePath))
-                {
-                    templateFileStream.Position = 0;
-                    templateFileStream.CopyTo(file);
-                }
-
-                var templateWdDoc = WordprocessingDocument.CreateFromTemplate(tempFilePath);
-
-                wdDoc = templateWdDoc.Clone(streamFile);
-
-                wdMainDocumentPart = wdDoc.MainDocumentPart;
-
-                File.Delete(tempFilePath);
-
-                return true;
-            }
-            catch
-            {
-                wdDoc = null;
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Ouverture d'un document depuis un template dotx
-        /// </summary>
-        /// <param name="templateFilePath">Chemin et nom complet du template</param>
-        /// <returns>True si le document a bien été ouvert</returns>
-        public bool OpenDocFromTemplate(string templateFilePath)
-        {
-            if (string.IsNullOrWhiteSpace(templateFilePath))
-                throw new ArgumentNullException(nameof(templateFilePath), "templateFilePath must be not null or white spaces");
-            if (!File.Exists(templateFilePath))
-                throw new FileNotFoundException("file not found");
-
-            streamFile = new MemoryStream();
-            try
-            {
-                var templateWdDoc = WordprocessingDocument.CreateFromTemplate(templateFilePath);
-
-                wdDoc = templateWdDoc.Clone(streamFile);
-
-                wdMainDocumentPart = wdDoc.MainDocumentPart;
-
-                return true;
-            }
-            catch
-            {
-                wdDoc = null;
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Ouverture d'un document depuis un template dotx
-        /// </summary>
-        /// <param name="templateFilePath">Chemin et nom complet du template</param>
-        /// <param name="newFilePath">Chemin et nom complet du fichier qui sera sauvegardé</param>
-        /// <param name="isEditable">Indique si le fichier doit être ouvert en mode éditable (Read/Write)</param>
-        /// <returns>True si le document a bien été ouvert</returns>
-        public bool OpenDocFromTemplate(string templateFilePath, string newFilePath, bool isEditable)
-        {
-            if (string.IsNullOrWhiteSpace(templateFilePath))
-                throw new ArgumentNullException(nameof(templateFilePath), "templateFilePath must be not null or white spaces");
-            if (!File.Exists(templateFilePath))
-                throw new FileNotFoundException("file not found");
-
-            filePath = newFilePath;
-            try
-            {
-                System.IO.File.Copy(templateFilePath, newFilePath, true);
-
-                wdDoc = WordprocessingDocument.Open(filePath, isEditable);
-
-                // Change the document type to Document
-                wdDoc.ChangeDocumentType(DocumentFormat.OpenXml.WordprocessingDocumentType.Document);
-
-                wdMainDocumentPart = wdDoc.MainDocumentPart;
-
-                SaveDoc();
-                CloseDocNoSave();
-
-                return OpenDoc(newFilePath, isEditable);
-            }
-            catch
-            {
-                wdDoc = null;
-                return false;
-            }
-        }
-
-        #endregion
-
-        #region Bookmarks
-
-        public BookmarkEnd FindBookmark(string bookmark)
-        {
-            var resultMain = wdMainDocumentPart.RootElement.Descendants<BookmarkStart>().FirstOrDefault(e => e.Name == bookmark);
-            if (resultMain != default(BookmarkStart))
-                return wdMainDocumentPart.RootElement.Descendants<BookmarkEnd>().FirstOrDefault(e => e.Id.Value == resultMain.Id);
-
-            if (wdMainDocumentPart.HeaderParts != null)
-            {
-                foreach (var header in wdMainDocumentPart.HeaderParts)
-                {
-                    var result = header.RootElement.Descendants<BookmarkStart>().FirstOrDefault(e => e.Name == bookmark);
-                    if (result != default(BookmarkStart))
-                        return header.RootElement.Descendants<BookmarkEnd>().FirstOrDefault(e => e.Id.Value == result.Id);
-                }
-            }
-
-            if (wdMainDocumentPart.FooterParts != null)
-            {
-                foreach (var footer in wdMainDocumentPart.FooterParts)
-                {
-                    var result = footer.RootElement.Descendants<BookmarkStart>().FirstOrDefault(e => e.Name == bookmark);
-                    if (result != default(BookmarkStart))
-                        return footer.RootElement.Descendants<BookmarkEnd>().FirstOrDefault(e => e.Id.Value == result.Id);
-                }
-            }
-
-            return null;
-        }
-
-        public IList<string> GetBookmarks()
-        {
-            if (wdDoc == null)
-                throw new InvalidOperationException("Document not loaded");
-
-            var result = wdMainDocumentPart.Document.Body.Descendants<BookmarkStart>().Select(e => e.Name.Value).ToList();
-            if (wdMainDocumentPart.HeaderParts != null)
-            {
-                foreach (var header in wdMainDocumentPart.HeaderParts)
-                    result.AddRange(header.RootElement.Descendants<BookmarkStart>().Select(e => e.Name.Value).ToList());
-            }
-
-            if (wdMainDocumentPart.FooterParts != null)
-            {
-                foreach (var footer in wdMainDocumentPart.FooterParts)
-                    result.AddRange(footer.RootElement.Descendants<BookmarkStart>().Select(e => e.Name.Value).ToList());
-            }
-            return result;
-        }
-
-        public void SetOnBookmark(string bookmark, OpenXmlElement element)
-        {
-            if (string.IsNullOrWhiteSpace(bookmark))
-                throw new ArgumentNullException(nameof(bookmark), "bookmark must be not null or white spaces");
-            if (wdDoc == null)
-                throw new InvalidOperationException("Document not loaded");
-
-            var bookmarkElement = FindBookmark(bookmark);
-            if (bookmarkElement != null)
-                bookmarkElement.InsertAfterSelf(element);
-        }
-
-        public void SetParagraphsOnBookmark(string bookmark, IList<Paragraph> paragraphs)
-        {
-            if (string.IsNullOrWhiteSpace(bookmark))
-                throw new ArgumentNullException(nameof(bookmark), "bookmark must be not null or white spaces");
-            if (wdDoc == null)
-                throw new InvalidOperationException("Document not loaded");
-
-            var bookmarkElement = FindBookmark(bookmark);
-            if (bookmarkElement != null)
-            {
-                var paragraph = bookmarkElement.Ancestors<Paragraph>().LastOrDefault();
-                var firstParagraph = bookmarkElement.Ancestors<Paragraph>().LastOrDefault();
-                if (paragraph != null)
-                {
-                    foreach (var item in paragraphs)
-                        paragraph = paragraph.InsertAfterSelf(item);
-
-                    if (paragraphs.Any())
-                        firstParagraph.Remove();
-                }
-            }
-        }
-
-        public void SetTextOnBookmark(string bookmark, string text)
-        {
-            if (string.IsNullOrWhiteSpace(bookmark))
-                throw new ArgumentNullException(nameof(bookmark), "bookmark must be not null or white spaces");
-            if (wdDoc == null)
-                throw new InvalidOperationException("Document not loaded");
-
-            var run = new Run(new Text(text));
-            SetOnBookmark(bookmark, run);
-        }
-
-        public void SetTextsOnBookmark(string bookmark, List<string> texts, bool formated = true)
-        {
-            if (string.IsNullOrWhiteSpace(bookmark))
-                throw new ArgumentNullException(nameof(bookmark), "bookmark must be not null or white spaces");
-            if (wdDoc == null)
-                throw new InvalidOperationException("Document not loaded");
-
-            var run = new Run();
-
-            for (int i = 0; i < texts.Count; i++)
-            {
-                run.Append(new Text() { Text = texts[i] });
-
-                if (i < texts.Count - 1 && formated)
-                    run.Append(new Break());
-                else if (!formated)
-                    run.Append(new Text() { Text = " ", Space = DocumentFormat.OpenXml.SpaceProcessingModeValues.Preserve });
-            }
-
-            SetOnBookmark(bookmark, run);
-        }
-
-        /// <summary>
-        /// Insert an html content on bookmark
-        /// </summary>
-        /// <param name="bookmark"></param>
-        /// <param name="html"></param>
-        public void SetHtmlOnBookmark(string bookmark, string html)
-        {
-            if (string.IsNullOrWhiteSpace(bookmark))
-                throw new ArgumentNullException(nameof(bookmark), "bookmark must be not null or white spaces");
-            if (wdDoc == null)
-                throw new InvalidOperationException("Document not loaded");
-
-            using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(html)))
-            {
-                AddAltChunkOnBookmark(bookmark, ms, AlternativeFormatImportPartType.Xhtml);
-            }
-        }
-
-        /// <summary>
-        /// Insert another word document on bookmark
-        /// </summary>
-        /// <param name="bookmark"></param>
-        /// <param name="content"></param>
-        public void SetSubDocumentOnBookmark(string bookmark, Stream content)
-        {
-            if (string.IsNullOrWhiteSpace(bookmark))
-                throw new ArgumentNullException(nameof(bookmark), "bookmark must be not null or white spaces");
-            if (wdDoc == null)
-                throw new InvalidOperationException("Document not loaded");
-
-            AddAltChunkOnBookmark(bookmark, content, AlternativeFormatImportPartType.WordprocessingML);
-        }
-
-        /// <summary>
         /// Append SubDocument at end of current doc
         /// </summary>
         /// <param name="content"></param>
@@ -503,7 +392,7 @@ namespace OpenXMLSDK.Engine.Word
 
             OpenXmlElement lastElement = wdMainDocumentPart.Document.Body.LastChild;
 
-            if(lastElement is SectionProperties)
+            if (lastElement is SectionProperties)
             {
                 lastElement.InsertBeforeSelf(altChunk);
                 if (withPageBreak)
@@ -563,7 +452,7 @@ namespace OpenXMLSDK.Engine.Word
         /// <param name="filesToInsert"></param>
         /// <param name="insertPageBreaks"></param>
         /// <param name="predecessorElement"></param>
-        private void AppendStreams(IList<MemoryStream> filesToInsert, bool insertPageBreaks, OpenXmlCompositeElement insertAfterElement)
+        internal void AppendStreams(IList<MemoryStream> filesToInsert, bool insertPageBreaks, OpenXmlCompositeElement insertAfterElement)
         {
             OpenXmlCompositeElement openXmlCompositeElement = null;
             foreach (var file in filesToInsert)
@@ -578,7 +467,6 @@ namespace OpenXMLSDK.Engine.Word
                         footer.Remove();
                     pkgSourceDoc.MainDocumentPart.Document.Save();
                 }
-
                 string altChunkId = "AltChunkId-" + Guid.NewGuid();
 
                 AlternativeFormatImportPart chunk = wdMainDocumentPart.AddAlternativeFormatImportPart(AlternativeFormatImportPartType.WordprocessingML, altChunkId);
@@ -602,175 +490,6 @@ namespace OpenXMLSDK.Engine.Word
 
                 if (wdDoc == null)
                     throw new InvalidOperationException("Document not loaded");
-            }
-        }
-
-        /// <summary>
-        /// Insert a document on bookmark
-        /// </summary>
-        /// <param name="bookmark"></param>
-        /// <param name="content"></param>
-        /// <param name="importType"></param>
-        private void AddAltChunkOnBookmark(string bookmark, Stream content, PartTypeInfo importType)
-        {
-            var formatImportPart = wdMainDocumentPart.AddAlternativeFormatImportPart(importType);
-
-            formatImportPart.FeedData(content);
-
-            AltChunk altChunk = new AltChunk();
-            altChunk.Id = wdMainDocumentPart.GetIdOfPart(formatImportPart);
-
-            var bookmarkElement = FindBookmark(bookmark);
-            if (bookmarkElement != null)
-            {
-                var paragraph = bookmarkElement.Ancestors<Paragraph>().LastOrDefault();
-                // without an empty paragraph after altchunk, the docx might be corrupted if the bookmark is inside a table and the html only contains one paragraph
-                if (paragraph.Ancestors<Table>().Any())
-                    paragraph.InsertAfterSelf(new Paragraph());
-                paragraph.InsertAfterSelf(new AltChunk(altChunk));
-            }
-        }
-
-        /// <summary>
-        /// Allow to merge documents to insert it in a bookmark
-        /// </summary>
-        /// <param name="bookmark">Bookmark name</param>
-        /// <param name="filesToInsert">Documents to insert</param>
-        /// <param name="insertPageBreaks">Indicate if a page break must be added after each document</param>
-        public void InsertDocsToBookmark(string bookmark, IList<MemoryStream> filesToInsert, bool insertPageBreaks)
-        {
-            if (string.IsNullOrWhiteSpace(bookmark))
-                throw new ArgumentNullException(nameof(bookmark), "Bookmark must not be null or white space");
-            if (filesToInsert == null)
-                throw new ArgumentNullException(nameof(filesToInsert), "FilesToInsert must not be null");
-
-            var bookmarkElement = FindBookmark(bookmark);
-            if (bookmarkElement != default(BookmarkEnd))
-            {
-                OpenXmlCompositeElement insertAfterElement = wdDoc.MainDocumentPart.Document.Body.Descendants<BookmarkStart>().SingleOrDefault<BookmarkStart>((BookmarkStart b) => b.Name == bookmark)
-                    .Ancestors<Paragraph>().FirstOrDefault<Paragraph>();
-                AppendStreams(filesToInsert, insertPageBreaks, insertAfterElement);
-            }
-        }
-
-        #endregion
-
-        #region Parts
-
-        /// <summary>
-        /// Add a new part in the document
-        /// </summary>
-        /// <typeparam name="T">Type of the object</typeparam>
-        /// <returns>created part</returns>
-        public T AddNewPart<T>() where T : OpenXmlPart, IFixedContentTypePart
-        {
-            return wdMainDocumentPart.AddNewPart<T>();
-        }
-
-        /// <summary>
-        /// Renvoie l'ID d'une part dans le document
-        /// </summary>
-        /// <typeparam name="T">Type du part</typeparam>
-        /// <param name="part">Part</param>
-        /// <returns>Id du part dans le document</returns>
-        public string GetIdOfPart<T>(T part) where T : OpenXmlPart
-        {
-            return wdMainDocumentPart.GetIdOfPart(part);
-        }
-
-        #endregion
-
-        #region Report Engine
-        
-        public byte[] GenerateReport(ReportEngine.Models.Document document, ContextModel context, IFormatProvider formatProvider)
-        {
-            using (MemoryStream stream = new MemoryStream())
-            {
-                wdDoc = WordprocessingDocument.Create(stream, WordprocessingDocumentType.Document);
-                wdDoc.AddMainDocumentPart();
-                wdDoc.MainDocumentPart.Document = new Document(new Body());
-
-                document.Render(wdDoc, context, formatProvider);
-
-                wdDoc.MainDocumentPart.Document.Save();
-                wdDoc.Dispose();
-                return stream.ToArray();
-            }
-        }
-
-        /// <summary>
-        /// Generate a word document 
-        /// </summary>
-        /// <param name="reportList">A list of Reports</param>
-        /// <param name="mergeStyles">Indicates whether or not styles are merged</param>
-        /// <returns></returns>
-        public byte[] GenerateReport(IList<Report> reportList, bool mergeStyles, IFormatProvider formatProvider)
-        {
-            using (MemoryStream stream = new MemoryStream())
-            {
-                wdDoc = WordprocessingDocument.Create(stream, WordprocessingDocumentType.Document);
-                wdDoc.AddMainDocumentPart();
-                wdDoc.MainDocumentPart.Document = new Document(new Body());
-                // add styles in document
-                var spart = wdDoc.MainDocumentPart.AddNewPart<StyleDefinitionsPart>();
-                spart.Styles = new Styles();
-                IList<string> stylesId = null;
-                if (mergeStyles)
-                {
-                    stylesId = reportList.Where(report => report.Document.Styles != null)
-                                            .SelectMany(r => r.Document.Styles)
-                                            .Select(style => style.StyleId)?.Distinct()?.ToList();                    
-                }
-
-                foreach (Report report in reportList)
-                {
-                    if (report.Document.Styles != null)
-                    {
-                        foreach (var style in report.Document.Styles)
-                        {
-                            if(!mergeStyles)
-                            {
-                                style.Render(spart, report.ContextModel);
-                            }
-                            else if (stylesId != null && stylesId.Count > 0 && stylesId.Contains(style.StyleId))
-                            {
-                                stylesId.Remove(style.StyleId);
-                                style.Render(spart, report.ContextModel);
-                            }
-                        }
-                    }
-
-                    // Document render
-                    report.Document.Render(wdDoc, report.ContextModel, report.AddPageBreak, formatProvider);
-
-                    // footers
-                    foreach (var footer in report.Document.Footers)
-                    {
-                        footer.Render(report.Document, wdDoc.MainDocumentPart, report.ContextModel, formatProvider);
-                    }
-                    // headers
-                    foreach (var header in report.Document.Headers)
-                    {
-                        header.Render(report.Document, wdDoc.MainDocumentPart, report.ContextModel, formatProvider);
-                    }
-                }
-
-                //Replace Last page Break
-                if (wdDoc.MainDocumentPart.Document.Body.LastChild != null &&
-                    wdDoc.MainDocumentPart.Document.Body.LastChild is Paragraph &&
-                    wdDoc.MainDocumentPart.Document.Body.LastChild.FirstChild != null &&
-                    wdDoc.MainDocumentPart.Document.Body.LastChild.FirstChild is ParagraphProperties &&
-                    wdDoc.MainDocumentPart.Document.Body.LastChild.FirstChild.FirstChild != null &&
-                    wdDoc.MainDocumentPart.Document.Body.LastChild.FirstChild.FirstChild is SectionProperties)
-                {
-                    Paragraph lastChild = (Paragraph)wdDoc.MainDocumentPart.Document.Body.LastChild;
-                    SectionProperties sectionPropertie = (SectionProperties)lastChild.FirstChild.FirstChild.Clone();
-                    wdDoc.MainDocumentPart.Document.Body.ReplaceChild(sectionPropertie, wdDoc.MainDocumentPart.Document.Body.LastChild);
-                }
-
-                wdDoc.MainDocumentPart.Document.Save();
-                wdDoc.Dispose();
-                return stream.ToArray();
             }
         }
 
