@@ -163,6 +163,11 @@ namespace OpenXMLSDK.Engine.Word
             {
                 wdDoc = WordprocessingDocument.Create(streamFile, WordprocessingDocumentType.Document);
                 wdMainDocumentPart = wdDoc.AddMainDocumentPart();
+                wdMainDocumentPart.Document = new Document();
+
+                var body = new Body();
+                wdMainDocumentPart.Document.Append(body);
+
                 return true;
             }
             catch
