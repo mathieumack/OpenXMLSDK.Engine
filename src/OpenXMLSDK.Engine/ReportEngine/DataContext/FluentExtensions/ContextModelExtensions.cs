@@ -92,6 +92,35 @@ namespace OpenXMLSDK.Engine.ReportEngine.DataContext.FluentExtensions
         }
 
         /// <summary>
+        /// Add a file link model (image path or any file reference used by the report engine)
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="key"></param>
+        /// <param name="filePath">Absolute or relative path to the file</param>
+        /// <returns></returns>
+        public static ContextModel AddFileLink(this ContextModel context, string key, string filePath)
+        {
+            var element = new FileLinkModel(filePath);
+            context.AddItem(key, element);
+            return context;
+        }
+
+        /// <summary>
+        /// Add a substitutable string model, allowing composite formatted strings built from other context values
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="key"></param>
+        /// <param name="renderPattern">Format pattern (e.g. "{0} of {1}")</param>
+        /// <param name="dataSource">Context whose values are injected into the pattern in order</param>
+        /// <returns></returns>
+        public static ContextModel AddSubstitutableString(this ContextModel context, string key, string renderPattern, ContextModel dataSource)
+        {
+            var element = new SubstitutableStringModel(renderPattern, dataSource);
+            context.AddItem(key, element);
+            return context;
+        }
+
+        /// <summary>
         /// Add a list of elements as a DataSource
         /// </summary>
         /// <param name="context"></param>

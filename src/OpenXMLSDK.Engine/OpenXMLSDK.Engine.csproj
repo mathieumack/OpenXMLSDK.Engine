@@ -12,7 +12,7 @@
     <PackageProjectUrl>https://github.com/mathieumack/OpenXMLSDK.Engine</PackageProjectUrl>
     <RepositoryUrl>https://github.com/mathieumack/OpenXMLSDK.Engine</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <Description>This package contains the 'Open-XML-SDK' plugin for MvvmCross.</Description>
+    <Description>A .NET library that simplifies generating and manipulating Word (.docx) documents using the OpenXML SDK. Provides a high-level report engine, bookmark utilities, chart support, and fluent extension methods for building documents from templates or from scratch.</Description>
     <RootNamespace>OpenXMLSDK.Engine</RootNamespace>
     <AssemblyName>OpenXMLSDK.Engine</AssemblyName>
     <Product>engine report and helpers for the OpenXML SDK</Product>
